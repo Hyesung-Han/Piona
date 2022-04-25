@@ -2,7 +2,7 @@ import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {View, Dimensions, Alert, Text} from 'react-native';
 
-const PicnicPage = ({navigation}) => {
+const PicnicedPage = ({navigation}) => {
   return (
     <View
       style={{
@@ -11,8 +11,8 @@ const PicnicPage = ({navigation}) => {
         justifyContent: 'center',
         backgroundColor: '#F9F9F9',
       }}>
-      <Text>Hi</Text>
+      <Text>PicnicedPage</Text>
     </View>
   );
 };
-export default PicnicPage;
+export default PicnicedPage;

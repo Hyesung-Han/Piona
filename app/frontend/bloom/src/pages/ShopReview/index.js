@@ -2,7 +2,7 @@ import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {View, Dimensions, Alert, Text} from 'react-native';
 
-const InitPage = ({navigation}) => {
+const ShopPage = ({navigation}) => {
   return (
     <View
       style={{
@@ -11,8 +11,8 @@ const InitPage = ({navigation}) => {
         justifyContent: 'center',
         backgroundColor: '#F9F9F9',
       }}>
-      <Text>InitPage</Text>
+      <Text>ShopPage</Text>
     </View>
   );
 };
-export default InitPage;
+export default ShopPage;

@@ -11,7 +11,7 @@ const MainPage = ({navigation}) => {
         justifyContent: 'center',
         backgroundColor: '#F9F9F9',
       }}>
-      <Text>Hi</Text>
+      <Text>MainPage</Text>
     </View>
   );
 };

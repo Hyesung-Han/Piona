@@ -11,7 +11,7 @@ const ShopPage = ({navigation}) => {
         justifyContent: 'center',
         backgroundColor: '#F9F9F9',
       }}>
-      <Text>Hi</Text>
+      <Text>ShopPage</Text>
     </View>
   );
 };

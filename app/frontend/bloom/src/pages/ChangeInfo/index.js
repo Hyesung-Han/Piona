@@ -11,7 +11,7 @@ const ChangeInfoPage = ({navigation}) => {
         justifyContent: 'center',
         backgroundColor: '#F9F9F9',
       }}>
-      <Text>Hi</Text>
+      <Text>ChangeInfoPage</Text>
     </View>
   );
 };

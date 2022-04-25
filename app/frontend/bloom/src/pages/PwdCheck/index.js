@@ -11,7 +11,7 @@ const PwdCheckPage = ({navigation}) => {
         justifyContent: 'center',
         backgroundColor: '#F9F9F9',
       }}>
-      <Text>Hi</Text>
+      <Text>PwdCheckPage</Text>
     </View>
   );
 };

@@ -11,7 +11,7 @@ const WishListPage = ({navigation}) => {
         justifyContent: 'center',
         backgroundColor: '#F9F9F9',
       }}>
-      <Text>Hi</Text>
+      <Text>WishListPage</Text>
     </View>
   );
 };
