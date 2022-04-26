@@ -6,7 +6,7 @@ import MainPage from '../../pages/Main';
 import AlarmPage from '../../pages/Alarm';
 import CartPage from '../../pages/Cart';
 import ChangeInfoPage from '../../pages/ChangeInfo';
-import InitPage from '../../pages/Init';
+import SignPage from '../../pages/Sign';
 import MapPage from '../../pages/Map';
 import MenuDetailPage from '../../pages/MenuDetail';
 import MyInfoPage from '../../pages/MyInfo';
@@ -18,8 +18,6 @@ import ShopPage from '../../pages/Shop';
 import ShopHomePage from '../../pages/ShopHome';
 import ShopMenuPage from '../../pages/ShopMenu';
 import ShopReviewPage from '../../pages/ShopReview';
-import SignInPage from '../../pages/SignIn';
-import SignUpPage from '../../pages/SignUp';
 import WishListPage from '../../pages/WishList';
 
 const MyApp = () => {
@@ -101,6 +99,7 @@ const MyApp = () => {
       screenOptions={{
         headerShown: false,
       }}>
+      <Stack.Screen name="SignScreen" component={SignPage} />
       <Stack.Screen name="appScreen" component={MyAppNav} />
     </Stack.Navigator>
   );
