@@ -1,8 +1,8 @@
 package com.jeans.bloom.db.entity;
 
+import com.jeans.bloom.db.entity.type.StatusType;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,7 +29,8 @@ public class Alarm {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "is_check", length = 1)
-    private String isCheck;
+    private StatusType isCheck;
 
 }

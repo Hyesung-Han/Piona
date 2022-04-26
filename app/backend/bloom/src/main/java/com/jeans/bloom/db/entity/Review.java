@@ -1,11 +1,11 @@
 package com.jeans.bloom.db.entity;
 
+import com.jeans.bloom.db.entity.type.StatusType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -36,8 +36,9 @@ public class Review {
     @Column(name = "score")
     private int score;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "is_ban", length = 1)
-    private String isBan;
+    private StatusType isBan;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
