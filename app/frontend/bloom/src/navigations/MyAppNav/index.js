@@ -201,7 +201,8 @@ const MyApp = () => {
       <Tab.Navigator
         screenOptions={({route}) => ({
           initialRouteName: 'Home',
-          tabBarActiveTintColor: 'black',
+          tabBarActiveTintColor: '#F2A7B3',
+          tabBarInactiveTintColor: '#6A6A6A',
           headerShown: false,
           tabBarHideOnKeyboard: true,
         })}>
@@ -213,8 +214,8 @@ const MyApp = () => {
             tabBarIcon: ({focused}) => (
               <Icon
                 name="home-outline"
-                style={{color: focused ? '#F2A7B3' : '#DADADA'}}
-                size={30}
+                style={{color: focused ? '#F2A7B3' : '#6A6A6A'}}
+                size={25}
               />
             ),
           }}
@@ -222,22 +223,58 @@ const MyApp = () => {
         <Tab.Screen
           name="WishList"
           component={WishListNav}
-          options={{title: '위시리스트'}}
+          options={{
+            title: '위시리스트',
+            tabBarIcon: ({focused}) => (
+              <Icon
+                name="heart-outline"
+                style={{color: focused ? '#F2A7B3' : '#6A6A6A'}}
+                size={25}
+              />
+            ),
+          }}
         />
         <Tab.Screen
           name="Picnic"
           component={TopTabStackPicnicScreen}
-          options={{title: '피크닉'}}
+          options={{
+            title: '피크닉',
+            tabBarIcon: ({focused}) => (
+              <Icon
+                name="flower-outline"
+                style={{color: focused ? '#F2A7B3' : '#6A6A6A'}}
+                size={25}
+              />
+            ),
+          }}
         />
         <Tab.Screen
           name="Cart"
           component={CartNav}
-          options={{title: '장바구니'}}
+          options={{
+            title: '장바구니',
+            tabBarIcon: ({focused}) => (
+              <Icon
+                name="cart-outline"
+                style={{color: focused ? '#F2A7B3' : '#6A6A6A'}}
+                size={25}
+              />
+            ),
+          }}
         />
         <Tab.Screen
           name="MyInfo"
           component={MyInfoNav}
-          options={{title: '내정보'}}
+          options={{
+            title: '내정보',
+            tabBarIcon: ({focused}) => (
+              <Icon
+                name="person-outline"
+                style={{color: focused ? '#F2A7B3' : '#6A6A6A'}}
+                size={25}
+              />
+            ),
+          }}
         />
       </Tab.Navigator>
     );
