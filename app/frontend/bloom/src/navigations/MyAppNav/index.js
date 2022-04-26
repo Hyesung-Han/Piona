@@ -7,22 +7,30 @@ import MainPage from '../../pages/Main';
 import AlarmPage from '../../pages/Alarm';
 import CartPage from '../../pages/Cart';
 import ChangeInfoPage from '../../pages/ChangeInfo';
-import InitPage from '../../pages/Init';
+import SignPage from '../../pages/Sign';
 import MapPage from '../../pages/Map';
 import MenuDetailPage from '../../pages/MenuDetail';
 import MyInfoPage from '../../pages/MyInfo';
 import PicnicingPage from '../../pages/Picnicing';
 import PicnicedPage from '../../pages/Picniced';
-import PicnicPage from '../../pages/Picniced';
+import PicnicPage from '../../pages/Picnic';
 import PwdCheckPage from '../../pages/PwdCheck';
 import SearchResultPage from '../../pages/SearchResult';
 import ShopPage from '../../pages/Shop';
 import ShopHomePage from '../../pages/ShopHome';
 import ShopMenuPage from '../../pages/ShopMenu';
 import ShopReviewPage from '../../pages/ShopReview';
-import SignInPage from '../../pages/SignIn';
-import SignUpPage from '../../pages/SignUp';
 import WishListPage from '../../pages/WishList';
+
+/**
+ * CSW | 2022.04.26
+ * @name MyApp
+ * @des
+ * App 화면에 들어가는 Nav(BottomTap, TopTab, Icons) 모아놓은 페이지
+ * 모든 페이지들과 아이콘이 포함되어있음
+ * TODO
+ * 1. 각자 페이지 완성하고 나면 각 페이지에서 props로 받아야하는 정보(가게이름, 상품이름 등등) 처리를 위해서 코드수정이 필요함
+ *  */
 
 const MyApp = () => {
   const Stack = createNativeStackNavigator();
@@ -43,26 +51,28 @@ const MyApp = () => {
             fontWeight: 'bold',
             fontSize: 15,
           },
-          headerRight: () => (
-            <Icon.Button
-              onPress={() =>
-                navigation.navigate('Alarm', {navigation: `${navigation}`})
-              }
-              name="notifications-outline"
-              color="white"
-              backgroundColor="#F2A7B3"
-            />
-          ),
         }}>
         <Stack.Screen
           name="Homes"
           component={MainPage}
-          options={{title: '홈'}}
+          options={{
+            title: '홈',
+            headerRight: () => (
+              <Icon.Button
+                onPress={() =>
+                  navigation.navigate('Alarm', {navigation: `${navigation}`})
+                }
+                name="notifications-outline"
+                color="white"
+                backgroundColor="#F2A7B3"
+              />
+            ),
+          }}
         />
         <Stack.Screen
-          name="SearchResult"
+          name="Search"
           component={SearchResultPage}
-          options={{title: '검색', headerRight: null}}
+          options={{title: '검색결과'}}
         />
         <Stack.Screen
           name="Alarm"
@@ -74,7 +84,64 @@ const MyApp = () => {
           component={ShopPage}
           options={{title: '가게'}}
         />
+        <Stack.Screen
+          name="ShopDetail"
+          component={TopTabStackShopScreen}
+          options={{title: '가게 상세정보'}}
+        />
+        <Stack.Screen
+          name="Map"
+          component={MapPage}
+          options={{title: '지도'}}
+        />
       </Stack.Navigator>
+    );
+  }
+
+  function TopTabStackShopScreen() {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: 'left',
+          headerShown: false,
+        }}>
+        <Stack.Screen
+          name="Shoptap"
+          component={ShopNav}
+          options={{title: '가게이름'}}
+        />
+      </Stack.Navigator>
+    );
+  }
+  function ShopNav({}) {
+    return (
+      <TopTab.Navigator
+        screenOptions={{
+          headerTitleAlign: 'center',
+          tabBarActiveTintColor: 'black',
+          tabBarIndicatorStyle: {backgroundColor: '#F2A7B3'},
+          tabBarStyle: {
+            backgroundColor: '#white',
+          },
+          tabBarLabelStyle: {fontSize: 12},
+          initialRouteName: 'ShopHome',
+        }}>
+        <TopTab.Screen
+          name="ShopHome"
+          component={ShopHomePage}
+          options={{title: '홈'}}
+        />
+        <TopTab.Screen
+          name="ShopMenu"
+          component={ShopMenuPage}
+          options={{title: '메뉴'}}
+        />
+        <TopTab.Screen
+          name="ShopReview"
+          component={ShopReviewPage}
+          options={{title: '리뷰'}}
+        />
+      </TopTab.Navigator>
     );
   }
 
@@ -310,7 +377,6 @@ const MyApp = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      {/* <Stack.Screen name="InitScreen" component={InitPage} /> */}
       <Stack.Screen name="appScreen" component={MyAppNav} />
     </Stack.Navigator>
   );

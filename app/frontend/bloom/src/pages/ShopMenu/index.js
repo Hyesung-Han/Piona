@@ -2,7 +2,7 @@ import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {View, Dimensions, Alert, Text} from 'react-native';
 
-const ShopReviewPage = ({navigation}) => {
+const ShopMenuPage = ({navigation}) => {
   return (
     <View
       style={{
@@ -15,4 +15,4 @@ const ShopReviewPage = ({navigation}) => {
     </View>
   );
 };
-export default ShopReviewPage;
+export default ShopMenuPage;

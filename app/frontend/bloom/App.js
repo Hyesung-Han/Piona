@@ -17,17 +17,17 @@ import MyApp from './src/navigations/MyAppNav';
 
 const App = () => {
   return (
-      <SafeAreaProvider>
-        <StatusBar
-          barStyle="dark-content"
-          hidden={false}
-          backgroundColor="white"
-          translucent={true}
-        />
-        <NavigationContainer>
-          <MyApp />
-        </NavigationContainer>
-      </SafeAreaProvider>
+    <SafeAreaProvider>
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor="#F2A7B3"
+        translucent={true}
+      />
+      <NavigationContainer>
+        <MyApp />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 

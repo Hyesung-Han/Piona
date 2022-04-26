@@ -2,7 +2,7 @@ import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {View, Dimensions, Alert, Text} from 'react-native';
 
-const InitPage = ({navigation}) => {
+const SignPage = ({navigation}) => {
   return (
     <View
       style={{
@@ -15,4 +15,4 @@ const InitPage = ({navigation}) => {
     </View>
   );
 };
-export default InitPage;
+export default SignPage;
