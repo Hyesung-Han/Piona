@@ -3,14 +3,14 @@ package com.jeans.bloom.db.entity;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name="user", schema = "bloom")
+@Table(name="user_t", schema = "bloom")
 @Getter @Setter
 public class User {
 
-    @Id @GeneratedValue
+    @Id
     @Column(name = "user_id")
     private String userId;
 
@@ -33,6 +33,6 @@ public class User {
     private String userCode;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
 }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "shop_t", schema = "bloom")
 public class Shop {
 
-    @Id @GeneratedValue
+    @Id
     @Column(name = "shop_number")
     private String shopNumber;
 
