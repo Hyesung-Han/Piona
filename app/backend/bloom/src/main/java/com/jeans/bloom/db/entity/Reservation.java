@@ -1,5 +1,6 @@
 package com.jeans.bloom.db.entity;
 
+import com.jeans.bloom.db.entity.type.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 

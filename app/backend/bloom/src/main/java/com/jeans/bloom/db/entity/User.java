@@ -1,5 +1,7 @@
 package com.jeans.bloom.db.entity;
 
+import com.jeans.bloom.db.entity.type.StatusType;
+import com.jeans.bloom.db.entity.type.UserCode;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
@@ -30,11 +32,13 @@ public class User {
     @Column(name = "phone", length = 15)
     private String phone;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "is_del", length = 1)
-    private String isDel;
+    private StatusType isDel;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "user_code", length = 1)
-    private String userCode;
+    private UserCode userCode;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
