@@ -1,9 +1,14 @@
 package com.jeans.bloom.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.jeans.bloom.db.entity.type.StatusType;
 import com.jeans.bloom.db.entity.type.UserCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +19,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Table(name="user_t", schema = "bloom")
 @Getter @Setter
+@DynamicInsert
 public class User {
 
     @Id
@@ -43,7 +49,9 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+//    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alarm> alarms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
