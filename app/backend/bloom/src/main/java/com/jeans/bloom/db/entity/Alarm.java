@@ -1,5 +1,6 @@
 package com.jeans.bloom.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.jeans.bloom.db.entity.type.StatusType;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Alarm {
     @Column(name = "alarm_id")
     private int alarmId;
 
+    @JsonBackReference
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
