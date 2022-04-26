@@ -6,6 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Setter
@@ -16,14 +18,17 @@ public class Cart {
     @Column(name = "cart_id")
     private int cartId;
 
-    @Column(name = "user_id")
-    private String userId;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "shop_number")
-    private String shopNumber;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "shop_number")
+    private Shop shop;
 
-    @Column(name = "item_id")
-    private int itemId;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "item_id")
+    private Item item;
 
     @Column(name = "quantity")
     private int quantity;
