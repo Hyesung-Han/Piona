@@ -80,11 +80,6 @@ const MyApp = () => {
           options={{title: '알람', headerRight: null}}
         />
         <Stack.Screen
-          name="Shop"
-          component={ShopPage}
-          options={{title: '가게'}}
-        />
-        <Stack.Screen
           name="ShopDetail"
           component={TopTabStackShopScreen}
           options={{title: '가게 상세정보'}}
@@ -113,7 +108,7 @@ const MyApp = () => {
       </Stack.Navigator>
     );
   }
-  function ShopNav({}) {
+  function ShopNav() {
     return (
       <TopTab.Navigator
         screenOptions={{
@@ -195,7 +190,7 @@ const MyApp = () => {
       </Stack.Navigator>
     );
   }
-  function PicnicNav({}) {
+  function PicnicNav() {
     return (
       <TopTab.Navigator
         screenOptions={{
