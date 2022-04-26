@@ -33,7 +33,7 @@ const MyApp = () => {
     return (
       <Stack.Navigator
         screenOptions={{
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'left',
           initialRouteName: 'Homes',
           headerStyle: {
             backgroundColor: '#F2A7B3',
@@ -41,7 +41,18 @@ const MyApp = () => {
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
+            fontSize: 15,
           },
+          headerRight: () => (
+            <Icon.Button
+              onPress={() =>
+                navigation.navigate('Alarm', {navigation: `${navigation}`})
+              }
+              name="notifications-outline"
+              color="white"
+              backgroundColor="#F2A7B3"
+            />
+          ),
         }}>
         <Stack.Screen
           name="Homes"
@@ -52,6 +63,11 @@ const MyApp = () => {
           name="SearchResult"
           component={SearchResultPage}
           options={{title: '검색', headerRight: null}}
+        />
+        <Stack.Screen
+          name="Alarm"
+          component={AlarmPage}
+          options={{title: '알람', headerRight: null}}
         />
         <Stack.Screen
           name="Shop"
@@ -66,13 +82,14 @@ const MyApp = () => {
     return (
       <Stack.Navigator
         screenOptions={{
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'left',
           headerStyle: {
             backgroundColor: '#F2A7B3',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
+            fontSize: 15,
           },
         }}>
         <Stack.Screen
@@ -93,13 +110,14 @@ const MyApp = () => {
     return (
       <Stack.Navigator
         screenOptions={{
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'left',
           headerStyle: {
             backgroundColor: '#F2A7B3',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
+            fontSize: 15,
           },
         }}>
         <Stack.Screen
@@ -120,7 +138,7 @@ const MyApp = () => {
           tabBarStyle: {
             backgroundColor: '#white',
           },
-          tabBarLabelStyle: {fontSize: 15},
+          tabBarLabelStyle: {fontSize: 12},
           initialRouteName: 'Picnicing',
         }}>
         <TopTab.Screen
@@ -140,13 +158,14 @@ const MyApp = () => {
     return (
       <Stack.Navigator
         screenOptions={{
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'left',
           headerStyle: {
             backgroundColor: '#F2A7B3',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
+            fontSize: 15,
           },
         }}>
         <Stack.Screen
@@ -167,7 +186,7 @@ const MyApp = () => {
     return (
       <Stack.Navigator
         screenOptions={{
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'left',
           initialRouteName: 'MyInfos',
           headerStyle: {
             backgroundColor: '#F2A7B3',
@@ -175,6 +194,7 @@ const MyApp = () => {
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
+            fontSize: 15,
           },
         }}>
         <Stack.Screen
@@ -211,6 +231,7 @@ const MyApp = () => {
           component={MainNav}
           options={{
             tabBarLabel: '홈',
+            tabBarLabelStyle: {fontSize: 11},
             tabBarIcon: ({focused}) => (
               <Icon
                 name="home-outline"
@@ -225,6 +246,7 @@ const MyApp = () => {
           component={WishListNav}
           options={{
             title: '위시리스트',
+            tabBarLabelStyle: {fontSize: 11},
             tabBarIcon: ({focused}) => (
               <Icon
                 name="heart-outline"
@@ -239,6 +261,7 @@ const MyApp = () => {
           component={TopTabStackPicnicScreen}
           options={{
             title: '피크닉',
+            tabBarLabelStyle: {fontSize: 11},
             tabBarIcon: ({focused}) => (
               <Icon
                 name="flower-outline"
@@ -253,6 +276,7 @@ const MyApp = () => {
           component={CartNav}
           options={{
             title: '장바구니',
+            tabBarLabelStyle: {fontSize: 11},
             tabBarIcon: ({focused}) => (
               <Icon
                 name="cart-outline"
@@ -267,6 +291,7 @@ const MyApp = () => {
           component={MyInfoNav}
           options={{
             title: '내정보',
+            tabBarLabelStyle: {fontSize: 11},
             tabBarIcon: ({focused}) => (
               <Icon
                 name="person-outline"
