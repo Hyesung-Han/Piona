@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter @Setter
@@ -15,11 +19,13 @@ public class Reservation {
     @Column(name = "reservation_id")
     private int reservationId;
 
-    @Column(name = "user_id")
-    private String userId;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "shop_number")
-    private String shopNumber;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "shop_number")
+    private Shop shop;
 
     @Column(name = "total_price")
     private int totalPrice;
@@ -28,7 +34,12 @@ public class Reservation {
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", length = 1)
     private OrderStatus status;
 
+    @OneToOne(mappedBy = "reservation", fetch = LAZY)
+    private Review review;
+
+    @OneToMany(mappedBy = "reservation")
+    private List<ReservationDetail> reservationDetails = new ArrayList<>();
 }

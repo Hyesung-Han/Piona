@@ -5,6 +5,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter @Setter
 @Table(name = "review_comment_t", schema = "bloom")
@@ -14,10 +16,11 @@ public class ReviewComment {
     @Column(name = "comment_id")
     private int commentId;
 
-    @Column(name = "review_id")
-    private int reviewId;
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "review_id")
+    private Review review;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 255)
     private String content;
 
     @Column(name = "created_at")

@@ -6,6 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter @Setter
 @Table(name = "reservation_detail_t", schema = "bloom")
@@ -15,11 +17,13 @@ public class ReservationDetail {
     @Column(name = "detail_id")
     private int detailId;
 
-    @Column(name = "reservation_id")
-    private int reservationId;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
 
-    @Column(name = "item_id")
-    private int itemId;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "item_id")
+    private Item item;
 
     @Column(name = "quantity")
     private int quantity;
