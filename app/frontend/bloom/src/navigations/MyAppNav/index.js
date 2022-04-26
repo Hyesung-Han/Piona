@@ -12,7 +12,8 @@ import MenuDetailPage from '../../pages/MenuDetail';
 import MyInfoPage from '../../pages/MyInfo';
 import PicnicingPage from '../../pages/Picnicing';
 import PicnicedPage from '../../pages/Picniced';
-import PwdChectPage from '../../pages/PwdCheck';
+import PicnicPage from '../../pages/Picniced';
+import PwdCheckPage from '../../pages/PwdCheck';
 import SearchResultPage from '../../pages/SearchResult';
 import ShopPage from '../../pages/Shop';
 import ShopHomePage from '../../pages/ShopHome';
@@ -32,10 +33,17 @@ const MyApp = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: 'center',
-          initialRouteName: 'Home',
+          initialRouteName: 'Homes',
+          headerStyle: {
+            backgroundColor: '#F2A7B3',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}>
         <Stack.Screen
-          name="Home"
+          name="Homes"
           component={MainPage}
           options={{title: '홈'}}
         />
@@ -58,16 +66,130 @@ const MyApp = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#F2A7B3',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}>
         <Stack.Screen
-          name="WishList"
+          name="WishLists"
           component={WishListPage}
           options={{title: '위시리스트'}}
         />
         <Stack.Screen
-          name="Shop"
+          name="Shops"
           component={ShopPage}
           options={{title: '가게'}}
+        />
+      </Stack.Navigator>
+    );
+  }
+
+  function TopTabStackPicnicScreen() {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#F2A7B3',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+        <Stack.Screen
+          name="PicnicTap"
+          component={PicnicNav}
+          options={{title: '피크닉'}}
+        />
+      </Stack.Navigator>
+    );
+  }
+  function PicnicNav({}) {
+    return (
+      <TopTab.Navigator
+        screenOptions={{
+          headerTitleAlign: 'center',
+          tabBarActiveTintColor: 'black',
+          tabBarIndicatorStyle: {backgroundColor: '#F2A7B3'},
+          tabBarStyle: {
+            backgroundColor: '#white',
+          },
+          tabBarLabelStyle: {fontSize: 15},
+          initialRouteName: 'Picnicing',
+        }}>
+        <TopTab.Screen
+          name="Picnicing"
+          component={PicnicingPage}
+          options={{title: '진행중인 예약'}}
+        />
+        <TopTab.Screen
+          name="Picniced"
+          component={PicnicedPage}
+          options={{title: '완료된 예약'}}
+        />
+      </TopTab.Navigator>
+    );
+  }
+  function CartNav() {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#F2A7B3',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+        <Stack.Screen
+          name="Carts"
+          component={CartPage}
+          options={{title: '장바구니'}}
+        />
+        <Stack.Screen
+          name="Menus"
+          component={MenuDetailPage}
+          options={{title: '상품상세페이지'}}
+        />
+      </Stack.Navigator>
+    );
+  }
+
+  function MyInfoNav() {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: 'center',
+          initialRouteName: 'MyInfos',
+          headerStyle: {
+            backgroundColor: '#F2A7B3',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+        <Stack.Screen
+          name="MyInfos"
+          component={MyInfoPage}
+          options={{title: '내 정보'}}
+        />
+        <Stack.Screen
+          name="PwdCheck"
+          component={PwdCheckPage}
+          options={{title: '비밀번호 확인'}}
+        />
+        <Stack.Screen
+          name="ChangeInfo"
+          component={ChangeInfoPage}
+          options={{title: '내 정보 수정'}}
         />
       </Stack.Navigator>
     );
@@ -83,7 +205,7 @@ const MyApp = () => {
           tabBarHideOnKeyboard: true,
         })}>
         <Tab.Screen
-          name="Main"
+          name="Home"
           component={MainNav}
           options={{tabBarLabel: '홈'}}
         />
@@ -91,6 +213,21 @@ const MyApp = () => {
           name="WishList"
           component={WishListNav}
           options={{title: '위시리스트'}}
+        />
+        <Tab.Screen
+          name="Picnic"
+          component={TopTabStackPicnicScreen}
+          options={{title: '피크닉'}}
+        />
+        <Tab.Screen
+          name="Cart"
+          component={CartNav}
+          options={{title: '장바구니'}}
+        />
+        <Tab.Screen
+          name="MyInfo"
+          component={MyInfoNav}
+          options={{title: '내정보'}}
         />
       </Tab.Navigator>
     );
@@ -101,6 +238,7 @@ const MyApp = () => {
       screenOptions={{
         headerShown: false,
       }}>
+      {/* <Stack.Screen name="InitScreen" component={InitPage} /> */}
       <Stack.Screen name="appScreen" component={MyAppNav} />
     </Stack.Navigator>
   );
