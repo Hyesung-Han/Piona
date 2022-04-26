@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Ionicons';
 import MainPage from '../../pages/Main';
 import AlarmPage from '../../pages/Alarm';
 import CartPage from '../../pages/Cart';
@@ -207,7 +208,16 @@ const MyApp = () => {
         <Tab.Screen
           name="Home"
           component={MainNav}
-          options={{tabBarLabel: '홈'}}
+          options={{
+            tabBarLabel: '홈',
+            tabBarIcon: ({focused}) => (
+              <Icon
+                name="home-outline"
+                style={{color: focused ? '#F2A7B3' : '#DADADA'}}
+                size={30}
+              />
+            ),
+          }}
         />
         <Tab.Screen
           name="WishList"
