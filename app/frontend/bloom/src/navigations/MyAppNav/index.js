@@ -13,7 +13,6 @@ import MenuDetailPage from '../../pages/MenuDetail';
 import MyInfoPage from '../../pages/MyInfo';
 import PicnicingPage from '../../pages/Picnicing';
 import PicnicedPage from '../../pages/Picniced';
-import PicnicPage from '../../pages/Picnic';
 import PwdCheckPage from '../../pages/PwdCheck';
 import SearchResultPage from '../../pages/SearchResult';
 import ShopPage from '../../pages/Shop';

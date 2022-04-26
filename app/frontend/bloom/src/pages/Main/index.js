@@ -1,6 +1,15 @@
 import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {View, Dimensions, Alert, Text, Button} from 'react-native';
+import {
+  View,
+  Dimensions,
+  Alert,
+  Text,
+  Button,
+  ImageBackground,
+  StyleSheet,
+} from 'react-native';
+import MainBackground from '../../assets/Mainbackground.jpg';
 
 /**
  * CSW | 2022.04.26
@@ -14,16 +23,33 @@ import {View, Dimensions, Alert, Text, Button} from 'react-native';
  * 4. 4가지 태그 부분 추가
  *  */
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'white',
+    fontSize: 42,
+    lineHeight: 84,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    backgroundColor: '#000000c0',
+  },
+});
+
 const MainPage = ({navigation}) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#F9F9F9',
-      }}>
-      <Text>MainPage</Text>
+    <View style={styles.container}>
+      <ImageBackground
+        source={MainBackground}
+        resizeMode="cover"
+        style={styles.image}>
+        <Text style={styles.text}>Inside</Text>
+      </ImageBackground>
       <View>
         <Button
           style={{fontSize: 20, color: 'green'}}
