@@ -371,6 +371,7 @@ const MyApp = () => {
       screenOptions={{
         headerShown: false,
       }}>
+      <Stack.Screen name="SignScreen" component={SignPage} />
       <Stack.Screen name="appScreen" component={MyAppNav} />
     </Stack.Navigator>
   );
