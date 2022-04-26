@@ -16,6 +16,4 @@ public class HomeController {
     public String getAll(){
         return "hello";
     }
-
-
 }
