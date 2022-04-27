@@ -41,7 +41,7 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private List<ReservationDetail> reservationDetails = new ArrayList<>();
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item")
     private List<Cart> carts = new ArrayList<>();
 
 }

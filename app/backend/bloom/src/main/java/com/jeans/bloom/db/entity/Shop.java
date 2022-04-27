@@ -59,7 +59,7 @@ public class Shop {
     @OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE)
     private List<WishList> wishLists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "shop")
     private List<Reservation> reservations = new ArrayList<>();
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE)
