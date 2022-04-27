@@ -49,6 +49,12 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "access_token", length = 255)
+    private String accessToken;
+
+    @Column(name = "refresh_token", length = 255)
+    private String refreshToken;
+
     @JsonIgnore
 //    @JsonManagedReference
     @OneToMany(mappedBy = "user" , orphanRemoval = true)
