@@ -4,8 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
+/**
+ * LJA | 2022.04.27
+ * @name BaseResponseBody
+ * @des response return 값에 대한 형식 정의
+ */
 @Getter
 @Setter
 @Builder
