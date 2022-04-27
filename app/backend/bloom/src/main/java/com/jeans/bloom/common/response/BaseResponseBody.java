@@ -1,4 +1,4 @@
-package com.jeans.bloom.api.response;
+package com.jeans.bloom.common.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,12 +9,18 @@ import lombok.Setter;
  * @name BaseResponseBody
  * @des response return 값에 대한 형식 정의
  */
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 public class BaseResponseBody {
-
     String result;
     Object data;
+
+    public static BaseResponseBody of(String result) {
+        return BaseResponseBody.builder()
+                .result(result)
+                .build();
+    }
 
     public static BaseResponseBody of(String result, Object data) {
         return BaseResponseBody.builder()
@@ -22,4 +28,5 @@ public class BaseResponseBody {
                 .data(data)
                 .build();
     }
+
 }
