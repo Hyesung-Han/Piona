@@ -30,7 +30,7 @@ public class Shop {
     private String hours;
 
     @Column(name = "zip_code")
-    private int zipCode;
+    private Integer zipCode;
 
     @Column(name = "address", length = 100)
     private String address;
