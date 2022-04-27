@@ -6,11 +6,11 @@ import com.jeans.bloom.api.response.UserRes;
 import com.jeans.bloom.db.entity.User;
 
 public interface UserService {
-    User createUser(UserRegiPostReq registerInfo);
+    User createUser(UserRegiPostReq registerInfo) throws Exception;
 
-    User getUserByUserId(String userId);
+    User findUserByUserId(String userId) throws Exception;
 
-    User getUserByUserNickname(String nickName);
+    User findUserByNickName(String nickName) throws Exception;
 
-    User login(UserLoginPostReq userLogin);
+    User login(UserLoginPostReq userLogin) throws Exception;
 }
