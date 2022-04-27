@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 /**
- * LHJ | 2022.04.26
+ * LHJ | 2022.04.27
  * @name DoneCard
  * @api x
  * @des
