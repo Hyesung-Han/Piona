@@ -8,7 +8,7 @@ import SignUpModal from '../../components/SignUpModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
- * LJA | 2022.04.26
+ * LDJ | 2022.04.26
  * @name Sign
  * @api -
  * @des
