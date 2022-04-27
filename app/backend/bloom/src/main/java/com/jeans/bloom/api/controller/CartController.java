@@ -1,6 +1,6 @@
 package com.jeans.bloom.api.controller;
 
-import com.jeans.bloom.api.response.BaseResponseBody;
+import com.jeans.bloom.common.response.BaseResponseBody;
 import com.jeans.bloom.api.response.CartRes;
 import com.jeans.bloom.api.service.CartService;
 import io.swagger.annotations.Api;
