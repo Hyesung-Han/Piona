@@ -9,10 +9,7 @@ import com.jeans.bloom.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * OYT | 2022.04.27
@@ -39,17 +36,22 @@ public class UserController {
     public ResponseEntity<BaseResponseBody> register(
             @RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegiPostReq registerInfo) {
 
-        User userGetByUserId = userService.getUserByUserId(registerInfo.getUserId());
-        User userGetByNickname = userService.getUserByUserNickname(registerInfo.getNickName());
+        try{
+            User userGetByUserId = userService.findUserByUserId(registerInfo.getUserId());
+            User userGetByNickname = userService.findUserByNickName(registerInfo.getNickName());
 
-        if(userGetByUserId != null){
-            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 아이디입니다.."));
-        }else if(userGetByNickname != null){
-            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 닉네임입니다."));
-        }else{
-            userService.createUser(registerInfo);
-            return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+            if(userGetByUserId != null){
+                return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 아이디입니다.."));
+            }else if(userGetByNickname != null){
+                return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 닉네임입니다."));
+            }else{
+                userService.createUser(registerInfo);
+                return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
+
     }
 
     /**
@@ -61,13 +63,82 @@ public class UserController {
     @PostMapping("/signin")
     @ApiOperation(value = "로그인", notes = "아이디 비밀번호를 입력후 로그인.")
     public ResponseEntity<BaseResponseBody> login(
-            @RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq userLogin) {
+            @RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq userLogin){
 
-        User userLoginPostRes = userService.login(userLogin);
-        if(userLoginPostRes != null){
-            return ResponseEntity.status(200).body(BaseResponseBody.of("success", UserRes.of(userLoginPostRes)));
-        }else{
+        try{
+            User userLoginPostRes = userService.login(userLogin);
+            if(userLoginPostRes != null)
+                return ResponseEntity.status(201).body(BaseResponseBody.of("success", UserRes.of(userLoginPostRes)));
+
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", "정보가 올바르지 않습니다."));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
     }
+
+    /**
+     * OYT | 2022.04.27
+     * @name idcheck
+     * @api {get} /user/idcheck?userId=user_id
+     * @des 아이디를 입력 받아 중복 체크
+     */
+    @GetMapping("/idcheck")
+    @ApiOperation(value = "아이디 중복검사", notes = "아이디 중복 검사")
+    public ResponseEntity<BaseResponseBody> idcheck(
+            @RequestParam @ApiParam(value="아이디", required = true) String userId) {
+
+        try{
+            User userIdGetRes = userService.findUserByUserId(userId);
+            if(userIdGetRes == null)
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success", true));
+
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", false));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+
+    /**
+     * OYT | 2022.04.27
+     * @name nickNameCheck
+     * @api {get} /user/nickCheck?userNickName=nickname
+     * @des 닉네임를 입력 받아 중복 체크
+     */
+    @GetMapping("/nickCheck")
+    @ApiOperation(value = "닉네임 중복검사", notes = "닉네임 중복 검사")
+    public ResponseEntity<BaseResponseBody> nickNameCheck(
+            @RequestParam @ApiParam(value="닉네임", required = true) String userNickName) {
+
+        try{
+            User userNickNameGetRes = userService.findUserByNickName(userNickName);
+            if(userNickNameGetRes == null)
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success", true));
+
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", false));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+
+    }
+
+    /**
+     * OYT | 2022.04.27
+     * @name findUserByUserId
+     * @api {get} /user?userId=user_id
+     * @des 유저 ID를 입력 받아 유저 정보 반환
+     */
+    @GetMapping()
+    @ApiOperation(value = "내 정보 불러오기", notes = "아이디를 통해 해당 유저의 정보를 불러온다.")
+    public ResponseEntity<BaseResponseBody> findUserByUserId(
+            @RequestParam @ApiParam(value="아이디", required = true) String userId) {
+
+        try{
+            User userInfoGetRes = userService.findUserByUserId(userId);
+            return ResponseEntity.status(201).body(BaseResponseBody.of("success", UserRes.of(userInfoGetRes)));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+
+    }
+
 }

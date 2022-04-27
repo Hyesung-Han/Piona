@@ -1,4 +1,4 @@
-package com.jeans.bloom.common.Auth;
+package com.jeans.bloom.common.auth;
 
 import com.jeans.bloom.db.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;

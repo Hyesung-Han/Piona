@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, String> {
     User findUserByUserId(String userId);
 
-    User findUserByNickname(String nickName);
+    User findUserByNickName(String nickName);
 }
