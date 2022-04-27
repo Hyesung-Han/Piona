@@ -30,6 +30,70 @@ const PicnicedPage = ({navigation}) => {
       .then(res => setData(res));
   };
 
+  const DATA = [
+    //괄호 하나하나가 item이 된다.
+    {
+      shopName: '호진이가게',
+      date: '2020-20-20',
+      desc: '호진이가게,ㅁㄴㅇ',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+    {
+      shopName: '소원이가게',
+      date: '2020-20-20',
+      desc: '소원이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+    {
+      shopName: '혜성이가게',
+      date: '2020-20-20',
+      desc: '혜성이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+    {
+      shopName: '동준이형가게',
+      date: '2020-20-20',
+      desc: '동준이형가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+    {
+      shopName: '정아누나가게',
+      date: '2020-20-20',
+      desc: '정아누나가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+    {
+      shopName: '윤택이형가게',
+      date: '2020-20-20',
+      desc: '윤택이형가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+    {
+      shopName: '호진이가게',
+      date: '2020-20-20',
+      desc: '호진이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+    {
+      shopName: '호진이가게',
+      date: '2020-20-20',
+      desc: '호진이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+    {
+      shopName: '호진이가게',
+      date: '2020-20-20',
+      desc: '호진이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+    {
+      shopName: '호진이가게',
+      date: '2020-20-20',
+      desc: '호진이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+    },
+  ];
+
   useEffect(() => {
     getData();
   }, []);
@@ -42,8 +106,12 @@ const PicnicedPage = ({navigation}) => {
     <View>
       <View>
         <FlatList
-          data={data}
+          //리스트의 소스를 담는 속성
+          //data={data}
+          data={DATA}
+          //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
+          //item의 고유의 키를 부여하는 속성
           keyExtractor={item => String(item.id)}
           //무한 스크롤때문에 넣은듯
           // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
