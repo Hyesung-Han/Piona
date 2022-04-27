@@ -1,4 +1,5 @@
 import React, {useState, useCallback} from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
@@ -8,6 +9,7 @@ import {
   Button,
   ImageBackground,
   StyleSheet,
+  TextInput,
 } from 'react-native';
 import MainBackground from '../../assets/Mainbackground.jpg';
 
@@ -29,49 +31,73 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    justifyContent: 'center',
+    alignItems: 'center',
+    height: '80%',
   },
-  text: {
-    color: 'white',
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    backgroundColor: '#000000c0',
+  textInput: {
+    fontSize: 13,
+    marginLeft: 10,
+  },
+  inputBox: {
+    borderStyle: 'solid',
+    backgroundColor: 'white',
+    width: '70%',
+    height: '12%',
+    borderRadius: 10,
+    borderColor: '#F2A7B3',
+    borderWidth: 1.5,
+    marginTop: '20%',
+  },
+  iconBox: {
+    position: 'absolute',
+    width: '20%',
+    top: 5,
+    right: 0,
+  },
+  mapBox: {
+    marginTOp: '40%',
   },
 });
 
 const MainPage = ({navigation}) => {
+  const [inputText, setInputText] = useState('');
+
   return (
     <View style={styles.container}>
       <ImageBackground
         source={MainBackground}
         resizeMode="cover"
         style={styles.image}>
-        <Text style={styles.text}>Inside</Text>
+        <View style={styles.inputBox}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="어느 곳으로 피크닉가세요?"
+            value={inputText}
+            onChangeText={setInputText}></TextInput>
+          <View style={styles.iconBox}>
+            <Icon.Button
+              onPress={() =>
+                navigation.navigate('Search', {navigation: `${navigation}`})
+              }
+              name="search-outline"
+              color="black"
+              backgroundColor="white"
+              style={styles.icon}
+            />
+          </View>
+          <View style={styles.mapBox}>
+            <Button
+              style={{fontSize: 20, color: 'green'}}
+              styleDisabled={{color: 'red'}}
+              onPress={() =>
+                navigation.navigate('ShopDetail', {navigation: `${navigation}`})
+              }
+              title="Press Me">
+              Press Me
+            </Button>
+          </View>
+        </View>
       </ImageBackground>
-      <View>
-        <Button
-          style={{fontSize: 20, color: 'green'}}
-          styleDisabled={{color: 'red'}}
-          onPress={() =>
-            navigation.navigate('Search', {navigation: `${navigation}`})
-          }
-          title="Press Me">
-          Press Me
-        </Button>
-      </View>
-      <View>
-        <Button
-          style={{fontSize: 20, color: 'green'}}
-          styleDisabled={{color: 'red'}}
-          onPress={() =>
-            navigation.navigate('ShopDetail', {navigation: `${navigation}`})
-          }
-          title="Press Me">
-          Press Me
-        </Button>
-      </View>
     </View>
   );
 };
