@@ -51,22 +51,22 @@ public class User {
 
     @JsonIgnore
 //    @JsonManagedReference
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user" , orphanRemoval = true)
     private List<Alarm> alarms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user" )
     private List<WishList> wishLists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user" )
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user" )
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", fetch = LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = LAZY )
     private Shop shop;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user" )
     private List<Cart> carts = new ArrayList<>();
 
 }
