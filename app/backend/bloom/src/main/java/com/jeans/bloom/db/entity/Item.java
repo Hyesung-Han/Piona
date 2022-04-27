@@ -17,7 +17,7 @@ public class Item {
 
     @Id @GeneratedValue
     @Column(name = "item_id")
-    private int itemId;
+    private Integer itemId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "shop_number")
@@ -27,10 +27,10 @@ public class Item {
     private String name;
 
     @Column(name = "price")
-    private int price;
+    private Integer price;
 
     @Column(name = "total_quantity")
-    private int totalQuantity;
+    private Integer totalQuantity;
 
     @Column(name = "description")
     private String  description;

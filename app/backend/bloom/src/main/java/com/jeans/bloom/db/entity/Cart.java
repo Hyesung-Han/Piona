@@ -16,7 +16,7 @@ public class Cart {
 
     @Id @GeneratedValue
     @Column(name = "cart_id")
-    private int cartId;
+    private Integer cartId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
@@ -31,7 +31,7 @@ public class Cart {
     private Item item;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "reservation_date")
     private LocalDateTime reservationDate;
