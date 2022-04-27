@@ -18,14 +18,14 @@ import MainBackground from '../../assets/Mainbackground.jpg';
  * @des
  * 버튼을 통해 페이지가 잘 넘어가지는지 테스트 버튼 넣어놓은 상태
  * TODO
- * 1. 4가지 태그 부분 추가
- * 2. 닉네임 받기
- * 3. 검색어 넘겨주기
+ * 1. 닉네임 받기
+ * 2. 검색어 넘겨주기
  *  */
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F8F8F8',
   },
   image: {
     alignItems: 'center',
@@ -89,6 +89,14 @@ const styles = StyleSheet.create({
     marginRight: '3%',
     marginBottom: '3%',
     marginLeft: '3%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
