@@ -35,14 +35,15 @@ const styles = StyleSheet.create({
     height: '80%',
   },
   textInput: {
-    fontSize: 13,
+    fontSize: 14,
     marginLeft: 10,
   },
   inputBox: {
     borderStyle: 'solid',
     backgroundColor: 'white',
+    justifyContent: 'center',
     width: '70%',
-    height: '12%',
+    height: '11%',
     borderRadius: 10,
     borderColor: '#F2A7B3',
     borderWidth: 1.5,
@@ -55,7 +56,17 @@ const styles = StyleSheet.create({
     right: 0,
   },
   mapBox: {
-    marginTOp: '40%',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderStyle: 'solid',
+    backgroundColor: '#F2A7B3',
+    width: '35%',
+    height: '12%',
+    borderRadius: 40,
+    marginTop: '20%',
+    marginBottom: '60%',
   },
 });
 
@@ -71,7 +82,7 @@ const MainPage = ({navigation}) => {
         <View style={styles.inputBox}>
           <TextInput
             style={styles.textInput}
-            placeholder="어느 곳으로 피크닉가세요?"
+            placeholder="검색어를 입력하세요."
             value={inputText}
             onChangeText={setInputText}></TextInput>
           <View style={styles.iconBox}>
@@ -82,20 +93,26 @@ const MainPage = ({navigation}) => {
               name="search-outline"
               color="black"
               backgroundColor="white"
-              style={styles.icon}
             />
           </View>
-          <View style={styles.mapBox}>
-            <Button
-              style={{fontSize: 20, color: 'green'}}
-              styleDisabled={{color: 'red'}}
-              onPress={() =>
-                navigation.navigate('ShopDetail', {navigation: `${navigation}`})
-              }
-              title="Press Me">
-              Press Me
-            </Button>
-          </View>
+        </View>
+        <View style={styles.mapBox}>
+          <Icon
+            name="map-outline"
+            color="white"
+            backgroundColor="white"
+            size={20}
+            onPress={() =>
+              navigation.navigate('Map', {navigation: `${navigation}`})
+            }
+          />
+          <Text
+            style={{color: 'white', fontWeight:'bold'}}
+            onPress={() =>
+              navigation.navigate('Map', {navigation: `${navigation}`})
+            }>
+            지도에서 찾기
+          </Text>
         </View>
       </ImageBackground>
     </View>
