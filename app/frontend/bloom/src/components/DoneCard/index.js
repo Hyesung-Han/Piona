@@ -17,6 +17,7 @@ import {
  * 2. 페이지 기능 :
  * FlatList에 보여줄 item 컴포넌트이다.
  * Figma에 정의된 데로 왼쪽에 가게 이름, 예약 날짜, 물품, 리뷰등록 버튼이 있고, 오른쪽에 사진이 들어간다.
+ * ss
  */
 
 const DoneCardList = ({item}) => {
