@@ -28,7 +28,7 @@ public class UserRes {
                 .user_id(user.getUserId())
                 .phone(user.getPhone())
                 .name(user.getName())
-                .name(user.getNickname())
+                .nickName(user.getNickname())
                 .accessToken(user.getAccessToken())
                 .refreshToken(user.getRefreshToken())
                 .build();
