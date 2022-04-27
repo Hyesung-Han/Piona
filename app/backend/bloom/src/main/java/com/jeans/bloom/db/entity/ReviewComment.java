@@ -14,7 +14,7 @@ public class ReviewComment {
 
     @Id @GeneratedValue
     @Column(name = "comment_id")
-    private int commentId;
+    private Integer commentId;
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "review_id")
