@@ -18,7 +18,7 @@ public class Reservation {
 
     @Id @GeneratedValue
     @Column(name = "reservation_id")
-    private int reservationId;
+    private Integer reservationId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
@@ -29,7 +29,7 @@ public class Reservation {
     private Shop shop;
 
     @Column(name = "total_price")
-    private int totalPrice;
+    private Integer totalPrice;
 
     @Column(name = "order_date")
     private LocalDateTime orderDate;

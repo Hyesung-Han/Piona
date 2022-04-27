@@ -18,7 +18,7 @@ public class Alarm {
 
     @Id @GeneratedValue
     @Column(name = "alarm_id")
-    private int alarmId;
+    private Integer alarmId;
 
     @JsonBackReference
     @ManyToOne(fetch = LAZY)
