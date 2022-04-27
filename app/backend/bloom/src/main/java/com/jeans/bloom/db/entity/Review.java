@@ -17,7 +17,7 @@ public class Review {
 
     @Id @GeneratedValue
     @Column(name = "review_id")
-    private int reviewId;
+    private Integer reviewId;
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "reservation_id")
@@ -34,7 +34,7 @@ public class Review {
     private String content;
 
     @Column(name = "score")
-    private int score;
+    private Integer score;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "is_ban", length = 1)
