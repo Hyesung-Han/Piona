@@ -22,84 +22,6 @@ import MainBackground from '../../assets/Mainbackground.jpg';
  * 2. 검색어 넘겨주기
  *  */
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8F8F8',
-  },
-  image: {
-    alignItems: 'center',
-    width: '100%',
-  },
-  textInput: {
-    fontSize: 14,
-    marginLeft: 10,
-  },
-  inputBox: {
-    flex: 1,
-    borderStyle: 'solid',
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    width: '70%',
-    height: '11%',
-    borderRadius: 10,
-    borderColor: '#F2A7B3',
-    borderWidth: 1.5,
-    marginTop: '20%',
-  },
-  iconBox: {
-    flex: 1,
-    position: 'absolute',
-    width: '20%',
-    top: 5,
-    right: 0,
-  },
-  mapBox: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderStyle: 'solid',
-    backgroundColor: '#F2A7B3',
-    width: '35%',
-    borderRadius: 40,
-    marginTop: '20%',
-    marginBottom: '30%',
-    height: 40,
-  },
-  rowBox: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginBottom: '5%',
-  },
-  columnBox: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  Btn: {
-    backgroundColor: '#F15C74',
-    color: 'black',
-    width: '30%',
-    alignItems: 'center',
-    borderRadius: 12,
-    height: 80,
-    justifyContent: 'center',
-    marginRight: '3%',
-    marginBottom: '3%',
-    marginLeft: '3%',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-});
-
 const MainPage = ({navigation}) => {
   const [inputText, setInputText] = useState('');
 
@@ -204,4 +126,84 @@ const MainPage = ({navigation}) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+  },
+  image: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  textInput: {
+    fontSize: 14,
+    marginLeft: 10,
+  },
+  inputBox: {
+    flex: 1,
+    borderStyle: 'solid',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    width: '70%',
+    height: '11%',
+    borderRadius: 10,
+    borderColor: '#F2A7B3',
+    borderWidth: 1.5,
+    marginTop: '20%',
+  },
+  iconBox: {
+    flex: 1,
+    position: 'absolute',
+    width: '20%',
+    top: 5,
+    right: 0,
+  },
+  mapBox: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderStyle: 'solid',
+    backgroundColor: '#F2A7B3',
+    width: '35%',
+    borderRadius: 40,
+    marginTop: '20%',
+    marginBottom: '30%',
+    height: 40,
+  },
+  rowBox: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginBottom: '5%',
+  },
+  columnBox: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  Btn: {
+    backgroundColor: '#F15C74',
+    color: 'black',
+    width: '30%',
+    alignItems: 'center',
+    borderRadius: 12,
+    height: 80,
+    justifyContent: 'center',
+    marginRight: '3%',
+    marginBottom: '3%',
+    marginLeft: '3%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+});
+
+
 export default MainPage;
