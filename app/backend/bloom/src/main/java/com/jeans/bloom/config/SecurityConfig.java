@@ -13,6 +13,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -57,6 +58,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
+    @Override public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui/index.html",
+                        "/webjars/**"); }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -66,8 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests()
-                .antMatchers().authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
-                .anyRequest().permitAll()
+                .antMatchers("/api/user/signin", "/api/user/signup", "/api/user/idcheck", "/api/user/nickCheck").permitAll()     //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                .anyRequest().authenticated()
                 .and().cors();
     }
 }

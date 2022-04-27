@@ -37,7 +37,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         String header = request.getHeader(JwtTokenUtil.HEADER_STRING);
 
         // 헤더가 Bearer로 시작하지 않거나 null인 경우 filter 적용
-        if(header == null || !header.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
+//        if(header == null || !header.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
+        if(header == null) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -64,7 +65,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             // parse the token and validate it (decode)
             JWTVerifier verifier = JwtTokenUtil.getVerifier();
             JwtTokenUtil.handleError(token);
-            DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
+//            DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
+            DecodedJWT decodedJWT = verifier.verify(token);
             String userId = decodedJWT.getSubject();
 
             // Search in the DB if we find the user by token subject (username)
