@@ -6,8 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Map;
-
+/**
+ * OYT | 2022.04.27
+ * @name UserRes
+ * @des 회원 정보를 리턴하기 위한 DTO
+ */
 @Getter
 @Setter
 @Builder
