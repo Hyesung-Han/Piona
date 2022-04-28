@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   Android: {
     elevation: 3,
     backgroundColor: 'white',
+    borderRadius: 12,
     height: 40,
     width: 280,
     marginTop: 10,
