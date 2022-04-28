@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
  * FlatList에 보여줄 item 컴포넌트이다.
  */
 
-const ShopCardList = ({item}) => {
+const ShopCard = ({item}) => {
   const [heartStatus, setHeartStaus] = useState(false);
 
   //아이템을 받아오면 그 아이템의 이름에서 불필요한 부분을 replace하고 리턴한다.
@@ -144,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShopCardList;
+export default ShopCard;
