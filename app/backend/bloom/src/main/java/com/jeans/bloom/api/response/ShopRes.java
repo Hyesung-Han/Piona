@@ -11,17 +11,17 @@ import java.math.BigDecimal;
 @Builder
 public class ShopRes {
 
-    String shopNumber;
+    String shop_number;
     String tel;
     String hours;
-    Integer zipCode;
+    Integer zip_code;
     String address;
     String name;
     String description;
     String url;
-    String imageUrl;
-    BigDecimal shopLng;
-    BigDecimal shopLat;
+    String image_url;
+    BigDecimal shop_lng;
+    BigDecimal shop_lat;
 
     /**
      * TODO
@@ -35,17 +35,17 @@ public class ShopRes {
          * @des 가게 번호를 이용하여 해당 가게의 상세 정보를 조회
          */
         return ShopRes.builder()
-                .shopNumber(shop.getShopNumber())
+                .shop_number(shop.getShopNumber())
                 .tel(shop.getTel())
                 .hours(shop.getHours())
-                .zipCode(shop.getZipCode())
+                .zip_code(shop.getZipCode())
                 .address(shop.getAddress()+" "+shop.getDetailAddress())
                 .name(shop.getName())
                 .description(shop.getDescription())
                 .url(shop.getUrl())
-                .imageUrl(shop.getImageUrl())
-                .shopLng(shop.getShopLng())
-                .shopLat(shop.getShopLat())
+                .image_url(shop.getImageUrl())
+                .shop_lng(shop.getShopLng())
+                .shop_lat(shop.getShopLat())
                 .build();
     }
 
