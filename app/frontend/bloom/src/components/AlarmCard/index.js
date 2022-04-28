@@ -37,13 +37,12 @@ const AlarmCard = ({item}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: '#F8F8F8',
   },
   CardList: {
     width: '85%',
     backgroundColor: 'white',
     shadowColor: '#000',
-    elevation: 5,
+    elevation: 6,
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
