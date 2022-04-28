@@ -42,4 +42,15 @@ public class CartServiceImpl implements CartService{
     public void addCartItem(CartReq cartItem) throws Exception {
         cartRepository.save(cartItem.toCart());
     }
+
+    /**
+     * LJA | 2022.04.28
+     * @name deleteCartItem
+     * @api {delete} /cart
+     * @des cart id를 받아 장바구니에서 삭제해주는 메소드
+     */
+    @Override
+    public void deleteCartItem(int cartId) throws Exception {
+        cartRepository.deleteById(cartId);
+    }
 }
