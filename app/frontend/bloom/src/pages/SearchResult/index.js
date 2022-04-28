@@ -9,13 +9,16 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import ShopCardList from '../../components/ShopCard';
+import ShopCard from '../../components/ShopCard';
 
 /**
  * CSW | 2022.04.28
  * @name SearchResultPage
  * @des
  * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
+ * TODO
+ * 1. navition 카드별로 적용
+ * 2. api 적용
  *  */
 
 const SearchResultPage = ({navigation}) => {
@@ -102,7 +105,7 @@ const SearchResultPage = ({navigation}) => {
   }, []);
 
   const renderItem = ({item}) => {
-    return <ShopCardList item={item} />;
+    return <ShopCard item={item} />;
   };
 
   return (
