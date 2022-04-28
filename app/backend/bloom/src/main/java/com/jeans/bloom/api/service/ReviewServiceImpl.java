@@ -1,5 +1,6 @@
 package com.jeans.bloom.api.service;
 
+import com.jeans.bloom.api.request.ReviewWriteReq;
 import com.jeans.bloom.api.response.ReviewDetailRes;
 import com.jeans.bloom.db.entity.Review;
 import com.jeans.bloom.db.entity.type.StatusType;
@@ -30,5 +31,15 @@ public class ReviewServiceImpl implements ReviewService{
     public List<ReviewDetailRes> findReviewsByReservation_Shop_ShopNumberAndIsBan(String shopNumber, StatusType isBan) throws Exception {
         List<Review> reviews = reviewRepository.findReviewsByReservation_Shop_ShopNumberAndIsBan(shopNumber, isBan).orElse(null);
         return reviews.stream().map(review -> ReviewDetailRes.of(review)).collect(Collectors.toList());
+    }
+
+    /**
+     * LJA | 2022.04.28
+     * @name writeReview
+     * @des 리뷰작성 정보를 받아 리뷰를 저장하는 API
+     */
+    @Override
+    public void writeReview(ReviewWriteReq reviewWriteReq) throws Exception {
+        reviewRepository.save(reviewWriteReq.toReview());
     }
 }

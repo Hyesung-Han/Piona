@@ -1,5 +1,6 @@
 package com.jeans.bloom.api.controller;
 
+import com.jeans.bloom.api.request.ReviewWriteReq;
 import com.jeans.bloom.api.response.ReviewDetailRes;
 import com.jeans.bloom.api.service.ReviewService;
 import com.jeans.bloom.common.response.BaseResponseBody;
@@ -9,10 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,4 +45,21 @@ public class ReviewController {
         }
     }
 
+    /**
+     * LJA | 2022.04.28
+     * @name writeReview
+     * @api {post} /review
+     * @des 리뷰작성 정보를 받아 리뷰를 저장하는 API
+     */
+    @PostMapping
+    @ApiOperation(value = "리뷰 작성하기", notes = "리뷰 작성 정보를 받아 리뷰를 저장한다")
+    public ResponseEntity<BaseResponseBody> writeReview(
+            @RequestBody @ApiParam(value="리뷰작성정보", required = true) ReviewWriteReq reviewWriteReq) {
+        try{
+            reviewService.writeReview(reviewWriteReq);
+            return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
+        }
+    }
 }
