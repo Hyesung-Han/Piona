@@ -66,7 +66,7 @@ public class WishListController {
     /**
      * HHS | 2022.04.28
      * @name findWishListByUser_UserId
-     * @api {get} /wishlist?userId=user_id
+     * @api {get} /wishlist?user_id=user_id
      * @des 유저 아이디를 이용하여 해당 유저의 위시리스트를 조회
      */
     @GetMapping
