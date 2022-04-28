@@ -11,9 +11,9 @@ import lombok.ToString;
 @ToString
 @Builder
 public class WishListRes {
-    String shopNumber;
+    String shop_number;
     String name;
-    String imageUrl;
+    String image_url;
     String address;
 //    Integer score;
     Integer wish;
@@ -31,9 +31,9 @@ public class WishListRes {
          */
 
         return WishListRes.builder()
-                .shopNumber(wishList.getShop().getShopNumber())
+                .shop_number(wishList.getShop().getShopNumber())
                 .name(wishList.getShop().getName())
-                .imageUrl(wishList.getShop().getImageUrl())
+                .image_url(wishList.getShop().getImageUrl())
                 .address(wishList.getShop().getAddress()+" "+wishList.getShop().getDetailAddress())
 //                .score(wishList.getShop().getReservations().getReview().getScore())
                 .wish(wishList.getWishId())
