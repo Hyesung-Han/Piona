@@ -62,12 +62,11 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 15,
     marginTop: 5,
-    fontWeight: 'bold',
+    color: 'black',
   },
   createdAt: {
     fontSize: 10,
     marginTop: 5,
-    fontWeight: 'bold',
   },
 });
 

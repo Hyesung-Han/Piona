@@ -9,7 +9,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import ShopCardList from '../../components/ShopCard';
+import ShopCard from '../../components/ShopCard';
 
 /**
  * CSW | 2022.04.28
@@ -105,7 +105,7 @@ const SearchResultPage = ({navigation}) => {
   }, []);
 
   const renderItem = ({item}) => {
-    return <ShopCardList item={item} />;
+    return <ShopCard item={item} />;
   };
 
   return (

@@ -19,6 +19,7 @@ import AlarmCard from '../../components/AlarmCard';
  *  */
 
 const AlarmPage = ({navigation}) => {
+
   const DATA = [
     //괄호 하나하나가 item이 된다.
     {
