@@ -82,7 +82,8 @@ public class JwtTokenUtil {
                 .build();
 
         try {
-            verifier.verify(token.replace(TOKEN_PREFIX, ""));
+//            verifier.verify(token.replace(TOKEN_PREFIX, ""));
+            verifier.verify(token);
         } catch (AlgorithmMismatchException ex) {
             throw ex;
         } catch (InvalidClaimException ex) {
@@ -112,7 +113,8 @@ public class JwtTokenUtil {
                 .build();
 
         try {
-            verifier.verify(token.replace(TOKEN_PREFIX, ""));
+//            verifier.verify(token.replace(TOKEN_PREFIX, ""));
+            verifier.verify(token);
             return true;
         } catch (AlgorithmMismatchException ex) {
             return false;
@@ -137,7 +139,8 @@ public class JwtTokenUtil {
 
     public static void handleError(JWTVerifier verifier, String token) {
         try {
-            verifier.verify(token.replace(TOKEN_PREFIX, ""));
+//            verifier.verify(token.replace(TOKEN_PREFIX, ""));
+            verifier.verify(token);
         } catch (AlgorithmMismatchException ex) {
             throw ex;
         } catch (InvalidClaimException ex) {

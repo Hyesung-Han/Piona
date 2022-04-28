@@ -17,18 +17,18 @@ import lombok.Setter;
 public class UserRes {
 
     String user_id;
-    String phone;
     String name;
     String nickName;
+    String phone;
     String accessToken;
     String refreshToken;
 
     public static UserRes of(User user){
         return UserRes.builder()
                 .user_id(user.getUserId())
-                .phone(user.getPhone())
                 .name(user.getName())
-                .nickName(user.getNickname())
+                .nickName(user.getNickName())
+                .phone(user.getPhone())
                 .accessToken(user.getAccessToken())
                 .refreshToken(user.getRefreshToken())
                 .build();
