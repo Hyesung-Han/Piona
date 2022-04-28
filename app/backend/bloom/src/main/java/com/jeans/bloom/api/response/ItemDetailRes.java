@@ -15,21 +15,21 @@ import lombok.Setter;
 @Builder
 @ApiModel("ItemDetailRes")
 public class ItemDetailRes {
-    int itemId;
-    String itemName;
+    int item_id;
+    String item_name;
     int quantity;
     int price;
     String description;
-    String imageUrl;
+    String image_url;
 
     public static ItemDetailRes of(ReservationDetail reservationDetail) {
         return ItemDetailRes.builder()
-                .itemId(reservationDetail.getItem().getItemId())
-                .itemName(reservationDetail.getItem().getName())
+                .item_id(reservationDetail.getItem().getItemId())
+                .item_name(reservationDetail.getItem().getName())
                 .quantity(reservationDetail.getQuantity())
                 .price(reservationDetail.getItem().getPrice())
                 .description(reservationDetail.getItem().getDescription())
-                .imageUrl(reservationDetail.getItem().getImageUrl())
+                .image_url(reservationDetail.getItem().getImageUrl())
                 .build();
     }
 }

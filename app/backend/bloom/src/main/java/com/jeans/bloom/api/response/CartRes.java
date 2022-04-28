@@ -17,25 +17,25 @@ import java.time.LocalDateTime;
 @Builder
 @ApiModel("CartListItemResponse")
 public class CartRes {
-    int cartId;
-    int itemId;
-    String itemName;
+    int cart_id;
+    int item_id;
+    String item_name;
     int price;
-    String imageUrl;
+    String image_url;
     int quantity;
-    LocalDateTime reservationDate;
-    String shopName;
+    LocalDateTime reservation_date;
+    String shop_name;
 
     public static CartRes of(Cart cart) {
         return CartRes.builder()
-                .cartId(cart.getCartId())
-                .itemId(cart.getItem().getItemId())
-                .itemName(cart.getItem().getName())
+                .cart_id(cart.getCartId())
+                .item_id(cart.getItem().getItemId())
+                .item_name(cart.getItem().getName())
                 .price(cart.getItem().getPrice())
-                .imageUrl(cart.getItem().getImageUrl())
+                .image_url(cart.getItem().getImageUrl())
                 .quantity(cart.getQuantity())
-                .reservationDate(cart.getReservationDate())
-                .shopName(cart.getItem().getShop().getName())
+                .reservation_date(cart.getReservationDate())
+                .shop_name(cart.getItem().getShop().getName())
                 .build();
     }
 }

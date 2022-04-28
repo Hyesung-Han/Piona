@@ -20,21 +20,21 @@ import java.util.stream.Collectors;
 @Builder
 @ApiModel("ReservationRes")
 public class ReservationRes {
-    int reservationId;
-    String shopNumber;
-    String shopName;
-    LocalDateTime reservationDate;
-    int totalPrice;
+    int reservation_id;
+    String shop_number;
+    String shop_name;
+    LocalDateTime reservation_date;
+    int total_price;
     OrderStatus status;
     List<ItemDetailRes> detail;
 
     public static ReservationRes of(Reservation reservation) {
         return ReservationRes.builder()
-                .reservationId(reservation.getReservationId())
-                .shopNumber(reservation.getShop().getShopNumber())
-                .shopName(reservation.getShop().getName())
-                .reservationDate(reservation.getReservationDetails().get(0).getReservationDate())
-                .totalPrice(reservation.getTotalPrice())
+                .reservation_id(reservation.getReservationId())
+                .shop_number(reservation.getShop().getShopNumber())
+                .shop_name(reservation.getShop().getName())
+                .reservation_date(reservation.getReservationDetails().get(0).getReservationDate())
+                .total_price(reservation.getTotalPrice())
                 .status(reservation.getStatus())
                 .detail(reservation.getReservationDetails().stream().map(detail -> ItemDetailRes.of(detail)).collect(Collectors.toList()))
                 .build();
