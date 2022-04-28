@@ -12,7 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "wishlist_t", schema = "bloom")
 public class WishList {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wish_id")
     private Integer wishId;
 
