@@ -17,6 +17,8 @@ public interface ItemRepository extends JpaRepository<Item, String>{
 
     Optional<List<Item>> findItemsByShop_ShopNumber(String shopNumber) throws Exception;
 
+    Item findItemByItemId(int itemId);
+
 }
 
 

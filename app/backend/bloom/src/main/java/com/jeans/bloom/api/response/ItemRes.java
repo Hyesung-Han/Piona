@@ -10,11 +10,11 @@ import lombok.Setter;
 @Builder
 public class ItemRes {
 
-    Integer itemId;
-    String name;
+    Integer item_id;
+    String item_name;
     Integer price;
     String  description;
-    String  imageUrl;
+    String  image_url;
 
     public static ItemRes of(Item item){
         /**
@@ -23,11 +23,11 @@ public class ItemRes {
          * @des 가게 번호를 이용하여 해당 가게의 상품 목록을 조회
          */
         return ItemRes.builder()
-                .itemId(item.getItemId())
-                .name(item.getName())
+                .item_id(item.getItemId())
+                .item_name(item.getName())
                 .price(item.getPrice())
                 .description(item.getDescription())
-                .imageUrl(item.getImageUrl())
+                .image_url(item.getImageUrl())
                 .build();
     }
 
