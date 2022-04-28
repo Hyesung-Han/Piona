@@ -39,9 +39,15 @@ dependencies {
     // querydsl
     implementation 'com.querydsl:querydsl-jpa'
 
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
     // JWT
-    implementation("com.auth0:java-jwt:3.10.3")
+    implementation 'com.auth0:java-jwt:3.10.3'
+
+    // coolsms
+    implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+
 }
+
 
 tasks.named('test') {
     useJUnitPlatform()
