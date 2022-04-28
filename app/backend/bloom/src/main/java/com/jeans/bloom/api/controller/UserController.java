@@ -6,8 +6,8 @@ import com.jeans.bloom.api.response.UserRes;
 import com.jeans.bloom.api.service.MessageService;
 import com.jeans.bloom.api.service.UserService;
 import com.jeans.bloom.common.response.BaseResponseBody;
+import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.User;
-import com.jeans.bloom.db.entity.type.StatusType;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -222,7 +222,30 @@ public class UserController {
                 return ResponseEntity.status(200).body(BaseResponseBody.of("fail", "이미 인증된 번호 입니다."));
             }else{
                 int randomNum = messageService.sendMessage(phoneNumber);
-                return ResponseEntity.status(200).body(BaseResponseBody.of("success", randomNum));
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+
+    /**
+     * OYT | 2022.04.27
+     * @name sendPhoneRandomNum
+     * @api {get} /user/phoneCheck?phoneNumber=phone&certifiedNum=auth_num
+     * @des 유저 핸드폰 번호를 입력 받아 인증 문자 발송
+     */
+    @GetMapping("/phoneCheck")
+    @ApiOperation(value = "인증문자 발송", notes = "인증 요청한 핸드폰 번호로 인증 문자를 발송한다.")
+    public ResponseEntity<BaseResponseBody> findTop1ByPhoneNumberOrderByIdDesc(
+            @RequestParam @ApiParam(value="핸드폰번호", required = true) String phoneNumber, @ApiParam(value="인증번호", required = true) int certifiedNum) {
+
+        try{
+            boolean certified= userService.findTop1ByPhoneNumberOrderByIdDesc(phoneNumber, certifiedNum);
+            if(certified){
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success", true));
+            }else{
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success", false));
             }
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
