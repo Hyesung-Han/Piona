@@ -206,7 +206,7 @@ public class UserController {
     }
 
     /**
-     * OYT | 2022.04.27
+     * OYT | 2022.04.28
      * @name sendPhoneRandomNum
      * @api {get} /user/phoneRequest?phone=phoneNumber
      * @des 유저 핸드폰 번호를 입력 받아 인증 문자 발송
@@ -230,13 +230,13 @@ public class UserController {
     }
 
     /**
-     * OYT | 2022.04.27
-     * @name sendPhoneRandomNum
+     * OYT | 2022.04.28
+     * @name findTop1ByPhoneNumberOrderByIdDesc
      * @api {get} /user/phoneCheck?phoneNumber=phone&certifiedNum=auth_num
-     * @des 유저 핸드폰 번호를 입력 받아 인증 문자 발송
+     * @des 전송 받은 인증 번호 체크
      */
     @GetMapping("/phoneCheck")
-    @ApiOperation(value = "인증문자 발송", notes = "인증 요청한 핸드폰 번호로 인증 문자를 발송한다.")
+    @ApiOperation(value = "인증번호 확인", notes = "전송 받은 인증 번호를 체크한다.")
     public ResponseEntity<BaseResponseBody> findTop1ByPhoneNumberOrderByIdDesc(
             @RequestParam @ApiParam(value="핸드폰번호", required = true) String phoneNumber, @ApiParam(value="인증번호", required = true) int certifiedNum) {
 
