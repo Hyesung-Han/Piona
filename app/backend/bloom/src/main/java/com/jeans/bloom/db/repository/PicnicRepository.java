@@ -21,4 +21,11 @@ public interface PicnicRepository extends JpaRepository<Reservation, Integer> {
      * @des 회원 아이디를 입력받아 회원의 전체 예약리스트을 리턴해주는 메소드
      */
     Optional<List<Reservation>> findReservationsByUser_UserId(String userId) throws Exception;
+
+    /**
+     * LJA | 2022.04.28
+     * @name findReservationByReservationId
+     * @des reservation_id에 맞는 reservation 정보를 리턴해주는 메소드
+     */
+    Optional<Reservation> findReservationByReservationId(int reservationId) throws Exception;
 }
