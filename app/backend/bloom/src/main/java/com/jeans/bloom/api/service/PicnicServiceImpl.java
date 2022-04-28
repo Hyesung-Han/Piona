@@ -2,6 +2,7 @@ package com.jeans.bloom.api.service;
 
 import com.jeans.bloom.api.response.ReservationRes;
 import com.jeans.bloom.db.entity.Reservation;
+import com.jeans.bloom.db.entity.type.OrderStatus;
 import com.jeans.bloom.db.repository.PicnicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,17 @@ public class PicnicServiceImpl implements PicnicService{
     public List<ReservationRes> findReservationsByUser_UserId(String userId) throws Exception {
         Optional<List<Reservation>> optionalReservations = picnicRepository.findReservationsByUser_UserId(userId);
         return optionalReservations.map(reservations -> reservations.stream().map(reservation -> ReservationRes.of(reservation)).collect(Collectors.toList())).orElse(null);
+    }
+
+    /**
+     * LJA | 2022.04.28
+     * @name cancleReservation
+     * @des 예약 취소를 위한 메소드로 예약 Status를 C로 변경
+     */
+    @Override
+    public void cancleReservation(int reservationId) throws Exception {
+        Reservation reservation = picnicRepository.findReservationByReservationId(reservationId).orElse(null);
+        reservation.setStatus(OrderStatus.C);
+        picnicRepository.save(reservation);
     }
 }
