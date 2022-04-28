@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   CardList: {
-    width: '90%',
+    width: '85%',
     backgroundColor: 'white',
     shadowColor: '#000',
     elevation: 5,
-    height: 70,
+    height: 65,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 10,
