@@ -107,6 +107,7 @@ const MyApp = () => {
       </Stack.Navigator>
     );
   }
+
   function ShopNav() {
     return (
       <TopTab.Navigator
@@ -189,6 +190,7 @@ const MyApp = () => {
       </Stack.Navigator>
     );
   }
+
   function PicnicNav() {
     return (
       <TopTab.Navigator
@@ -215,6 +217,7 @@ const MyApp = () => {
       </TopTab.Navigator>
     );
   }
+
   function CartNav() {
     return (
       <Stack.Navigator
