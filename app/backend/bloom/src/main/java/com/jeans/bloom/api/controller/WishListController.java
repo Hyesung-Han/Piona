@@ -42,4 +42,22 @@ public class WishListController {
     }
 
 
+    /**
+     * HHS | 2022.04.28
+     * @name deleteWishList
+     * @api {delete} /wishlist?wish_id=wish_id
+     * @des wish_id를 이용하여 위시리스트 삭제
+     */
+    @DeleteMapping
+    @ApiOperation(value = "위시리스트 삭제", notes = "wish_id를 받아 위시리스트에서 삭제한다")
+    public ResponseEntity<BaseResponseBody> deleteWishList(
+            @RequestParam @ApiParam(value="위시리스트 아이디", required = true) int wish_id) {
+        try{
+            wishListService.deleteWishList(wish_id);
+            return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
+        }
+    }
+
 }
