@@ -1,8 +1,6 @@
 package com.jeans.bloom.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.jeans.bloom.db.entity.type.StatusType;
 import com.jeans.bloom.db.entity.type.UserCode;
 import lombok.Getter;
@@ -33,7 +31,7 @@ public class User {
     private String name;
 
     @Column(name = "nickname", length = 45)
-    private String nickname;
+    private String nickName;
 
     @Column(name = "phone", length = 15)
     private String phone;
