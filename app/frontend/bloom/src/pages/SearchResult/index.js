@@ -1,7 +1,8 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
-import {View, StyleSheet, TextInput, ScrollView} from 'react-native';
+import {View, StyleSheet, TextInput, ScrollView, FlatList} from 'react-native';
+import ShopCardList from '../../components/ShopCard';
 
 /**
  * CSW | 2022.04.28
@@ -12,9 +13,93 @@ import {View, StyleSheet, TextInput, ScrollView} from 'react-native';
 
 const SearchResultPage = ({navigation}) => {
   const [inputText, setInputText] = useState('');
+  const [data, setData] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  //getData에 완료된 예약 정보 가져오는 api를 넣자!!!
+  const getData = () => {
+    setLoading(true);
+    fetch('http://jsonplaceholder.typicode.com/posts')
+      //해당 api를 통해서 받아오는 정보는 userId, id, title, body이다.
+      .then(res => res.json())
+      .then(res => setData(res));
+  };
+
+  const DATA = [
+    //괄호 하나하나가 item이 된다.
+    {
+      shopName: '호진이가게',
+      address: '호진이가게,ㅁㄴㅇ',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+    {
+      shopName: '소원이가게',
+      address: '소원이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+    {
+      shopName: '혜성이가게',
+      address: '혜성이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+    {
+      shopName: '동준이형가게',
+      address: '동준이형가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+    {
+      shopName: '정아누나가게',
+      address: '정아누나가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+    {
+      shopName: '윤택이형가게',
+      address: '윤택이형가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+    {
+      shopName: '호진이가게',
+      address: '호진이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+    {
+      shopName: '호진이가게',
+      address: '호진이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+    {
+      shopName: '호진이가게',
+      address: '호진이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+    {
+      shopName: '호진이가게',
+      address: '호진이가게',
+      imgUrl: 'https://reactjs.org/logo-og.png',
+      score: 5,
+    },
+  ];
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const renderItem = ({item}) => {
+    return <ShopCardList item={item} />;
+  };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.searchBox}>
         <View style={styles.inputBox}>
           <TextInput
@@ -34,7 +119,21 @@ const SearchResultPage = ({navigation}) => {
           </View>
         </View>
       </View>
-    </ScrollView>
+      <View style={styles.list}>
+        <FlatList
+          //리스트의 소스를 담는 속성
+          //data={data}
+          data={DATA}
+          //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
+          renderItem={renderItem}
+          //item의 고유의 키를 부여하는 속성
+          keyExtractor={item => String(item.id)}
+          //무한 스크롤때문에 넣은듯
+          // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
+          // onEndReachedThreshold={0.4}
+        />
+      </View>
+    </View>
   );
 };
 
@@ -57,7 +156,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#F2A7B3',
     borderWidth: 1.5,
-    marginTop: '20%',
+    marginTop: '9%',
+    marginBottom: '9%',
   },
   iconBox: {
     flex: 1,
@@ -70,6 +170,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  list: {
+    flex: 3,
   },
 });
 
