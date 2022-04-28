@@ -1,4 +1,4 @@
-package com.jeans.bloom.common.Auth;
+package com.jeans.bloom.common.auth;
 
 
 import com.auth0.jwt.JWTVerifier;
@@ -37,7 +37,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         String header = request.getHeader(JwtTokenUtil.HEADER_STRING);
 
         // 헤더가 Bearer로 시작하지 않거나 null인 경우 filter 적용
-        if(header == null || !header.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
+//        if(header == null || !header.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
+        if(header == null) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -64,14 +65,15 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             // parse the token and validate it (decode)
             JWTVerifier verifier = JwtTokenUtil.getVerifier();
             JwtTokenUtil.handleError(token);
-            DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
+//            DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
+            DecodedJWT decodedJWT = verifier.verify(token);
             String userId = decodedJWT.getSubject();
 
             // Search in the DB if we find the user by token subject (username)
             // If so, then grab user details and create spring auth token using username, pass, authorities/roles
             if (userId != null) {
                 // jwt 토큰에 포함된 계정 정보(userId) 통해 실제 디비에 해당 정보의 계정이 있는지 조회.
-                User user = userService.getUserByUserId(userId);
+                User user = userService.findUserByUserId(userId);
                 if(user != null) {
                     // 식별된 정상 유저인 경우, 요청 context 내에서 참조 가능한 인증 정보(jwtAuthentication) 생성.
                     BloomUserDetails userDetails = new BloomUserDetails(user);
