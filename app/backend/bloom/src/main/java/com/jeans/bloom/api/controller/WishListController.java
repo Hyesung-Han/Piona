@@ -1,6 +1,7 @@
 package com.jeans.bloom.api.controller;
 
 import com.jeans.bloom.api.request.WishListReq;
+import com.jeans.bloom.api.response.WishListRes;
 import com.jeans.bloom.api.service.WishListService;
 import com.jeans.bloom.common.response.BaseResponseBody;
 import io.swagger.annotations.Api;
@@ -9,6 +10,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * HHS | 2022.04.28
@@ -59,5 +62,25 @@ public class WishListController {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
         }
     }
+
+    /**
+     * HHS | 2022.04.28
+     * @name findWishListByUser_UserId
+     * @api {get} /wishlist?userId=user_id
+     * @des 유저 아이디를 이용하여 해당 유저의 위시리스트를 조회
+     */
+    @GetMapping
+    @ApiOperation(value = "위시리스트 조회", notes = "user id로 해당 유저의 위시리스트를 조회한다.")
+    public ResponseEntity<BaseResponseBody> findWishListByUser_UserId(
+            @RequestParam @ApiParam(value = "조회할 user_id", required = true) String user_id){
+        try{
+            List<WishListRes> wishLists = wishListService.findWishListByUser_UserId(user_id);
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success",wishLists));
+        }catch  (Exception e){
+            return ResponseEntity.status(200).body(BaseResponseBody.of("fail",e));
+        }
+    }
+
+
 
 }
