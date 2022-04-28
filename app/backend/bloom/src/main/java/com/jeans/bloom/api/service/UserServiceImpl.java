@@ -78,14 +78,25 @@ public class UserServiceImpl implements UserService {
             String refreshToken = JwtTokenUtil.getRefreshToken();
 
             if (passwordEncoder.matches(userPassword, user.getPassword())) {
-                System.out.println(passwordEncoder.matches(userPassword, user.getPassword()));
                 user.setRefreshToken(refreshToken);
                 userRepository.save(user);
 
                 user.setAccessToken(accessToken);
                 return user;
-            } else {
-                return null;
             }
+            return null;
+
+    }
+
+    @Override
+    public User passwordCheck(UserLoginPostReq userCheck) throws Exception {
+        String userId = userCheck.getUserId();
+        String userPassword = userCheck.getPassword();
+
+        User user = this.findUserByUserId(userId);
+        if(passwordEncoder.matches(userPassword, user.getPassword())){
+            return user;
+        }
+        return null;
     }
 }

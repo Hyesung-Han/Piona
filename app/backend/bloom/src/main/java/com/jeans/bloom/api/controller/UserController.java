@@ -141,4 +141,23 @@ public class UserController {
 
     }
 
+    /**
+     * OYT | 2022.04.28
+     * @name passwordCheck
+     * @api {get} /user/passwordCheck
+     * @des 유저 ID, PW를 입력 받아 해당 유저가 맞는지 확인
+     */
+    @PostMapping("/passwordCheck")
+    @ApiOperation(value = "비밀번호 확인", notes = "내정보 확인을 위한 비밀번호 확인")
+    public ResponseEntity<BaseResponseBody> passwordCheck(
+            @RequestBody @ApiParam(value = "유저 정보", required = true) UserLoginPostReq userInfo){
+        try{
+            User userInfoPostRes = userService.passwordCheck(userInfo);
+
+            return ResponseEntity.status(201).body(BaseResponseBody.of("success"));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+
 }
