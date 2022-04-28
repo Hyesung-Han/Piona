@@ -30,16 +30,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User createUser(UserRegiPostReq registerInfo) throws Exception{
-        User user = new User();
-        user.setUserId(registerInfo.getUserId());
-
-        // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
-        user.setPassword(passwordEncoder.encode(registerInfo.getPassword()));
-        user.setName(registerInfo.getName());
-        user.setPhone(registerInfo.getPhone());
-        user.setNickName(registerInfo.getNickName());
-        return userRepository.save(user);
-
+        return saveUserInfo(registerInfo);
     }
 
     /**
@@ -88,6 +79,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * OYT | 2022.04.28
+     * @name passwordCheck
+     * @des 아이디, 비밀번호를 입력받아 일치하면 회원의 정보를 확인하는 메서드
+     */
     @Override
     public User passwordCheck(UserLoginPostReq userCheck) throws Exception {
         String userId = userCheck.getUserId();
@@ -98,5 +94,32 @@ public class UserServiceImpl implements UserService {
             return user;
         }
         return null;
+    }
+
+    /**
+     * OYT | 2022.04.28
+     * @name updateUser
+     * @des 수정된 회원정보를 입력받아 회원의 정보를 업데이트하는 메서드
+     */
+    @Override
+    public User updateUser(UserRegiPostReq updateUserInfo) throws Exception {
+        return saveUserInfo(updateUserInfo);
+    }
+
+    /**
+     * OYT | 2022.04.28
+     * @name saveUserInfo
+     * @des 회원정보를 입력받아 DB에 저장하는 메서드
+     */
+    private User saveUserInfo(UserRegiPostReq saveUserInfo) throws Exception{
+        User user = new User();
+        user.setUserId(saveUserInfo.getUserId());
+
+        // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
+        user.setPassword(passwordEncoder.encode(saveUserInfo.getPassword()));
+        user.setName(saveUserInfo.getName());
+        user.setPhone(saveUserInfo.getPhone());
+        user.setNickName(saveUserInfo.getNickName());
+        return userRepository.save(user);
     }
 }

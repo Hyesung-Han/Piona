@@ -15,4 +15,6 @@ public interface UserService {
     User login(UserLoginPostReq userLogin) throws Exception;
 
     User passwordCheck(UserLoginPostReq userCheck) throws Exception;
+
+    User updateUser(UserRegiPostReq updateUserInfo) throws Exception;
 }
