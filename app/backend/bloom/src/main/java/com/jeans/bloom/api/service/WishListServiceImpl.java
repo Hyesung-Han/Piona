@@ -26,4 +26,14 @@ public class WishListServiceImpl implements WishListService{
         wishListRepository.save(wishList.toWishList());
     }
 
+
+    /**
+     * HHS | 2022.04.28
+     * @name deleteWishList
+     * @des wish id로 위시리스트 삭제하기
+     */
+    @Override
+    public void deleteWishList(int wishId) throws Exception{
+        wishListRepository.deleteById(wishId);
+    }
 }

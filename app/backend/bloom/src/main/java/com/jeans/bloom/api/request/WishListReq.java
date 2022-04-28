@@ -19,17 +19,17 @@ import lombok.ToString;
 @ToString
 @ApiModel("WishListRequest")
 public class WishListReq {
-    String userId;
-    String shopNumber;
+    String user_id;
+    String shop_number;
 
     public WishList toWishList(){
         WishList wishList = new WishList();
 
         User user = new User();
-        user.setUserId(this.userId);
+        user.setUserId(this.user_id);
 
         Shop shop = new Shop();
-        shop.setShopNumber(this.shopNumber);
+        shop.setShopNumber(this.shop_number);
 
         wishList.setUser(user);
         wishList.setShop(shop);
