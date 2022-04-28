@@ -88,7 +88,7 @@ const WishListPage = ({navigation}) => {
     },
   ];
   const renderItem = ({item}) => {
-    return <ShopCard item={item} />;
+    return <ShopCard item={item} heartStatus={true} />;
   };
 
   return (
