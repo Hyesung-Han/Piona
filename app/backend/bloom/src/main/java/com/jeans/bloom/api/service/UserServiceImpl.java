@@ -3,8 +3,10 @@ package com.jeans.bloom.api.service;
 import com.jeans.bloom.api.request.UserLoginPostReq;
 import com.jeans.bloom.api.request.UserRegiPostReq;
 import com.jeans.bloom.common.util.JwtTokenUtil;
+import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.User;
 import com.jeans.bloom.db.entity.type.StatusType;
+import com.jeans.bloom.db.repository.CertifiedRepository;
 import com.jeans.bloom.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CertifiedRepository certifiedRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -150,6 +155,37 @@ public class UserServiceImpl implements UserService {
         user.setIsDel(StatusType.Y);
 
         return userRepository.save(user);
+    }
+
+    /**
+     * OYT | 2022.04.28
+     * @name saveCertification
+     * @des 핸드폰번호를 통한 인증번호 전송시 DB에 저장하는 메서드
+     */
+    @Override
+    public CertificationNum saveCertification(String phoneNumber, int randomNum) throws Exception {
+
+        CertificationNum certificationNum = new CertificationNum();
+        certificationNum.setPhoneNumber(phoneNumber);
+        certificationNum.setRandomNum(randomNum);
+
+        return certifiedRepository.save(certificationNum);
+    }
+
+    /**
+     * OYT | 2022.04.28
+     * @name findTop1ByPhoneNumberOrderByIdDesc
+     * @des 인증번호를 입력받아 확인하는 메서드, 여러번 인증시 마지막 인증번호를 가져온다.
+     */
+    @Override
+    public boolean findTop1ByPhoneNumberOrderByIdDesc(String phoneNumber, int certifiedNum) throws Exception {
+        CertificationNum certificationInfo = certifiedRepository.findTop1ByPhoneNumberOrderByIdDesc(phoneNumber);
+
+        if(certificationInfo.getRandomNum() == certifiedNum){
+            return true;
+        }
+        return false;
+
     }
 
 }

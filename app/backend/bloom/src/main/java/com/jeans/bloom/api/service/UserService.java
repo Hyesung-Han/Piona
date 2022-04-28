@@ -2,9 +2,8 @@ package com.jeans.bloom.api.service;
 
 import com.jeans.bloom.api.request.UserLoginPostReq;
 import com.jeans.bloom.api.request.UserRegiPostReq;
-import com.jeans.bloom.api.response.UserRes;
+import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.User;
-import com.jeans.bloom.db.entity.type.StatusType;
 
 public interface UserService {
     User createUser(UserRegiPostReq registerInfo) throws Exception;
@@ -22,4 +21,8 @@ public interface UserService {
     User findUserByPhone(String phone) throws Exception;
 
     User deleteUser(String userId) throws Exception;
+
+    CertificationNum saveCertification(String phoneNumber, int randomNum) throws Exception;
+
+    boolean findTop1ByPhoneNumberOrderByIdDesc(String phoneNumber, int certifiedNum) throws Exception;
 }

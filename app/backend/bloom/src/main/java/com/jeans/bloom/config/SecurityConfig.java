@@ -80,7 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/user/signup",
                         "/api/user/idcheck",
                         "/api/user/nickCheck",
-                        "/api/user/phoneRequest").permitAll()     //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                        "/api/user/phoneRequest",
+                        "/api/user/phoneCheck").permitAll()     //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                 .anyRequest().authenticated()
                 .and().cors();
     }
