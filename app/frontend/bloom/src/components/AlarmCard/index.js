@@ -1,6 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
-import HorizonLine from '../../utils/HorizonLine';
+import {View, StyleSheet, Text, Image} from 'react-native';
 import Honeybee from '../../assets/Honeybee.png';
 
 /**
@@ -38,6 +37,7 @@ const AlarmCard = ({item}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    backgroundColor: '#F8F8F8',
   },
   CardList: {
     width: '85%',
