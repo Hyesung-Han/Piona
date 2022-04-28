@@ -43,6 +43,14 @@ public class ShopController {
         }
 
     }
+
+
+    /**
+     * HHS | 2022.04.28
+     * @name findItemsByShop_ShopNumber
+     * @api {get} /shop/item?shopNumber=shop_number
+     * @des 가게 번호를 이용하여 해당 가게의 상품 리스트를 조회
+     */
     @GetMapping("/item")
     @ApiOperation(value = "상품 리스트 조회", notes = "shop number로 해당 가게 상품리스트를 조회한다.")
     public ResponseEntity<BaseResponseBody> findItemsByShop_ShopNumber(
@@ -53,7 +61,7 @@ public class ShopController {
         }catch  (Exception e){
             return ResponseEntity.status(200).body(BaseResponseBody.of("fail",e));
         }
-
     }
+
 
 }
