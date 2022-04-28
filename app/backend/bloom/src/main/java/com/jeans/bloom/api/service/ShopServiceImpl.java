@@ -1,12 +1,17 @@
 package com.jeans.bloom.api.service;
 
+import com.jeans.bloom.api.response.ItemRes;
 import com.jeans.bloom.api.response.ShopRes;
+import com.jeans.bloom.db.entity.Item;
 import com.jeans.bloom.db.entity.Shop;
+import com.jeans.bloom.db.repository.ItemRepository;
 import com.jeans.bloom.db.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * HHS | 2022.04.27
@@ -17,8 +22,10 @@ import java.util.Optional;
 public class ShopServiceImpl implements ShopService{
 
     @Autowired
-    ShopRepository shopRepository;
+    private ShopRepository shopRepository;
 
+    @Autowired
+    private ItemRepository itemRepository;
 
     /**
      * HHS | 2022.04.27
@@ -31,4 +38,11 @@ public class ShopServiceImpl implements ShopService{
         Optional<Shop> optionalShop = shopRepository.findShopByShopNumber(shopNumber);
         return optionalShop.map(ShopRes::of).orElse(null);
     }
+
+    @Override
+    public List<ItemRes> findItemsByShop_ShopNumber(String shopNumber) throws Exception {
+        Optional<List<Item>> optionalItems = itemRepository.findItemsByShop_ShopNumber(shopNumber);
+        return optionalItems.map(items -> items.stream().map(item -> ItemRes.of(item)).collect(Collectors.toList())).orElse(null);
+    }
+
 }
