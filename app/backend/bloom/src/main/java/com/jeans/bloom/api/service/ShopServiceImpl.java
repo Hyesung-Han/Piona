@@ -39,6 +39,11 @@ public class ShopServiceImpl implements ShopService{
         return optionalShop.map(ShopRes::of).orElse(null);
     }
 
+    /**
+     * HHS | 2022.04.28
+     * @name findItemsByShop_ShopNumber
+     * @des shop number로 해당 가게의 상품 목록 가져오기
+     */
     @Override
     public List<ItemRes> findItemsByShop_ShopNumber(String shopNumber) throws Exception {
         Optional<List<Item>> optionalItems = itemRepository.findItemsByShop_ShopNumber(shopNumber);
