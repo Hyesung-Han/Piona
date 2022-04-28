@@ -13,4 +13,6 @@ public interface UserService {
     User findUserByNickName(String nickName) throws Exception;
 
     User login(UserLoginPostReq userLogin) throws Exception;
+
+    User passwordCheck(UserLoginPostReq userCheck) throws Exception;
 }
