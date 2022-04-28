@@ -62,4 +62,21 @@ public class CartController {
         }
     }
 
+    /**
+     * LJA | 2022.04.28
+     * @name deleteCartItem
+     * @api {delete} /cart
+     * @des cart id를 받아 장바구니에서 삭제해주는 메소드
+     */
+    @DeleteMapping
+    @ApiOperation(value = "장바구니 아이템 삭제", notes = "cart id를 입력받아 장바구니에서 삭제한다")
+    public ResponseEntity<BaseResponseBody> deleteCartItem(
+            @RequestBody @ApiParam(value="카트id", required = true) int cartId) {
+        try{
+            cartService.deleteCartItem(cartId);
+            return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
+        }
+    }
 }

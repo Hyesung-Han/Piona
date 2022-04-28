@@ -10,4 +10,6 @@ public interface CartService {
     List<CartRes> findCartsByUser_UserId(String userId) throws Exception;
 
     void addCartItem(CartReq cart) throws Exception;
+
+    void deleteCartItem(int cartId) throws Exception;
 }
