@@ -41,7 +41,7 @@ public class ReviewDetailRes {
         return ReviewDetailRes.builder()
                 .review_id(review.getReviewId())
                 .reservation_id(review.getReservation().getReservationId())
-                .nickname(review.getUser().getNickname())
+                .nickname(review.getUser().getNickName())
                 .image_url(review.getImageUrl())
                 .content(review.getContent())
                 .score(review.getScore())

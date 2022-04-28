@@ -26,7 +26,7 @@ public class ReservationRes {
     LocalDateTime reservation_date;
     int total_price;
     OrderStatus status;
-    List<ItemDetailRes> detail;
+    List<ItemRes> detail;
 
     public static ReservationRes of(Reservation reservation) {
         return ReservationRes.builder()
@@ -36,7 +36,7 @@ public class ReservationRes {
                 .reservation_date(reservation.getReservationDetails().get(0).getReservationDate())
                 .total_price(reservation.getTotalPrice())
                 .status(reservation.getStatus())
-                .detail(reservation.getReservationDetails().stream().map(detail -> ItemDetailRes.of(detail)).collect(Collectors.toList()))
+                .detail(reservation.getReservationDetails().stream().map(detail -> ItemRes.of(detail)).collect(Collectors.toList()))
                 .build();
     }
 }
