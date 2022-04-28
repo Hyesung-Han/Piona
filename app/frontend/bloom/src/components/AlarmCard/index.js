@@ -9,7 +9,7 @@ import Honeybee from '../../assets/Honeybee.png';
  * @des
  * 1. 컴포넌트 목록 :
  * 2. 페이지 기능 :
- * FlatList에 보여줄 item 컴포넌트이다.
+ * FlatList에 보여줄 alarm item 컴포넌트이다.
  */
 
 const AlarmCard = ({item}) => {
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     shadowColor: '#000',
     elevation: 5,
-    height: 65,
+    height: 6,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 10,
