@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   iconBox: {
     position: 'relative',
     right: 30,
-    top: 13,
+    top: 10,
   },
   content: {
     fontSize: 15,
