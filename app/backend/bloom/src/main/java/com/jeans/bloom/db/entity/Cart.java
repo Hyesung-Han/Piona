@@ -14,7 +14,7 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "cart_t", schema = "bloom")
 public class Cart {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
     private Integer cartId;
 

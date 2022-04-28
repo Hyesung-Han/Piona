@@ -12,7 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "review_comment_t", schema = "bloom")
 public class ReviewComment {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Integer commentId;
 
