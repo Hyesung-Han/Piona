@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import HorizonLine from '../../utils/HorizonLine';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -14,6 +14,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
  */
 
 const ShopCardList = ({item}) => {
+  const [heartStatus, setHeartStaus] = useState(false);
+
   //아이템을 받아오면 그 아이템의 이름에서 불필요한 부분을 replace하고 리턴한다.
   //상품 내용이 너무 길어 공백 문자가 있을 경우에 줄바꿈 문자로 바꾸어서 리턴
   //아직 미완성인 코드임
@@ -39,12 +41,27 @@ const ShopCardList = ({item}) => {
             }}
           />
           <View style={styles.iconBox}>
-            <Icon.Button
-              name="heart-outline"
-              color="#F15C74"
-              backgroundColor="transparent"
-              size={25}
-            />
+            {heartStatus === false ? (
+              <Icon.Button
+                name="heart-outline"
+                color="#F15C74"
+                backgroundColor="transparent"
+                size={25}
+                onPress={() =>
+                  setHeartStaus(prevStatus => (prevStatus ? false : true))
+                }
+              />
+            ) : (
+              <Icon.Button
+                name="heart"
+                color="#F15C74"
+                backgroundColor="transparent"
+                size={25}
+                onPress={() =>
+                  setHeartStaus(prevStatus => (prevStatus ? false : true))
+                }
+              />
+            )}
           </View>
         </View>
         <View style={styles.cardBottom}>
