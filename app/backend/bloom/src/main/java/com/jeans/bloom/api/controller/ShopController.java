@@ -2,8 +2,10 @@ package com.jeans.bloom.api.controller;
 
 import com.jeans.bloom.api.response.ItemRes;
 import com.jeans.bloom.api.response.ShopRes;
+import com.jeans.bloom.api.service.ItemService;
 import com.jeans.bloom.api.service.ShopService;
 import com.jeans.bloom.common.response.BaseResponseBody;
+import com.jeans.bloom.db.entity.Item;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -22,6 +24,9 @@ public class ShopController {
     @Autowired
     private ShopService shopService;
 
+    @Autowired
+    private ItemService itemService;
+
     /**
      * HHS | 2022.04.27
      * @name findShopByShopNumber
@@ -35,11 +40,11 @@ public class ShopController {
         try{
             ShopRes shopRes = shopService.findShopByShopNumber(shopNumber);
             if(shopRes == null)
-                return ResponseEntity.status(403).body(BaseResponseBody.of( "success", "해당 가게가 없습니다."));
+                return ResponseEntity.status(200).body(BaseResponseBody.of( "success", "해당 가게가 없습니다."));
             else
                 return ResponseEntity.status(200).body(BaseResponseBody.of("success",shopRes));
         }catch  (Exception e){
-            return ResponseEntity.status(200).body(BaseResponseBody.of("fail",e));
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail",e));
         }
 
     }
@@ -59,8 +64,33 @@ public class ShopController {
             List<ItemRes> itemList = shopService.findItemsByShop_ShopNumber(shopNumber);
             return ResponseEntity.status(200).body(BaseResponseBody.of("success",itemList));
         }catch  (Exception e){
-            return ResponseEntity.status(200).body(BaseResponseBody.of("fail",e));
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail",e));
         }
+    }
+
+    /**
+     * OYT | 2022.04.28
+     * @name findItemByItemId
+     * @api {get} /shop/{item_id}
+     * @des 가게 번호를 이용하여 해당 가게의 상품 리스트를 조회
+     */
+    @GetMapping("{itemId}")
+    @ApiOperation(value = "상품 상세 조회", notes = "item_id로 해당 가게 상품 상세 내용을 조회한다.")
+    public ResponseEntity<BaseResponseBody> findItemByItemId(
+            @PathVariable @ApiParam(value = "상품 ID", required = true) int itemId){
+
+            try{
+                Item item = itemService.findItemByItemId(itemId);
+                if(item != null){
+                    return ResponseEntity.status(200).body(BaseResponseBody.of("success", ItemRes.of(item)));
+                }
+                return ResponseEntity.status(200).body(BaseResponseBody.of("fail"));
+
+            }catch(Exception e){
+                return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+            }
+
+
     }
 
 
