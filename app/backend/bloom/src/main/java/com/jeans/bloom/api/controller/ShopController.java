@@ -39,10 +39,7 @@ public class ShopController {
             @RequestParam @ApiParam(value = "조회할 shop_number", required = true) String shopNumber){
         try{
             ShopRes shopRes = shopService.findShopByShopNumber(shopNumber);
-            if(shopRes == null)
-                return ResponseEntity.status(200).body(BaseResponseBody.of( "success", "해당 가게가 없습니다."));
-            else
-                return ResponseEntity.status(200).body(BaseResponseBody.of("success",shopRes));
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success",shopRes));
         }catch  (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail",e));
         }
