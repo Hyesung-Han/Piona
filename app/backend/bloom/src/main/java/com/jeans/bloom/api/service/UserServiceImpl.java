@@ -4,6 +4,7 @@ import com.jeans.bloom.api.request.UserLoginPostReq;
 import com.jeans.bloom.api.request.UserRegiPostReq;
 import com.jeans.bloom.common.util.JwtTokenUtil;
 import com.jeans.bloom.db.entity.User;
+import com.jeans.bloom.db.entity.type.StatusType;
 import com.jeans.bloom.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,16 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User createUser(UserRegiPostReq registerInfo) throws Exception{
-        return saveUserInfo(registerInfo);
+        User user = new User();
+        user.setUserId(registerInfo.getUserId());
+
+        // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
+        user.setPassword(passwordEncoder.encode(registerInfo.getPassword()));
+        user.setName(registerInfo.getName());
+        user.setPhone(registerInfo.getPhone());
+        user.setNickName(registerInfo.getNickName());
+
+        return userRepository.save(user);
     }
 
     /**
@@ -64,6 +74,11 @@ public class UserServiceImpl implements UserService {
         String userPassword = userLogin.getPassword();
 
             User user = this.findUserByUserId(userId);
+
+            // 탈퇴한 회원 로그인 x
+            if(!user.getIsDel().equals(StatusType.N)){
+                return null;
+            }
 
             String accessToken = JwtTokenUtil.getToken(userId);
             String refreshToken = JwtTokenUtil.getRefreshToken();
@@ -103,23 +118,38 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User updateUser(UserRegiPostReq updateUserInfo) throws Exception {
-        return saveUserInfo(updateUserInfo);
+        User user = this.findUserByUserId(updateUserInfo.getUserId());
+
+        user.setPassword(passwordEncoder.encode(updateUserInfo.getPassword()));
+        user.setName(updateUserInfo.getName());
+        user.setPhone(updateUserInfo.getPhone());
+        user.setNickName(updateUserInfo.getNickName());
+
+        return userRepository.save(user);
+    }
+
+    /**
+     * OYT | 2022.04.27
+     * @name findUserByPhone
+     * @des 회원 핸드폰 번호를 입력받아 회원의 정보를 리턴해주는 메소드
+     */
+    @Override
+    public User findUserByPhone(String phone) throws Exception {
+        return userRepository.findUserByPhone(phone);
     }
 
     /**
      * OYT | 2022.04.28
-     * @name saveUserInfo
-     * @des 회원정보를 입력받아 DB에 저장하는 메서드
+     * @name deleteUser
+     * @des 회원 ID를 입력받아 회원의 탈퇴 여부를 변경하는 메소드
      */
-    private User saveUserInfo(UserRegiPostReq saveUserInfo) throws Exception{
-        User user = new User();
-        user.setUserId(saveUserInfo.getUserId());
+    @Override
+    public User deleteUser(String userId) throws Exception {
 
-        // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
-        user.setPassword(passwordEncoder.encode(saveUserInfo.getPassword()));
-        user.setName(saveUserInfo.getName());
-        user.setPhone(saveUserInfo.getPhone());
-        user.setNickName(saveUserInfo.getNickName());
+        User user = this.findUserByUserId(userId);
+        user.setIsDel(StatusType.Y);
+
         return userRepository.save(user);
     }
+
 }
