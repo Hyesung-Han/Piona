@@ -26,7 +26,7 @@ public class ShopServiceImpl implements ShopService{
      * @des shop number로 해당 가게의 상세 정보 가져오기
      */
     @Override
-    public ShopRes findShopByShopNumber(String shopNumber) {
+    public ShopRes findShopByShopNumber(String shopNumber) throws Exception{
 
         Optional<Shop> optionalShop = shopRepository.findShopByShopNumber(shopNumber);
         return optionalShop.map(ShopRes::of).orElse(null);
