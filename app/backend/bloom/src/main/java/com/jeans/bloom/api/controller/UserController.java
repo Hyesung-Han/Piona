@@ -160,4 +160,33 @@ public class UserController {
         }
     }
 
+    /**
+     * OYT | 2022.04.27
+     * @name updateUser
+     * @api {patch} /user
+     * @des 회원 정보를 입력받아 회원가입
+     */
+    @PatchMapping()
+    @ApiOperation(value = "회원 정보 수정", notes = "회원정보를 입력 받아 정보를 수정한다. 아이디, 닉네임, 핸드폰 번호는 중복이 될 수 없다.")
+    public ResponseEntity<BaseResponseBody> userInfoUpdate(
+            @RequestBody @ApiParam(value="회원 수정 정보", required = true) UserRegiPostReq updateUserInfo) {
+
+        try{
+            User userGetByUserId = userService.findUserByUserId(updateUserInfo.getUserId());
+            User userGetByNickname = userService.findUserByNickName(updateUserInfo.getNickName());
+
+            if(userGetByUserId != null){
+                return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 아이디입니다.."));
+            }else if(userGetByNickname != null){
+                return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 닉네임입니다."));
+            }else{
+                userService.updateUser(updateUserInfo);
+                return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+
+    }
+
 }
