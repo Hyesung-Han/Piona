@@ -1,18 +1,23 @@
 package com.jeans.bloom.api.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jeans.bloom.db.entity.Item;
+import com.jeans.bloom.db.entity.ReservationDetail;
+import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter  @Setter
 @Builder
+@ApiModel("ItemRes")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ItemRes {
 
     Integer item_id;
     String item_name;
     Integer price;
+    Integer quantity;
     String  description;
     String  image_url;
 
@@ -28,6 +33,21 @@ public class ItemRes {
                 .price(item.getPrice())
                 .description(item.getDescription())
                 .image_url(item.getImageUrl())
+                .build();
+    }
+
+    /**
+     * LJA | 2022.04.28
+     * @name of
+     * @des reservationDetail 데이터를 이용해 ItemDetail을 가져오기 위한 DTO
+     */
+    public static ItemRes of(ReservationDetail reservationDetail) {
+        return ItemRes.builder()
+                .item_id(reservationDetail.getItem().getItemId())
+                .item_name(reservationDetail.getItem().getName())
+                .quantity(reservationDetail.getQuantity())
+                .price(reservationDetail.getItem().getPrice())
+                .image_url(reservationDetail.getItem().getImageUrl())
                 .build();
     }
 
