@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Button,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import HorizonLine from '../../utils/HorizonLine';
 
 /**
@@ -60,18 +53,7 @@ const ShopCardList = ({item}) => {
             </View>
           </View>
           <View style={styles.seeMore}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                width: '100%',
-                alignItems: 'center',
-                borderRadius: 12,
-                height: 40,
-                justifyContent: 'center',
-              }}>
-              <Text style={{color: '#F15C74', fontSize: 16}}>see more</Text>
-            </TouchableOpacity>
+            <Text style={{color: '#F15C74', fontSize: 13}}>see more</Text>
           </View>
         </View>
         <HorizonLine />
@@ -99,17 +81,18 @@ const styles = StyleSheet.create({
   itemTitleAndReviewScore: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    width: '100%',
   },
   itemTitle: {
     marginVertical: 5,
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
     color: 'black',
   },
   itemScore: {
-    marginLeft: 10,
-    marginTop: 17,
-    fontSize: 10,
+    marginVertical: 5,
+    marginLeft: 20,
+    fontSize: 15,
     color: 'black',
   },
   itemAddress: {
@@ -117,12 +100,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'gray',
   },
-  buttonContainer: {
-    width: '40%',
-    marginVertical: 5,
-  },
   cardBottom: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '95%',
+  },
+  seeMore: {
+    flexDirection: 'row',
+    marginTop: '10%',
   },
 });
 
