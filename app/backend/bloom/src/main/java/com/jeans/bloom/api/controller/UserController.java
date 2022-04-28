@@ -6,6 +6,7 @@ import com.jeans.bloom.api.response.UserRes;
 import com.jeans.bloom.api.service.UserService;
 import com.jeans.bloom.common.response.BaseResponseBody;
 import com.jeans.bloom.db.entity.User;
+import com.jeans.bloom.db.entity.type.StatusType;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -161,28 +162,39 @@ public class UserController {
     }
 
     /**
-     * OYT | 2022.04.27
+     * OYT | 2022.04.28
      * @name updateUser
      * @api {patch} /user
-     * @des 회원 정보를 입력받아 회원가입
+     * @des 회원 정보를 입력받아 회원 정보 수정
      */
     @PatchMapping()
-    @ApiOperation(value = "회원 정보 수정", notes = "회원정보를 입력 받아 정보를 수정한다. 아이디, 닉네임, 핸드폰 번호는 중복이 될 수 없다.")
+    @ApiOperation(value = "회원 정보 수정", notes = "회원정보를 입력 받아 정보를 수정한다. 닉네임, 핸드폰 번호는 중복이 될 수 없다.")
     public ResponseEntity<BaseResponseBody> userInfoUpdate(
             @RequestBody @ApiParam(value="회원 수정 정보", required = true) UserRegiPostReq updateUserInfo) {
 
         try{
-            User userGetByUserId = userService.findUserByUserId(updateUserInfo.getUserId());
-            User userGetByNickname = userService.findUserByNickName(updateUserInfo.getNickName());
+            userService.updateUser(updateUserInfo);
+            return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
 
-            if(userGetByUserId != null){
-                return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 아이디입니다.."));
-            }else if(userGetByNickname != null){
-                return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 닉네임입니다."));
-            }else{
-                userService.updateUser(updateUserInfo);
-                return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
-            }
+    }
+
+    /**
+     * OYT | 2022.04.28
+     * @name deleteUser
+     * @api {patch} /user/delete
+     * @des 회원 ID를 입력받아 회원 탈퇴 여부 변경
+     */
+    @PatchMapping("/delete")
+    @ApiOperation(value = "회원 탈퇴", notes = "회원 ID를 입력 받아 탈퇴 여부를 수정한다. ")
+    public ResponseEntity<BaseResponseBody> deleteUser(
+            @RequestBody @ApiParam(value="회원 ID", required = true) String userId) {
+
+        try{
+            userService.deleteUser(userId);
+            return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }

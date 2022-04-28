@@ -4,6 +4,8 @@ import com.jeans.bloom.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLDataException;
+
 /**
  * OYT | 2022.04.27
  * @name UserRepository
@@ -11,7 +13,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    User findUserByUserId(String userId);
+    User findUserByUserId(String userId) throws Exception;
 
-    User findUserByNickName(String nickName);
+    User findUserByNickName(String nickName) throws Exception;
+
+    User findUserByPhone(String phone) throws Exception;
 }
