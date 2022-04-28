@@ -3,6 +3,7 @@ package com.jeans.bloom.api.controller;
 import com.jeans.bloom.api.request.UserLoginPostReq;
 import com.jeans.bloom.api.request.UserRegiPostReq;
 import com.jeans.bloom.api.response.UserRes;
+import com.jeans.bloom.api.service.MessageService;
 import com.jeans.bloom.api.service.UserService;
 import com.jeans.bloom.common.response.BaseResponseBody;
 import com.jeans.bloom.db.entity.User;
@@ -25,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MessageService messageService;
 
     /**
      * OYT | 2022.04.27
@@ -135,7 +139,7 @@ public class UserController {
 
         try{
             User userInfoGetRes = userService.findUserByUserId(userId);
-            return ResponseEntity.status(201).body(BaseResponseBody.of("success", UserRes.of(userInfoGetRes)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", UserRes.of(userInfoGetRes)));
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
@@ -199,6 +203,30 @@ public class UserController {
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
 
+    }
+
+    /**
+     * OYT | 2022.04.27
+     * @name sendPhoneRandomNum
+     * @api {get} /user/phoneRequest?phone=phoneNumber
+     * @des 유저 핸드폰 번호를 입력 받아 인증 문자 발송
+     */
+    @GetMapping("/phoneRequest")
+    @ApiOperation(value = "인증문자 발송", notes = "인증 요청한 핸드폰 번호로 인증 문자를 발송한다.")
+    public ResponseEntity<BaseResponseBody> sendPhoneRandomNum(
+            @RequestParam @ApiParam(value="핸드폰번호", required = true) String phoneNumber) {
+
+        try{
+            User userByPhoneChk = userService.findUserByPhone(phoneNumber);
+            if(userByPhoneChk != null){
+                return ResponseEntity.status(200).body(BaseResponseBody.of("fail", "이미 인증된 번호 입니다."));
+            }else{
+                int randomNum = messageService.sendMessage(phoneNumber);
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success", randomNum));
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
     }
 
 }
