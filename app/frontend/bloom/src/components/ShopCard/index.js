@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import HorizonLine from '../../utils/HorizonLine';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 /**
  * CSW | 2022.04.28
@@ -37,6 +38,14 @@ const ShopCardList = ({item}) => {
               borderRadius: 10,
             }}
           />
+          <View style={styles.iconBox}>
+            <Icon.Button
+              name="heart-outline"
+              color="#F15C74"
+              backgroundColor="transparent"
+              size={25}
+            />
+          </View>
         </View>
         <View style={styles.cardBottom}>
           <View style={styles.itemInfoContainer}>
@@ -108,6 +117,13 @@ const styles = StyleSheet.create({
   seeMore: {
     flexDirection: 'row',
     marginTop: '10%',
+  },
+  iconBox: {
+    flex: 1,
+    position: 'absolute',
+    width: '20%',
+    top: 5,
+    left: 5,
   },
 });
 

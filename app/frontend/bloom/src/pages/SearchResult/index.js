@@ -121,7 +121,7 @@ const SearchResultPage = ({navigation}) => {
               }
               name="search-outline"
               color="black"
-              backgroundColor="white"
+              backgroundColor="transparent"
             />
           </View>
         </View>
