@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
-import HorizonLine from '../../utils/HorizonLine';
+import HorizonLine from '../HorizonLine';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 /**
