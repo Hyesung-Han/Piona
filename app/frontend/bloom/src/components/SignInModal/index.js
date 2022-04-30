@@ -9,25 +9,25 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 
 /**
- * LDJ | 2022.04.26
+ * LDJ | 2022.04.28
  * @name SignInModal
  * @api -
  * @des
  * 1. Sign Page에서 로그인 버튼을 누르면 뜨는 모달 창
- * 2. 유저 정보를 입력받아 로그인을 진행
+ * 2. 유저 정보를 입력받아 로그인을 진행 [아이디, 비밀번호]
  */
 
 const SignInModal = props => {
   const [id, setId] = useState('');
-  const [pw, setPw] = useState('');
+  const [password, setPassword] = useState('');
 
   const sendData = () => {
-    if (id && pw) {
-      props.user({id: id, pw: pw});
+    if (id && password) {
+      props.user({id: id, password: password});
       props.next(false);
     } else if (!id) {
       alert('아이디를 입력해주세요!');
-    } else if (pw.length < 1) {
+    } else if (password.length < 1) {
       alert('비밀번호를 입력해주세요!');
     }
   };
@@ -43,10 +43,10 @@ const SignInModal = props => {
       <View
         style={{
           position: 'absolute',
-          width: '100%',
-          height: '100%',
+          width: '90%',
+          height: '90%',
           backgroundColor: 'white',
-          // borderRadius: 20,
+          borderRadius: 20,
           elevation: 2,
         }}>
         <View
@@ -107,7 +107,11 @@ const SignInModal = props => {
                 borderRadius: 20,
               }}>
               <View
-                style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
+                style={{
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  margin: 1,
+                }}>
                 <TextInput
                   onChangeText={setId}
                   value={id}
@@ -150,11 +154,15 @@ const SignInModal = props => {
                 borderRadius: 20,
               }}>
               <View
-                style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
+                style={{
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  margin: 1,
+                }}>
                 <TextInput
                   secureTextEntry={true}
-                  onChangeText={setPw}
-                  value={pw}
+                  onChangeText={setPassword}
+                  value={password}
                   style={{
                     width: '70%',
                     textAlign: 'center',
@@ -165,19 +173,25 @@ const SignInModal = props => {
               </View>
             </View>
           </View>
-          <View style={{margin: 20, alignItems: 'center', width: '100%'}}>
+          <View
+            style={{
+              margin: 20,
+              alignItems: 'center',
+              width: '80%',
+              // marginHorizontal: '10%',
+            }}>
             <TouchableOpacity
               style={{
                 backgroundColor: '#F15C74',
                 color: 'black',
-                width: '50%',
+                width: '100%',
                 alignItems: 'center',
-                borderRadius: 5,
+                borderRadius: 12,
                 height: 40,
                 justifyContent: 'center',
               }}
               onPress={() => sendData()}>
-              <Text style={{color: 'black', fontSize: 15, fontWeight: 'bold'}}>
+              <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
                 로그인
               </Text>
             </TouchableOpacity>

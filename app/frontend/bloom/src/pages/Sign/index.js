@@ -8,7 +8,7 @@ import SignUpModal from '../../components/SignUpModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
- * LJA | 2022.04.26
+ * LDJ | 2022.04.28
  * @name Sign
  * @api -
  * @des
@@ -92,7 +92,7 @@ const SignPage = props => {
       <Modal animationType={'fade'} transparent={true} visible={signupModal}>
         <SignUpModal
           user={data => handleUser(data)}
-          now={data => setSignupModal(data)}
+          next={data => setSignupModal(data)}
           exit={data => setSignupModal(data)}
         />
       </Modal>

@@ -7,10 +7,10 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {userAPI} from '../../utils/axios';
+// import {userAPI} from '../../utils/Axios';
 
 /**
- * LDJ | 2022.04.26
+ * LDJ | 2022.04.28
  * @name SignUpModal
  * @api -
  * @des
@@ -18,22 +18,32 @@ import {userAPI} from '../../utils/axios';
  * 2. 유저 정보를 입력받아 회원가입을 진행
  */
 
-const SignInModal = props => {
-  const [pwColor, setPwColor] = useState('#000000');
+const SignUpModal = props => {
+  const [nameColor, setNameColor] = useState('#000000');
   const [idColor, setIdColor] = useState('#000000');
-  const [id, setId] = useState('');
-  const [pw, setPw] = useState('');
-  const [checkPw, setCheckPw] = useState('');
+  const [passwordColor, setPasswordColor] = useState('#000000');
+  const [passwordCheckColor, setPasswordCheckColor] = useState('#000000');
+  const [nicknameColor, setNicknameColor] = useState('#000000');
+  const [phoneNumberColor, setPhoneNumberColor] = useState('#000000');
 
-  const handlePW = data => {
-    setCheckPw(data);
-    if (pw === data) {
-      setPwColor('#A6DB9E');
+  const [name, setName] = useState('');
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  // 비밀번호 확인 작성 -> 비밀번호 일치 여부 확인
+  const handlePassword = data => {
+    setCheckPassword(data);
+    if (password === data) {
+      setPasswordCheckColor('#A6DB9E');
     } else {
-      setPwColor('#FFABAB');
+      setPasswordCheckColor('#FFABAB');
     }
   };
 
+  // 아이디 중복확인 버튼 누르면?!
   // const checkId = async () => {
   //   const result = await userAPI.emailCheck(id);
   //   if (result === 200) {
@@ -43,18 +53,39 @@ const SignInModal = props => {
   //   }
   // };
 
+  // 닉네임 중복확인 버튼 누르면?!
+  // const checkNickname = async () => {
+  //   const result = await userAPI.emailCheck(id);
+  //   if (result === 200) {
+  //     setIdColor('#A6DB9E');
+  //   } else if (result === 409) {
+  //     setIdColor('#FFABAB');
+  //   }
+  // };
+
+  // 휴대폰 번호 인증요청 버튼 누르면?!
+  // const phone = async () => {
+  //   const result = await userAPI.emailCheck(id);
+  //   if (result === 200) {
+  //     setIdColor('#A6DB9E');
+  //   } else if (result === 409) {
+  //     setIdColor('#FFABAB');
+  //   }
+  // };
+
+  // 회원가입 버튼 누르면?!
   const sendData = () => {
-    if (pwColor === '#A6DB9E' && idColor === '#A6DB9E') {
-      props.user({id: id, pw: pw});
+    if (passwordColor === '#A6DB9E' && idColor === '#A6DB9E') {
+      props.user({id: id, password: password});
       props.now(false);
       props.next(true);
     } else if (id.length < 2) {
-      alert('이메일을 입력해주세요.');
+      alert('아이디를 입력해주세요.');
     } else if (idColor === '#000000') {
-      alert('이메일 중복확인을 해주세요.');
+      alert('아이디 중복확인을 해주세요.');
     } else if (idColor === '#FFABAB') {
-      alert('중복된 이메일입니다. 다시 확인해주세요.');
-    } else if (pw.length < 1) {
+      alert('중복된 아이디입니다. 다시 확인해주세요.');
+    } else if (password.length < 1) {
       alert('비밀번호를 입력해주세요.');
     } else {
       alert('비밀번호를 확인해주세요.');
@@ -72,10 +103,10 @@ const SignInModal = props => {
       <View
         style={{
           position: 'absolute',
-          width: '100%',
-          height: '100%',
+          width: '90%',
+          height: '90%',
           backgroundColor: 'white',
-          // borderRadius: 20,
+          borderRadius: 20,
           elevation: 2,
         }}>
         <View
@@ -108,16 +139,21 @@ const SignInModal = props => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <View style={{width: '100%', justifyContent: 'flex-start'}}>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
             <Text
               style={{
                 fontSize: 15,
                 color: 'black',
                 fontWeight: 'bold',
                 marginLeft: 40,
-                marginTop: 20,
+                marginTop: 10,
               }}>
-              아이디
+              이름
             </Text>
           </View>
           <View
@@ -130,7 +166,7 @@ const SignInModal = props => {
             }}>
             <View
               style={{
-                width: '60%',
+                width: '85%',
                 height: 40,
                 margin: 10,
                 alignItems: 'center',
@@ -139,16 +175,81 @@ const SignInModal = props => {
                 borderRadius: 20,
               }}>
               <View
-                style={{
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  margin: 1,
-                }}>
+                style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
+                <TextInput
+                  onChangeText={setName}
+                  value={name}
+                  style={{
+                    width: '85%',
+                    textAlign: 'center',
+                    backgroundColor: '#EEEEEE',
+                    borderRadius: 20,
+                    marginRight: 5,
+                  }}
+                />
+                <Icon name="checkcircle" color={nameColor} size={17} />
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: 'black',
+                fontWeight: 'bold',
+                marginLeft: 40,
+                marginTop: 10,
+              }}>
+              아이디
+            </Text>
+            {/* <TouchableOpacity onPress={() => checkId()}></TouchableOpacity> */}
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#F15C74',
+                color: 'black',
+                width: '22%',
+                alignItems: 'center',
+                borderRadius: 12,
+                marginTop: 10,
+                marginRight: 40,
+                height: 24,
+                justifyContent: 'center',
+              }}>
+              <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>
+                중복 확인
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '95%',
+              marginTop: 5,
+            }}>
+            <View
+              style={{
+                width: '85%',
+                height: 40,
+                margin: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#EEEEEE',
+                borderRadius: 20,
+              }}>
+              <View
+                style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
                   onChangeText={setId}
                   value={id}
                   style={{
-                    width: '70%',
+                    width: '85%',
                     textAlign: 'center',
                     backgroundColor: '#EEEEEE',
                     borderRadius: 20,
@@ -158,11 +259,13 @@ const SignInModal = props => {
                 <Icon name="checkcircle" color={idColor} size={17} />
               </View>
             </View>
-            {/* <TouchableOpacity onPress={() => checkId()}>
-              <Text>중복 확인</Text>
-            </TouchableOpacity> */}
           </View>
-          <View style={{width: '100%', justifyContent: 'flex-start'}}>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
             <Text
               style={{
                 fontSize: 15,
@@ -179,12 +282,12 @@ const SignInModal = props => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%',
+              width: '95%',
               marginTop: 5,
             }}>
             <View
               style={{
-                width: '75%',
+                width: '85%',
                 height: 40,
                 margin: 10,
                 alignItems: 'center',
@@ -193,26 +296,29 @@ const SignInModal = props => {
                 borderRadius: 20,
               }}>
               <View
-                style={{
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  margin: 1,
-                }}>
+                style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
                   secureTextEntry={true}
-                  onChangeText={setPw}
-                  value={pw}
+                  onChangeText={setPassword}
+                  value={password}
                   style={{
-                    width: '80%',
+                    width: '85%',
                     textAlign: 'center',
                     backgroundColor: '#EEEEEE',
                     borderRadius: 20,
+                    marginRight: 5,
                   }}
                 />
+                <Icon name="checkcircle" color={passwordColor} size={17} />
               </View>
             </View>
           </View>
-          <View style={{width: '100%', justifyContent: 'flex-start'}}>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
             <Text
               style={{
                 fontSize: 15,
@@ -229,12 +335,12 @@ const SignInModal = props => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%',
+              width: '95%',
               marginTop: 5,
             }}>
             <View
               style={{
-                width: '75%',
+                width: '85%',
                 height: 40,
                 margin: 10,
                 alignItems: 'center',
@@ -243,40 +349,181 @@ const SignInModal = props => {
                 borderRadius: 20,
               }}>
               <View
-                style={{
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  margin: 1,
-                }}>
+                style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
                   secureTextEntry={true}
-                  onChangeText={handlePW}
-                  value={checkPw}
+                  onChangeText={handlePassword}
+                  value={checkPassword}
                   style={{
-                    width: '80%',
+                    width: '85%',
                     textAlign: 'center',
                     backgroundColor: '#EEEEEE',
                     borderRadius: 20,
+                    marginRight: 5,
                   }}
                 />
-                <Icon name="checkcircle" color={pwColor} size={17} />
+                <Icon name="checkcircle" color={passwordCheckColor} size={17} />
               </View>
             </View>
           </View>
-          <View style={{margin: 20, alignItems: 'center', width: '100%'}}>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: 'black',
+                fontWeight: 'bold',
+                marginLeft: 40,
+                marginTop: 10,
+              }}>
+              닉네임
+            </Text>
+            {/* <TouchableOpacity onPress={() => checkId()}></TouchableOpacity> */}
             <TouchableOpacity
               style={{
-                backgroundColor: '#A3BED7',
+                backgroundColor: '#F15C74',
                 color: 'black',
-                width: '50%',
+                width: '22%',
                 alignItems: 'center',
-                borderRadius: 5,
+                borderRadius: 12,
+                marginTop: 10,
+                marginRight: 40,
+                height: 24,
+                justifyContent: 'center',
+              }}>
+              <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>
+                중복 확인
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '95%',
+              marginTop: 5,
+            }}>
+            <View
+              style={{
+                width: '85%',
+                height: 40,
+                margin: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#EEEEEE',
+                borderRadius: 20,
+              }}>
+              <View
+                style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
+                <TextInput
+                  onChangeText={setNickname}
+                  value={nickname}
+                  style={{
+                    width: '85%',
+                    textAlign: 'center',
+                    backgroundColor: '#EEEEEE',
+                    borderRadius: 20,
+                    marginRight: 5,
+                  }}
+                />
+                <Icon name="checkcircle" color={nicknameColor} size={17} />
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: 'black',
+                fontWeight: 'bold',
+                marginLeft: 40,
+                marginTop: 10,
+              }}>
+              휴대폰 번호
+            </Text>
+            {/* <TouchableOpacity onPress={() => checkId()}></TouchableOpacity> */}
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#F15C74',
+                color: 'black',
+                width: '22%',
+                alignItems: 'center',
+                borderRadius: 12,
+                marginTop: 10,
+                marginRight: 40,
+                height: 24,
+                justifyContent: 'center',
+              }}>
+              <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>
+                인증 요청
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '95%',
+              marginTop: 5,
+            }}>
+            <View
+              style={{
+                width: '85%',
+                height: 40,
+                margin: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#EEEEEE',
+                borderRadius: 20,
+              }}>
+              <View
+                style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
+                <TextInput
+                  onChangeText={setPhoneNumber}
+                  value={phoneNumber}
+                  style={{
+                    width: '85%',
+                    textAlign: 'center',
+                    backgroundColor: '#EEEEEE',
+                    borderRadius: 20,
+                    marginRight: 5,
+                  }}
+                />
+                <Icon name="checkcircle" color={phoneNumberColor} size={17} />
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              margin: 20,
+              alignItems: 'center',
+              width: '80%',
+              // marginHorizontal: '10%',
+            }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#F15C74',
+                color: 'black',
+                width: '100%',
+                alignItems: 'center',
+                borderRadius: 12,
                 height: 40,
                 justifyContent: 'center',
               }}
               onPress={() => sendData()}>
-              <Text style={{color: 'black', fontSize: 15, fontWeight: 'bold'}}>
-                다음 단계
+              <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+                회원가입
               </Text>
             </TouchableOpacity>
           </View>
@@ -286,4 +533,4 @@ const SignInModal = props => {
   );
 };
 
-export default SignInModal;
+export default SignUpModal;
