@@ -1,6 +1,5 @@
 package com.jeans.bloom.api.response;
 
-import com.jeans.bloom.common.util.JwtTokenUtil;
 import com.jeans.bloom.db.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,19 +17,19 @@ public class UserRes {
 
     String user_id;
     String name;
-    String nickName;
+    String nickname;
     String phone;
-    String accessToken;
-    String refreshToken;
+    String access_token;
+    String refresh_token;
 
     public static UserRes of(User user){
         return UserRes.builder()
                 .user_id(user.getUserId())
                 .name(user.getName())
-                .nickName(user.getNickName())
+                .nickname(user.getNickName())
                 .phone(user.getPhone())
-                .accessToken(user.getAccessToken())
-                .refreshToken(user.getRefreshToken())
+                .access_token(user.getAccessToken())
+                .refresh_token(user.getRefreshToken())
                 .build();
     }
 }
