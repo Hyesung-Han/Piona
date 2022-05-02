@@ -3,8 +3,10 @@ package com.jeans.bloom.api.service;
 import com.jeans.bloom.api.response.ItemRes;
 import com.jeans.bloom.api.response.ShopRes;
 import com.jeans.bloom.db.entity.Item;
+import com.jeans.bloom.db.entity.Review;
 import com.jeans.bloom.db.entity.Shop;
 import com.jeans.bloom.db.repository.ItemRepository;
+import com.jeans.bloom.db.repository.ReviewRepository;
 import com.jeans.bloom.db.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +29,10 @@ public class ShopServiceImpl implements ShopService{
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private ReviewRepository reviewRepository;
     /**
-     * HHS | 2022.04.27
+     * HHS | 2022.05.02
      * @name findShopByShopNumber
      * @des shop number로 해당 가게의 상세 정보 가져오기
      */
@@ -36,7 +40,11 @@ public class ShopServiceImpl implements ShopService{
     public ShopRes findShopByShopNumber(String shopNumber) throws Exception{
 
         Optional<Shop> optionalShop = shopRepository.findShopByShopNumber(shopNumber);
-        return optionalShop.map(ShopRes::of).orElse(null);
+
+        List<Review> review = reviewRepository.findReviewByReservation_Shop_ShopNumber(shopNumber);
+        int count = review.size();
+        double avg = review.stream().mapToInt(Review::getScore).average().orElse(0.0);
+        return ShopRes.of(optionalShop.map(ShopRes::of).orElse(null),avg, count);
     }
 
     /**
