@@ -15,13 +15,8 @@ public class WishListRes {
     String name;
     String image_url;
     String address;
-//    Integer score;
-    Integer wish;
-
-    /**
-     * TODO
-     * score 추가하기 -> reservation, review 만들어지고 난 후에 하기
-     * */
+    int wish_id;
+    double score;
 
     public static WishListRes of(WishList wishList){
         /**
@@ -35,8 +30,23 @@ public class WishListRes {
                 .name(wishList.getShop().getName())
                 .image_url(wishList.getShop().getImageUrl())
                 .address(wishList.getShop().getAddress()+" "+wishList.getShop().getDetailAddress())
-//                .score(wishList.getShop().getReservations().getReview().getScore())
-                .wish(wishList.getWishId())
+                .wish_id(wishList.getWishId())
+                .build();
+    }
+   public static WishListRes of(WishList wishList, double avg){
+        /**
+         * HHS | 2022.05.02
+         * @name WishListRes
+         * @des user_id를 이용하여 해당 상점의 평균 별점 불러오기
+         */
+
+        return WishListRes.builder()
+                .shop_number(wishList.getShop().getShopNumber())
+                .name(wishList.getShop().getName())
+                .image_url(wishList.getShop().getImageUrl())
+                .address(wishList.getShop().getAddress()+" "+wishList.getShop().getDetailAddress())
+                .wish_id(wishList.getWishId())
+                .score(avg)
                 .build();
     }
 
