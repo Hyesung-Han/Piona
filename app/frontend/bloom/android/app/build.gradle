@@ -295,6 +295,9 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    //네이버 지도
+    implementation 'com.naver.maps:map-sdk:3.14.0'
 }
 
 if (isNewArchitectureEnabled()) {
