@@ -2,18 +2,19 @@ import React, {useState, useCallback, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {View, Dimensions, Alert, Text, FlatList} from 'react-native';
 import DoneCard from '../../components/DoneCard';
+import RegisterReview from '../RegisterReview';
 
 /**
- * LHJ | 2022.04.27
+ * LHJ | 2022.05.02
  * @name PicnicedPage
- * @api .
+ * @api /picnic, /review
  * @des
  * 1. 컴포넌트 목록 : DoneCard,FlatList
  * 2. 페이지 기능 :
  * 피크닉 페이지 안에 있는 완료된 예약 탭이다.
  * 완료된 예약 목록을 보여주기 위해서 RN에서 기본 제공하는 FlatList(가변적인 크기의 목록을 리스트화 할 때 사용)와
  * 해당 리스트를 하나의 카드로 보여주기 위해서 DoneCard 컴포넌트를 사용함
- * 사용된 api로는 완료된 예약 불러오기, 리뷰 등록이 있다.
+ * 사용된 api로는 /picnic(나의 예약현황 보기), /review(리뷰 등록)이 있다.
  * 04.27 : 더미 데이터 추가 DATA
  */
 
@@ -100,7 +101,13 @@ const PicnicedPage = ({navigation}) => {
   }, []);
 
   const renderItem = ({item}) => {
-    return <DoneCard item={item} />;
+    return (
+      <DoneCard
+        //item과 func를 prop으로 전달
+        item={item}
+        func={() => navigation.navigate('RegisterReview')}
+      />
+    );
   };
 
   return (

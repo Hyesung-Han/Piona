@@ -20,6 +20,7 @@ import ShopHomePage from '../../pages/ShopHome';
 import ShopMenuPage from '../../pages/ShopMenu';
 import ShopReviewPage from '../../pages/ShopReview';
 import WishListPage from '../../pages/WishList';
+import RegisterReview from '../../pages/RegisterReview';
 
 /**
  * CSW, LDJ | 2022.05.02
@@ -187,6 +188,11 @@ const MyApp = () => {
           name="PicnicTap"
           component={PicnicNav}
           options={{title: '피크닉'}}
+        />
+        <Stack.Screen
+          name="RegisterReview"
+          component={RegisterReview}
+          options={{title: '리뷰 등록'}}
         />
       </Stack.Navigator>
     );
