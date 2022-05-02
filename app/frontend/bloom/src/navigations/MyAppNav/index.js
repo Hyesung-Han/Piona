@@ -22,13 +22,14 @@ import ShopReviewPage from '../../pages/ShopReview';
 import WishListPage from '../../pages/WishList';
 
 /**
- * CSW | 2022.04.26
- * @name MyApp
+ * CSW, LDJ | 2022.05.02
+ * @name MyAppNav
  * @des
  * App 화면에 들어가는 Nav(BottomTap, TopTab, Icons) 모아놓은 페이지
  * 모든 페이지들과 아이콘이 포함되어있음
  * TODO
  * 1. 각자 페이지 완성하고 나면 각 페이지에서 props로 받아야하는 정보(가게이름, 상품이름 등등) 처리를 위해서 코드수정이 필요함
+ * 2. 약간의 이름 수정(이 다음엔 이거 지워주세요~)
  *  */
 
 const MyApp = () => {
@@ -251,7 +252,7 @@ const MyApp = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: 'left',
-          initialRouteName: 'MyInfos',
+          initialRouteName: 'MyInfo',
           headerStyle: {
             backgroundColor: '#F2A7B3',
           },
@@ -262,7 +263,7 @@ const MyApp = () => {
           },
         }}>
         <Stack.Screen
-          name="MyInfos"
+          name="MyInfo"
           component={MyInfoPage}
           options={{title: '내 정보'}}
         />
@@ -351,7 +352,7 @@ const MyApp = () => {
           }}
         />
         <Tab.Screen
-          name="MyInfo"
+          name="MyInfos"
           component={MyInfoNav}
           options={{
             title: '내정보',
