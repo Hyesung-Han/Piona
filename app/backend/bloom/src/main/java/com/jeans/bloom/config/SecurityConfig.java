@@ -77,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests()
-                .antMatchers("/user/signin",
+                .antMatchers("/api/user/signin",
                         "/api/user/signup",
                         "/api/user/idcheck",
                         "/api/user/nickCheck",

@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BloomApplication {
 
     public static void main(String[] args) {
-        System.setProperty("server.servlet.context-path", "/api");
         SpringApplication.run(BloomApplication.class, args);
     }
 
