@@ -9,6 +9,7 @@ import {
   navigation,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import HorizonLine from '../HorizonLine';
 
 /**
  * LHJ | 2022.05.02
@@ -35,13 +36,14 @@ const PicnicCardList = ({item}) => {
               borderRadius: 5,
               height: 130,
               padding: 10,
+              marginHorizontal: 10,
             }}
           />
           <View style={styles.rowSeperateContainer}>
             {/* <Text style={{fontSize: 10}}>{item.itemName}</Text>
             <Text style={{fontSize: 10}}> {item.quantity}개</Text> */}
             <View style={{width: '75%'}}>
-              <Text style={styles.carouselItemName}>총 {item.itemName}</Text>
+              <Text style={styles.carouselItemName}>{item.itemName}</Text>
             </View>
             <View style={{width: '25%'}}>
               <Text style={styles.carouselQuantity}> {item.quantity}개</Text>
@@ -56,7 +58,7 @@ const PicnicCardList = ({item}) => {
     <View style={styles.doneCardList}>
       <View style={styles.columnSeperateContainer}>
         <View style={styles.rowSeperateContainer}>
-          <View style={{width: '30%'}}>
+          <View style={{width: '35%'}}>
             <Text numberOfLines={1} style={styles.shopName}>
               {item.shopName}
             </Text>
@@ -64,11 +66,10 @@ const PicnicCardList = ({item}) => {
           <View style={{width: '30%'}}>
             <Text style={styles.resDate}>{item.date}</Text>
           </View>
-          <View style={{width: '20%'}} />
-          <View style={{width: '20%'}}>
+          <View style={{width: '20%', height: 25}}>
             <View style={styles.status}>
               <Text
-                style={{color: 'white', fontWeight: 'bold'}}
+                style={{color: 'white', fontWeight: 'bold', fontSize: 12}}
                 //   onPress={() =>
                 //     navigation.navigate('Map', {navigation: `${navigation}`})
                 //   }
@@ -96,10 +97,11 @@ const PicnicCardList = ({item}) => {
         </View>
         <View style={styles.rowSeperateContainer}>
           <View style={{width: '10%'}} />
-          <View style={{width: '90%'}}>
+          <View style={{width: '90%', marginTop: 15}}>
             <Text style={styles.quantity}>총 {item.shopName}원</Text>
           </View>
         </View>
+        <HorizonLine />
       </View>
     </View>
   );
@@ -109,23 +111,23 @@ const styles = StyleSheet.create({
   doneCardList: {
     width: '100%',
     backgroundColor: 'white',
-    borderColor: '#BBBBBBB',
-    borderRadius: 5,
-    borderWidth: 1,
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   rowSeperateContainer: {
     flexDirection: 'row',
+    width: '95%',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    marginBottom: 10,
   },
   columnSeperateContainer: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    width: '100%',
   },
   buttonContainer: {
     width: '40%',
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
   },
   shopName: {
     marginVertical: 5,
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
     color: 'black',
     justifyContent: 'center',
@@ -146,16 +148,15 @@ const styles = StyleSheet.create({
   },
   status: {
     flex: 1,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderStyle: 'solid',
     backgroundColor: '#F2A7B3',
     width: '100%',
-    borderRadius: 40,
-    marginTop: '10%',
-    marginBottom: '10%',
-    height: 30,
+    borderRadius: 50,
+    height: 25,
+    position: 'relative',
+    left: 50,
   },
   quantity: {
     marginVertical: 5,
