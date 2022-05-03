@@ -26,6 +26,7 @@ const SearchResultPage = ({navigation}) => {
   const [data, setData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [heartStatus, setHeartStaus] = useState(false);
 
   //getData에 완료된 예약 정보 가져오는 api를 넣자!!!
   const getData = () => {
@@ -43,24 +44,28 @@ const SearchResultPage = ({navigation}) => {
       address: '호진이가게,ㅁㄴㅇ',
       imgUrl: 'https://reactjs.org/logo-og.png',
       score: 5,
+      wish: '',
     },
     {
       shopName: '소원이가게',
       address: '소원이가게',
       imgUrl: 'https://reactjs.org/logo-og.png',
       score: 5,
+      wish: '1',
     },
     {
       shopName: '혜성이가게',
       address: '혜성이가게',
       imgUrl: 'https://reactjs.org/logo-og.png',
       score: 5,
+      wish: '',
     },
     {
       shopName: '동준이형가게',
       address: '동준이형가게',
       imgUrl: 'https://reactjs.org/logo-og.png',
       score: 5,
+      wish: '',
     },
     {
       shopName: '정아누나가게',
@@ -105,7 +110,8 @@ const SearchResultPage = ({navigation}) => {
   }, []);
 
   const renderItem = ({item}) => {
-    return <ShopCard item={item} />;
+    item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
+    return <ShopCard item={item} heartStatus={heartStatus} />;
   };
 
   return (

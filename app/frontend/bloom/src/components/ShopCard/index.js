@@ -13,8 +13,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
  * FlatList에 보여줄 item 컴포넌트이다.
  */
 
-const ShopCard = ({item}) => {
-  const [heartStatus, setHeartStaus] = useState(false);
+const ShopCard = ({item}, props) => {
+  const [heartStatus, setHeartStaus] = useState(props.heartStatus);
 
   //아이템을 받아오면 그 아이템의 이름에서 불필요한 부분을 replace하고 리턴한다.
   //상품 내용이 너무 길어 공백 문자가 있을 경우에 줄바꿈 문자로 바꾸어서 리턴
