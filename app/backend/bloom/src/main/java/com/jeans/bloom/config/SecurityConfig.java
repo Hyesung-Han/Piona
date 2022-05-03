@@ -65,7 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**",
                         "/configuration/security",
                         "/swagger-ui/**",
-                        "/webjars/**"); }
+                        "/webjars/**",
+                        "/api/**"); }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
