@@ -23,7 +23,7 @@ const CartCardList = props => {
   const [quantityStatus, setquantityStaus] = useState(props.item.quantity);
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.CartCard}>
         <View style={styles.checkBox}>
           <View style={styles.iconBox}>
@@ -35,6 +35,7 @@ const CartCardList = props => {
                 name="checkbox"
                 color="#DADADA"
                 backgroundColor="transparent"
+                size={25}
               />
             ) : (
               <Icon.Button
@@ -44,6 +45,7 @@ const CartCardList = props => {
                 name="checkbox"
                 color="#F2A7B3"
                 backgroundColor="transparent"
+                size={25}
               />
             )}
           </View>
@@ -51,12 +53,12 @@ const CartCardList = props => {
         <View style={styles.informationBox}>
           <View style={styles.TopBox}>
             <View style={styles.shopname}>
-              <Text style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
+              <Text style={{fontSize: 15, color: 'black'}}>
                 {props.item.shop_name}
               </Text>
             </View>
             <View style={styles.reservationDate}>
-              <Text style={{fontSize: 14, color: 'black'}}>
+              <Text style={{fontSize: 13, color: 'black'}}>
                 {props.item.reservation_date}
               </Text>
             </View>
@@ -98,7 +100,7 @@ const CartCardList = props => {
               borderRadius: 10,
             }}
           />
-          <Text style={{marginTop: 5}}>
+          <Text style={{marginTop: 5, fontWeight: 'bold'}}>
             {props.item.price * quantityStatus} 원
           </Text>
         </View>
@@ -109,6 +111,11 @@ const CartCardList = props => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   CartCard: {
     width: '100%',
     backgroundColor: 'white',
@@ -121,7 +128,7 @@ const styles = StyleSheet.create({
   },
   quantityBox: {
     flexDirection: 'row',
-    backgroundColor: '#E5E5E5',
+    backgroundColor: '#FDECC8',
     borderRadius: 50,
     alignItems: 'center',
     width: '45%',
@@ -131,6 +138,7 @@ const styles = StyleSheet.create({
   quantity: {
     flexDirection: 'row',
     marginTop: 20,
+    alignItems: 'center',
   },
   reservationDate: {
     marginLeft: 10,

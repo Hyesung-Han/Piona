@@ -66,6 +66,42 @@ const CartPage = ({navigation}) => {
       shop_name: '호진이가게',
       reservation_date: '2022-05-14',
     },
+    {
+      item_id: 3,
+      item_name: '할리갈리',
+      price: 12000,
+      image_url: 'https://reactjs.org/logo-og.png',
+      quantity: 2,
+      shop_name: '호진이가게',
+      reservation_date: '2022-05-14',
+    },
+    {
+      item_id: 3,
+      item_name: '할리갈리',
+      price: 12000,
+      image_url: 'https://reactjs.org/logo-og.png',
+      quantity: 2,
+      shop_name: '호진이가게',
+      reservation_date: '2022-05-14',
+    },
+    {
+      item_id: 3,
+      item_name: '할리갈리',
+      price: 12000,
+      image_url: 'https://reactjs.org/logo-og.png',
+      quantity: 2,
+      shop_name: '호진이가게',
+      reservation_date: '2022-05-14',
+    },
+    {
+      item_id: 3,
+      item_name: '할리갈리',
+      price: 12000,
+      image_url: 'https://reactjs.org/logo-og.png',
+      quantity: 2,
+      shop_name: '호진이가게',
+      reservation_date: '2022-05-14',
+    },
   ];
 
   useEffect(() => {
