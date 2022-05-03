@@ -13,7 +13,7 @@ import java.util.List;
 @Primary
 public class CustomBasePathJsonSerializer extends JsonSerializer {
 
-    private static final String BASE_PATH = "/api";
+    private static final String BASE_PATH = "/";
 
     public CustomBasePathJsonSerializer(List<JacksonModuleRegistrar> modules) {
         super(modules);
