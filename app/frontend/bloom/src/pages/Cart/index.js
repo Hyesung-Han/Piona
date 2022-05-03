@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import CartCardList from '../../components/CartCard';
+import CartFooter from '../../components/CartCard/footer';
 
 /**
  * CSW | 2022.04.28
@@ -58,7 +59,7 @@ const CartPage = ({navigation}) => {
       reservation_date: '2022-05-14',
     },
     {
-      item_id: 3,
+      item_id: 1,
       item_name: '할리갈리',
       price: 12000,
       image_url: 'https://reactjs.org/logo-og.png',
@@ -67,7 +68,7 @@ const CartPage = ({navigation}) => {
       reservation_date: '2022-05-14',
     },
     {
-      item_id: 3,
+      item_id: 2,
       item_name: '할리갈리',
       price: 12000,
       image_url: 'https://reactjs.org/logo-og.png',
@@ -76,7 +77,7 @@ const CartPage = ({navigation}) => {
       reservation_date: '2022-05-14',
     },
     {
-      item_id: 3,
+      item_id: 1,
       item_name: '할리갈리',
       price: 12000,
       image_url: 'https://reactjs.org/logo-og.png',
@@ -85,16 +86,7 @@ const CartPage = ({navigation}) => {
       reservation_date: '2022-05-14',
     },
     {
-      item_id: 3,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 3,
+      item_id: 2,
       item_name: '할리갈리',
       price: 12000,
       image_url: 'https://reactjs.org/logo-og.png',
@@ -127,6 +119,7 @@ const CartPage = ({navigation}) => {
           //무한 스크롤때문에 넣은듯
           // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
           // onEndReachedThreshold={0.4}
+          ListFooterComponent={CartFooter}
         />
       </View>
     </View>
