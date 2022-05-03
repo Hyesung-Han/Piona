@@ -69,7 +69,7 @@ const PicnicCardList = ({item}) => {
           <View style={{width: '20%', height: 25}}>
             <View style={styles.status}>
               <Text
-                style={{color: 'white', fontWeight: 'bold', fontSize: 12}}
+                style={{color: 'white', fontWeight: 'bold', fontSize: 11}}
                 //   onPress={() =>
                 //     navigation.navigate('Map', {navigation: `${navigation}`})
                 //   }

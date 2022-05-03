@@ -206,7 +206,7 @@ const MyApp = () => {
           tabBarActiveTintColor: 'black',
           tabBarIndicatorStyle: {backgroundColor: '#F2A7B3'},
           tabBarStyle: {
-            backgroundColor: '#white',
+            backgroundColor: '#F8F8F8',
           },
           tabBarLabelStyle: {fontSize: 12},
           initialRouteName: 'Picnicing',
