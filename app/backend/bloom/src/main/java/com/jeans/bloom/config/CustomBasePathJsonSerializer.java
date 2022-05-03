@@ -13,7 +13,7 @@ import java.util.List;
 @Primary
 public class CustomBasePathJsonSerializer extends JsonSerializer {
 
-    private static final String BASE_PATH = "/";
+    private static final String HOST = "k6a201.p.ssafy.io";
 
     public CustomBasePathJsonSerializer(List<JacksonModuleRegistrar> modules) {
         super(modules);
@@ -23,8 +23,7 @@ public class CustomBasePathJsonSerializer extends JsonSerializer {
     public Json toJson(Object toSerialize) {
         if (toSerialize instanceof Swagger) {
             Swagger swagger = (Swagger) toSerialize;
-            swagger.basePath(BASE_PATH);
-            swagger.host("k6a201.p.ssafy.io"); // 서버 반영시 주석 해제
+            swagger.host(HOST); // 서버 반영시 주석 해제
         }
         return super.toJson(toSerialize);
     }
