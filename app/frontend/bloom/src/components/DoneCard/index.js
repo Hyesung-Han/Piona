@@ -10,7 +10,7 @@ import {
   navigation,
   AppRegistry,
 } from 'react-native';
-import RegisterReview from '../../pages/RegisterReview';
+import HorizonLine from '../HorizonLine';
 
 /**
  * LHJ | 2022.05.02
@@ -37,54 +37,54 @@ const DoneCardList = props => {
     }
   };
   return (
-    <View style={styles.doneCardList}>
-      <View style={styles.seperateContainer}>
-        <View style={{width: '65%'}}>
-          <View style={styles.itemInfoContainer}>
-            <View style={styles.itemTitleAndDate}>
-              <View>
-                <Text style={styles.itemTitle}>{props.item.shopName}</Text>
+    <View style={styles.container}>
+      <View style={styles.doneCardList}>
+        <View style={styles.seperateContainer}>
+          <View style={{width: '75%'}}>
+            <View style={styles.itemInfoContainer}>
+              <View style={styles.itemTitleAndDate}>
+                <View>
+                  <Text style={styles.itemTitle}>{props.item.shopName}</Text>
+                </View>
+                <View>
+                  <Text style={styles.itemDate}>{props.item.date}</Text>
+                </View>
               </View>
               <View>
-                <Text style={styles.itemDate}>{props.item.date}</Text>
+                <Text style={styles.itemDesc}>{props.item.desc}</Text>
               </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#F15C74',
+                    color: 'black',
+                    width: '60%',
+                    alignItems: 'center',
+                    borderRadius: 20,
+                    height: 20,
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{color: 'white', fontSize: 11, fontWeight: 'bold'}}>
+                    리뷰쓰기
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{width: '60%'}}></View>
             </View>
-            <View>
-              <Text style={styles.itemDesc}>{props.item.desc}</Text>
-            </View>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity>
-                <Button
-                  style={{fontSize: 15, color: 'black', width: '80%'}}
-                  styleDisabled={{color: 'red'}}
-                  // onPress={() => {
-                  //   setReviewModal(true);
-                  // }}
-                  onPress={props.func}
-                  color="#F15C74"
-                  //color="#FDECC8"
-                  //color="#6EC500"
-                  //color="#FD8900"
-                  title="리뷰등록">
-                  리뷰등록
-                </Button>
-              </TouchableOpacity>
-            </View>
-            <View style={{width: '60%'}}></View>
+          </View>
+          <View style={{width: '35%', elevation: 5}}>
+            <Image
+              source={{uri: `${props.item.imgUrl}`}}
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 15,
+              }}
+            />
           </View>
         </View>
-        <View style={{width: '35%'}}>
-          <Image
-            source={{uri: `${props.item.imgUrl}`}}
-            style={{
-              resizeMode: 'contain',
-              width: '100%',
-              height: 100,
-            }}
-          />
-        </View>
-      </View>
-      {/* <Modal
+        {/* <Modal
         animationType={'fade'}
         transparent={true}
         useNativeDriver={true} //모달창 깜빡임 없앰
@@ -94,17 +94,23 @@ const DoneCardList = props => {
           exit={data => setReviewModal(data)}
         />
       </Modal> */}
+      </View>
+      <HorizonLine />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
   doneCardList: {
     width: '100%',
     backgroundColor: 'white',
-    borderColor: '#BBBBBBB',
     borderRadius: 5,
-    borderWidth: 1,
     paddingVertical: 15,
     paddingHorizontal: 20,
     flexDirection: 'row',
@@ -121,30 +127,28 @@ const styles = StyleSheet.create({
   },
   itemTitleAndDate: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   itemTitle: {
-    marginVertical: 5,
-    fontSize: 20,
+    fontSize: 12,
     fontWeight: 'bold',
     color: 'black',
   },
   itemDate: {
-    marginLeft: 10,
-    marginTop: 17,
     fontSize: 10,
     color: 'black',
+    marginLeft: 15,
   },
   itemDesc: {
     marginVertical: 5,
     //marginLeft: 10,
     //marginTop: 10,
-    fontSize: 15,
+    fontSize: 11,
     color: 'gray',
   },
   buttonContainer: {
     width: '40%',
-    marginVertical: 5,
+    marginTop: 5,
   },
 });
 
