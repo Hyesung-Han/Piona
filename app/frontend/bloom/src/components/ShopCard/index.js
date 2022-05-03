@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     width: '20%',
-    top: 5,
-    left: 5,
+    top: 1,
+    left: 1,
   },
 });
 
