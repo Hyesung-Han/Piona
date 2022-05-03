@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -23,7 +23,7 @@ import RegisterReview from '../../pages/RegisterReview';
  * Figma에 정의된 데로 왼쪽에 가게 이름, 예약 날짜, 물품, 리뷰등록 버튼이 있고, 오른쪽에 사진이 들어간다.
  */
 
-const DoneCardList = (props) => {
+const DoneCardList = props => {
   const [registerReviewModal, setReviewModal] = useState(false);
 
   //아이템을 받아오면 그 아이템의 이름에서 불필요한 부분을 replace하고 리턴한다.
@@ -39,7 +39,7 @@ const DoneCardList = (props) => {
   return (
     <View style={styles.doneCardList}>
       <View style={styles.seperateContainer}>
-        <View style={{ width: '65%' }}>
+        <View style={{width: '65%'}}>
           <View style={styles.itemInfoContainer}>
             <View style={styles.itemTitleAndDate}>
               <View>
@@ -55,8 +55,8 @@ const DoneCardList = (props) => {
             <View style={styles.buttonContainer}>
               <TouchableOpacity>
                 <Button
-                  style={{ fontSize: 15, color: 'black', width: '80%' }}
-                  styleDisabled={{ color: 'red' }}
+                  style={{fontSize: 15, color: 'black', width: '80%'}}
+                  styleDisabled={{color: 'red'}}
                   // onPress={() => {
                   //   setReviewModal(true);
                   // }}
@@ -70,12 +70,12 @@ const DoneCardList = (props) => {
                 </Button>
               </TouchableOpacity>
             </View>
-            <View style={{ width: '60%' }}></View>
+            <View style={{width: '60%'}}></View>
           </View>
         </View>
-        <View style={{ width: '35%' }}>
+        <View style={{width: '35%'}}>
           <Image
-            source={{ uri: `${props.item.imgUrl}` }}
+            source={{uri: `${props.item.imgUrl}`}}
             style={{
               resizeMode: 'contain',
               width: '100%',
