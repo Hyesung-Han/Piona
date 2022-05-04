@@ -28,7 +28,14 @@ const ShopCard = ({item, func}, props) => {
     }
   };
 
-
+  const deleteWish = async () => {
+    try {
+      const res = await WishListAPI.deleteWishList(props.wish_id);
+      console.log(res);
+    } catch (error) {
+      console.log('위시리스트 추가', error);
+    }
+  };
 
   const startScore = () => {
     const result = [];
@@ -78,7 +85,7 @@ const ShopCard = ({item, func}, props) => {
                 size={25}
                 onPress={() => {
                   setHeartStaus(prevStatus => (prevStatus ? false : true));
-
+                  deleteWish();
                 }}
               />
             )}
