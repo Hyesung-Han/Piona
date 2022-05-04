@@ -12,7 +12,7 @@ import Carousel from 'react-native-snap-carousel';
 import HorizonLine from '../HorizonLine';
 
 /**
- * LHJ | 2022.05.02
+ * LHJ | 2022.05.04
  * @name PicnicCard
  * @api x
  * @des
@@ -30,7 +30,7 @@ const PicnicCardList = ({item}) => {
       <View>
         <View style={{height: 150}}>
           <Image
-            source={{uri: `${item.imageUrl}`}}
+            source={{uri: `${item.image_url}`}}
             style={{
               resizeMode: 'contain', //contain:사진의 비율 유지, cover:사진을 영역에 맞춤
               borderRadius: 5,
@@ -40,10 +40,8 @@ const PicnicCardList = ({item}) => {
             }}
           />
           <View style={styles.rowSeperateContainer}>
-            {/* <Text style={{fontSize: 10}}>{item.itemName}</Text>
-            <Text style={{fontSize: 10}}> {item.quantity}개</Text> */}
             <View style={{width: '75%'}}>
-              <Text style={styles.carouselItemName}>{item.itemName}</Text>
+              <Text style={styles.carouselItemName}>{item.item_name}</Text>
             </View>
             <View style={{width: '25%'}}>
               <Text style={styles.carouselQuantity}> {item.quantity}개</Text>
@@ -60,11 +58,13 @@ const PicnicCardList = ({item}) => {
         <View style={styles.rowSeperateContainer}>
           <View style={{width: '35%'}}>
             <Text numberOfLines={1} style={styles.shopName}>
-              {item.shopName}
+              {item.shop_name}
             </Text>
           </View>
           <View style={{width: '30%'}}>
-            <Text style={styles.resDate}>{item.date}</Text>
+            <Text style={styles.resDate}>
+              {item.reservation_date.split('T')[0]}
+            </Text>
           </View>
           <View style={{width: '20%', height: 25}}>
             <View style={styles.status}>
@@ -98,7 +98,7 @@ const PicnicCardList = ({item}) => {
         <View style={styles.rowSeperateContainer}>
           <View style={{width: '10%'}} />
           <View style={{width: '90%', marginTop: 15}}>
-            <Text style={styles.quantity}>총 {item.shopName}원</Text>
+            <Text style={styles.quantity}>총 {item.total_price}원</Text>
           </View>
         </View>
         <HorizonLine />
