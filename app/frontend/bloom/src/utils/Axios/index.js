@@ -1,4 +1,6 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
@@ -57,17 +59,6 @@ let request = axios.create({
 // function setToken(value) {
 //   AsyncStorage.setItem('token', `Bearer ${value}`);
 // }
-
-export const myinfo = async () => {
-  return await request
-    .get(`/users`, {})
-    .then(response => {
-      return response.data;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
 
 export const withdraw = async () => {
   return await request
@@ -239,6 +230,39 @@ export const cartAPI = {
       })
       .catch(error => {
         return error.response.status;
+      });
+  },
+};
+export const WishListAPI = {
+  getWishList: async user_id => {
+    return await request
+      .get('/wishlist', {params: {user_id: user_id}})
+      .then(response => {
+        return response.data;
+      })
+      .catch(err => {
+        return err.response.data;
+      });
+  },
+
+  deleteWishList: async wish_id => {
+    return await request
+      .delete('/wishlist', {params: {wish_id: wish_id}})
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(err => {
+        return err.response.data;
+      });
+  },
+  addWishList: async (shop_number, user_id) => {
+    return await request
+      .post('/wishlist', {params: {shop_number: shop_number, user_id: user_id}})
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(err => {
+        return err.response.data;
       });
   },
 };
