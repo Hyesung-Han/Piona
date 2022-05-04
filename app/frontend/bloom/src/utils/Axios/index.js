@@ -188,9 +188,9 @@ export const userAPI = {
 };
 
 export const cartAPI = {
-  getCartList: async user_id => {
+  getCartList: async userId => {
     return await request
-      .get('/cart', {params: {user_id: user_id}})
+      .get('/cart', {params: {userId: userId}})
       .then(response => {
         return response.data;
       })

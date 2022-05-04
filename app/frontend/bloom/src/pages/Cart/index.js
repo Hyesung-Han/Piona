@@ -12,6 +12,7 @@ import {
 import CartCardList from '../../components/CartCard';
 import CartFooter from '../../components/CartCard/footer';
 import {cartAPI} from '../../utils/Axios';
+import {useSelector} from 'react-redux';
 
 /**
  * CSW | 2022.04.28
@@ -30,81 +31,28 @@ const CartPage = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [heartStatus, setHeartStaus] = useState(false);
 
-  //getData에 완료된 예약 정보 가져오는 api를 넣자!!!
-  const getData = () => {
-    setLoading(true);
-    fetch('http://jsonplaceholder.typicode.com/posts')
-      //해당 api를 통해서 받아오는 정보는 userId, id, title, body이다.
-      .then(res => res.json())
-      .then(res => setData(res));
+  const user_id = useSelector(state => state.id);
+
+  const getCart = async () => {
+    try {
+      const res = await cartAPI.getCartList('piona');
+      setData(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.log('위시리스트 검색', error);
+    }
   };
-
-  const DATA = [
-    //괄호 하나하나가 item이 된다.
-    {
-      item_id: 1,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 2,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 1,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 2,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 1,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 2,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-  ];
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const renderItem = ({item}) => {
     item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
     return <CartCardList item={item} />;
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      getCart();
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
@@ -112,7 +60,7 @@ const CartPage = ({navigation}) => {
         <FlatList
           //리스트의 소스를 담는 속성
           //data={data}
-          data={DATA}
+          data={data}
           //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
           //item의 고유의 키를 부여하는 속성
