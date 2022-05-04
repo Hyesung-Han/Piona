@@ -24,7 +24,7 @@ public class CustomBasePathJsonSerializer extends JsonSerializer {
         if (toSerialize instanceof Swagger) {
             Swagger swagger = (Swagger) toSerialize;
             if(!swagger.getHost().equals("localhost:8080"))
-                swagger.host(SERVER_HOST); // 서버 반영시 주석 해제
+                swagger.host(SERVER_HOST);
         }
         return super.toJson(toSerialize);
     }
