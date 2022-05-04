@@ -23,12 +23,12 @@ import {userAPI} from '../../utils/Axios';
 const SignUpModal = props => {
   const [loading, setLoading] = useState(false);
 
-  const [idColor, setIdColor] = useState('#000000');
-  const [passwordColor, setPasswordColor] = useState('#000000');
-  const [passwordCheckColor, setPasswordCheckColor] = useState('#000000');
-  const [nameColor, setNameColor] = useState('#000000');
-  const [nicknameColor, setNicknameColor] = useState('#000000');
-  const [phoneNumberColor, setPhoneNumberColor] = useState('#000000');
+  const [idColor, setIdColor] = useState('#C0C0C0');
+  const [passwordColor, setPasswordColor] = useState('#C0C0C0');
+  const [passwordCheckColor, setPasswordCheckColor] = useState('#C0C0C0');
+  const [nameColor, setNameColor] = useState('#C0C0C0');
+  const [nicknameColor, setNicknameColor] = useState('#C0C0C0');
+  const [phoneNumberColor, setPhoneNumberColor] = useState('#C0C0C0');
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -209,16 +209,18 @@ const SignUpModal = props => {
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: '#F2A7B3',
       }}>
       <View
         style={{
           position: 'absolute',
-          width: '90%',
+          width: '100%',
           height: '90%',
           backgroundColor: 'white',
-          borderRadius: 20,
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
           elevation: 2,
+          bottom: 0,
         }}>
         <View
           style={{
@@ -230,7 +232,6 @@ const SignUpModal = props => {
           <Text
             style={{
               fontSize: 20,
-              color: 'black',
               fontWeight: 'bold',
               marginLeft: 10,
             }}>
@@ -259,7 +260,6 @@ const SignUpModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 marginLeft: 40,
                 marginTop: 10,
@@ -283,7 +283,7 @@ const SignUpModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -294,7 +294,7 @@ const SignUpModal = props => {
                     width: '85%',
                     textAlign: 'center',
                     backgroundColor: '#EEEEEE',
-                    borderRadius: 20,
+                    borderRadius: 5,
                     marginRight: 5,
                   }}
                 />
@@ -311,7 +311,6 @@ const SignUpModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 marginLeft: 40,
                 marginTop: 10,
@@ -352,7 +351,7 @@ const SignUpModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -380,7 +379,6 @@ const SignUpModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 marginLeft: 40,
                 marginTop: 10,
@@ -404,7 +402,7 @@ const SignUpModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -433,7 +431,6 @@ const SignUpModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 marginLeft: 40,
                 marginTop: 10,
@@ -457,7 +454,7 @@ const SignUpModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -486,7 +483,6 @@ const SignUpModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 marginLeft: 40,
                 marginTop: 10,
@@ -527,7 +523,7 @@ const SignUpModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -555,7 +551,6 @@ const SignUpModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 marginLeft: 40,
                 marginTop: 10,
@@ -596,7 +591,7 @@ const SignUpModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -628,7 +623,7 @@ const SignUpModal = props => {
                 color: 'black',
                 width: '100%',
                 alignItems: 'center',
-                borderRadius: 12,
+                borderRadius: 5,
                 height: 40,
                 justifyContent: 'center',
               }}
