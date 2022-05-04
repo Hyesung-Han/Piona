@@ -34,9 +34,9 @@ public class AlarmController {
     @GetMapping
     @ApiOperation(value = "알람 목록 조회", notes = "아이디를 통해 회원의 알람람리스트를 조회한다")
     public ResponseEntity<BaseResponseBody> findAlarmsByUser_UserId(
-            @RequestParam @ApiParam(value="회원아이디", required = true) String userId) {
+            @RequestParam @ApiParam(value="회원아이디", required = true) String user_id) {
         try{
-            List<AlarmRes> alarmList = alarmService.findAlarmsByUser_UserId(userId);
+            List<AlarmRes> alarmList = alarmService.findAlarmsByUser_UserId(user_id);
             return ResponseEntity.status(200).body(BaseResponseBody.of( "success", alarmList));
         } catch (Exception e) {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
@@ -52,9 +52,9 @@ public class AlarmController {
     @PatchMapping
     @ApiOperation(value = "알람 모두 읽기", notes = "아이디를 통해 회원의 알람람리스트를 모두 읽음으로 체크한다")
     public ResponseEntity<BaseResponseBody> readAllAlarm(
-            @RequestParam @ApiParam(value="회원아이디", required = true) String userId) {
+            @RequestParam @ApiParam(value="회원아이디", required = true) String user_id) {
         try{
-            alarmService.readAllAlarm(userId);
+            alarmService.readAllAlarm(user_id);
             return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
         } catch (Exception e) {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
