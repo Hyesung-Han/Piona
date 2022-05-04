@@ -40,6 +40,7 @@ const SearchResultPage = ({navigation}) => {
   const DATA = [
     //괄호 하나하나가 item이 된다.
     {
+      shop_number: 1,
       shopName: '호진이가게',
       address: '호진이가게,ㅁㄴㅇ',
       imgUrl: 'https://reactjs.org/logo-og.png',
@@ -47,6 +48,7 @@ const SearchResultPage = ({navigation}) => {
       wish: '',
     },
     {
+      shop_number: 2,
       shopName: '소원이가게',
       address: '소원이가게',
       imgUrl: 'https://reactjs.org/logo-og.png',
@@ -54,6 +56,7 @@ const SearchResultPage = ({navigation}) => {
       wish: '1',
     },
     {
+      shop_number: 3,
       shopName: '혜성이가게',
       address: '혜성이가게',
       imgUrl: 'https://reactjs.org/logo-og.png',
@@ -61,6 +64,7 @@ const SearchResultPage = ({navigation}) => {
       wish: '',
     },
     {
+      shop_number: 4,
       shopName: '동준이형가게',
       address: '동준이형가게',
       imgUrl: 'https://reactjs.org/logo-og.png',
@@ -68,38 +72,16 @@ const SearchResultPage = ({navigation}) => {
       wish: '',
     },
     {
+      shop_number: 5,
       shopName: '정아누나가게',
       address: '정아누나가게',
       imgUrl: 'https://reactjs.org/logo-og.png',
       score: 5,
     },
     {
+      shop_number: 6,
       shopName: '윤택이형가게',
       address: '윤택이형가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-    },
-    {
-      shopName: '호진이가게',
-      address: '호진이가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-    },
-    {
-      shopName: '호진이가게',
-      address: '호진이가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-    },
-    {
-      shopName: '호진이가게',
-      address: '호진이가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-    },
-    {
-      shopName: '호진이가게',
-      address: '호진이가게',
       imgUrl: 'https://reactjs.org/logo-og.png',
       score: 5,
     },
@@ -147,7 +129,7 @@ const SearchResultPage = ({navigation}) => {
             //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
             renderItem={renderItem}
             //item의 고유의 키를 부여하는 속성
-            keyExtractor={item => String(item.id)}
+            keyExtractor={item => String(item.shop_number)}
             //무한 스크롤때문에 넣은듯
             // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
             // onEndReachedThreshold={0.4}
