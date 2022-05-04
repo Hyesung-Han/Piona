@@ -15,50 +15,50 @@ let request = axios.create({
   baseURL: 'https://k6a201.p.ssafy.io/api',
 });
 
-request.interceptors.request.use(async config => {
-  if (await AsyncStorage.getItem('token')) {
-    config.headers['Authorization'] = await AsyncStorage.getItem('token');
-  }
-  return config;
-});
+// request.interceptors.request.use(async config => {
+//   if (await AsyncStorage.getItem('token')) {
+//     config.headers['Authorization'] = await AsyncStorage.getItem('token');
+//   }
+//   return config;
+// });
 
-request.interceptors.response.use(
-  response => {
-    return response;
-  },
-  async err => {
-    const originalConfig = err.config;
-    if (err.response) {
-      if (err.response.status === 420 && !originalConfig.retry) {
-        originalConfig.retry = true;
-        try {
-          const refresh = await request
-            .post('/auth/reissue', {
-              refreshToken: await AsyncStorage.getItem('refresh'),
-            })
-            .then(response => response.data);
-          AsyncStorage.removeItem('refresh');
-          AsyncStorage.removeItem('token');
-          AsyncStorage.setItem('refresh', refresh.refreshToken);
-          setToken(refresh.accessToken);
-          request.defaults.headers.common['Authorization'] =
-            'Bearer ' + refresh.accessToken;
-          return request(originalConfig);
-        } catch (error) {
-          if (error.response && error.response.data) {
-            return Promise.reject(error.response.data);
-          }
-          return Promise.reject(error);
-        }
-      }
-    }
-    return Promise.reject(err);
-  },
-);
+// request.interceptors.response.use(
+//   response => {
+//     return response;
+//   },
+//   async err => {
+//     const originalConfig = err.config;
+//     if (err.response) {
+//       if (err.response.status === 420 && !originalConfig.retry) {
+//         originalConfig.retry = true;
+//         try {
+//           const refresh = await request
+//             .post('/auth/reissue', {
+//               refreshToken: await AsyncStorage.getItem('refresh'),
+//             })
+//             .then(response => response.data);
+//           AsyncStorage.removeItem('refresh');
+//           AsyncStorage.removeItem('token');
+//           AsyncStorage.setItem('refresh', refresh.refreshToken);
+//           setToken(refresh.accessToken);
+//           request.defaults.headers.common['Authorization'] =
+//             'Bearer ' + refresh.accessToken;
+//           return request(originalConfig);
+//         } catch (error) {
+//           if (error.response && error.response.data) {
+//             return Promise.reject(error.response.data);
+//           }
+//           return Promise.reject(error);
+//         }
+//       }
+//     }
+//     return Promise.reject(err);
+//   },
+// );
 
-function setToken(value) {
-  AsyncStorage.setItem('token', `Bearer ${value}`);
-}
+// function setToken(value) {
+//   AsyncStorage.setItem('token', `Bearer ${value}`);
+// }
 
 export const withdraw = async () => {
   return await request
@@ -187,7 +187,52 @@ export const userAPI = {
   },
 };
 
+export const cartAPI = {
+  getCartList: async userId => {
+    return await request
+      .get('/cart', {params: {userId: userId}})
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
+  addCartList: async (
+    userId,
+    quantity,
+    reservationDate,
+    shopNumber,
+    itemId,
+  ) => {
+    return await request
+      .post('/user', {
+        userId,
+        quantity,
+        reservationDate,
+        shopNumber,
+        itemId,
+      })
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error.response.status;
+      });
+  },
+
+  deleteCartList: async cartId => {
+    return await request
+      .delete('/cart', {cartId})
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error.response.status;
+      });
+  },
+};
 /**
  * LHJ | 2022.05.04
  * @name getMyReservationList
