@@ -4,7 +4,7 @@ import HorizonLine from '../HorizonLine';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 /**
- * CSW | 2022.04.28
+ * CSW | 2022.05.04
  * @name ShopCard
  * @api x
  * @des
@@ -13,9 +13,23 @@ import Icon from 'react-native-vector-icons/Ionicons';
  * FlatList에 보여줄 item 컴포넌트이다.
  */
 
-const ShopCard = ({item}, props) => {
+const ShopCard = ({item, func}, props) => {
   const [heartStatus, setHeartStaus] = useState(props.heartStatus);
 
+  const startScore = () => {
+    const result = [];
+    for (let i = 0; i < item.score; i++) {
+      result.push(
+        <Icon
+          name="star"
+          color="#F2A344"
+          backgroundColor="transparent"
+          size={15}
+        />,
+      );
+    }
+    return result;
+  };
 
   return (
     <View style={styles.CardList}>
@@ -60,8 +74,9 @@ const ShopCard = ({item}, props) => {
               <View>
                 <Text style={styles.itemTitle}>{item.name}</Text>
               </View>
-              <View>
+              <View style={styles.scoreBox}>
                 <Text style={styles.itemScore}>{item.score}</Text>
+                <View style={styles.starIcons}>{startScore()}</View>
               </View>
             </View>
             <View>
@@ -107,7 +122,7 @@ const styles = StyleSheet.create({
   },
   itemScore: {
     marginVertical: 5,
-    marginLeft: 20,
+    marginLeft: 30,
     fontSize: 15,
     color: 'black',
   },
@@ -131,6 +146,15 @@ const styles = StyleSheet.create({
     width: '20%',
     top: 1,
     left: 1,
+  },
+  starIcons: {
+    flexDirection: 'row',
+    marginLeft: 10,
+  },
+  scoreBox: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
