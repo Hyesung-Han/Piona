@@ -10,10 +10,12 @@ import {
 } from 'react-native';
 import ShopCard from '../../components/ShopCard';
 import {getWishList} from '../../utils/Axios';
+import {useSelector} from 'react-redux';
 
 /**
  * CSW | 2022.05.04
  * @name WishListPage
+ * @api getWishList
  * @des
  * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
  * TODO
@@ -21,8 +23,10 @@ import {getWishList} from '../../utils/Axios';
  * 2. api 적용
  *  */
 
+// 테스트
 const WishListPage = ({navigation}) => {
   const [wishlist, setWishList] = useState([]);
+  const user_id = useSelector(state => state.id);
 
   const getWish = async () => {
     try {
@@ -32,6 +36,16 @@ const WishListPage = ({navigation}) => {
       console.log('위시리스트', error);
     }
   };
+
+  //로그인 적용 시
+  // const getWish = async () => {
+  //   try {
+  //     const res = await getWishList(user_id);
+  //     setWishList(res.data);
+  //   } catch (error) {
+  //     console.log('위시리스트', error);
+  //   }
+  // };
 
   const renderItem = ({item}) => {
     return (
