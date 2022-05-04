@@ -13,8 +13,6 @@ import React from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
-  StyleProp,
-  ViewStyle,
   KeyboardAvoidingView,
 } from 'react-native';
 
