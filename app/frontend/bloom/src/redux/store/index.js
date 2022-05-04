@@ -1,5 +1,4 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {useDispatch} from 'react-redux';
 import rootReducer from './reducer';
 
 const store = configureStore({
@@ -14,5 +13,3 @@ const store = configureStore({
 });
 
 export default store;
-
-export const useAppDispatch = () => useDispatch();
