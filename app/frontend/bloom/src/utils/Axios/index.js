@@ -187,6 +187,28 @@ export const userAPI = {
   },
 };
 
+
+/**
+ * LHJ | 2022.05.04
+ * @name getMyReservationList
+ * @api .
+ * @des
+ * 1. api 기능 :
+ * 나의 예약현황 보기
+ * response를 받고 result를 뺀 data부분만 return한다.
+ */
+export const getMyReservationList = async user_id => {
+  return await request
+    .get('/picnic', {params: {userId: user_id}})
+    .then(response => {
+      //response의 result는 제외한 data(배열)만을 반환
+      return response.data;
+    })
+    .catch(error => {
+      //api 반환 실패시 상태 반환
+      return error.response.status;
+    });
+};
 export const WishListAPI = {
   getWishList: async user_id => {
     return await request
@@ -219,4 +241,5 @@ export const WishListAPI = {
         return err.response.data;
       });
   },
+
 };
