@@ -2,11 +2,13 @@ import React, {useState, useCallback} from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import HorizonLine from '../HorizonLine';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {WishListAPI} from '../../utils/Axios';
+import {useSelector} from 'react-redux';
 
 /**
  * CSW | 2022.05.04
  * @name ShopCard
- * @api x
+ * @api WishListAPI/addWishList, WishListAPI/deleteWishList
  * @des
  * 1. 컴포넌트 목록 :
  * 2. 페이지 기능 :
@@ -15,6 +17,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const ShopCard = ({item, func}, props) => {
   const [heartStatus, setHeartStaus] = useState(props.heartStatus);
+  const user_id = useSelector(state => state.id);
+
+  const addWish = async () => {
+    try {
+      const res = await WishListAPI.addWishList(props.shop_number, 'piona');
+      console.log(res);
+    } catch (error) {
+      console.log('위시리스트 추가', error);
+    }
+  };
+
+
 
   const startScore = () => {
     const result = [];
@@ -51,9 +65,10 @@ const ShopCard = ({item, func}, props) => {
                 color="#F15C74"
                 backgroundColor="transparent"
                 size={25}
-                onPress={() =>
-                  setHeartStaus(prevStatus => (prevStatus ? false : true))
-                }
+                onPress={() => {
+                  setHeartStaus(prevStatus => (prevStatus ? false : true));
+                  addWish();
+                }}
               />
             ) : (
               <Icon.Button
@@ -61,9 +76,10 @@ const ShopCard = ({item, func}, props) => {
                 color="#F15C74"
                 backgroundColor="transparent"
                 size={25}
-                onPress={() =>
-                  setHeartStaus(prevStatus => (prevStatus ? false : true))
-                }
+                onPress={() => {
+                  setHeartStaus(prevStatus => (prevStatus ? false : true));
+
+                }}
               />
             )}
           </View>
