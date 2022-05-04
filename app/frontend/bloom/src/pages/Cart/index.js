@@ -21,7 +21,6 @@ import {useSelector} from 'react-redux';
  * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
  * TODO
  * 1. navition 카드별로 적용
- * 2. api 적용
  *  */
 
 const CartPage = ({navigation}) => {
@@ -33,6 +32,7 @@ const CartPage = ({navigation}) => {
 
   const user_id = useSelector(state => state.id);
 
+  // 추후 piona자리에 user_id로 대체
   const getCart = async () => {
     try {
       const res = await cartAPI.getCartList('piona');
@@ -45,7 +45,7 @@ const CartPage = ({navigation}) => {
 
   const renderItem = ({item}) => {
     item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
-    return <CartCardList item={item} />;
+    return <CartCardList item={item} navigation={navigation}/>;
   };
 
   useFocusEffect(
