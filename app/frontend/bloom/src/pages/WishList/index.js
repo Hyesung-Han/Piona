@@ -34,7 +34,13 @@ const WishListPage = ({navigation}) => {
   };
 
   const renderItem = ({item}) => {
-    return <ShopCard item={item} heartStatus={true} />;
+    return (
+      <ShopCard
+        item={item}
+        heartStatus={true}
+        func={() => navigation.navigate('ShopHome')}
+      />
+    );
   };
 
   useFocusEffect(
