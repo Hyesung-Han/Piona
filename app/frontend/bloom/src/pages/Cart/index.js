@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import CartCardList from '../../components/CartCard';
 import CartFooter from '../../components/CartCard/footer';
+import {cartAPI} from '../../utils/Axios';
 
 /**
  * CSW | 2022.04.28
