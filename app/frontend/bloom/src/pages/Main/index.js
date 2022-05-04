@@ -26,7 +26,7 @@ import {useSelector} from 'react-redux';
 
 const MainPage = ({navigation}) => {
   const [inputText, setInputText] = useState('');
-  const user_nickname = useSelector(state => state.nickname);
+  const user_nickname = useSelector(state => state.user.nickname);
 
   return (
     <ScrollView style={styles.container}>
