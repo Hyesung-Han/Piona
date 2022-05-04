@@ -54,9 +54,9 @@ let request = axios.create({
 //   },
 // );
 
-function setToken(value) {
-  AsyncStorage.setItem('token', `Bearer ${value}`);
-}
+// function setToken(value) {
+//   AsyncStorage.setItem('token', `Bearer ${value}`);
+// }
 
 export const myinfo = async () => {
   return await request
@@ -187,6 +187,53 @@ export const userAPI = {
   emailCheck: async userEmail => {
     return await request
       .get(`/users/email/${userEmail}`, {})
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error.response.status;
+      });
+  },
+};
+
+export const cartAPI = {
+  getCartList: async user_id => {
+    return await request
+      .get('/cart', {params: {user_id: user_id}})
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+
+  addCartList: async (
+    userId,
+    quantity,
+    reservationDate,
+    shopNumber,
+    itemId,
+  ) => {
+    return await request
+      .post('/user', {
+        userId,
+        quantity,
+        reservationDate,
+        shopNumber,
+        itemId,
+      })
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error.response.status;
+      });
+  },
+
+  deleteCartList: async cartId => {
+    return await request
+      .delete('/cart', {cartId})
       .then(response => {
         return response.data.statusCode;
       })
