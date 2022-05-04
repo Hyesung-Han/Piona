@@ -30,7 +30,7 @@ const CartPage = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [heartStatus, setHeartStaus] = useState(false);
 
-  const user_id = useSelector(state => state.id);
+  const user_id = useSelector(state => state.user.id);
 
   // 추후 piona자리에 user_id로 대체
   const getCart = async () => {

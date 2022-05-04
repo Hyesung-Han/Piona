@@ -25,7 +25,7 @@ import {useSelector} from 'react-redux';
 // 테스트
 const WishListPage = ({navigation}, props) => {
   const [wishlist, setWishList] = useState([]);
-  const user_id = useSelector(state => state.id);
+  const user_id = useSelector(state => state.user.id);
 
   const getWish = async () => {
     try {
