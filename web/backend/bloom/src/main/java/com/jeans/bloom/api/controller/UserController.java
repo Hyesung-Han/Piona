@@ -1,5 +1,7 @@
 package com.jeans.bloom.api.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jeans.bloom.api.request.FormDataReq;
 import com.jeans.bloom.api.request.ShopInfoReq;
 import com.jeans.bloom.api.request.UserLoginPostReq;
 import com.jeans.bloom.api.request.UserRegiPostReq;
@@ -7,14 +9,18 @@ import com.jeans.bloom.api.response.ShopRes;
 import com.jeans.bloom.api.response.UserRes;
 import com.jeans.bloom.api.service.MessageService;
 import com.jeans.bloom.api.service.UserService;
+import com.jeans.bloom.common.auth.AwsS3Service;
 import com.jeans.bloom.common.response.BaseResponseBody;
 import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.Shop;
 import com.jeans.bloom.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
  * OYT | 2022.04.27
@@ -30,6 +36,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AwsS3Service awsS3Service;
     @Autowired
     private MessageService messageService;
 
@@ -219,13 +227,18 @@ public class UserController {
      * @api {patch} /user
      * @des 회원 ID를 입력받아 회원 탈퇴 여부 변경
      */
-    @PatchMapping("")
+    @PatchMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ApiOperation(value = "가게 정보 수정", notes = "가게 정보를 입력 받아 수정한다. ")
     public ResponseEntity<BaseResponseBody> updateShopInfoSave(
-            @RequestBody  @ApiParam(value="회원 수정 정보", required = true) ShopInfoReq shopInfoReq) {
-
+            @ModelAttribute FormDataReq formData ) {
         try{
-            Shop shop = userService.updateShopInfoSave(shopInfoReq);
+            Shop shop = userService.findShopByShopNumber(formData.getShopInfoReq().getShop_number());
+            if (formData.getFile() != null) {
+                if(formData.getShopInfoReq() != null && formData.getShopInfoReq().getImage_url() != null)
+                    awsS3Service.deleteImage(shop.getImageUrl());
+                formData.getShopInfoReq().setImage_url(awsS3Service.uploadImage(formData.getFile()));
+            }
+            shop = userService.updateShopInfoSave(formData.getShopInfoReq());
             return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
