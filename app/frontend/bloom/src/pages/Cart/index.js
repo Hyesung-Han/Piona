@@ -37,7 +37,6 @@ const CartPage = ({navigation}) => {
     try {
       const res = await cartAPI.getCartList('piona');
       setData(res.data);
-      console.log(res.data);
     } catch (error) {
       console.log('위시리스트 검색', error);
     }

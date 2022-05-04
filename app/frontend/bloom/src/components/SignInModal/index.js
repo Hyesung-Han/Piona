@@ -100,15 +100,17 @@ const SignInModal = props => {
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: '#F2A7B3',
       }}>
       <View
         style={{
           position: 'absolute',
-          width: '90%',
+          bottom: 0,
+          width: '100%',
           height: '90%',
           backgroundColor: 'white',
-          borderRadius: 20,
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
           elevation: 2,
         }}>
         <View
@@ -121,7 +123,6 @@ const SignInModal = props => {
           <Text
             style={{
               fontSize: 20,
-              color: 'black',
               fontWeight: 'bold',
               marginLeft: 10,
             }}>
@@ -152,7 +153,6 @@ const SignInModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 width: '20%',
               }}>
@@ -166,26 +166,19 @@ const SignInModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
-              <View
+              <TextInput
+                onChangeText={onChangeId}
+                value={id}
                 style={{
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  margin: 1,
-                }}>
-                <TextInput
-                  onChangeText={onChangeId}
-                  value={id}
-                  style={{
-                    width: '70%',
-                    textAlign: 'center',
-                    backgroundColor: '#EEEEEE',
-                    borderRadius: 20,
-                    marginRight: 5,
-                  }}
-                />
-              </View>
+                  width: '70%',
+                  textAlign: 'center',
+                  backgroundColor: '#EEEEEE',
+                  borderRadius: 10,
+                  marginRight: 5,
+                }}
+              />
             </View>
           </View>
           <View
@@ -199,7 +192,6 @@ const SignInModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 width: '20%',
               }}>
@@ -213,7 +205,7 @@ const SignInModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
               <View
                 style={{
@@ -245,10 +237,9 @@ const SignInModal = props => {
             <TouchableOpacity
               style={{
                 backgroundColor: '#F15C74',
-                color: 'black',
                 width: '100%',
                 alignItems: 'center',
-                borderRadius: 12,
+                borderRadius: 5,
                 height: 40,
                 justifyContent: 'center',
               }}
