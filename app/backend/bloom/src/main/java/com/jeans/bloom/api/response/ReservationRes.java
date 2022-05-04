@@ -23,6 +23,8 @@ public class ReservationRes {
     int reservation_id;
     String shop_number;
     String shop_name;
+    String description;
+    String image_url;
     LocalDateTime reservation_date;
     int total_price;
     OrderStatus status;
@@ -33,6 +35,8 @@ public class ReservationRes {
                 .reservation_id(reservation.getReservationId())
                 .shop_number(reservation.getShop().getShopNumber())
                 .shop_name(reservation.getShop().getName())
+                .description(reservation.getShop().getDescription())
+                .image_url(reservation.getShop().getImageUrl())
                 .reservation_date(reservation.getReservationDetails().get(0).getReservationDate())
                 .total_price(reservation.getTotalPrice())
                 .status(reservation.getStatus())
