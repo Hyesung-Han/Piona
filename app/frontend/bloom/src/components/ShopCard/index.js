@@ -16,23 +16,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const ShopCard = ({item}, props) => {
   const [heartStatus, setHeartStaus] = useState(props.heartStatus);
 
-  //아이템을 받아오면 그 아이템의 이름에서 불필요한 부분을 replace하고 리턴한다.
-  //상품 내용이 너무 길어 공백 문자가 있을 경우에 줄바꿈 문자로 바꾸어서 리턴
-  //아직 미완성인 코드임
-  const desc = () => {
-    if (item.itemDesc.includes(',')) {
-      return item.itemDesc.replace(',', '\n(');
-    } else {
-      return item.itemDesc;
-    }
-  };
 
   return (
     <View style={styles.CardList}>
       <View style={styles.seperateContainer}>
         <View style={{width: '95%'}}>
           <Image
-            source={{uri: `${item.imgUrl}`}}
+            source={{uri: `${item.image_url}`}}
             style={{
               resizeMode: 'cover',
               width: '100%',
@@ -68,7 +58,7 @@ const ShopCard = ({item}, props) => {
           <View style={styles.itemInfoContainer}>
             <View style={styles.itemTitleAndReviewScore}>
               <View>
-                <Text style={styles.itemTitle}>{item.shopName}</Text>
+                <Text style={styles.itemTitle}>{item.name}</Text>
               </View>
               <View>
                 <Text style={styles.itemScore}>{item.score}</Text>
