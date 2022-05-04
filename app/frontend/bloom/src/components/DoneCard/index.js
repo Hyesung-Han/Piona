@@ -11,9 +11,11 @@ import {
   AppRegistry,
 } from 'react-native';
 import HorizonLine from '../HorizonLine';
+import RegisterReview from '../../pages/RegisterReview';
+import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.02
+ * LHJ | 2022.05.04
  * @name DoneCard
  * @api x
  * @des
@@ -23,19 +25,10 @@ import HorizonLine from '../HorizonLine';
  * Figma에 정의된 데로 왼쪽에 가게 이름, 예약 날짜, 물품, 리뷰등록 버튼이 있고, 오른쪽에 사진이 들어간다.
  */
 
-const DoneCardList = props => {
+const DoneCardList = ({item, navigation}) => {
   const [registerReviewModal, setReviewModal] = useState(false);
+  const user_id = useSelector(state => state.id);
 
-  //아이템을 받아오면 그 아이템의 이름에서 불필요한 부분을 replace하고 리턴한다.
-  //상품 내용이 너무 길어 공백 문자가 있을 경우에 줄바꿈 문자로 바꾸어서 리턴
-  //아직 미완성인 코드임
-  const desc = () => {
-    if (props.item.itemDesc.includes(',')) {
-      return props.item.itemDesc.replace(',', '\n(');
-    } else {
-      return props.item.itemDesc;
-    }
-  };
   return (
     <View style={styles.container}>
       <View style={styles.doneCardList}>
@@ -44,14 +37,16 @@ const DoneCardList = props => {
             <View style={styles.itemInfoContainer}>
               <View style={styles.itemTitleAndDate}>
                 <View>
-                  <Text style={styles.itemTitle}>{props.item.shopName}</Text>
+                  <Text style={styles.itemTitle}>{item.shop_name}</Text>
                 </View>
                 <View>
-                  <Text style={styles.itemDate}>{props.item.date}</Text>
+                  <Text style={styles.itemDate}>
+                    {item.reservation_date.split('T')[0]}
+                  </Text>
                 </View>
               </View>
               <View>
-                <Text style={styles.itemDesc}>{props.item.desc}</Text>
+                <Text style={styles.itemDesc}>{item.detail.description}</Text>
               </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
@@ -63,7 +58,13 @@ const DoneCardList = props => {
                     borderRadius: 20,
                     height: 20,
                     justifyContent: 'center',
-                  }}>
+                  }}
+                  onPress={() =>
+                    navigation.navigate('RegisterReview', {
+                      reservationId: `${item.reservation_id}`,
+                      user_id: user_id,
+                    })
+                  }>
                   <Text
                     style={{color: 'white', fontSize: 11, fontWeight: 'bold'}}>
                     리뷰쓰기
@@ -75,7 +76,7 @@ const DoneCardList = props => {
           </View>
           <View style={{width: '35%', elevation: 5}}>
             <Image
-              source={{uri: `${props.item.imgUrl}`}}
+              source={{uri: `${item.img_url}`}}
               style={{
                 width: 60,
                 height: 60,
@@ -84,16 +85,6 @@ const DoneCardList = props => {
             />
           </View>
         </View>
-        {/* <Modal
-        animationType={'fade'}
-        transparent={true}
-        useNativeDriver={true} //모달창 깜빡임 없앰
-        visible={registerReviewModal}>
-        <RegisterReviewModal item={item}
-          next={data => setReviewModal(data)}
-          exit={data => setReviewModal(data)}
-        />
-      </Modal> */}
       </View>
       <HorizonLine />
     </View>
