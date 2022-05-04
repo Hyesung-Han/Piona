@@ -1,47 +1,73 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-// import {userAPI} from '../../utils/Axios';
+import {userAPI} from '../../utils/Axios';
 
 /**
- * LDJ | 2022.04.28
+ * LDJ | 2022.05.04
  * @name SignUpModal
- * @api -
+ * @api /user/signup
  * @des
  * 1. Sign Page에서 회원가입 버튼을 누르면 뜨는 모달 창
  * 2. 유저 정보를 입력받아 회원가입을 진행
  */
 
 const SignUpModal = props => {
-  const [nameColor, setNameColor] = useState('#000000');
+  const [loading, setLoading] = useState(false);
+
   const [idColor, setIdColor] = useState('#000000');
   const [passwordColor, setPasswordColor] = useState('#000000');
   const [passwordCheckColor, setPasswordCheckColor] = useState('#000000');
+  const [nameColor, setNameColor] = useState('#000000');
   const [nicknameColor, setNicknameColor] = useState('#000000');
   const [phoneNumberColor, setPhoneNumberColor] = useState('#000000');
 
-  const [name, setName] = useState('');
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
+  const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  // 비밀번호 확인 작성 -> 비밀번호 일치 여부 확인
-  const handlePassword = data => {
-    setCheckPassword(data);
-    if (password === data) {
-      setPasswordCheckColor('#A6DB9E');
-    } else {
-      setPasswordCheckColor('#FFABAB');
-    }
-  };
+  const onChangeId = useCallback(text => {
+    setId(text.trim());
+  }, []);
+
+  const onChangePassword = useCallback(text => {
+    setPassword(text.trim());
+  }, []);
+
+  const onChangeCheckPassword = useCallback(
+    text => {
+      setCheckPassword(text.trim());
+      if (password === text.trim()) {
+        setPasswordCheckColor('#A6DB9E');
+      } else {
+        setPasswordCheckColor('#FFABAB');
+      }
+    },
+    [password],
+  );
+
+  const onChangeName = useCallback(text => {
+    setName(text.trim());
+  }, []);
+
+  const onChangeNickname = useCallback(text => {
+    setNickname(text.trim());
+  }, []);
+
+  const onChangePhoneNumber = useCallback(text => {
+    setPhoneNumber(text.trim());
+  }, []);
 
   // 아이디 중복확인 버튼 누르면?!
   // const checkId = async () => {
@@ -73,24 +99,109 @@ const SignUpModal = props => {
   //   }
   // };
 
-  // 회원가입 버튼 누르면?!
-  const sendData = () => {
-    if (passwordColor === '#A6DB9E' && idColor === '#A6DB9E') {
-      props.user({id: id, password: password});
-      props.now(false);
-      props.next(true);
-    } else if (id.length < 2) {
-      alert('아이디를 입력해주세요.');
-    } else if (idColor === '#000000') {
-      alert('아이디 중복확인을 해주세요.');
-    } else if (idColor === '#FFABAB') {
-      alert('중복된 아이디입니다. 다시 확인해주세요.');
-    } else if (password.length < 1) {
-      alert('비밀번호를 입력해주세요.');
-    } else {
-      alert('비밀번호를 확인해주세요.');
+  // 회원가입 버튼을 누르면!
+  const onSubmit = useCallback(async () => {
+    if (loading) {
+      return;
     }
+    if (!id || !id.trim()) {
+      return Alert.alert('알람', '아이디를 입력해주세요!');
+    }
+    if (!password || !password.trim()) {
+      return Alert.alert('알림', '비밀번호를 입력해주세요!');
+    }
+    if (!checkPassword || !checkPassword.trim()) {
+      return Alert.alert('알림', '비밀번호 확인을 입력해주세요!');
+    }
+    if (!name || !name.trim()) {
+      return Alert.alert('알림', '이름을 입력해주세요!');
+    }
+    if (!nickname || !nickname.trim()) {
+      return Alert.alert('알림', '닉네임을 입력해주세요!');
+    }
+    if (!phoneNumber || !phoneNumber.trim()) {
+      return Alert.alert('알림', '휴대폰 번호를 입력해주세요!');
+    }
+    console.log(
+      loading,
+      id,
+      password,
+      checkPassword,
+      name,
+      nickname,
+      phoneNumber,
+    );
+    try {
+      setLoading(true);
+      const response = await userAPI.signup(
+        id,
+        password,
+        name,
+        nickname,
+        phoneNumber,
+      );
+      Alert.alert('알림', '회원가입 되었습니다.', [
+        {
+          text: '확인',
+          onPress: () => {
+            sendData();
+          },
+        },
+      ]);
+      // 완료 후 모달 닫고 Sign Page로!
+    } catch (error) {
+      console.error(error.response);
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, id, password, checkPassword, name, nickname, phoneNumber]);
+
+  const sendData = () => {
+    props.exit(false);
   };
+
+  // const sendData = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await userAPI.signup(
+  //       id,
+  //       password,
+  //       name,
+  //       nickname,
+  //       phoneNumber,
+  //     );
+  //     console.log(response);
+  //     Alert.alert('알림', '회원가입 완료!');
+  //   } catch (error) {
+  //     console.log(error.response);
+  //     if (error) {
+
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  //   if (passwordColor === '#A6DB9E' && idColor === '#A6DB9E') {
+  //     props.user({id: id, password: password});
+  //     props.now(false);
+  //     props.next(true);
+  //   } else if (id.length < 2) {
+  //     alert('아이디를 입력해주세요.');
+  //   } else if (idColor === '#000000') {
+  //     alert('아이디 중복확인을 해주세요.');
+  //   } else if (idColor === '#FFABAB') {
+  //     alert('중복된 아이디입니다. 다시 확인해주세요.');
+  //   } else if (password.length < 1) {
+  //     alert('비밀번호를 입력해주세요.');
+  //   } else {
+  //     alert('비밀번호를 확인해주세요.');
+  //   }
+  // };
+
+  // const canGoNext =
+  //   id && password && checkPassword && name && nickname && phoneNumber;
 
   return (
     <View
@@ -177,7 +288,7 @@ const SignUpModal = props => {
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
-                  onChangeText={setName}
+                  onChangeText={onChangeName}
                   value={name}
                   style={{
                     width: '85%',
@@ -246,7 +357,7 @@ const SignUpModal = props => {
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
-                  onChangeText={setId}
+                  onChangeText={onChangeId}
                   value={id}
                   style={{
                     width: '85%',
@@ -299,7 +410,7 @@ const SignUpModal = props => {
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
                   secureTextEntry={true}
-                  onChangeText={setPassword}
+                  onChangeText={onChangePassword}
                   value={password}
                   style={{
                     width: '85%',
@@ -352,7 +463,7 @@ const SignUpModal = props => {
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
                   secureTextEntry={true}
-                  onChangeText={handlePassword}
+                  onChangeText={onChangeCheckPassword}
                   value={checkPassword}
                   style={{
                     width: '85%',
@@ -421,7 +532,7 @@ const SignUpModal = props => {
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
-                  onChangeText={setNickname}
+                  onChangeText={onChangeNickname}
                   value={nickname}
                   style={{
                     width: '85%',
@@ -490,7 +601,7 @@ const SignUpModal = props => {
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
-                  onChangeText={setPhoneNumber}
+                  onChangeText={onChangePhoneNumber}
                   value={phoneNumber}
                   style={{
                     width: '85%',
@@ -521,10 +632,16 @@ const SignUpModal = props => {
                 height: 40,
                 justifyContent: 'center',
               }}
-              onPress={() => sendData()}>
-              <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
-                회원가입
-              </Text>
+              disabled={loading}
+              onPress={onSubmit}>
+              {loading ? (
+                <ActivityIndicator color={'white'} />
+              ) : (
+                <Text
+                  style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+                  회원가입
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
         </ScrollView>
