@@ -15,7 +15,7 @@ import {useSelector} from 'react-redux';
  * FlatList에 보여줄 item 컴포넌트이다.
  */
 
-const ShopCard = ({item, func}, props) => {
+const ShopCard = ({item, navigation}, props) => {
   const [heartStatus, setHeartStaus] = useState(props.heartStatus);
   const user_id = useSelector(state => state.id);
 
@@ -54,64 +54,71 @@ const ShopCard = ({item, func}, props) => {
 
   return (
     <View style={styles.CardList}>
-      <View style={styles.seperateContainer}>
-        <View style={{width: '95%'}}>
-          <Image
-            source={{uri: `${item.image_url}`}}
-            style={{
-              resizeMode: 'cover',
-              width: '100%',
-              height: 130,
-              borderRadius: 10,
-            }}
-          />
-          <View style={styles.iconBox}>
-            {heartStatus === false ? (
-              <Icon.Button
-                name="heart-outline"
-                color="#F15C74"
-                backgroundColor="transparent"
-                size={25}
-                onPress={() => {
-                  setHeartStaus(prevStatus => (prevStatus ? false : true));
-                  addWish();
-                }}
-              />
-            ) : (
-              <Icon.Button
-                name="heart"
-                color="#F15C74"
-                backgroundColor="transparent"
-                size={25}
-                onPress={() => {
-                  setHeartStaus(prevStatus => (prevStatus ? false : true));
-                  deleteWish();
-                }}
-              />
-            )}
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ShopDetail', {
+            shopNumber: `${item.shop_number}`,
+          })
+        }>
+        <View style={styles.seperateContainer}>
+          <View style={{width: '95%'}}>
+            <Image
+              source={{uri: `${item.image_url}`}}
+              style={{
+                resizeMode: 'cover',
+                width: '100%',
+                height: 130,
+                borderRadius: 10,
+              }}
+            />
+            <View style={styles.iconBox}>
+              {heartStatus === false ? (
+                <Icon.Button
+                  name="heart-outline"
+                  color="#F15C74"
+                  backgroundColor="transparent"
+                  size={25}
+                  onPress={() => {
+                    setHeartStaus(prevStatus => (prevStatus ? false : true));
+                    addWish();
+                  }}
+                />
+              ) : (
+                <Icon.Button
+                  name="heart"
+                  color="#F15C74"
+                  backgroundColor="transparent"
+                  size={25}
+                  onPress={() => {
+                    setHeartStaus(prevStatus => (prevStatus ? false : true));
+                    deleteWish();
+                  }}
+                />
+              )}
+            </View>
           </View>
-        </View>
-        <View style={styles.cardBottom}>
-          <View style={styles.itemInfoContainer}>
-            <View style={styles.itemTitleAndReviewScore}>
+          <View style={styles.cardBottom}>
+            <View style={styles.itemInfoContainer}>
+              <View style={styles.itemTitleAndReviewScore}>
+                <View>
+                  <Text style={styles.itemTitle}>{item.name}</Text>
+                </View>
+                <View style={styles.scoreBox}>
+                  <Text style={styles.itemScore}>{item.score}</Text>
+                  <View style={styles.starIcons}>{startScore()}</View>
+                </View>
+              </View>
               <View>
-                <Text style={styles.itemTitle}>{item.name}</Text>
-              </View>
-              <View style={styles.scoreBox}>
-                <Text style={styles.itemScore}>{item.score}</Text>
-                <View style={styles.starIcons}>{startScore()}</View>
+                <Text style={styles.itemAddress}>{item.address}</Text>
               </View>
             </View>
-            <View>
-              <Text style={styles.itemAddress}>{item.address}</Text>
+            <View style={styles.seeMore}>
+              <Text style={{color: '#F15C74', fontSize: 13}}>see more</Text>
             </View>
           </View>
-          <View style={styles.seeMore}>
-            <Text style={{color: '#F15C74', fontSize: 13}}>see more</Text>
-          </View>
+          <HorizonLine />
         </View>
-        <HorizonLine />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

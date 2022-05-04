@@ -23,7 +23,7 @@ import {useSelector} from 'react-redux';
  *  */
 
 // 테스트
-const WishListPage = ({navigation}) => {
+const WishListPage = ({navigation}, props) => {
   const [wishlist, setWishList] = useState([]);
   const user_id = useSelector(state => state.id);
 
@@ -47,13 +47,7 @@ const WishListPage = ({navigation}) => {
   // };
 
   const renderItem = ({item}) => {
-    return (
-      <ShopCard
-        item={item}
-        heartStatus={true}
-        func={() => navigation.navigate('ShopHome')}
-      />
-    );
+    return <ShopCard item={item} heartStatus={true} navigation={navigation} />;
   };
 
   useFocusEffect(
