@@ -22,90 +22,97 @@ const CartCardList = props => {
   const [checkStatus, setcheckStaus] = useState(false);
   const [quantityStatus, setquantityStaus] = useState(props.item.quantity);
 
+  const date = props.item.reservation_date.split('T');
+
   return (
     <View style={styles.container}>
-      <View style={styles.CartCard}>
-        <View style={styles.checkBox}>
-          <View style={styles.iconBox}>
-            {checkStatus === false ? (
-              <Icon.Button
-                onPress={() =>
-                  setcheckStaus(prevStatus => (prevStatus ? false : true))
-                }
-                name="checkbox"
-                color="#DADADA"
-                backgroundColor="transparent"
-                size={25}
-              />
-            ) : (
-              <Icon.Button
-                onPress={() =>
-                  setcheckStaus(prevStatus => (prevStatus ? false : true))
-                }
-                name="checkbox"
-                color="#F2A7B3"
-                backgroundColor="transparent"
-                size={25}
-              />
-            )}
-          </View>
-        </View>
-        <View style={styles.informationBox}>
-          <View style={styles.TopBox}>
-            <View style={styles.shopname}>
-              <Text style={{fontSize: 15, color: 'black'}}>
-                {props.item.shop_name}
-              </Text>
-            </View>
-            <View style={styles.reservationDate}>
-              <Text style={{fontSize: 13, color: 'black'}}>
-                {props.item.reservation_date}
-              </Text>
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate('Menus', {
+            item_id: `${props.item.item_id}`,
+          })
+        }>
+        <View style={styles.CartCard}>
+          <View style={styles.checkBox}>
+            <View style={styles.iconBox}>
+              {checkStatus === false ? (
+                <Icon.Button
+                  onPress={() =>
+                    setcheckStaus(prevStatus => (prevStatus ? false : true))
+                  }
+                  name="checkbox"
+                  color="#DADADA"
+                  backgroundColor="transparent"
+                  size={25}
+                />
+              ) : (
+                <Icon.Button
+                  onPress={() =>
+                    setcheckStaus(prevStatus => (prevStatus ? false : true))
+                  }
+                  name="checkbox"
+                  color="#F2A7B3"
+                  backgroundColor="transparent"
+                  size={25}
+                />
+              )}
             </View>
           </View>
-          <View style={styles.itemname}>
-            <Text style={{fontSize: 12}}>{props.item.item_name}</Text>
+          <View style={styles.informationBox}>
+            <View style={styles.TopBox}>
+              <View style={styles.shopname}>
+                <Text style={{fontSize: 15, color: 'black'}}>
+                  {props.item.shop_name}
+                </Text>
+              </View>
+              <View style={styles.reservationDate}>
+                <Text style={{fontSize: 13, color: 'black'}}>{date[0]}</Text>
+              </View>
+            </View>
+            <View style={styles.itemname}>
+              <Text style={{fontSize: 12}}>{props.item.item_name}</Text>
+            </View>
+            <View style={styles.quantity}>
+              <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 10}}>
+                수량
+              </Text>
+              <View style={styles.quantityBox}>
+                <Icon.Button
+                  onPress={() => setquantityStaus(prevStatus => prevStatus - 1)}
+                  name="remove"
+                  color="black"
+                  backgroundColor="transparent"
+                  size={13}
+                  style={styles.removeIcon}
+                />
+                <Text>{quantityStatus}</Text>
+                <Icon.Button
+                  onPress={() => setquantityStaus(prevStatus => prevStatus + 1)}
+                  name="add"
+                  color="black"
+                  backgroundColor="transparent"
+                  size={13}
+                  style={styles.addIcon}
+                />
+              </View>
+            </View>
           </View>
-          <View style={styles.quantity}>
-            <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 10}}>
-              수량
+          <View style={styles.imgBox}>
+            <Image
+              source={{uri: `${props.item.image_url}`}}
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 10,
+              }}
+            />
+            <Text style={{marginTop: 5, fontWeight: 'bold'}}>
+              {props.item.price * quantityStatus} 원
             </Text>
-            <View style={styles.quantityBox}>
-              <Icon.Button
-                onPress={() => setquantityStaus(prevStatus => prevStatus - 1)}
-                name="remove"
-                color="black"
-                backgroundColor="transparent"
-                size={13}
-                style={styles.removeIcon}
-              />
-              <Text>{quantityStatus}</Text>
-              <Icon.Button
-                onPress={() => setquantityStaus(prevStatus => prevStatus + 1)}
-                name="add"
-                color="black"
-                backgroundColor="transparent"
-                size={13}
-                style={styles.addIcon}
-              />
-            </View>
           </View>
         </View>
-        <View style={styles.imgBox}>
-          <Image
-            source={{uri: `${props.item.image_url}`}}
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 10,
-            }}
-          />
-          <Text style={{marginTop: 5, fontWeight: 'bold'}}>
-            {props.item.price * quantityStatus} 원
-          </Text>
-        </View>
-      </View>
-      <HorizonLine />
+        <HorizonLine />
+      </TouchableOpacity>
     </View>
   );
 };
