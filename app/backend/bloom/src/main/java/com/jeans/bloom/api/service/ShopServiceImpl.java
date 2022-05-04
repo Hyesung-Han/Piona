@@ -6,11 +6,14 @@ import com.jeans.bloom.db.entity.Item;
 import com.jeans.bloom.db.entity.Review;
 import com.jeans.bloom.db.entity.Shop;
 import com.jeans.bloom.db.repository.ItemRepository;
+import com.jeans.bloom.db.repository.ReservationDetailRepository;
 import com.jeans.bloom.db.repository.ReviewRepository;
 import com.jeans.bloom.db.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +34,10 @@ public class ShopServiceImpl implements ShopService{
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private ReservationDetailRepository reservationDetailRepository;
+
     /**
      * HHS | 2022.05.02
      * @name findShopByShopNumber
@@ -56,6 +63,16 @@ public class ShopServiceImpl implements ShopService{
     public List<ItemRes> findItemsByShop_ShopNumber(String shopNumber) throws Exception {
         Optional<List<Item>> optionalItems = itemRepository.findItemsByShop_ShopNumber(shopNumber);
         return optionalItems.map(items -> items.stream().map(item -> ItemRes.of(item)).collect(Collectors.toList())).orElse(null);
+    }
+
+    /**
+     * LJA | 2022.05.04
+     * @name getUnableDate
+     * @des item_id와 quantity를 입력받아 해당 아이템을 예약할 수 없는 날짜를 리턴
+     */
+    @Override
+    public List<Date> getUnableDate(int itemId, int quantity) throws Exception {
+        return reservationDetailRepository.getUnableDate(itemId, LocalDate.of(2022,4,28), quantity);
     }
 
 }
