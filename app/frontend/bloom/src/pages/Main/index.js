@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import MainBackground from '../../assets/Mainbackground.jpg';
+import {useSelector} from 'react-redux';
 
 /**
  * CSW | 2022.04.27
@@ -25,6 +26,7 @@ import MainBackground from '../../assets/Mainbackground.jpg';
 
 const MainPage = ({navigation}) => {
   const [inputText, setInputText] = useState('');
+  const user_nickname = useSelector(state => state.nickname);
 
   return (
     <ScrollView style={styles.container}>
@@ -81,7 +83,7 @@ const MainPage = ({navigation}) => {
           onPress={() =>
             navigation.navigate('Map', {navigation: `${navigation}`})
           }>
-          청바지님, 이런 피크닉은 어떤가요?
+          {user_nickname}님, 이런 피크닉은 어떤가요?
         </Text>
         <View style={styles.columnBox}>
           <TouchableOpacity
