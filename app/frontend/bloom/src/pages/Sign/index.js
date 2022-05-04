@@ -30,17 +30,17 @@ const SignPage = props => {
   const [phoneNum, setPhoneNum] = useState('');
   const [profile, setProfile] = useState(null);
 
-  async function checkLogin() {
-    if ((await AsyncStorage.getItem('refresh')) !== null) {
-      props.navigation.replace('appscreen');
-    }
-  }
+  // async function checkLogin() {
+  //   if ((await AsyncStorage.getItem('refresh')) !== null) {
+  //     props.navigation.replace('appscreen');
+  //   }
+  // }
 
-  useFocusEffect(
-    useCallback(() => {
-      checkLogin();
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     checkLogin();
+  //   }, []),
+  // );
 
   const handleUser = user => {
     setId(user.id);
@@ -85,14 +85,14 @@ const SignPage = props => {
       <Modal animationType={'fade'} transparent={true} visible={signinModal}>
         <SignInModal
           user={data => signIn(data)}
-          next={data => setSigninModal(data)}
+          // next={data => setSigninModal(data)}
           exit={data => setSigninModal(data)}
         />
       </Modal>
       <Modal animationType={'fade'} transparent={true} visible={signupModal}>
         <SignUpModal
           user={data => handleUser(data)}
-          next={data => setSignupModal(data)}
+          // next={data => setSignupModal(data)}
           exit={data => setSignupModal(data)}
         />
       </Modal>
