@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Api(value = "가게 API", tags = {"Shop"})
-@RequestMapping("/api/shop")
+@RequestMapping("/shop")
 @RestController
 @CrossOrigin(value = {"*"}, maxAge = 6000)
 public class ShopController {
