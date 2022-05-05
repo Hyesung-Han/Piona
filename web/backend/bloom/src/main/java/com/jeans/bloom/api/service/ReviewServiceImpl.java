@@ -52,12 +52,23 @@ public class ReviewServiceImpl implements ReviewService {
     /**
      * OYT | 2022.05.05
      * @name reviewReport
-     * @des 리뷰아이디를 통해 리뷰를 신고하는 메서드
+     * @des 리뷰아이디를 통해 리뷰를 신고상태를 변경하는 메서드
      */
     @Override
-    public Review reviewReport(int review_id) throws Exception {
+    public Review reviewReport(int review_id, StatusType type) throws Exception {
         Review review = findReviewByReviewId(review_id);
-        review.setIsBan(StatusType.Y);
+        review.setIsBan(type);
         return reviewRepository.save(review);
+    }
+
+    @Override
+    public Boolean deleteReview(int review_id) throws Exception {
+
+        Review review = findReviewByReviewId(review_id);
+        if(review != null){
+            reviewRepository.delete(review);
+            return true;
+        }else return false;
+
     }
 }
