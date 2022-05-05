@@ -1,6 +1,7 @@
 package com.jeans.bloom.db.entity;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter @Setter
 @Table(name = "review_comment_t", schema = "bloom")
+@DynamicInsert
 public class ReviewComment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

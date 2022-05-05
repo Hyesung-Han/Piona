@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * OYT | 2022.04.28
- * @name CertifiedRepositoty
+ * @name CertifiedRepository
  * @des 인증번호 저장 테이블 사용을 위한 JpaRepository
  */
 @Repository
