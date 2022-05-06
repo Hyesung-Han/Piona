@@ -15,7 +15,5 @@ import java.sql.SQLDataException;
 public interface UserRepository extends JpaRepository<User, String> {
     User findUserByUserId(String userId) throws Exception;
 
-    User findUserByNickName(String nickName) throws Exception;
-
     User findUserByPhone(String phone) throws Exception;
 }

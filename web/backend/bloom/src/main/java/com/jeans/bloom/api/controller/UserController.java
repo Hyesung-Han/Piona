@@ -1,17 +1,26 @@
 package com.jeans.bloom.api.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jeans.bloom.api.request.FormDataReq;
+import com.jeans.bloom.api.request.ShopInfoReq;
 import com.jeans.bloom.api.request.UserLoginPostReq;
 import com.jeans.bloom.api.request.UserRegiPostReq;
+import com.jeans.bloom.api.response.ShopRes;
 import com.jeans.bloom.api.response.UserRes;
 import com.jeans.bloom.api.service.MessageService;
 import com.jeans.bloom.api.service.UserService;
+import com.jeans.bloom.common.auth.AwsS3Service;
 import com.jeans.bloom.common.response.BaseResponseBody;
 import com.jeans.bloom.db.entity.CertificationNum;
+import com.jeans.bloom.db.entity.Shop;
 import com.jeans.bloom.db.entity.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
  * OYT | 2022.04.27
@@ -28,27 +37,26 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private AwsS3Service awsS3Service;
+    @Autowired
     private MessageService messageService;
 
     /**
-     * OYT | 2022.04.27
+     * OYT | 2022.05.04
      * @name register
-     * @api {post} /user/sinnup
+     * @api {post} /user/sinnUp
      * @des 회원 정보를 입력받아 회원가입
      */
-    @PostMapping("/signup")
+    @PostMapping("/signUp")
     @ApiOperation(value = "회원 가입", notes = "회원정보를 입력 후 를 통해 회원가입 한다. 아이디, 닉네임, 핸드폰 번호는 중복이 될 수 없다.")
     public ResponseEntity<BaseResponseBody> register(
             @RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegiPostReq registerInfo) {
 
         try{
-            User userGetByUserId = userService.findUserByUserId(registerInfo.getUserId());
-            User userGetByNickname = userService.findUserByNickName(registerInfo.getNickName());
+            User userGetByUserId = userService.findUserByUserId(registerInfo.getUser_id());
 
             if(userGetByUserId != null){
                 return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 아이디입니다.."));
-            }else if(userGetByNickname != null){
-                return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 닉네임입니다."));
             }else{
                 userService.createUser(registerInfo);
                 return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
@@ -60,19 +68,19 @@ public class UserController {
     }
 
     /**
-     * OYT | 2022.04.27
+     * OYT | 2022.05.04
      * @name login
-     * @api {post} /user/signin
+     * @api {post} /user/signIn
      * @des 아이디, 패스워드를 받아 로그인
      */
-    @PostMapping("/signin")
+    @PostMapping("/signIn")
     @ApiOperation(value = "로그인", notes = "아이디 비밀번호를 입력후 로그인.")
     public ResponseEntity<BaseResponseBody> login(
             @RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq userLogin){
 
         try{
             User userLoginPostRes = userService.login(userLogin);
-            if(userLoginPostRes != null)
+            if(userLoginPostRes != null && userLoginPostRes.getShop() != null)
                 return ResponseEntity.status(201).body(BaseResponseBody.of("success", UserRes.of(userLoginPostRes)));
 
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", "정보가 올바르지 않습니다."));
@@ -104,42 +112,19 @@ public class UserController {
     }
 
     /**
-     * OYT | 2022.04.27
-     * @name nickNameCheck
-     * @api {get} /user/nickCheck?userNickName=nickname
-     * @des 닉네임를 입력 받아 중복 체크
-     */
-    @GetMapping("/nickCheck")
-    @ApiOperation(value = "닉네임 중복검사", notes = "닉네임 중복 검사")
-    public ResponseEntity<BaseResponseBody> nickNameCheck(
-            @RequestParam @ApiParam(value="닉네임", required = true) String userNickName) {
-
-        try{
-            User userNickNameGetRes = userService.findUserByNickName(userNickName);
-            if(userNickNameGetRes == null)
-                return ResponseEntity.status(200).body(BaseResponseBody.of("success", true));
-
-            return ResponseEntity.status(200).body(BaseResponseBody.of("success", false));
-        }catch (Exception e){
-            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
-        }
-
-    }
-
-    /**
-     * OYT | 2022.04.27
-     * @name findUserByUserId
-     * @api {get} /user?userId=user_id
-     * @des 유저 ID를 입력 받아 유저 정보 반환
+     * OYT | 2022.05.04
+     * @name findShopByShopNumber
+     * @api {get} /user?shop_number=shop_number
+     * @des 사업자번호를 입력 받아 유저 정보 반환
      */
     @GetMapping()
-    @ApiOperation(value = "내 정보 불러오기", notes = "아이디를 통해 해당 유저의 정보를 불러온다.")
-    public ResponseEntity<BaseResponseBody> findUserByUserId(
-            @RequestParam @ApiParam(value="아이디", required = true) String userId) {
+    @ApiOperation(value = "가게정보 가져오기", notes = "사업자 번호를 통해 해당 유저의 정보를 불러온다.")
+    public ResponseEntity<BaseResponseBody> findShopByShopNumber(
+            @RequestParam @ApiParam(value="사업자번호", required = true) String shop_number) {
 
         try{
-            User userInfoGetRes = userService.findUserByUserId(userId);
-            return ResponseEntity.status(200).body(BaseResponseBody.of("success", UserRes.of(userInfoGetRes)));
+            Shop shopInfoGetRes = userService.findShopByShopNumber(shop_number);
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", ShopRes.of(shopInfoGetRes)));
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
@@ -158,31 +143,14 @@ public class UserController {
             @RequestBody @ApiParam(value = "유저 정보", required = true) UserLoginPostReq userInfo){
         try{
             User userInfoPostRes = userService.passwordCheck(userInfo);
-
-            return ResponseEntity.status(201).body(BaseResponseBody.of("success"));
+            if(userInfoPostRes != null){
+                return ResponseEntity.status(201).body(BaseResponseBody.of("success"));
+            }else {
+                return ResponseEntity.status(201).body(BaseResponseBody.of("fail","비밀번호를 확인하세요"));
+            }
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
-    }
-
-    /**
-     * OYT | 2022.04.28
-     * @name updateUser
-     * @api {patch} /user
-     * @des 회원 정보를 입력받아 회원 정보 수정
-     */
-    @PatchMapping()
-    @ApiOperation(value = "회원 정보 수정", notes = "회원정보를 입력 받아 정보를 수정한다. 닉네임, 핸드폰 번호는 중복이 될 수 없다.")
-    public ResponseEntity<BaseResponseBody> userInfoUpdate(
-            @RequestBody @ApiParam(value="회원 수정 정보", required = true) UserRegiPostReq updateUserInfo) {
-
-        try{
-            userService.updateUser(updateUserInfo);
-            return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
-        }catch (Exception e){
-            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
-        }
-
     }
 
     /**
@@ -251,5 +219,32 @@ public class UserController {
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
     }
+
+
+    /**
+     * OYT | 2022.04.28
+     * @name shopInfoSave
+     * @api {patch} /user
+     * @des 회원 ID를 입력받아 회원 탈퇴 여부 변경
+     */
+    @PatchMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @ApiOperation(value = "가게 정보 수정", notes = "가게 정보를 입력 받아 수정한다. ")
+    public ResponseEntity<BaseResponseBody> updateShopInfoSave(
+            @ModelAttribute FormDataReq formData ) {
+        try{
+            Shop shop = userService.findShopByShopNumber(formData.getShopInfoReq().getShop_number());
+            if (formData.getFile() != null) {
+                if(formData.getShopInfoReq() != null && formData.getShopInfoReq().getImage_url() != null)
+                    awsS3Service.deleteImage(shop.getImageUrl());
+                formData.getShopInfoReq().setImage_url(awsS3Service.uploadImage(formData.getFile()));
+            }
+            shop = userService.updateShopInfoSave(formData.getShopInfoReq());
+            return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+
+    }
+
 
 }

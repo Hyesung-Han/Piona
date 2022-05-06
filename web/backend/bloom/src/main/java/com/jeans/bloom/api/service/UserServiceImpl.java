@@ -1,12 +1,16 @@
 package com.jeans.bloom.api.service;
 
+import com.jeans.bloom.api.request.ShopInfoReq;
 import com.jeans.bloom.api.request.UserLoginPostReq;
 import com.jeans.bloom.api.request.UserRegiPostReq;
 import com.jeans.bloom.common.util.JwtTokenUtil;
 import com.jeans.bloom.db.entity.CertificationNum;
+import com.jeans.bloom.db.entity.Shop;
 import com.jeans.bloom.db.entity.User;
 import com.jeans.bloom.db.entity.type.StatusType;
+import com.jeans.bloom.db.entity.type.UserCode;
 import com.jeans.bloom.db.repository.CertifiedRepository;
+import com.jeans.bloom.db.repository.ShopRepository;
 import com.jeans.bloom.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private ShopRepository shopRepository;
+
+    @Autowired
     private CertifiedRepository certifiedRepository;
 
     @Autowired
@@ -37,15 +44,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(UserRegiPostReq registerInfo) throws Exception{
         User user = new User();
-        user.setUserId(registerInfo.getUserId());
+        user.setUserId(registerInfo.getUser_id());
 
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
         user.setPassword(passwordEncoder.encode(registerInfo.getPassword()));
         user.setName(registerInfo.getName());
         user.setPhone(registerInfo.getPhone());
-        user.setNickName(registerInfo.getNickName());
+        user.setUserCode(UserCode.S);
+        Shop shop = new Shop();
+        shop.setShopNumber(registerInfo.getShop_number());
+        shop.setUser(user);
+        User userSave = userRepository.save(user);
+        shopRepository.save(shop);
 
-        return userRepository.save(user);
+        return userSave;
     }
 
     /**
@@ -58,14 +70,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByUserId(userId);
     }
 
-    /**
-     * OYT | 2022.04.27
-     * @name findUserByNickname
-     * @des 회원 닉네임를 입력받아 회원의 정보를 리턴해주는 메소드
-     */
     @Override
-    public User findUserByNickName(String nickName) throws Exception{
-        return userRepository.findUserByNickName(nickName);
+    public Shop findShopByShopNumber(String shopNumber) throws Exception {
+        return shopRepository.findShopByShopNumber(shopNumber);
     }
 
     /**
@@ -75,7 +82,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User login(UserLoginPostReq userLogin) throws Exception {
-        String userId = userLogin.getUserId();
+        String userId = userLogin.getUser_id();
         String userPassword = userLogin.getPassword();
 
             User user = this.findUserByUserId(userId);
@@ -106,7 +113,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User passwordCheck(UserLoginPostReq userCheck) throws Exception {
-        String userId = userCheck.getUserId();
+        String userId = userCheck.getUser_id();
         String userPassword = userCheck.getPassword();
 
         User user = this.findUserByUserId(userId);
@@ -114,23 +121,6 @@ public class UserServiceImpl implements UserService {
             return user;
         }
         return null;
-    }
-
-    /**
-     * OYT | 2022.04.28
-     * @name updateUser
-     * @des 수정된 회원정보를 입력받아 회원의 정보를 업데이트하는 메서드
-     */
-    @Override
-    public User updateUser(UserRegiPostReq updateUserInfo) throws Exception {
-        User user = this.findUserByUserId(updateUserInfo.getUserId());
-
-        user.setPassword(passwordEncoder.encode(updateUserInfo.getPassword()));
-        user.setName(updateUserInfo.getName());
-        user.setPhone(updateUserInfo.getPhone());
-        user.setNickName(updateUserInfo.getNickName());
-
-        return userRepository.save(user);
     }
 
     /**
@@ -186,6 +176,24 @@ public class UserServiceImpl implements UserService {
         }
         return false;
 
+    }
+
+    @Override
+    public Shop updateShopInfoSave(ShopInfoReq shopInfoReq) throws Exception {
+        Shop shop = shopRepository.findShopByShopNumber(shopInfoReq.getShop_number());
+        shop.setTel(shopInfoReq.getTel());
+        shop.setHours(shopInfoReq.getHours());
+        shop.setZipCode(shopInfoReq.getZip_code());
+        shop.setAddress(shopInfoReq.getAddress());
+        shop.setDetailAddress(shopInfoReq.getDetail_address());
+        shop.setName(shopInfoReq.getName());
+        shop.setDescription(shopInfoReq.getDescription());
+        shop.setUrl(shopInfoReq.getUrl());
+        shop.setImageUrl(shopInfoReq.getImage_url());
+        shop.setShopLat(shopInfoReq.getShop_lat());
+        shop.setShopLng(shopInfoReq.getShop_lng());
+
+        return shopRepository.save(shop);
     }
 
 }
