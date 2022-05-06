@@ -1,6 +1,7 @@
 package com.jeans.bloom.api.service;
 
 import com.jeans.bloom.api.request.ReviewCommentReq;
+import com.jeans.bloom.api.response.ReviewRes;
 import com.jeans.bloom.db.entity.Review;
 import com.jeans.bloom.db.entity.ReviewComment;
 import com.jeans.bloom.db.entity.type.StatusType;
@@ -8,6 +9,10 @@ import com.jeans.bloom.db.repository.ReviewCommentRepository;
 import com.jeans.bloom.db.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * OYT | 2022.05.05
@@ -61,6 +66,11 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.save(review);
     }
 
+    /**
+     * OYT | 2022.05.05
+     * @name deleteReview
+     * @des 리뷰아이디를 통해 리뷰를 삭제하는 메서드
+     */
     @Override
     public Boolean deleteReview(int review_id) throws Exception {
 
@@ -71,4 +81,27 @@ public class ReviewServiceImpl implements ReviewService {
         }else return false;
 
     }
+
+    /**
+     * HHS | 2022.05.06
+     * @name findReviewsByReservation_Shop_ShopNumber
+     * @des 사업자 등록번호를 통해 해당 가게의 리뷰리스트를 불러오는 메서드
+     */
+    @Override
+    public List<ReviewRes> findReviewsByReservation_Shop_ShopNumber(String shopNumber) throws Exception{
+        List<Review> reviews = reviewRepository.findReviewsByReservation_Shop_ShopNumber(shopNumber).orElse(null);
+        return reviews.stream().map(review -> ReviewRes.of(review)).collect(Collectors.toList());
+    }
+
+    /**
+     * HHS | 2022.05.06
+     * @name findReviewDetailByReviewId
+     * @des 리뷰 아이디를 통해 리뷰 상세 정보를 가져오는 메서드
+     */
+    @Override
+    public ReviewRes findReviewDetailByReviewId(int reviewId) throws Exception {
+        ReviewRes reviewRes = ReviewRes.of(reviewRepository.findReviewByReviewId(reviewId));
+        return reviewRes;
+    }
+
 }
