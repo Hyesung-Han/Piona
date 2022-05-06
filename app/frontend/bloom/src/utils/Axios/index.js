@@ -4,11 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
- * LDJ | 2022.05.04
+ * LDJ, LHJ, CSW | 2022.05.06
  * @name utils/Axios
  * @api 모든 API 만드는 곳
  * @des
- * 1. API를 여기서 다 만들어서 가져다 쓸거임
+ * API를 여기서 다 만들어서 가져다 쓸거임
+ * [이름 | 설명 | 세부 항목]
  */
 
 let request = axios.create({
@@ -130,6 +131,7 @@ export const changeInfo = async (userNickname, petName) => {
     });
 };
 
+// LDJ | 유저에 관한 API | [로그인, 회원가입, 아이디 중복검사, 닉네임 중복검사, 비밀번호 확인]
 export const userAPI = {
   signin: async (user_id, password) => {
     return await request
@@ -157,10 +159,21 @@ export const userAPI = {
         phone,
       })
       .then(response => {
-        return response.data.statusCode;
+        return response;
       })
       .catch(error => {
-        return error.response.status;
+        return error;
+      });
+  },
+
+  idCheck: async userId => {
+    return await request
+      .get(`/user/idcheck?userId=${userId}`)
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
       });
   },
 
@@ -175,16 +188,35 @@ export const userAPI = {
       });
   },
 
-  emailCheck: async userEmail => {
+  pwdCheck: async (user_id, password, accessToken) => {
     return await request
-      .get(`/users/email/${userEmail}`, {})
+      .post(
+        '/user/passwordCheck',
+        {user_id, password},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
       .then(response => {
-        return response.data.statusCode;
+        return response;
       })
       .catch(error => {
-        return error.response.status;
+        return error;
       });
   },
+
+  // emailCheck: async userEmail => {
+  //   return await request
+  //     .get(`/users/email/${userEmail}`, {})
+  //     .then(response => {
+  //       return response.data.statusCode;
+  //     })
+  //     .catch(error => {
+  //       return error.response.status;
+  //     });
+  // },
 };
 
 export const cartAPI = {

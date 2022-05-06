@@ -8,22 +8,52 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import {userAPI} from '../../utils/Axios';
+import {useSelector} from 'react-redux';
 
 /**
- * LDJ | 2022.05.02
+ * LDJ | 2022.05.06
  * @name PwdCheck
- * @api -
+ * @api userAPI/pwdCheck
  * @des
  * 1. 회원정보 수정 전에 비밀번호 확인을 위한 페이지
  * 2. 입력 후 내 정보 수정 페이지로 이동
+ * 3. 로그인 상태가 유지되어있는지를 확인하기 위해 토큰도 함께 보내줘야 함
  */
 
 const PwdCheckPage = ({navigation}) => {
+  const user_id = useSelector(state => state.user.id);
+  const user_accessToken = useSelector(state => state.user.accessToken);
+
   const [password, setPassword] = useState('');
 
-  const sendData = () => {
-    navigation.navigate('ChangeInfo', {navigation: `${navigation}`});
-  };
+  const onChangePassword = useCallback(text => {
+    setPassword(text.trim());
+  }, []);
+
+  const onSubmit = useCallback(async () => {
+    if (!password || !password.trim()) {
+      return Alert.alert('알림', '비밀번호를 입력해주세요!');
+    }
+    try {
+      const response = await userAPI.pwdCheck(
+        user_id,
+        password,
+        user_accessToken,
+      );
+      if (response.data.result === 'success') {
+        Alert.alert('알림', '비밀번호 일치!');
+        navigation.navigate('ChangeInfo', {navigation: `${navigation}`});
+      } else {
+        Alert.alert('알림', '비밀번호를 제대로 입력해주세요!');
+      }
+    } catch (error) {
+      console.error(error.response);
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    }
+  }, [user_id, password, user_accessToken, navigation]);
 
   return (
     <View
@@ -56,7 +86,7 @@ const PwdCheckPage = ({navigation}) => {
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          marginTop: 5,
+          marginTop: 10,
         }}>
         <View
           style={{
@@ -70,7 +100,7 @@ const PwdCheckPage = ({navigation}) => {
           <View style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
             <TextInput
               secureTextEntry={true}
-              onChangeText={setPassword}
+              onChangeText={onChangePassword}
               value={password}
               style={{
                 width: '85%',
@@ -114,7 +144,7 @@ const PwdCheckPage = ({navigation}) => {
             height: 40,
             justifyContent: 'center',
           }}
-          onPress={() => sendData()}>
+          onPress={() => onSubmit()}>
           <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
             비밀번호 확인
           </Text>
