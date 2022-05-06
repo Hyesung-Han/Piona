@@ -265,9 +265,13 @@ export const userAPI = {
 };
 
 export const cartAPI = {
-  getCartList: async userId => {
+  getCartList: async (user_id, accessToken) => {
     return await request
-      .get('/cart', {params: {userId: userId}})
+      .get(`/cart?userId=${user_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
       .then(response => {
         return response.data;
       })
@@ -282,15 +286,24 @@ export const cartAPI = {
     reservationDate,
     shopNumber,
     itemId,
+    accessToken,
   ) => {
     return await request
-      .post('/user', {
-        userId,
-        quantity,
-        reservationDate,
-        shopNumber,
-        itemId,
-      })
+      .post(
+        '/user',
+        {
+          userId,
+          quantity,
+          reservationDate,
+          shopNumber,
+          itemId,
+        },
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
       .then(response => {
         return response.data.statusCode;
       })
@@ -299,9 +312,17 @@ export const cartAPI = {
       });
   },
 
-  deleteCartList: async cartId => {
+  deleteCartList: async (cartId, accessToken) => {
     return await request
-      .delete('/cart', {cartId})
+      .delete(
+        '/cart',
+        {cartId},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
       .then(response => {
         return response.data.statusCode;
       })
