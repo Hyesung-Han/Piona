@@ -21,4 +21,6 @@ public interface ReviewService {
     List<ReviewRes> findReviewsByReservation_Shop_ShopNumber(String shopNumber) throws Exception;
 
     ReviewRes findReviewDetailByReviewId(int review_id) throws Exception;
+
+    List<ReviewRes> findReviewsByIsBan(StatusType y) throws Exception;
 }

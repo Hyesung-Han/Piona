@@ -104,4 +104,15 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRes;
     }
 
+    /**
+     * OYT | 2022.05.06
+     * @name findReviewsByIsBan
+     * @des 신고된 리뷰 정보를 가져오는 메서드
+     */
+    @Override
+    public List<ReviewRes> findReviewsByIsBan(StatusType y) throws Exception {
+        List<Review> reviews = reviewRepository.findReviewsByIsBan(y).orElse(null);
+        return reviews.stream().map(review -> ReviewRes.of(review)).collect(Collectors.toList());
+    }
+
 }
