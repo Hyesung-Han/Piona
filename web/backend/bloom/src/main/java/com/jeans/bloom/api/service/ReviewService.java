@@ -19,4 +19,6 @@ public interface ReviewService {
     Boolean deleteReview(int review_id) throws Exception;
 
     List<ReviewRes> findReviewsByReservation_Shop_ShopNumber(String shopNumber) throws Exception;
+
+    ReviewRes findReviewDetailByReviewId(int review_id) throws Exception;
 }

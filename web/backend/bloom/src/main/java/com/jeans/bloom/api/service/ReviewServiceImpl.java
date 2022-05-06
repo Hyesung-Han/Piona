@@ -10,6 +10,7 @@ import com.jeans.bloom.db.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,6 +91,17 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewRes> findReviewsByReservation_Shop_ShopNumber(String shopNumber) throws Exception{
         List<Review> reviews = reviewRepository.findReviewsByReservation_Shop_ShopNumber(shopNumber).orElse(null);
         return reviews.stream().map(review -> ReviewRes.of(review)).collect(Collectors.toList());
+    }
+
+    /**
+     * HHS | 2022.05.06
+     * @name findReviewDetailByReviewId
+     * @des 리뷰 아이디를 통해 리뷰 상세 정보를 가져오는 메서드
+     */
+    @Override
+    public ReviewRes findReviewDetailByReviewId(int reviewId) throws Exception {
+        ReviewRes reviewRes = ReviewRes.of(reviewRepository.findReviewByReviewId(reviewId));
+        return reviewRes;
     }
 
 }

@@ -97,6 +97,23 @@ public class ReviewController {
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
     }
+    /**
+     * HHS | 2022.05.06
+     * @name findReviewByReviewId
+     * @api {get} /review/review_id
+     * @des 리뷰 아이디를 통한 리뷰 상세정보 받기
+     */
+    @GetMapping("/{review_id}")
+    @ApiOperation(value = "리뷰 상세 정보", notes = "리뷰 아이디를 통해 리뷰의 상세정보 받아오기")
+    public ResponseEntity<BaseResponseBody> findReviewByReviewId(
+            @PathVariable @ApiParam(value = "리뷰 아이디", required = true) int review_id){
+        try{
+            ReviewRes reviewDetail = reviewService.findReviewDetailByReviewId(review_id);
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", reviewDetail));
+        }catch(Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
 
 
 }
