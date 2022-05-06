@@ -1,8 +1,10 @@
 package com.jeans.bloom.api.controller;
 
+import com.jeans.bloom.api.request.ReservationReq;
 import com.jeans.bloom.api.response.ReservationRes;
 import com.jeans.bloom.api.service.PicnicService;
 import com.jeans.bloom.common.response.BaseResponseBody;
+import com.jeans.bloom.db.entity.Reservation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -64,5 +66,28 @@ public class PicnicController {
         } catch (Exception e) {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
         }
+    }
+
+    /**
+     * OYT | 2022.05.06
+     * @name reservation
+     * @api {post} /picnic
+     * @des 결제완료 후 예약 등록
+     */
+    @PostMapping()
+    @ApiOperation(value = "예약 등록", notes="결제 완료 후 예약 등록")
+    public ResponseEntity<BaseResponseBody> reservation(
+            @RequestBody @ApiParam(value = "예약 정보", required = true) ReservationReq reservationReq ){
+        try{
+            Reservation postReservation = picnicService.createReservation(reservationReq);
+            if(!postReservation.equals(null)){
+                picnicService.createReservationDetail(postReservation.getReservationId(),reservationReq.getReservationDetailList());
+                return ResponseEntity.status(201).body(BaseResponseBody.of("success"));
+            }
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail"));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+
     }
 }
