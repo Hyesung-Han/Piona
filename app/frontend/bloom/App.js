@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {StatusBar} from 'react-native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {NavigationContainer} from '@react-navigation/native';
 import {Provider, useSelector} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import store from './src/redux/store';
 import AppInner from './AppInner';
 
 /**
- * LDJ | 2022.05.04
+ * LDJ | 2022.05.06
  * @name App.js
  * @api -
  * @des
@@ -37,7 +38,9 @@ const App = () => {
         translucent={true}
       />
       <Provider store={store}>
-        <AppInner />
+        <NavigationContainer>
+          <AppInner />
+        </NavigationContainer>
       </Provider>
     </SafeAreaProvider>
   );
