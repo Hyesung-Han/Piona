@@ -10,9 +10,10 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {useSelector} from 'react-redux';
 
 /**
- * LDJ | 2022.05.02
+ * LDJ | 2022.05.06
  * @name ChangeInfo
  * @api -
  * @des
@@ -21,11 +22,15 @@ import Icon from 'react-native-vector-icons/AntDesign';
  */
 
 const ChangeInfoPage = ({navigation, props}) => {
-  const [nameColor, setNameColor] = useState('#000000');
-  const [passwordColor, setPasswordColor] = useState('#000000');
-  const [passwordCheckColor, setPasswordCheckColor] = useState('#000000');
-  const [nicknameColor, setNicknameColor] = useState('#000000');
-  const [phoneNumberColor, setPhoneNumberColor] = useState('#000000');
+  const user_name = useSelector(state => state.user.name);
+  const user_nickname = useSelector(state => state.user.nickname);
+  const user_phoneNumber = useSelector(state => state.user.phoneNumber);
+
+  const [nameColor, setNameColor] = useState('#C0C0C0');
+  const [passwordColor, setPasswordColor] = useState('#C0C0C0');
+  const [passwordCheckColor, setPasswordCheckColor] = useState('#C0C0C0');
+  const [nicknameColor, setNicknameColor] = useState('#C0C0C0');
+  const [phoneNumberColor, setPhoneNumberColor] = useState('#C0C0C0');
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -99,6 +104,8 @@ const ChangeInfoPage = ({navigation, props}) => {
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
                 onChangeText={setName}
+                placeholder={user_name}
+                placeholderTextColor="#C0C0C0"
                 value={name}
                 style={{
                   width: '85%',
@@ -282,6 +289,8 @@ const ChangeInfoPage = ({navigation, props}) => {
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
                 onChangeText={setNickname}
+                placeholder={user_nickname}
+                placeholderTextColor="#C0C0C0"
                 value={nickname}
                 style={{
                   width: '85%',
@@ -351,6 +360,8 @@ const ChangeInfoPage = ({navigation, props}) => {
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
                 onChangeText={setPhoneNumber}
+                placeholder={user_phoneNumber}
+                placeholderTextColor="#C0C0C0"
                 value={phoneNumber}
                 style={{
                   width: '85%',
