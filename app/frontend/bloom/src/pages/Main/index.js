@@ -27,6 +27,17 @@ import {useSelector} from 'react-redux';
 const MainPage = ({navigation}) => {
   const [inputText, setInputText] = useState('');
   const user_nickname = useSelector(state => state.user.nickname);
+  const user_id = useSelector(state => state.user.id);
+
+  const clearText = () => {
+    setInputText('');
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      clearText();
+    }, []),
+  );
 
   return (
     <ScrollView style={styles.container}>
@@ -44,7 +55,13 @@ const MainPage = ({navigation}) => {
             <View style={styles.iconBox}>
               <Icon.Button
                 onPress={() =>
-                  navigation.navigate('Search', {navigation: `${navigation}`})
+                  navigation.navigate('Search', {
+                    type: 'location',
+                    word: `${inputText}`,
+                    user_id: user_id,
+                    user_lat: 0,
+                    user_lng: 0,
+                  })
                 }
                 name="search-outline"
                 color="black"
@@ -83,13 +100,19 @@ const MainPage = ({navigation}) => {
           onPress={() =>
             navigation.navigate('Map', {navigation: `${navigation}`})
           }>
-          {user_nickname}님, 이런 피크닉은 어떤가요?
+          {user_nickname} 님, 이런 피크닉은 어떤가요?
         </Text>
         <View style={styles.columnBox}>
           <TouchableOpacity
             style={styles.Btn}
             onPress={() =>
-              navigation.navigate('#', {navigation: `${navigation}`})
+              navigation.navigate('Search', {
+                type: 'keyword',
+                word: `kw_reasonable`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
             }>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               #가성비
@@ -98,7 +121,13 @@ const MainPage = ({navigation}) => {
           <TouchableOpacity
             style={styles.Btn}
             onPress={() =>
-              navigation.navigate('#', {navigation: `${navigation}`})
+              navigation.navigate('Search', {
+                type: 'keyword',
+                word: `kw_clean`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
             }>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               #깔끔
@@ -109,7 +138,13 @@ const MainPage = ({navigation}) => {
           <TouchableOpacity
             style={styles.Btn}
             onPress={() =>
-              navigation.navigate('#', {navigation: `${navigation}`})
+              navigation.navigate('Search', {
+                type: 'keyword',
+                word: `kw_mood`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
             }>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               #감성
@@ -118,7 +153,13 @@ const MainPage = ({navigation}) => {
           <TouchableOpacity
             style={styles.Btn}
             onPress={() =>
-              navigation.navigate('#', {navigation: `${navigation}`})
+              navigation.navigate('Search', {
+                type: 'keyword',
+                word: `kw_various`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
             }>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               #다양한구성
