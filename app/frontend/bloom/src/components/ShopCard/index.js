@@ -22,7 +22,6 @@ const ShopCard = ({item, navigation}, props) => {
   const addWish = async () => {
     try {
       const res = await WishListAPI.addWishList(props.shop_number, 'piona');
-      console.log(res);
     } catch (error) {
       console.log('위시리스트 추가', error);
     }

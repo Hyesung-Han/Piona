@@ -35,6 +35,15 @@ const AlarmPage = ({navigation}) => {
     }
   };
 
+  const patchAlarm = async () => {
+    try {
+      const response = await alarmAPI.patch('piona');
+      console.log(response);
+    } catch (error) {
+      console.log('Alarm 검색', error);
+    }
+  };
+
   const renderItem = ({item}) => {
     return <AlarmCard item={item} />;
   };
@@ -42,6 +51,7 @@ const AlarmPage = ({navigation}) => {
   useFocusEffect(
     useCallback(() => {
       getAlarm();
+      patchAlarm();
     }, []),
   );
 
