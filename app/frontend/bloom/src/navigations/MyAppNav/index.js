@@ -23,14 +23,15 @@ import WishListPage from '../../pages/WishList';
 import RegisterReview from '../../pages/RegisterReview';
 
 /**
- * CSW, LDJ | 2022.05.02
- * @name MyAppNav
+ * CSW, LDJ | 2022.05.06
+ * @name MyApp
  * @des
  * App 화면에 들어가는 Nav(BottomTap, TopTab, Icons) 모아놓은 페이지
  * 모든 페이지들과 아이콘이 포함되어있음
  * TODO
  * 1. 각자 페이지 완성하고 나면 각 페이지에서 props로 받아야하는 정보(가게이름, 상품이름 등등) 처리를 위해서 코드수정이 필요함
  * 2. 약간의 이름 수정(이 다음엔 이거 지워주세요~)
+ * 3. MyApp_Sign과 구분해서 보시면 됩니다. (임시에요~ / 즉, 여기는 로그인 했을 때 Main Page로 가기 위함)
  *  */
 
 const MyApp = () => {
@@ -381,7 +382,7 @@ const MyApp = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="SignScreen" component={SignPage} />
+      {/* <Stack.Screen name="SignScreen" component={SignPage} /> */}
       <Stack.Screen name="appScreen" component={MyAppNav} />
     </Stack.Navigator>
   );
