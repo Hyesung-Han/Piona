@@ -136,23 +136,18 @@ const SearchResultPage = ({navigation}) => {
         </View>
       </View>
       <View style={styles.list}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('ShopDetail', {navigation: `${navigation}`})
-          }>
-          <FlatList
-            //리스트의 소스를 담는 속성
-            //data={data}
-            data={DATA}
-            //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
-            renderItem={renderItem}
-            //item의 고유의 키를 부여하는 속성
-            keyExtractor={item => String(item.id)}
-            //무한 스크롤때문에 넣은듯
-            // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
-            // onEndReachedThreshold={0.4}
-          />
-        </TouchableOpacity>
+        <FlatList
+          //리스트의 소스를 담는 속성
+          //data={data}
+          data={DATA}
+          //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
+          renderItem={renderItem}
+          //item의 고유의 키를 부여하는 속성
+          keyExtractor={item => String(item.id)}
+          //무한 스크롤때문에 넣은듯
+          // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
+          // onEndReachedThreshold={0.4}
+        />
       </View>
     </View>
   );
