@@ -8,10 +8,11 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  KeyboardAvoidingViewBase,
 } from 'react-native';
 import ShopCard from '../../components/ShopCard';
 import {searchAPI} from '../../utils/Axios';
-
+import {useSelector} from 'react-redux';
 /**
  * CSW | 2022.04.28
  * @name SearchResultPage
@@ -29,22 +30,39 @@ const SearchResultPage = ({navigation, route}) => {
   const [loading, setLoading] = useState(false);
   const [heartStatus, setHeartStaus] = useState(false);
 
+  const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
+
   const getShop = async () => {
     try {
-      const res = await searchAPI.get({
-        type: 'location',
-        user_id: 'piona',
-        word: inputText,
-        user_lat: 0,
-        user_lng: 0,
-      });
+      const res = await searchAPI.get(
+        route.params.type,
+        user_id,
+        route.params.user_lat,
+        route.params.user_lng,
+        route.params.word,
+        token,
+      );
       setData(res.data);
       console.log(data);
     } catch (error) {
-      console.log('위시리스트 검색', error);
+      console.log('검색결과', error);
     }
   };
 
+  const setText = () => {
+    if (route.params.word === 'kw_reasonable') {
+      setInputText('#가성비');
+    } else if (route.params.word === 'kw_clean') {
+      setInputText('#깔끔');
+    } else if (route.params.word === 'kw_mood') {
+      setInputText('#감성');
+    } else if (route.params.word === 'kw_various') {
+      setInputText('#다양한구성');
+    } else {
+      setInputText(route.params.word);
+    }
+  };
   const renderItem = ({item}) => {
     item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
     return <ShopCard item={item} heartStatus={heartStatus} />;
@@ -52,7 +70,7 @@ const SearchResultPage = ({navigation, route}) => {
 
   useFocusEffect(
     useCallback(() => {
-      setInputText(route.params.word);
+      setText();
       getShop();
     }, []),
   );
