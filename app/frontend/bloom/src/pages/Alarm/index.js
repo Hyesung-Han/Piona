@@ -24,10 +24,11 @@ import {useSelector} from 'react-redux';
 const AlarmPage = ({navigation}) => {
   const [data, setData] = useState([]);
   const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
 
   const getAlarm = async () => {
     try {
-      const res = await alarmAPI.get(user_id);
+      const res = await alarmAPI.get(user_id, token);
       setData(res.data);
     } catch (error) {
       console.log('Alarm 검색', error);
