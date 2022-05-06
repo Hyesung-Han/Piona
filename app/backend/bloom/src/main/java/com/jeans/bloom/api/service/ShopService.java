@@ -4,6 +4,7 @@ import com.jeans.bloom.api.response.ItemRes;
 import com.jeans.bloom.api.response.ShopRes;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface ShopService {
@@ -15,4 +16,6 @@ public interface ShopService {
 
     List<ShopRes> findShopByKeyword(String user_id, String keyword) throws Exception;
 
+
+    List<Date> getUnableDate(int itemId, int quantity) throws Exception;
 }

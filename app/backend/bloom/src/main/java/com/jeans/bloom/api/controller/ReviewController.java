@@ -20,7 +20,7 @@ import java.util.List;
  * @des 장바구니 API 사용을 위한 Controller
  */
 @RestController
-@RequestMapping("/api/review")
+@RequestMapping("/review")
 @Api(value = "리뷰 API", tags = {"Review"})
 public class ReviewController {
 

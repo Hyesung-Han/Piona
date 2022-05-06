@@ -19,7 +19,7 @@ import java.util.List;
  * @des 장바구니 API 사용을 위한 Controller
  */
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/cart")
 @Api(value = "장바구니 API", tags = {"Cart"})
 public class CartController {
 
