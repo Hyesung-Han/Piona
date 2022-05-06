@@ -331,10 +331,15 @@ export const getMyReservationList = async user_id => {
       return error.response.status;
     });
 };
+
 export const WishListAPI = {
-  getWishList: async user_id => {
+  getWishList: async (user_id, accessToken) => {
     return await request
-      .get('/wishlist', {params: {user_id: user_id}})
+      .get(`/wishlist?user_id=${user_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
       .then(response => {
         return response.data;
       })
@@ -343,9 +348,13 @@ export const WishListAPI = {
       });
   },
 
-  deleteWishList: async wish_id => {
+  delete: async (wish_id, accessToken) => {
     return await request
-      .delete('/wishlist', {params: {wish_id: wish_id}})
+      .delete(`/wishlist?wish_id=${wish_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
       .then(response => {
         return response.data.statusCode;
       })
@@ -353,14 +362,80 @@ export const WishListAPI = {
         return err.response.data;
       });
   },
-  addWishList: async (shop_number, user_id) => {
+  add: async (shop_number, user_id, accessToken) => {
     return await request
-      .post('/wishlist', {params: {shop_number: shop_number, user_id: user_id}})
+      .post(
+        '/wishlist',
+        {shop_number, user_id},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
       .then(response => {
         return response.data.statusCode;
       })
       .catch(err => {
         return err.response.data;
+      });
+  },
+};
+
+//CSW, Alarm Page와 Main Alarm아이콘을 위한 API
+export const alarmAPI = {
+  get: async (user_id, accessToken) => {
+    return await request
+      .get(`/alarm?user_id=${user_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+
+  patch: async (user_id, accessToken) => {
+    return await request
+      .patch(
+        `/alarm?user_id=${user_id}`,
+        {},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+};
+
+//CSW, SearchResult Page와 MapPage 위한 API
+export const searchAPI = {
+  get: async (type, user_id, user_lat, user_lng, word, accessToken) => {
+    return await request
+      .get(
+        `shop/search?type=${type}&user_id=${user_id}&user_lat=${user_lat}&user_lng=${user_lng}&word=${word}`,
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
       });
   },
 };
