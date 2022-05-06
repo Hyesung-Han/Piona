@@ -311,17 +311,19 @@ export const cartAPI = {
   },
 };
 /**
- * LHJ | 2022.05.04
- * @name getMyReservationList
- * @api .
- * @des
- * 1. api 기능 :
+ * LHJ | 2022.05.06
  * 나의 예약현황 보기
+ * user_id와 accessToken을 필요로 한다.
  * response를 받고 result를 뺀 data부분만 return한다.
  */
-export const getMyReservationList = async user_id => {
+export const getMyReservationList = async (user_id, accessToken) => {
   return await request
-    .get('/picnic', {params: {userId: user_id}})
+    .get(`/picnic?userId=${user_id}`, {
+      headers: {
+        Authorization: accessToken,
+      },
+    })
+    //.get(`/picnic?userId=${user_id}`)
     .then(response => {
       //response의 result는 제외한 data(배열)만을 반환
       return response.data;
@@ -330,6 +332,30 @@ export const getMyReservationList = async user_id => {
       //api 반환 실패시 상태 반환
       return error.response.status;
     });
+};
+/**
+ * LHJ | 2022.05.06
+ * 가게 상세 정보 조회
+ * shop_number와 accessToken을 필요로 한다.
+ * response를 받고 result를 뺀 data부분만 return한다.
+ */
+export const shopDetailAPI = {
+  getShopDetail: async (shop_number, accessToken) => {
+    return await request
+      .get(`/shop?shopNumber=${shop_number}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        //response의 result는 제외한 data(배열)만을 반환
+        return response.data;
+      })
+      .catch(error => {
+        //api 반환 실패시 상태 반환
+        return error.response.status;
+      });
+  },
 };
 
 export const WishListAPI = {
