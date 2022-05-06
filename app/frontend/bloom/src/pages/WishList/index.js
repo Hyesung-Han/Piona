@@ -50,7 +50,7 @@ const WishListPage = ({navigation}, props) => {
   useFocusEffect(
     useCallback(() => {
       getWish();
-    }, []),
+    }, [wishlist]),
   );
 
   return (
