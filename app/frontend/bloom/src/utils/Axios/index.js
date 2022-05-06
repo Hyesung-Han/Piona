@@ -264,6 +264,7 @@ export const userAPI = {
   // },
 };
 
+// CSW | 장바구니에 관한 API | [목록조회, 추가, 삭제]
 export const cartAPI = {
   getCartList: async (user_id, accessToken) => {
     return await request
@@ -379,6 +380,7 @@ export const shopDetailAPI = {
   },
 };
 
+// CSW | 위시리스트에 관한 API | [목록조회, 추가, 삭제]
 export const WishListAPI = {
   getWishList: async (user_id, accessToken) => {
     return await request
@@ -429,7 +431,7 @@ export const WishListAPI = {
   },
 };
 
-//CSW, Alarm Page와 Main Alarm아이콘을 위한 API
+// CSW | 알람에 관한 API | [목록조회, 읽음으로 갱신 ]
 export const alarmAPI = {
   get: async (user_id, accessToken) => {
     return await request
