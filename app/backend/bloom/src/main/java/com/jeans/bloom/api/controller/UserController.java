@@ -6,9 +6,10 @@ import com.jeans.bloom.api.response.UserRes;
 import com.jeans.bloom.api.service.MessageService;
 import com.jeans.bloom.api.service.UserService;
 import com.jeans.bloom.common.response.BaseResponseBody;
-import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.User;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -158,8 +159,11 @@ public class UserController {
             @RequestBody @ApiParam(value = "유저 정보", required = true) UserLoginPostReq userInfo){
         try{
             User userInfoPostRes = userService.passwordCheck(userInfo);
+            if(userInfoPostRes != null) {
+                return ResponseEntity.status(201).body(BaseResponseBody.of("success"));
+            }
+            return ResponseEntity.status(201).body(BaseResponseBody.of("fail"));
 
-            return ResponseEntity.status(201).body(BaseResponseBody.of("success"));
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
