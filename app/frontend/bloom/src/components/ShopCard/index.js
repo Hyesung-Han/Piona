@@ -26,10 +26,6 @@ const ShopCard = ({item, navigation}, props) => {
   const addWish = async () => {
     try {
       const res = await WishListAPI.add(item.shop_number, user_id, token);
-      console.log(res);
-      console.log(item.shop_number);
-      console.log(user_id);
-      console.log(token);
     } catch (error) {
       console.log('위시리스트 추가', error);
     }
@@ -37,7 +33,7 @@ const ShopCard = ({item, navigation}, props) => {
 
   const deleteWish = async () => {
     try {
-      const res = await WishListAPI.delete(item.wish_id, props.token);
+      const res = await WishListAPI.delete(item.wish_id, token);
     } catch (error) {
       console.log('위시리스트 삭제', error);
     }
