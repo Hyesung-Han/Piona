@@ -131,7 +131,7 @@ export const changeInfo = async (userNickname, petName) => {
     });
 };
 
-// LDJ | 유저에 관한 API | [로그인, 회원가입, 아이디 중복검사, 닉네임 중복검사, 비밀번호 확인]
+// LDJ | 유저에 관한 API | [로그인, 회원가입, 아이디중복, 닉네임중복, 비밀번호확인, 회원정보수정, 회원탈퇴]
 export const userAPI = {
   signin: async (user_id, password) => {
     return await request
@@ -177,22 +177,67 @@ export const userAPI = {
       });
   },
 
-  nickCheck: async userNickname => {
+  nickCheck: async userNickName => {
     return await request
-      .get(`/users/nickname/${userNickname}`, {})
+      .get(`/user/nickCheck?userNickName=${userNickName}`)
       .then(response => {
-        return response.data.statusCode;
+        return response;
       })
       .catch(error => {
-        return error.response.status;
+        return error;
       });
   },
+
+  // nickCheck: async userNickname => {
+  //   return await request
+  //     .get(`/users/nickname/${userNickname}`, {})
+  //     .then(response => {
+  //       return response.data.statusCode;
+  //     })
+  //     .catch(error => {
+  //       return error.response.status;
+  //     });
+  // },
 
   pwdCheck: async (user_id, password, accessToken) => {
     return await request
       .post(
         '/user/passwordCheck',
         {user_id, password},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+
+  // editUser: async (userId, accessToken) => {
+  //   return await request
+  //     .patch('/user', userId, {
+  //       headers: {
+  //         Authorization: accessToken,
+  //       },
+  //     })
+  //     .then(response => {
+  //       return response;
+  //     })
+  //     .catch(error => {
+  //       return error;
+  //     });
+  // },
+
+  deleteUser: async (user_id, accessToken) => {
+    return await request
+      .patch(
+        `/user/delete/${user_id}`,
+        {},
         {
           headers: {
             Authorization: accessToken,
@@ -312,10 +357,15 @@ export const shopDetailAPI = {
       });
   },
 };
+
 export const WishListAPI = {
-  getWishList: async user_id => {
+  getWishList: async (user_id, accessToken) => {
     return await request
-      .get('/wishlist', {params: {user_id: user_id}})
+      .get(`/wishlist?user_id=${user_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
       .then(response => {
         return response.data;
       })
@@ -324,9 +374,13 @@ export const WishListAPI = {
       });
   },
 
-  deleteWishList: async wish_id => {
+  delete: async (wish_id, accessToken) => {
     return await request
-      .delete('/wishlist', {params: {wish_id: wish_id}})
+      .delete(`/wishlist?wish_id=${wish_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
       .then(response => {
         return response.data.statusCode;
       })
@@ -334,14 +388,80 @@ export const WishListAPI = {
         return err.response.data;
       });
   },
-  addWishList: async (shop_number, user_id) => {
+  add: async (shop_number, user_id, accessToken) => {
     return await request
-      .post('/wishlist', {params: {shop_number: shop_number, user_id: user_id}})
+      .post(
+        '/wishlist',
+        {shop_number, user_id},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
       .then(response => {
         return response.data.statusCode;
       })
       .catch(err => {
         return err.response.data;
+      });
+  },
+};
+
+//CSW, Alarm Page와 Main Alarm아이콘을 위한 API
+export const alarmAPI = {
+  get: async (user_id, accessToken) => {
+    return await request
+      .get(`/alarm?user_id=${user_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+
+  patch: async (user_id, accessToken) => {
+    return await request
+      .patch(
+        `/alarm?user_id=${user_id}`,
+        {},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+};
+
+//CSW, SearchResult Page와 MapPage 위한 API
+export const searchAPI = {
+  get: async (type, user_id, user_lat, user_lng, word, accessToken) => {
+    return await request
+      .get(
+        `shop/search?type=${type}&user_id=${user_id}&user_lat=${user_lat}&user_lng=${user_lng}&word=${word}`,
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
       });
   },
 };

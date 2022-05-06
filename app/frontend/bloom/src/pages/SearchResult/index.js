@@ -8,96 +8,68 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  KeyboardAvoidingViewBase,
 } from 'react-native';
 import ShopCard from '../../components/ShopCard';
-
+import {searchAPI} from '../../utils/Axios';
+import {useSelector} from 'react-redux';
 /**
- * CSW | 2022.04.28
+ * CSW | 2022.05.06
  * @name SearchResultPage
  * @des
  * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
- * TODO
- * 1. navition 카드별로 적용
- * 2. api 적용
  *  */
 
-const SearchResultPage = ({navigation}) => {
+const SearchResultPage = ({navigation, route}) => {
   const [inputText, setInputText] = useState('');
   const [data, setData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [heartStatus, setHeartStaus] = useState(false);
 
-  //getData에 완료된 예약 정보 가져오는 api를 넣자!!!
-  const getData = () => {
-    setLoading(true);
-    fetch('http://jsonplaceholder.typicode.com/posts')
-      //해당 api를 통해서 받아오는 정보는 userId, id, title, body이다.
-      .then(res => res.json())
-      .then(res => setData(res));
+  const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
+
+  const getShop = async () => {
+    try {
+      const res = await searchAPI.get(
+        route.params.type,
+        user_id,
+        route.params.user_lat,
+        route.params.user_lng,
+        route.params.word,
+        token,
+      );
+      setData(res.data);
+    } catch (error) {
+      console.log('검색결과', error);
+    }
   };
 
-  const DATA = [
-    //괄호 하나하나가 item이 된다.
-    {
-      shop_number: 1,
-      shopName: '호진이가게',
-      address: '호진이가게,ㅁㄴㅇ',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-      wish: '',
-    },
-    {
-      shop_number: 2,
-      shopName: '소원이가게',
-      address: '소원이가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-      wish: '1',
-    },
-    {
-      shop_number: 3,
-      shopName: '혜성이가게',
-      address: '혜성이가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-      wish: '',
-    },
-    {
-      shop_number: 4,
-      shopName: '동준이형가게',
-      address: '동준이형가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-      wish: '',
-    },
-    {
-      shop_number: 5,
-      shopName: '정아누나가게',
-      address: '정아누나가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-    },
-    {
-      shop_number: 6,
-      shopName: '윤택이형가게',
-      address: '윤택이형가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-    },
-  ];
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+  const setText = () => {
+    if (route.params.word === 'kw_reasonable') {
+      setInputText('#가성비');
+    } else if (route.params.word === 'kw_clean') {
+      setInputText('#깔끔');
+    } else if (route.params.word === 'kw_mood') {
+      setInputText('#감성');
+    } else if (route.params.word === 'kw_various') {
+      setInputText('#다양한구성');
+    } else {
+      setInputText(route.params.word);
+    }
+  };
   const renderItem = ({item}) => {
-    item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
-    return (
-      <ShopCard item={item} heartStatus={heartStatus} navigation={navigation} />
-    );
+    return <ShopCard item={item} navigation={navigation} />;
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      setText();
+      getShop();
+    }, []),
+  );
+
+  console.log(data);
   return (
     <View style={styles.container}>
       <View style={styles.searchBox}>
@@ -110,7 +82,13 @@ const SearchResultPage = ({navigation}) => {
           <View style={styles.iconBox}>
             <Icon.Button
               onPress={() =>
-                navigation.navigate('Search', {navigation: `${navigation}`})
+                navigation.navigate('Search', {
+                  type: 'location',
+                  word: `${inputText}`,
+                  user_id: user_id,
+                  user_lat: 0,
+                  user_lng: 0,
+                })
               }
               name="search-outline"
               color="black"
@@ -123,11 +101,11 @@ const SearchResultPage = ({navigation}) => {
         <FlatList
           //리스트의 소스를 담는 속성
           //data={data}
-          data={DATA}
+          data={data}
           //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
           //item의 고유의 키를 부여하는 속성
-          keyExtractor={item => String(item.id)}
+          keyExtractor={item => item.shop_number}
           //무한 스크롤때문에 넣은듯
           // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
           // onEndReachedThreshold={0.4}

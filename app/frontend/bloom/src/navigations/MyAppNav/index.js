@@ -84,9 +84,7 @@ const MyApp = () => {
         <Stack.Screen
           name="ShopDetail"
           component={TopTabStackShopScreen}
-          options={({route}) => ({
-            title: route.params.shopName,
-          })}
+          options={({route}) => ({title: route.params.shopName})}
         />
         <Stack.Screen
           name="Map"

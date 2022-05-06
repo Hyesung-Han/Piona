@@ -26,37 +26,32 @@ import {useSelector} from 'react-redux';
 const WishListPage = ({navigation}, props) => {
   const [wishlist, setWishList] = useState([]);
   const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
 
   const getWish = async () => {
     try {
-      const res = await WishListAPI.getWishList('piona');
+      const res = await WishListAPI.getWishList(user_id, token);
       setWishList(res.data);
     } catch (error) {
       console.log('위시리스트 검색', error);
     }
   };
 
-  //로그인 적용 시
-  // const getWish = async () => {
-  //   try {
-  //     const res = await getWishList(user_id);
-  //     setWishList(res.data);
-  //   } catch (error) {
-  //     console.log('위시리스트', error);
-  //   }
-  // };
-
   const renderItem = ({item}) => {
-    return <ShopCard item={item} heartStatus={true} navigation={navigation} />;
+    return (
+      <ShopCard
+        item={item}
+        heartStatus={item.wish_id}
+        navigation={navigation}
+      />
+    );
   };
 
   useFocusEffect(
     useCallback(() => {
       getWish();
-    }, []),
+    }, [wishlist]),
   );
-
-  console.log(wishlist);
 
   return (
     <View style={styles.container}>

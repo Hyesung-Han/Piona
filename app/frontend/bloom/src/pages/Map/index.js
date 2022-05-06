@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { View, Dimensions, Alert, Text } from 'react-native';
+import React, {useState, useCallback} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import {View, Dimensions, Alert, Text} from 'react-native';
 import NaverMapView, {
   Circle,
   Marker,
@@ -19,9 +19,9 @@ import NaverMapView, {
  * 1. 전달받은 가게 화면에 지도에 뿌려주기
  *  */
 
-const MapPage = ({ navigation }) => {
-  const start = { latitude: 37.564362, longitude: 126.977011 };
-  const end = { latitude: 37.565051, longitude: 126.978567 };
+const MapPage = ({navigation}) => {
+  const start = {latitude: 37.564362, longitude: 126.977011};
+  const end = {latitude: 37.565051, longitude: 126.978567};
 
   return (
     <View

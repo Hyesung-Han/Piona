@@ -18,15 +18,17 @@ import {useDispatch} from 'react-redux';
  */
 
 const ShopCard = ({item, navigation}, props) => {
-  const [heartStatus, setHeartStaus] = useState(props.heartStatus);
-  const user_id = useSelector(state => state.id);
   const dispatch = useDispatch();
+  const [heartStatus, setHeartStaus] = useState(
+    item.wish_id === 0 ? false : true,
+  );
+  const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
+  const scoreNum = item.score.toFixed(2);
 
   const addWish = async () => {
     try {
-      const res = await WishListAPI.addWishList(props.shop_number, 'piona');
-      console.log(res);
+      const res = await WishListAPI.add(item.shop_number, user_id, token);
     } catch (error) {
       console.log('위시리스트 추가', error);
     }
@@ -34,16 +36,16 @@ const ShopCard = ({item, navigation}, props) => {
 
   const deleteWish = async () => {
     try {
-      const res = await WishListAPI.deleteWishList(props.wish_id);
-      console.log(res);
+      const res = await WishListAPI.delete(item.wish_id, token);
     } catch (error) {
-      console.log('위시리스트 추가', error);
+      console.log('위시리스트 삭제', error);
     }
   };
 
   const startScore = () => {
     const result = [];
-    for (let i = 0; i < item.score; i++) {
+    const row = Math.floor(item.score);
+    for (let i = 0; i < row; i++) {
       result.push(
         <Icon
           name="star"
@@ -71,7 +73,8 @@ const ShopCard = ({item, navigation}, props) => {
           setShopNumberAtRedux();
           navigation.navigate('ShopDetail', {
             shopNumber: `${item.shop_number}`,
-          });
+            shopName: `${item.name}`,
+          })
         }}>
         <View style={styles.seperateContainer}>
           <View style={{width: '95%'}}>
@@ -117,7 +120,7 @@ const ShopCard = ({item, navigation}, props) => {
                   <Text style={styles.itemTitle}>{item.name}</Text>
                 </View>
                 <View style={styles.scoreBox}>
-                  <Text style={styles.itemScore}>{item.score}</Text>
+                  <Text style={styles.itemScore}>{scoreNum}</Text>
                   <View style={styles.starIcons}>{startScore()}</View>
                 </View>
               </View>
