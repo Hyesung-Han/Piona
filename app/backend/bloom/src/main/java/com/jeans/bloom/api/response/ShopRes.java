@@ -1,5 +1,6 @@
 package com.jeans.bloom.api.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jeans.bloom.db.entity.Shop;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ShopRes {
 
     String shop_number;
@@ -27,7 +29,7 @@ public class ShopRes {
     BigDecimal shop_lat;
     double score;
     int review_cnt;
-
+    int wish_id;
     public static ShopRes of(Shop shop){
         /**
          * HHS | 2022.04.27
@@ -74,7 +76,20 @@ public class ShopRes {
                 .build();
     }
 
+    public static ShopRes of(ShopRes shopRes, int wishId) {
 
-
-
+        /**
+         * HHS | 2022.05.06
+         * @name ShopRes
+         * @des 가게 번호와 유저아이디를 이용하여 해당 가게의 별점 평균과 위시아이디를 조회
+         */
+        return ShopRes.builder()
+                .shop_number(shopRes.getShop_number())
+                .name(shopRes.getName())
+                .image_url(shopRes.getImage_url())
+                .address(shopRes.address)
+                .score(shopRes.getScore())
+                .wish_id(wishId)
+                .build();
+    }
 }

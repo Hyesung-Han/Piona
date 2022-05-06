@@ -4,6 +4,8 @@ import com.jeans.bloom.db.entity.Shop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,5 +18,5 @@ public interface ShopRepository extends JpaRepository<Shop, String> {
 
     Optional<Shop> findShopByShopNumber(String shopNumber) throws Exception;
 
-
+    Optional<List<Shop>> findShopListByShopLngBetweenAndShopLatBetween(BigDecimal lng_min, BigDecimal lng_max, BigDecimal lat_min, BigDecimal lat_max);
 }

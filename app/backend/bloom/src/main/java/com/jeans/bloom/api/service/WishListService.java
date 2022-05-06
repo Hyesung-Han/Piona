@@ -11,4 +11,5 @@ public interface WishListService {
     void deleteWishList(int wishId) throws Exception;
 
     List<WishListRes> findWishListByUser_UserId(String userId) throws Exception;
+
 }
