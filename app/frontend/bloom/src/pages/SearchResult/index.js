@@ -29,6 +29,9 @@ const SearchResultPage = ({navigation, route}) => {
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
 
+  //test 좌표
+  const user_location = {lat: 37.564362, lng: 126.977011};
+
   const getShop = async () => {
     try {
       const res = await searchAPI.get(
@@ -111,6 +114,25 @@ const SearchResultPage = ({navigation, route}) => {
           // onEndReachedThreshold={0.4}
         />
       </View>
+      <View style={styles.mapBtn}>
+        <Icon.Button
+          name="map-outline"
+          color="white"
+          backgroundColor="#F2A7B3"
+          size={20}
+          borderRadius={30}
+          width={50}
+          alignItems="center"
+          justifyContent="center"
+          onPress={navigation.navigate('Map', {
+            type: 'location',
+            word: '',
+            user_id: user_id,
+            user_lat: user_location.lat,
+            user_lng: user_location.lng,
+          })}
+        />
+      </View>
     </View>
   );
 };
@@ -151,6 +173,13 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 3,
+  },
+  mapBtn: {
+    position: 'absolute',
+    right: 10,
+    bottom: 10,
+    width: '11%',
+    height: '10%',
   },
 });
 
