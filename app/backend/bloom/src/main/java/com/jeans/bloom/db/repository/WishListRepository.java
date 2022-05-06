@@ -17,4 +17,7 @@ public interface WishListRepository extends JpaRepository<WishList, Integer> {
 
 
     Optional<List<WishList>> findWishListByUser_UserId(String userId) throws Exception;
+
+    WishList findWishListByUser_UserIdAndShop_ShopNumber(String userId, String shopNumber) throws Exception;
+
 }

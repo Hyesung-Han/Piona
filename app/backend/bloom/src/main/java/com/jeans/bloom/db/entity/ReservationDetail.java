@@ -2,6 +2,7 @@ package com.jeans.bloom.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,9 +12,10 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter @Setter
 @Table(name = "reservation_detail_t", schema = "bloom")
+@DynamicInsert
 public class ReservationDetail {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "detail_id")
     private Integer detailId;
 
