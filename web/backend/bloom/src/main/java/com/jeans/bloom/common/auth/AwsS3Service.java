@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +45,15 @@ public class AwsS3Service {
             }
 
         return path + fileName;
+    }
+
+    public List<String> uploadImage(List<MultipartFile> multipartFiles) {
+        List<String> fileNameList = new ArrayList<>();
+        multipartFiles.forEach(file -> {
+            String fileName = uploadImage(file);
+            fileNameList.add(fileName);
+        });
+        return fileNameList;
     }
 
     public void deleteImage(String fileName) {
