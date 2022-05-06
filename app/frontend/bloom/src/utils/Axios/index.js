@@ -356,11 +356,15 @@ export const alarmAPI = {
 
   patch: async (user_id, accessToken) => {
     return await request
-      .patch(`/alarm?user_id=${user_id}`, {
-        headers: {
-          Authorization: accessToken,
+      .patch(
+        `/alarm?user_id=${user_id}`,
+        {},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
         },
-      })
+      )
       .then(response => {
         return response.data.statusCode;
       })
