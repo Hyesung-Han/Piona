@@ -107,8 +107,11 @@ const MainPage = ({navigation}) => {
             style={styles.Btn}
             onPress={() =>
               navigation.navigate('Search', {
-                word: 'kw_reasonable',
                 type: 'keyword',
+                word: `kw_reasonable`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
               })
             }>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
@@ -118,7 +121,13 @@ const MainPage = ({navigation}) => {
           <TouchableOpacity
             style={styles.Btn}
             onPress={() =>
-              navigation.navigate('Search', {word: 'kw_clean', type: 'keyword'})
+              navigation.navigate('Search', {
+                type: 'keyword',
+                word: `kw_clean`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
             }>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               #깔끔
@@ -129,7 +138,13 @@ const MainPage = ({navigation}) => {
           <TouchableOpacity
             style={styles.Btn}
             onPress={() =>
-              navigation.navigate('Search', {word: 'kw_mood', type: 'keyword'})
+              navigation.navigate('Search', {
+                type: 'keyword',
+                word: `kw_mood`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
             }>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               #감성
@@ -139,8 +154,11 @@ const MainPage = ({navigation}) => {
             style={styles.Btn}
             onPress={() =>
               navigation.navigate('Search', {
-                word: 'kw_various',
                 type: 'keyword',
+                word: `kw_various`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
               })
             }>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
