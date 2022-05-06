@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 /**
- * LDJ | 2022.04.26
+ * LDJ | 2022.05.06
  * @name SignBtn
  * @api -
  * @des
@@ -16,7 +16,14 @@ const SignBtn = props => {
   return (
     <View>
       <TouchableOpacity style={styles.Android} onPress={props.func}>
-        <Text style={{fontSize: 14, fontWeight: 'bold'}}>{props.title}</Text>
+        <Text
+          style={{
+            fontSize: 14,
+            fontWeight: 'bold',
+            color: 'rgb(241, 92, 116)',
+          }}>
+          {props.title}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -24,9 +31,11 @@ const SignBtn = props => {
 
 const styles = StyleSheet.create({
   Android: {
-    elevation: 3,
+    // elevation: 3,
     backgroundColor: 'white',
-    borderRadius: 12,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'rgb(241, 92, 116)',
     height: 40,
     width: 280,
     marginTop: 10,
