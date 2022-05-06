@@ -38,7 +38,13 @@ const WishListPage = ({navigation}, props) => {
   };
 
   const renderItem = ({item}) => {
-    return <ShopCard item={item} heartStatus={true} navigation={navigation} />;
+    return (
+      <ShopCard
+        item={item}
+        heartStatus={item.wish_id}
+        navigation={navigation}
+      />
+    );
   };
 
   useFocusEffect(

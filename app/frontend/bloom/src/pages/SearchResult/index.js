@@ -25,7 +25,6 @@ const SearchResultPage = ({navigation, route}) => {
   const [data, setData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [heartStatus, setHeartStaus] = useState(false);
 
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
@@ -60,20 +59,7 @@ const SearchResultPage = ({navigation, route}) => {
     }
   };
   const renderItem = ({item}) => {
-    if (item.wish_id === 0) {
-      setHeartStaus(false);
-    } else {
-      setHeartStaus(true);
-    }
-    return (
-      <ShopCard
-        item={item}
-        heartStatus={heartStatus}
-        user_id={user_id}
-        token={token}
-        navigation={navigation}
-      />
-    );
+    return <ShopCard item={item} navigation={navigation} />;
   };
 
   useFocusEffect(
