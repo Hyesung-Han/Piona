@@ -2,6 +2,7 @@ package com.jeans.bloom.api.controller;
 
 import com.jeans.bloom.api.request.ReviewCommentReq;
 import com.jeans.bloom.api.request.UserRegiPostReq;
+import com.jeans.bloom.api.response.ReviewRes;
 import com.jeans.bloom.api.service.ReviewService;
 import com.jeans.bloom.common.response.BaseResponseBody;
 import com.jeans.bloom.db.entity.Review;
@@ -13,6 +14,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * OYT | 2022.04.27
@@ -73,6 +76,41 @@ public class ReviewController {
             return ResponseEntity.status(201).body(BaseResponseBody.of( "fail", "신고에 실패했습니다."));
 
         }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+
+    /**
+     * HHS | 2022.05.06
+     * @name findReviewsByReservation_Shop_ShopNumber
+     * @api {get} /review?shop_number=shop_number
+     * @des 사업자 등록번호를 통한 리뷰 리스트 받기
+     */
+    @GetMapping
+    @ApiOperation(value = "리뷰 리스트", notes = "사업자 번호를 통해 해당 가게의 리뷰 리스트 받아오기")
+    public ResponseEntity<BaseResponseBody> findReviewsByReservation_Shop_ShopNumber(
+            @RequestParam @ApiParam(value = "사업자 등록 번호", required = true) String shop_number){
+        try{
+            List<ReviewRes> reviewResList = reviewService.findReviewsByReservation_Shop_ShopNumber(shop_number);
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", reviewResList));
+        }catch(Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+    /**
+     * HHS | 2022.05.06
+     * @name findReviewByReviewId
+     * @api {get} /review/review_id
+     * @des 리뷰 아이디를 통한 리뷰 상세정보 받기
+     */
+    @GetMapping("/{review_id}")
+    @ApiOperation(value = "리뷰 상세 정보", notes = "리뷰 아이디를 통해 리뷰의 상세정보 받아오기")
+    public ResponseEntity<BaseResponseBody> findReviewByReviewId(
+            @PathVariable @ApiParam(value = "리뷰 아이디", required = true) int review_id){
+        try{
+            ReviewRes reviewDetail = reviewService.findReviewDetailByReviewId(review_id);
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", reviewDetail));
+        }catch(Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
     }
