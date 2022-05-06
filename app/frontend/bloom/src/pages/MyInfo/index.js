@@ -2,9 +2,13 @@ import React, {useState, useCallback, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import userSlice from '../../redux/slices/user';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 /**
- * LDJ | 2022.05.02
+ * LDJ | 2022.05.06
  * @name MyInfo
  * @api -
  * @des
@@ -14,6 +18,24 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
  *  */
 
 const MyInfoPage = ({navigation}) => {
+  const user_id = useSelector(state => state.user.id);
+  const user_nickname = useSelector(state => state.user.nickname);
+  const dispatch = useDispatch();
+
+  const logout = useCallback(async () => {
+    dispatch(
+      userSlice.actions.setUser({
+        name: '',
+        id: '',
+        nickname: '',
+        phoneNumber: '',
+        accessToken: '',
+        refreshToken: '',
+      }),
+    );
+    await EncryptedStorage.removeItem('refreshToken');
+  }, [dispatch]);
+
   return (
     <View
       style={{
@@ -50,7 +72,7 @@ const MyInfoPage = ({navigation}) => {
               marginLeft: 10,
               marginBottom: 5,
             }}>
-            닉네임
+            {user_nickname}
           </Text>
           <Text
             style={{
@@ -58,7 +80,7 @@ const MyInfoPage = ({navigation}) => {
               color: 'grey',
               marginLeft: 10,
             }}>
-            아이디
+            {user_id}
           </Text>
         </View>
       </TouchableOpacity>
@@ -84,7 +106,7 @@ const MyInfoPage = ({navigation}) => {
             color: 'grey',
             marginRight: 16,
           }}>
-          12345 P
+          포인트어쩔껴~ P
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -97,7 +119,8 @@ const MyInfoPage = ({navigation}) => {
           alignItems: 'center',
           borderRadius: 10,
           marginTop: 100,
-        }}>
+        }}
+        onPress={() => logout()}>
         <Icon name="logout" color={'grey'} size={18}></Icon>
         <Text
           style={{
