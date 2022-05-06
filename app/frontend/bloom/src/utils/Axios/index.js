@@ -1,9 +1,20 @@
-// import axios from 'axios';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// let request = axios.create({
-//   baseURL: 'https://k5a201.p.ssafy.io/api',
-// });
+/**
+ * LDJ, LHJ, CSW | 2022.05.06
+ * @name utils/Axios
+ * @api 모든 API 만드는 곳
+ * @des
+ * API를 여기서 다 만들어서 가져다 쓸거임
+ * [이름 | 설명 | 세부 항목]
+ */
+
+let request = axios.create({
+  baseURL: 'https://k6a201.p.ssafy.io/api',
+});
 
 // request.interceptors.request.use(async config => {
 //   if (await AsyncStorage.getItem('token')) {
@@ -50,572 +61,407 @@
 //   AsyncStorage.setItem('token', `Bearer ${value}`);
 // }
 
-// export const myinfo = async () => {
-//   return await request
-//     .get(`/users`, {})
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+export const withdraw = async () => {
+  return await request
+    .delete(`/users`, {})
+    .then(response => {
+      return response.data.statusCode;
+    })
+    .catch(err => {
+      return err.response.data;
+    });
+};
 
-// export const withdraw = async () => {
-//   return await request
-//     .delete(`/users`, {})
-//     .then(response => {
-//       return response.data.statusCode;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+export const shareUser = async searchKeyword => {
+  return await request
+    .get('/users/sharing', {
+      params: {
+        searchKeyword: searchKeyword,
+      },
+    })
+    .then(response => {
+      return response.data;
+    })
+    .catch(err => {
+      return err.response.data;
+    });
+};
 
-// export const shareUser = async searchKeyword => {
-//   return await request
-//     .get('/users/sharing', {
-//       params: {
-//         searchKeyword: searchKeyword,
-//       },
-//     })
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+export const getVisual = async () => {
+  return await request.get(`/visual`, {}).then(response => {
+    return response.data.UsersTagList;
+  });
+};
 
-// export const getAlarmDetail = async alarmId => {
-//   return await request
-//     .get(`/alarms/detail/${alarmId}`, {
-//       params: {
-//         alarmId: alarmId,
-//       },
-//     })
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+export const uploadProfile = async userProfileUrl => {
+  return await request
+    .put('/users/profile', {
+      userProfileUrl,
+    })
+    .then(response => {
+      return response.data.statusCode;
+    })
+    .catch(err => {
+      return err.response.data;
+    });
+};
 
-// export const deleteAlarm = async alarmId => {
-//   return await request
-//     .delete(`/alarms/${alarmId}`, {
-//       params: {
-//         alarmId: alarmId,
-//       },
-//     })
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+export const modifyNick = async userNickname => {
+  return await request
+    .get(`/users/me/nickname/${userNickname}`, {})
+    .then(response => {
+      return response.data;
+    })
+    .catch(err => {
+      return err.response.data;
+    });
+};
 
-// export const getMainAlarm = async () => {
-//   return await request.get(`/alarms/main`, {}).then(response => {
-//     return response.data.alarmList;
-//   });
-// };
+export const changeInfo = async (userNickname, petName) => {
+  return await request
+    .put('/users', {
+      userNickname,
+      petName,
+    })
+    .then(response => {
+      return response.data.statusCode;
+    })
+    .catch(err => {
+      return err.response.data;
+    });
+};
 
-// export const getVisual = async () => {
-//   return await request.get(`/visual`, {}).then(response => {
-//     return response.data.UsersTagList;
-//   });
-// };
+// LDJ | 유저에 관한 API | [로그인, 회원가입, 아이디중복, 닉네임중복, 비밀번호확인, 회원정보수정, 회원탈퇴]
+export const userAPI = {
+  signin: async (user_id, password) => {
+    return await request
+      .post('/user/signin', {
+        user_id,
+        password,
+      })
+      .then(response => {
+        return response;
+        // AsyncStorage.setItem('refresh', response.data.refreshToken);
+        // setToken(response.data.accessToken);
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
-// export const getPeriod = async periodType => {
-//   return await request
-//     .get(`/alarms/${periodType}`, {})
-//     .then(response => {
-//       return response.data.alarmList;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+  signup: async (user_id, password, name, nickname, phone) => {
+    return await request
+      .post('/user/signup', {
+        user_id,
+        password,
+        name,
+        nickname,
+        phone,
+      })
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
-// export const getAlarmlist = async nowDate => {
-//   return await request
-//     .get('/alarms', {
-//       params: {
-//         nowDate: nowDate,
-//       },
-//     })
-//     .then(response => {
-//       return response.data.alarmList;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+  idCheck: async userId => {
+    return await request
+      .get(`/user/idcheck?userId=${userId}`)
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
-// export const modifyAlarm = async (
-//   alarmId,
-//   alarmTitle,
-//   alarmYN,
-//   alarmTime1,
-//   alarmTime2,
-//   alarmTime3,
-//   alarmDayStart,
-//   alarmDayEnd,
-//   alarmMediList,
-//   tagList,
-// ) => {
-//   return await request
-//     .put('/alarms', {
-//       alarmId,
-//       alarmTitle,
-//       alarmYN,
-//       alarmTime1,
-//       alarmTime2,
-//       alarmTime3,
-//       alarmDayStart,
-//       alarmDayEnd,
-//       alarmMediList,
-//       tagList,
-//     })
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+  nickCheck: async userNickName => {
+    return await request
+      .get(`/user/nickCheck?userNickName=${userNickName}`)
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
-// export const sharingList = async () => {
-//   return await request
-//     .get('/sharings', {})
-//     .then(response => {
-//       return response.data.alarmShareList;
-//     })
-//     .catch(err => {
-//       return err.response;
-//     });
-// };
+  // nickCheck: async userNickname => {
+  //   return await request
+  //     .get(`/users/nickname/${userNickname}`, {})
+  //     .then(response => {
+  //       return response.data.statusCode;
+  //     })
+  //     .catch(error => {
+  //       return error.response.status;
+  //     });
+  // },
 
-// export const sharingAccept = async alarmId => {
-//   return await request
-//     .delete('/sharings/accept', {
-//       params: {
-//         alarmId: alarmId,
-//       },
-//     })
-//     .then(response => {
-//       return response.data.statusCode;
-//     })
-//     .catch(err => {
-//       return err.response;
-//     });
-// };
+  pwdCheck: async (user_id, password, accessToken) => {
+    return await request
+      .post(
+        '/user/passwordCheck',
+        {user_id, password},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
-// export const sharingReject = async alarmId => {
-//   return await request
-//     .delete('/sharings/reject', {
-//       params: {
-//         alarmId: alarmId,
-//       },
-//     })
-//     .then(response => {
-//       return response.data.statusCode;
-//     })
-//     .catch(err => {
-//       return err.response;
-//     });
-// };
+  // editUser: async (userId, accessToken) => {
+  //   return await request
+  //     .patch('/user', userId, {
+  //       headers: {
+  //         Authorization: accessToken,
+  //       },
+  //     })
+  //     .then(response => {
+  //       return response;
+  //     })
+  //     .catch(error => {
+  //       return error;
+  //     });
+  // },
 
-// export const getCalendar = async nowMonth => {
-//   return await request
-//     .get('/alarms/calendar', {
-//       params: {
-//         nowMonth: nowMonth,
-//       },
-//     })
-//     .then(response => {
-//       return response.data.alarmList;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+  deleteUser: async (user_id, accessToken) => {
+    return await request
+      .patch(
+        `/user/delete/${user_id}`,
+        {},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
-// export const ocrList = async text => {
-//   return await request
-//     .post('/alarms/ocr', {
-//       text,
-//     })
-//     .then(response => {
-//       return response.data.mediList;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+  // emailCheck: async userEmail => {
+  //   return await request
+  //     .get(`/users/email/${userEmail}`, {})
+  //     .then(response => {
+  //       return response.data.statusCode;
+  //     })
+  //     .catch(error => {
+  //       return error.response.status;
+  //     });
+  // },
+};
 
-// export const uploadProfile = async userProfileUrl => {
-//   return await request
-//     .put('/users/profile', {
-//       userProfileUrl,
-//     })
-//     .then(response => {
-//       return response.data.statusCode;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+export const cartAPI = {
+  getCartList: async userId => {
+    return await request
+      .get('/cart', {params: {userId: userId}})
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
-// export const searchMedicine = async searchKeyword => {
-//   return await request
-//     .get('/medicines/alarm', {
-//       params: {
-//         searchKeyword: searchKeyword,
-//       },
-//     })
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+  addCartList: async (
+    userId,
+    quantity,
+    reservationDate,
+    shopNumber,
+    itemId,
+  ) => {
+    return await request
+      .post('/user', {
+        userId,
+        quantity,
+        reservationDate,
+        shopNumber,
+        itemId,
+      })
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error.response.status;
+      });
+  },
 
-// export const modifyNick = async userNickname => {
-//   return await request
-//     .get(`/users/me/nickname/${userNickname}`, {})
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+  deleteCartList: async cartId => {
+    return await request
+      .delete('/cart', {cartId})
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error.response.status;
+      });
+  },
+};
+/**
+ * LHJ | 2022.05.06
+ * 나의 예약현황 보기
+ * user_id와 accessToken을 필요로 한다.
+ * response를 받고 result를 뺀 data부분만 return한다.
+ */
+export const getMyReservationList = async (user_id, accessToken) => {
+  return await request
+    .get(`/picnic?userId=${user_id}`, {
+      headers: {
+        Authorization: accessToken,
+      },
+    })
+    //.get(`/picnic?userId=${user_id}`)
+    .then(response => {
+      //response의 result는 제외한 data(배열)만을 반환
+      return response.data;
+    })
+    .catch(error => {
+      //api 반환 실패시 상태 반환
+      return error.response.status;
+    });
+};
+/**
+ * LHJ | 2022.05.06
+ * 가게 상세 정보 조회
+ * shop_number와 accessToken을 필요로 한다.
+ * response를 받고 result를 뺀 data부분만 return한다.
+ */
+export const shopDetailAPI = {
+  getShopDetail: async (shop_number, accessToken) => {
+    return await request
+      .get(`/shop?shopNumber=${shop_number}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        //response의 result는 제외한 data(배열)만을 반환
+        return response.data;
+      })
+      .catch(error => {
+        //api 반환 실패시 상태 반환
+        return error.response.status;
+      });
+  },
+};
 
-// export const changeInfo = async (userNickname, petName) => {
-//   return await request
-//     .put('/users', {
-//       userNickname,
-//       petName,
-//     })
-//     .then(response => {
-//       return response.data.statusCode;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+export const WishListAPI = {
+  getWishList: async (user_id, accessToken) => {
+    return await request
+      .get(`/wishlist?user_id=${user_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        return response.data;
+      })
+      .catch(err => {
+        return err.response.data;
+      });
+  },
 
-// export const enrollAlarm = async (
-//   alarmTitle,
-//   alarmYN,
-//   alarmTime1,
-//   alarmTime2,
-//   alarmTime3,
-//   alarmDayStart,
-//   alarmDayEnd,
-//   alarmMediList,
-//   tagList,
-//   shareEmail,
-// ) => {
-//   return await request
-//     .post('/alarms', {
-//       alarmTitle,
-//       alarmYN,
-//       alarmTime1,
-//       alarmTime2,
-//       alarmTime3,
-//       alarmDayStart,
-//       alarmDayEnd,
-//       alarmMediList,
-//       tagList,
-//       shareEmail,
-//     })
-//     .then(response => {
-//       return response.data.alarmId;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+  delete: async (wish_id, accessToken) => {
+    return await request
+      .delete(`/wishlist?wish_id=${wish_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(err => {
+        return err.response.data;
+      });
+  },
+  add: async (shop_number, user_id, accessToken) => {
+    return await request
+      .post(
+        '/wishlist',
+        {shop_number, user_id},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(err => {
+        return err.response.data;
+      });
+  },
+};
 
-// export const userAPI = {
-//   login: async (userEmail, userPassword, userLoginType) => {
-//     return await request
-//       .post('/auth/login', {
-//         userEmail,
-//         userPassword,
-//         userLoginType,
-//       })
-//       .then(response => {
-//         AsyncStorage.setItem('refresh', response.data.refreshToken);
-//         setToken(response.data.accessToken);
-//       })
-//       .catch(error => {
-//         return error.response.status;
-//       });
-//   },
-//   social: async (userEmail, userPassword, userLoginType) => {
-//     return await request
-//       .post('/auth/social', {
-//         userEmail,
-//         userPassword,
-//         userLoginType,
-//       })
-//       .then(response => {
-//         AsyncStorage.setItem('refresh', response.data.refreshToken);
-//         setToken(response.data.accessToken);
-//       })
-//       .catch(error => {
-//         return error.response.status;
-//       });
-//   },
-//   join: async (
-//     userEmail,
-//     userPassword,
-//     userNickname,
-//     userProfileUrl,
-//     petName,
-//     userJoinType,
-//   ) => {
-//     return await request
-//       .post('/users', {
-//         userEmail,
-//         userPassword,
-//         userNickname,
-//         userProfileUrl,
-//         petName,
-//         userJoinType,
-//       })
-//       .then(response => {
-//         return response.data.statusCode;
-//       })
-//       .catch(error => {
-//         return error.response.status;
-//       });
-//   },
-//   nickCheck: async userNickname => {
-//     return await request
-//       .get(`/users/nickname/${userNickname}`, {})
-//       .then(response => {
-//         return response.data.statusCode;
-//       })
-//       .catch(error => {
-//         return error.response.status;
-//       });
-//   },
-//   emailCheck: async userEmail => {
-//     return await request
-//       .get(`/users/email/${userEmail}`, {})
-//       .then(response => {
-//         return response.data.statusCode;
-//       })
-//       .catch(error => {
-//         return error.response.status;
-//       });
-//   },
-// };
+//CSW, Alarm Page와 Main Alarm아이콘을 위한 API
+export const alarmAPI = {
+  get: async (user_id, accessToken) => {
+    return await request
+      .get(`/alarm?user_id=${user_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
-// export const getPharmacyAPI = async (lat, lon, week, curTime) => {
-//   return await request
-//     .get('/pharmacies', {
-//       params: {
-//         lat: lat,
-//         lon: lon,
-//         week: week,
-//         curTime: curTime,
-//       },
-//     })
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+  patch: async (user_id, accessToken) => {
+    return await request
+      .patch(
+        `/alarm?user_id=${user_id}`,
+        {},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+};
 
-// export const getCommunityAPI = {
-//   list: async pageNum => {
-//     return await request
-//       .get('/communities/list', {
-//         params: {
-//           pageNum: pageNum,
-//         },
-//       })
-//       .then(response => {
-//         return response.data;
-//       })
-//       .catch(err => {
-//         return err.response.data;
-//       });
-//   },
-
-//   search: async (pageNum, searchKeyword) => {
-//     return await request
-//       .post('/communities/search', {
-//         pageNum,
-//         searchKeyword,
-//       })
-//       .then(response => {
-//         return {
-//           ...response.data,
-//           searchKeyword: searchKeyword,
-//         };
-//       })
-//       .catch(err => {
-//         return err.response.data;
-//       });
-//   },
-//   detail: async commuId => {
-//     return await request
-//       .get(`/communities/detail`, {
-//         params: {
-//           commuId: commuId,
-//         },
-//       })
-//       .then(response => {
-//         return response.data;
-//       })
-//       .catch(err => {
-//         return err.response.data;
-//       });
-//   },
-//   create: async (commuTitle, commuContents) => {
-//     return await request
-//       .post(`/communities`, {
-//         commuTitle,
-//         commuContents,
-//       })
-//       .then(response => {
-//         return response.data;
-//       })
-//       .catch(err => {
-//         return err.response.data;
-//       });
-//   },
-//   update: async (commuId, commuTitle, commuContents) => {
-//     return await request
-//       .put(`/communities`, {
-//         commuId,
-//         commuTitle,
-//         commuContents,
-//       })
-//       .then(response => {
-//         return response.data;
-//       })
-//       .catch(err => {
-//         return err.response.data;
-//       });
-//   },
-//   delete: async (commuId, commuTitle, commuContents) => {
-//     return await request
-//       .delete(`/communities/${commuId}`, {
-//         params: {
-//           commuId: commuId,
-//         },
-//       })
-//       .then(response => {
-//         return response.data;
-//       })
-//       .catch(err => {
-//         return err.response.data;
-//       });
-//   },
-//   commentCreate: async (commuId, commentContents) => {
-//     return await request
-//       .post(`/communities/comment`, {
-//         commuId,
-//         commentContents,
-//       })
-//       .then(response => {
-//         return response.data;
-//       })
-//       .catch(err => {
-//         return err.response.data;
-//       });
-//   },
-//   commentDelete: async commentId => {
-//     return await request
-//       .delete(`/communities/comment/${commentId}`, {
-//         params: {
-//           commentId: commentId,
-//         },
-//       })
-//       .then(response => {
-//         return response.data;
-//       })
-//       .catch(err => {
-//         return err.response.data;
-//       });
-//   },
-// };
-
-// export const getMediListAPI = async searchKeyword => {
-//   return await request
-//     .get('/medicines/search', {
-//       params: {
-//         searchKeyword: searchKeyword,
-//       },
-//     })
-//     .then(response => {
-//       return response.data.mediList;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
-
-// export const getMediDetailAPI = async mediSerialNum => {
-//   return await request
-//     .get(`/medicines/detail/${mediSerialNum}`, {})
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
-
-// export const alarmCheckAPI = async (alarmId, thYN) => {
-//   return await request
-//     .post(`/alarms/check`, {
-//       alarmId,
-//       thYN,
-//     })
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
-
-// export const getMyPillAPI = async () => {
-//   return await request
-//     .get(`/mypills`, {})
-//     .then(response => {
-//       return response.data.alarmList;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
-
-// export const getMyPillHistoryAPI = async pageNum => {
-//   return await request
-//     .get(`mypills/history`, {
-//       params: {
-//         pageNum: pageNum,
-//       },
-//     })
-//     .then(response => {
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return err.response.data;
-//     });
-// };
+//CSW, SearchResult Page와 MapPage 위한 API
+export const searchAPI = {
+  get: async (type, user_id, user_lat, user_lng, word, accessToken) => {
+    return await request
+      .get(
+        `shop/search?type=${type}&user_id=${user_id}&user_lat=${user_lat}&user_lng=${user_lng}&word=${word}`,
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+};

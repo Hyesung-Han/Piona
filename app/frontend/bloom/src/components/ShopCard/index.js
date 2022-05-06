@@ -2,88 +2,139 @@ import React, {useState, useCallback} from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import HorizonLine from '../HorizonLine';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {WishListAPI} from '../../utils/Axios';
+import {useSelector} from 'react-redux';
+import shopSlice, {shop} from '../../redux/slices/shop';
+import {useDispatch} from 'react-redux';
 
 /**
- * CSW | 2022.04.28
+ * CSW,LHJ | 2022.05.06
  * @name ShopCard
- * @api x
+ * @api WishListAPI/addWishList, WishListAPI/deleteWishList
  * @des
  * 1. 컴포넌트 목록 :
  * 2. 페이지 기능 :
  * FlatList에 보여줄 item 컴포넌트이다.
  */
 
-const ShopCard = ({item}) => {
-  const [heartStatus, setHeartStaus] = useState(false);
+const ShopCard = ({item, navigation}, props) => {
+  const dispatch = useDispatch();
+  const [heartStatus, setHeartStaus] = useState(
+    item.wish_id === 0 ? false : true,
+  );
+  const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
+  const scoreNum = item.score.toFixed(2);
 
-  //아이템을 받아오면 그 아이템의 이름에서 불필요한 부분을 replace하고 리턴한다.
-  //상품 내용이 너무 길어 공백 문자가 있을 경우에 줄바꿈 문자로 바꾸어서 리턴
-  //아직 미완성인 코드임
-  const desc = () => {
-    if (item.itemDesc.includes(',')) {
-      return item.itemDesc.replace(',', '\n(');
-    } else {
-      return item.itemDesc;
+  const addWish = async () => {
+    try {
+      const res = await WishListAPI.add(item.shop_number, user_id, token);
+    } catch (error) {
+      console.log('위시리스트 추가', error);
     }
+  };
+
+  const deleteWish = async () => {
+    try {
+      const res = await WishListAPI.delete(item.wish_id, token);
+    } catch (error) {
+      console.log('위시리스트 삭제', error);
+    }
+  };
+
+  const startScore = () => {
+    const result = [];
+    const row = Math.floor(item.score);
+    for (let i = 0; i < row; i++) {
+      result.push(
+        <Icon
+          name="star"
+          color="#F2A344"
+          backgroundColor="transparent"
+          size={15}
+        />,
+      );
+    }
+    return result;
+  };
+
+  const setShopNumberAtRedux = () => {
+    dispatch(
+      shopSlice.actions.setShopNumber({
+        shopNumber: `${item.shop_number}`,
+      }),
+    );
   };
 
   return (
     <View style={styles.CardList}>
-      <View style={styles.seperateContainer}>
-        <View style={{width: '95%'}}>
-          <Image
-            source={{uri: `${item.imgUrl}`}}
-            style={{
-              resizeMode: 'cover',
-              width: '100%',
-              height: 130,
-              borderRadius: 10,
-            }}
-          />
-          <View style={styles.iconBox}>
-            {heartStatus === false ? (
-              <Icon.Button
-                name="heart-outline"
-                color="#F15C74"
-                backgroundColor="transparent"
-                size={25}
-                onPress={() =>
-                  setHeartStaus(prevStatus => (prevStatus ? false : true))
-                }
-              />
-            ) : (
-              <Icon.Button
-                name="heart"
-                color="#F15C74"
-                backgroundColor="transparent"
-                size={25}
-                onPress={() =>
-                  setHeartStaus(prevStatus => (prevStatus ? false : true))
-                }
-              />
-            )}
-          </View>
-        </View>
-        <View style={styles.cardBottom}>
-          <View style={styles.itemInfoContainer}>
-            <View style={styles.itemTitleAndReviewScore}>
-              <View>
-                <Text style={styles.itemTitle}>{item.shopName}</Text>
-              </View>
-              <View>
-                <Text style={styles.itemScore}>{item.score}</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.itemAddress}>{item.address}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          setShopNumberAtRedux();
+          navigation.navigate('ShopDetail', {
+            shopNumber: `${item.shop_number}`,
+            shopName: `${item.name}`,
+          })
+        }}>
+        <View style={styles.seperateContainer}>
+          <View style={{width: '95%'}}>
+            <Image
+              source={{uri: `${item.image_url}`}}
+              style={{
+                resizeMode: 'cover',
+                width: '100%',
+                height: 130,
+                borderRadius: 10,
+              }}
+            />
+            <View style={styles.iconBox}>
+              {heartStatus === false ? (
+                <Icon.Button
+                  name="heart-outline"
+                  color="#F15C74"
+                  backgroundColor="transparent"
+                  size={25}
+                  onPress={() => {
+                    setHeartStaus(prevStatus => (prevStatus ? false : true));
+                    addWish();
+                  }}
+                />
+              ) : (
+                <Icon.Button
+                  name="heart"
+                  color="#F15C74"
+                  backgroundColor="transparent"
+                  size={25}
+                  onPress={() => {
+                    setHeartStaus(prevStatus => (prevStatus ? false : true));
+                    deleteWish();
+                  }}
+                />
+              )}
             </View>
           </View>
-          <View style={styles.seeMore}>
-            <Text style={{color: '#F15C74', fontSize: 13}}>see more</Text>
+          <View style={styles.cardBottom}>
+            <View style={styles.itemInfoContainer}>
+              <View style={styles.itemTitleAndReviewScore}>
+                <View>
+                  <Text style={styles.itemTitle}>{item.name}</Text>
+                </View>
+                <View style={styles.scoreBox}>
+                  <Text style={styles.itemScore}>{scoreNum}</Text>
+                  <View style={styles.starIcons}>{startScore()}</View>
+                </View>
+              </View>
+              <View>
+                <Text style={styles.itemAddress}>{item.address}</Text>
+              </View>
+            </View>
+            <View style={styles.seeMore}>
+              <Text style={{color: '#F15C74', fontSize: 13}}>see more</Text>
+            </View>
           </View>
+          <HorizonLine />
         </View>
-        <HorizonLine />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -117,7 +168,7 @@ const styles = StyleSheet.create({
   },
   itemScore: {
     marginVertical: 5,
-    marginLeft: 20,
+    marginLeft: 30,
     fontSize: 15,
     color: 'black',
   },
@@ -139,8 +190,17 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     width: '20%',
-    top: 5,
-    left: 5,
+    top: 1,
+    left: 1,
+  },
+  starIcons: {
+    flexDirection: 'row',
+    marginLeft: 10,
+  },
+  scoreBox: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
