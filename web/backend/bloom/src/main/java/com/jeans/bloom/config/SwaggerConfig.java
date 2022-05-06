@@ -22,7 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static springfox.documentation.swagger.web.OperationsSorter.METHOD;
 
 @Configuration
-@EnableSwagger2
+//@EnableSwagger2
 public class SwaggerConfig{
 
     public static final String SECURITY_SCHEMA_NAME = "JWT";
