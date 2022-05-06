@@ -29,7 +29,6 @@ public class ShopRes {
     BigDecimal shop_lat;
     double score;
     int review_cnt;
-//    User user;
     int wish_id;
     public static ShopRes of(Shop shop){
         /**

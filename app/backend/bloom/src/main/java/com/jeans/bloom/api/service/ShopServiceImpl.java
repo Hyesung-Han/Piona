@@ -111,7 +111,6 @@ public class ShopServiceImpl implements ShopService{
         List<ShopRes> shopResList = new ArrayList<>();
         List<Shop> shops = shopRepository.findAll();
         ShopRes shop = null;
-        System.out.println(shops.size());
         for(int i = 0; i < shops.size(); i++) {
             String shopNumber = shops.get(i).getShopNumber();
 
@@ -133,8 +132,6 @@ public class ShopServiceImpl implements ShopService{
                     if(review.get(j).getKwKind().equals("Y")) kwCount++;
                 }
             }
-            System.out.println(kwCount+" 여기가 카운트입니당");
-            System.out.println(count*0.5);
             if(count > 0 && kwCount > 0  && kwCount >= count*0.5){
                 shop = findShopByShopNumber(shopNumber);
                 WishList wishList = wishListRepository.findWishListByUser_UserIdAndShop_ShopNumber(user_id, shopNumber);
