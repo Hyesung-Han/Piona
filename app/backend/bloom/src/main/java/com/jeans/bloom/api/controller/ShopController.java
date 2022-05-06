@@ -3,6 +3,7 @@ package com.jeans.bloom.api.controller;
 import com.jeans.bloom.api.response.ItemRes;
 import com.jeans.bloom.api.response.ShopRes;
 import com.jeans.bloom.api.service.ItemService;
+import com.jeans.bloom.api.service.SearchShopService;
 import com.jeans.bloom.api.service.ShopService;
 import com.jeans.bloom.common.response.BaseResponseBody;
 import com.jeans.bloom.db.entity.Item;
@@ -27,6 +28,8 @@ public class ShopController {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private SearchShopService searchShopService;
     /**
      * HHS | 2022.04.27
      * @name findShopByShopNumber
@@ -86,9 +89,36 @@ public class ShopController {
             }catch(Exception e){
                 return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
             }
-
-
     }
 
+    /**
+     * HHS | 2022.05.06
+     * @name findShopBySearchWord
+     * @api {get} /shop/search?type=type&user_id=user_id&user_lat=user_lat&user_lng=user_lng&word=word
+     * @des 검색어를 이용하여 상점 리스트 반환
+     */
+    @GetMapping("/search")
+    @ApiOperation(value = "검색어 혹은 위도,경도", notes = "검색을 통한 상점의 목록 불러오기")
+    public ResponseEntity<BaseResponseBody> findShopBySearchWord(
+        @RequestParam @ApiParam(value = "유저아이디", required = true) String user_id, @ApiParam(value = "타입", required = true) String type,
+        @ApiParam(value = "검색어", required = false) String word, @ApiParam(value = "경도", required = false) double user_lng,
+        @ApiParam(value="위도", required = false) double user_lat) {
+        if(type.equals("location")) {
+            try {
+                List<ShopRes> shopList = searchShopService.search(user_id, word, user_lng, user_lat);
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success", shopList));
+            } catch (Exception e) {
+                return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+            }
+        } else if (type.equals("keyword")) {
 
+            try {
+                List<ShopRes> shopList = shopService.findShopByKeyword(user_id, word);
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success", shopList));
+            } catch (Exception e) {
+                return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+            }
+        }else{
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", "잘못된 type값 입니다."));
+        }}
 }
