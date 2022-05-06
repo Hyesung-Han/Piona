@@ -303,9 +303,9 @@ export const WishListAPI = {
       });
   },
 
-  deleteWishList: async (wish_id, accessToken) => {
+  delete: async (wish_id, accessToken) => {
     return await request
-      .delete(`/wishlist?user_id=${wish_id}`, {
+      .delete(`/wishlist?wish_id=${wish_id}`, {
         headers: {
           Authorization: accessToken,
         },
@@ -317,7 +317,7 @@ export const WishListAPI = {
         return err.response.data;
       });
   },
-  addWishList: async (shop_number, user_id, accessToken) => {
+  add: async (shop_number, user_id, accessToken) => {
     return await request
       .post(
         '/wishlist',

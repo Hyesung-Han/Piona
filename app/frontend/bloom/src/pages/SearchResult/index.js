@@ -14,13 +14,10 @@ import ShopCard from '../../components/ShopCard';
 import {searchAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 /**
- * CSW | 2022.04.28
+ * CSW | 2022.05.06
  * @name SearchResultPage
  * @des
  * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
- * TODO
- * 1. navition 카드별로 적용
- * 2. api 적용
  *  */
 
 const SearchResultPage = ({navigation, route}) => {
@@ -63,8 +60,20 @@ const SearchResultPage = ({navigation, route}) => {
     }
   };
   const renderItem = ({item}) => {
-    item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
-    return <ShopCard item={item} heartStatus={heartStatus} />;
+    if (item.wish_id === 0) {
+      setHeartStaus(false);
+    } else {
+      setHeartStaus(true);
+    }
+    return (
+      <ShopCard
+        item={item}
+        heartStatus={heartStatus}
+        user_id={user_id}
+        token={token}
+        navigation={navigation}
+      />
+    );
   };
 
   useFocusEffect(
@@ -74,6 +83,7 @@ const SearchResultPage = ({navigation, route}) => {
     }, []),
   );
 
+  console.log(data);
   return (
     <View style={styles.container}>
       <View style={styles.searchBox}>

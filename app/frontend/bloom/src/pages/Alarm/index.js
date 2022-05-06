@@ -25,7 +25,6 @@ const AlarmPage = ({navigation}) => {
   const [data, setData] = useState([]);
   const user_id = useSelector(state => state.user.id);
 
-  //로그인 적용 시 piona -> user_id 변경
   const getAlarm = async () => {
     try {
       const res = await alarmAPI.get(user_id);
