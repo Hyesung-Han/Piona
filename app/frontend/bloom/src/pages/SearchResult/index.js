@@ -44,7 +44,6 @@ const SearchResultPage = ({navigation, route}) => {
         token,
       );
       setData(res.data);
-      console.log(data);
     } catch (error) {
       console.log('검색결과', error);
     }
@@ -87,7 +86,13 @@ const SearchResultPage = ({navigation, route}) => {
           <View style={styles.iconBox}>
             <Icon.Button
               onPress={() =>
-                navigation.navigate('Search', {word: `${inputText}`})
+                navigation.navigate('Search', {
+                  type: 'location',
+                  word: `${inputText}`,
+                  user_id: user_id,
+                  user_lat: 0,
+                  user_lng: 0,
+                })
               }
               name="search-outline"
               color="black"
@@ -104,7 +109,7 @@ const SearchResultPage = ({navigation, route}) => {
           //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
           //item의 고유의 키를 부여하는 속성
-          keyExtractor={item => String(item.id)}
+          keyExtractor={item => item.shop_number}
           //무한 스크롤때문에 넣은듯
           // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
           // onEndReachedThreshold={0.4}
