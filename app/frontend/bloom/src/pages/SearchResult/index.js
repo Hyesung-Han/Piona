@@ -124,13 +124,15 @@ const SearchResultPage = ({navigation, route}) => {
           width={50}
           alignItems="center"
           justifyContent="center"
-          onPress={navigation.navigate('Map', {
-            type: 'location',
-            word: '',
-            user_id: user_id,
-            user_lat: user_location.lat,
-            user_lng: user_location.lng,
-          })}
+          onPress={() =>
+            navigation.navigate('Map', {
+              type: 'location',
+              word: null,
+              user_id: user_id,
+              user_lat: user_location.lat,
+              user_lng: user_location.lng,
+            })
+          }
         />
       </View>
     </View>
@@ -176,7 +178,7 @@ const styles = StyleSheet.create({
   },
   mapBtn: {
     position: 'absolute',
-    right: 10,
+    right: 15,
     bottom: 10,
     width: '11%',
     height: '10%',
