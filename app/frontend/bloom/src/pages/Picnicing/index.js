@@ -6,7 +6,7 @@ import {getMyReservationList} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.04
+ * LHJ | 2022.05.06
  * @name PicnicingPage
  * @api getMyReservationList
  * @des
@@ -25,11 +25,16 @@ const PicnicingPage = ({navigation}) => {
 
   //받아오고 그냥 바로 쓰면 됨
   const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
 
   const getMyReservation = async () => {
     try {
-      const response = await getMyReservationList('piona');
-      setData(response.data);
+      //const response = await getMyReservationList('piona');
+      const response = await getMyReservationList(user_id, token);
+      const filteredByStatus = response.data.filter(
+        item => item.status !== 'D',
+      );
+      setData(filteredByStatus);
       console.log(response.data);
     } catch (error) {
       console.log('예약현황 조회 실패', error);

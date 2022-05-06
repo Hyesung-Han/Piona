@@ -7,7 +7,7 @@ import {getMyReservationList} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.04
+ * LHJ | 2022.05.06
  * @name PicnicedPage
  * @api getMyReservationList
  * @des
@@ -26,15 +26,14 @@ const PicnicedPage = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   //받아오고 그냥 바로 쓰면 됨
   const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
 
   //picnicing에서 사용했던 api를 그대로 사용하여 프론트단에서 필터링 하여 나타냄
   const getMyReservation = async () => {
     try {
-      //const response = await getMyReservationList(user_id);
-      const response = await getMyReservationList('piona');
-      const filteredByStatus = response.data.filter(
-        item => item.status !== 'R',
-      );
+      const response = await getMyReservationList(user_id, token);
+      //const response = await getMyReservationList('piona');
+      const filteredByStatus = response.data.filter(item => item.status == 'D');
       setData(filteredByStatus);
       console.log(filteredByStatus);
     } catch (error) {
