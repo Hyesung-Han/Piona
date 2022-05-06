@@ -60,11 +60,16 @@ public class ReviewController {
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ApiOperation(value = "리뷰 작성하기", notes = "리뷰 작성 정보를 받아 리뷰를 저장한다")
     public ResponseEntity<BaseResponseBody> writeReview(
-            @ModelAttribute ReviewWriteReq reviewWriteReq,  @RequestPart(value="file", required = false)MultipartFile multipartFile) {
+            @ModelAttribute ReviewWriteReq reviewWriteReq,  @RequestPart(value="file", required = false)List<MultipartFile> multipartFiles) {
         try{
-            if(multipartFile != null) {
-                String fileUrl = awsS3Service.uploadImage(multipartFile);
-                reviewWriteReq.setImageUrl(fileUrl);
+            if(multipartFiles != null) {
+                List<String> fileUrls = awsS3Service.uploadImage(multipartFiles);
+                StringBuilder sb = new StringBuilder();
+                for (String fileUrl : fileUrls) {
+                    sb.append(fileUrl+",");
+                }
+                sb.deleteCharAt(sb.lastIndexOf(","));
+                reviewWriteReq.setImageUrl(sb.toString());
             }
             reviewService.writeReview(reviewWriteReq);
             return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
