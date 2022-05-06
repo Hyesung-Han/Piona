@@ -26,10 +26,11 @@ import {useSelector} from 'react-redux';
 const WishListPage = ({navigation}, props) => {
   const [wishlist, setWishList] = useState([]);
   const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
 
   const getWish = async () => {
     try {
-      const res = await WishListAPI.getWishList('piona');
+      const res = await WishListAPI.getWishList(user_id, token);
       setWishList(res.data);
     } catch (error) {
       console.log('위시리스트 검색', error);

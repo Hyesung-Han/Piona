@@ -28,7 +28,7 @@ const AlarmPage = ({navigation}) => {
   //로그인 적용 시 piona -> user_id 변경
   const getAlarm = async () => {
     try {
-      const res = await alarmAPI.get('piona');
+      const res = await alarmAPI.get(user_id);
       setData(res.data);
     } catch (error) {
       console.log('Alarm 검색', error);
@@ -37,7 +37,7 @@ const AlarmPage = ({navigation}) => {
 
   const patchAlarm = async () => {
     try {
-      const response = await alarmAPI.patch('piona');
+      const response = await alarmAPI.patch(user_id);
       console.log(response);
     } catch (error) {
       console.log('Alarm 검색', error);
