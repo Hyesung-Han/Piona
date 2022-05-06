@@ -28,6 +28,16 @@ const MainPage = ({navigation}) => {
   const [inputText, setInputText] = useState('');
   const user_nickname = useSelector(state => state.user.nickname);
 
+  const clearText = () => {
+    setInputText('');
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      clearText();
+    }, []),
+  );
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageBox}>
@@ -44,7 +54,7 @@ const MainPage = ({navigation}) => {
             <View style={styles.iconBox}>
               <Icon.Button
                 onPress={() =>
-                  navigation.navigate('Search', {navigation: `${navigation}`})
+                  navigation.navigate('Search', {word: `${inputText}`})
                 }
                 name="search-outline"
                 color="black"
