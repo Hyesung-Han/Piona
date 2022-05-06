@@ -46,6 +46,8 @@ dependencies {
     // coolsms
     implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 
+    // Amazon S3
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.3.1'
 }
 
 
