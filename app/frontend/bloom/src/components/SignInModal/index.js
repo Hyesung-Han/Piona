@@ -1,36 +1,98 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {userAPI} from '../../utils/Axios';
+import {useDispatch} from 'react-redux';
+import userSlice from '../../redux/slices/user';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 /**
- * LDJ | 2022.04.28
+ * LDJ | 2022.05.04
  * @name SignInModal
- * @api -
+ * @api /user/signin
  * @des
  * 1. Sign Page에서 로그인 버튼을 누르면 뜨는 모달 창
  * 2. 유저 정보를 입력받아 로그인을 진행 [아이디, 비밀번호]
+ * 3. 로그인 완료후 해당 유저정보 리덕스에 담음
  */
 
 const SignInModal = props => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
-  const sendData = () => {
-    if (id && password) {
-      props.user({id: id, password: password});
-      props.next(false);
-    } else if (!id) {
-      alert('아이디를 입력해주세요!');
-    } else if (password.length < 1) {
-      alert('비밀번호를 입력해주세요!');
+  const onChangeId = useCallback(text => {
+    setId(text.trim());
+  }, []);
+
+  const onChangePassword = useCallback(text => {
+    setPassword(text.trim());
+  }, []);
+
+  // 로그인 버튼을 누르면!
+  const onSubmit = useCallback(async () => {
+    if (loading) {
+      return;
     }
-  };
+    if (!id || !id.trim()) {
+      return Alert.alert('알람', '아이디를 입력해주세요!');
+    }
+    if (!password || !password.trim()) {
+      return Alert.alert('알림', '비밀번호를 입력해주세요!');
+    }
+
+    try {
+      setLoading(true);
+      const response = await userAPI.signin(id, password);
+      Alert.alert('알림', '로그인 되었습니다.');
+      console.log(response);
+      dispatch(
+        userSlice.actions.setUser({
+          name: response.data.data.name,
+          id: response.data.data.user_id,
+          nickname: response.data.data.nickname,
+          phoneNumber: response.data.data.phone,
+          accessToken: response.data.data.access_token,
+          refreshToken: response.data.data.refresh_token,
+        }),
+      );
+
+      await EncryptedStorage.setItem(
+        'refreshToken',
+        response.data.data.refresh_token,
+      );
+
+      // 완료 후 모달 닫고 Main page로!
+    } catch (error) {
+      console.error(error.response);
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, id, password, dispatch]);
+
+  // const sendData = () => {
+  //   if (id && password) {
+  //     props.user({id: id, password: password});
+  //     props.next(false);
+  //   } else if (!id) {
+  //     alert('아이디를 입력해주세요!');
+  //   } else if (password.length < 1) {
+  //     alert('비밀번호를 입력해주세요!');
+  //   }
+  // };
 
   return (
     <View
@@ -38,15 +100,17 @@ const SignInModal = props => {
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: '#F2A7B3',
       }}>
       <View
         style={{
           position: 'absolute',
-          width: '90%',
+          bottom: 0,
+          width: '100%',
           height: '90%',
           backgroundColor: 'white',
-          borderRadius: 20,
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
           elevation: 2,
         }}>
         <View
@@ -59,7 +123,6 @@ const SignInModal = props => {
           <Text
             style={{
               fontSize: 20,
-              color: 'black',
               fontWeight: 'bold',
               marginLeft: 10,
             }}>
@@ -90,7 +153,6 @@ const SignInModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 width: '20%',
               }}>
@@ -104,26 +166,19 @@ const SignInModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
-              <View
+              <TextInput
+                onChangeText={onChangeId}
+                value={id}
                 style={{
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  margin: 1,
-                }}>
-                <TextInput
-                  onChangeText={setId}
-                  value={id}
-                  style={{
-                    width: '70%',
-                    textAlign: 'center',
-                    backgroundColor: '#EEEEEE',
-                    borderRadius: 20,
-                    marginRight: 5,
-                  }}
-                />
-              </View>
+                  width: '70%',
+                  textAlign: 'center',
+                  backgroundColor: '#EEEEEE',
+                  borderRadius: 10,
+                  marginRight: 5,
+                }}
+              />
             </View>
           </View>
           <View
@@ -137,7 +192,6 @@ const SignInModal = props => {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
                 fontWeight: 'bold',
                 width: '20%',
               }}>
@@ -151,7 +205,7 @@ const SignInModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
-                borderRadius: 20,
+                borderRadius: 5,
               }}>
               <View
                 style={{
@@ -161,7 +215,7 @@ const SignInModal = props => {
                 }}>
                 <TextInput
                   secureTextEntry={true}
-                  onChangeText={setPassword}
+                  onChangeText={onChangePassword}
                   value={password}
                   style={{
                     width: '70%',
@@ -183,17 +237,22 @@ const SignInModal = props => {
             <TouchableOpacity
               style={{
                 backgroundColor: '#F15C74',
-                color: 'black',
                 width: '100%',
                 alignItems: 'center',
-                borderRadius: 12,
+                borderRadius: 5,
                 height: 40,
                 justifyContent: 'center',
               }}
-              onPress={() => sendData()}>
-              <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
-                로그인
-              </Text>
+              disabled={loading}
+              onPress={onSubmit}>
+              {loading ? (
+                <ActivityIndicator color={'white'} />
+              ) : (
+                <Text
+                  style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+                  로그인
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
         </ScrollView>

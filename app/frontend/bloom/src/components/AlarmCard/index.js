@@ -1,7 +1,7 @@
 import React, {useState, useCallback} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
-import Honeybee from '../../assets/Honeybee.png';
-
+import picnicIcon from '../../assets/picnic.svg';
+import {WithLocalSvg} from 'react-native-svg';
 /**
  * CSW | 2022.04.28
  * @name AlarmCard
@@ -21,8 +21,8 @@ const AlarmCard = ({item}) => {
           <Text style={styles.createdAt}> {item.content} </Text>
         </View>
         <View style={styles.iconBox}>
-          <Image
-            source={Honeybee}
+          <WithLocalSvg
+            asset={picnicIcon}
             style={{
               width: 40,
               height: 40,
@@ -37,6 +37,7 @@ const AlarmCard = ({item}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginBottom: 5,
   },
   CardList: {
     width: '85%',
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
   iconBox: {
     position: 'relative',
     right: 30,
-    top: 10,
+    top: 11,
   },
   content: {
     fontSize: 15,
