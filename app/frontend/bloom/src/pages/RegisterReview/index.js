@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 /**
- * LHJ | 2022.05.04
+ * LHJ | 2022.05.06
  * @name RegisterReview
  * @api x
  * @des

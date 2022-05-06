@@ -15,7 +15,7 @@ import RegisterReview from '../../pages/RegisterReview';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.04
+ * LHJ | 2022.05.06
  * @name DoneCard
  * @api x
  * @des
@@ -46,7 +46,7 @@ const DoneCardList = ({item, navigation}) => {
                 </View>
               </View>
               <View>
-                <Text style={styles.itemDesc}>{item.detail.description}</Text>
+                <Text style={styles.itemDesc}>{item.description}</Text>
               </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
@@ -76,7 +76,7 @@ const DoneCardList = ({item, navigation}) => {
           </View>
           <View style={{width: '35%', elevation: 5}}>
             <Image
-              source={{uri: `${item.img_url}`}}
+              source={{uri: `${item.image_url}`}}
               style={{
                 width: 60,
                 height: 60,
