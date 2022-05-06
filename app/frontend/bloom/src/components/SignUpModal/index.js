@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {userAPI} from '../../utils/Axios';
 
 /**
- * LDJ | 2022.05.04
+ * LDJ | 2022.05.06
  * @name SignUpModal
  * @api /user/signup
  * @des
@@ -24,9 +24,11 @@ const SignUpModal = props => {
   const [loading, setLoading] = useState(false);
 
   const [idColor, setIdColor] = useState('#C0C0C0');
+  const [idCheckColor, setIdCheckColor] = useState('#C0C0C0');
   const [passwordColor, setPasswordColor] = useState('#C0C0C0');
   const [passwordCheckColor, setPasswordCheckColor] = useState('#C0C0C0');
   const [nameColor, setNameColor] = useState('#C0C0C0');
+  const [nameCheckColor, setNameCheckColor] = useState('#C0C0C0');
   const [nicknameColor, setNicknameColor] = useState('#C0C0C0');
   const [phoneNumberColor, setPhoneNumberColor] = useState('#C0C0C0');
 
@@ -37,9 +39,35 @@ const SignUpModal = props => {
   const [nickname, setNickname] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const onChangeId = useCallback(text => {
-    setId(text.trim());
-  }, []);
+  // useEffect(() => {
+  //   const response = userAPI.idCheck(id);
+  //   console.log(response.data.data);
+  //   if (id.length > 0) {
+  //     if (response.data.data === true) {
+  //       setIdCheckColor('#A6DB9E');
+  //     } else {
+  //       setIdCheckColor('#FFABAB');
+  //     }
+  //   } else {
+  //     setIdCheckColor('#C0C0C0');
+  //   }
+  // }, [id]);
+
+  // const checkId = useCallback(async () => {
+  //   try {
+  //     const response = await userAPI.idCheck(id);
+  //     console.log(response.data.data);
+  //     if (id.length > 0) {
+  //       if (response.data.data) {
+  //         setIdCheckColor('#A6DB9E');
+  //       } else {
+  //         setIdCheckColor('#FFABAB');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error(error.response);
+  //   }
+  // }, [id]);
 
   const onChangePassword = useCallback(text => {
     setPassword(text.trim());
@@ -61,7 +89,7 @@ const SignUpModal = props => {
     setName(text.trim());
   }, []);
 
-  const onChangeNickname = useCallback(text => {
+  const onChangeNickname = useCallback(async text => {
     setNickname(text.trim());
   }, []);
 
@@ -148,7 +176,6 @@ const SignUpModal = props => {
           },
         },
       ]);
-      // 완료 후 모달 닫고 Sign Page로!
     } catch (error) {
       console.error(error.response);
       if (error.response) {
@@ -157,11 +184,20 @@ const SignUpModal = props => {
     } finally {
       setLoading(false);
     }
-  }, [loading, id, password, checkPassword, name, nickname, phoneNumber]);
+  }, [
+    loading,
+    id,
+    password,
+    checkPassword,
+    name,
+    nickname,
+    phoneNumber,
+    sendData,
+  ]);
 
-  const sendData = () => {
+  const sendData = useCallback(() => {
     props.exit(false);
-  };
+  }, [props]);
 
   // const sendData = async () => {
   //   try {
@@ -317,8 +353,17 @@ const SignUpModal = props => {
               }}>
               아이디
             </Text>
-            {/* <TouchableOpacity onPress={() => checkId()}></TouchableOpacity> */}
-            <TouchableOpacity
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: 'bold',
+                marginRight: 40,
+                marginTop: 15,
+                color: idCheckColor,
+              }}>
+              중복검사 통과여부
+            </Text>
+            {/* <TouchableOpacity
               style={{
                 backgroundColor: '#F15C74',
                 color: 'black',
@@ -333,7 +378,7 @@ const SignUpModal = props => {
               <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>
                 중복 확인
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View
             style={{
@@ -356,7 +401,7 @@ const SignUpModal = props => {
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
-                  onChangeText={onChangeId}
+                  onChangeText={setId}
                   value={id}
                   style={{
                     width: '85%',
@@ -575,6 +620,7 @@ const SignUpModal = props => {
               </Text>
             </TouchableOpacity>
           </View>
+
           <View
             style={{
               flexDirection: 'row',
