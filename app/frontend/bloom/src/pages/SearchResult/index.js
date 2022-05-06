@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ShopCard from '../../components/ShopCard';
+import {searchAPI} from '../../utils/Axios';
 
 /**
  * CSW | 2022.04.28
@@ -21,18 +22,40 @@ import ShopCard from '../../components/ShopCard';
  * 2. api 적용
  *  */
 
-const SearchResultPage = ({navigation}) => {
+const SearchResultPage = ({navigation, route}) => {
   const [inputText, setInputText] = useState('');
   const [data, setData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const [heartStatus, setHeartStaus] = useState(false);
 
+  const getShop = async () => {
+    try {
+      const res = await searchAPI.get({
+        type: 'location',
+        user_id: 'piona',
+        word: inputText,
+        user_lat: 0,
+        user_lng: 0,
+      });
+      setData(res.data);
+      console.log(data);
+    } catch (error) {
+      console.log('위시리스트 검색', error);
+    }
+  };
 
   const renderItem = ({item}) => {
     item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
     return <ShopCard item={item} heartStatus={heartStatus} />;
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      setInputText(route.params.word);
+      getShop();
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
@@ -46,7 +69,7 @@ const SearchResultPage = ({navigation}) => {
           <View style={styles.iconBox}>
             <Icon.Button
               onPress={() =>
-                navigation.navigate('Search', {navigation: `${navigation}`})
+                navigation.navigate('Search', {word: `${inputText}`})
               }
               name="search-outline"
               color="black"

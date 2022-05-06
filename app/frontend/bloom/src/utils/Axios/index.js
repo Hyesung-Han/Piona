@@ -288,6 +288,7 @@ export const WishListAPI = {
   },
 };
 
+//CSW, Alarm Page와 Main Alarm아이콘을 위한 API
 export const alarmAPI = {
   get: async user_id => {
     return await request
@@ -305,6 +306,28 @@ export const alarmAPI = {
       .patch('/alarm?user_id=' + user_id)
       .then(response => {
         return response.data.statusCode;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+};
+
+//CSW, SearchResult Page와 MapPage 위한 API
+export const searchAPI = {
+  get: async (type, user_id, user_lat, user_lng, word) => {
+    return await request
+      .get('/shop/search', {
+        params: {
+          type: type,
+          user_id: user_id,
+          user_lat: user_lat,
+          user_lng: user_lng,
+          word: word,
+        },
+      })
+      .then(response => {
+        return response.data;
       })
       .catch(error => {
         return error;
