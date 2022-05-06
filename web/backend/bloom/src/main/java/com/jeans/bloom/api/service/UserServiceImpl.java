@@ -3,6 +3,8 @@ package com.jeans.bloom.api.service;
 import com.jeans.bloom.api.request.ShopInfoReq;
 import com.jeans.bloom.api.request.UserLoginPostReq;
 import com.jeans.bloom.api.request.UserRegiPostReq;
+import com.jeans.bloom.api.response.UserListRes;
+import com.jeans.bloom.api.response.UserRes;
 import com.jeans.bloom.common.util.JwtTokenUtil;
 import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.Shop;
@@ -15,6 +17,10 @@ import com.jeans.bloom.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * OYT | 2022.04.27
@@ -139,10 +145,10 @@ public class UserServiceImpl implements UserService {
      * @des 회원 ID를 입력받아 회원의 탈퇴 여부를 변경하는 메소드
      */
     @Override
-    public User deleteUser(String userId) throws Exception {
+    public User deleteUser(String userId, StatusType statusType) throws Exception {
 
         User user = this.findUserByUserId(userId);
-        user.setIsDel(StatusType.Y);
+        user.setIsDel(statusType);
 
         return userRepository.save(user);
     }
@@ -194,6 +200,12 @@ public class UserServiceImpl implements UserService {
         shop.setShopLng(shopInfoReq.getShop_lng());
 
         return shopRepository.save(shop);
+    }
+
+    @Override
+    public List<UserListRes> findUserByUserCodeAndIsDelNot(UserCode a) throws Exception {
+        Optional<List<User>>  optionalUsers = userRepository.findUserByUserCodeAndIsDelNot(a, StatusType.Y);
+        return optionalUsers.map(users -> users.stream().map(user -> UserListRes.of(user)).collect(Collectors.toList())).orElse(null);
     }
 
 }

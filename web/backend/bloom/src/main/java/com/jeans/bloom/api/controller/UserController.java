@@ -14,6 +14,7 @@ import com.jeans.bloom.common.response.BaseResponseBody;
 import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.Shop;
 import com.jeans.bloom.db.entity.User;
+import com.jeans.bloom.db.entity.type.StatusType;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -165,12 +166,11 @@ public class UserController {
             @RequestBody @ApiParam(value="회원 ID", required = true) String userId) {
 
         try{
-            userService.deleteUser(userId);
+            userService.deleteUser(userId, StatusType.Y);
             return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
-
     }
 
     /**
@@ -223,9 +223,9 @@ public class UserController {
 
     /**
      * OYT | 2022.04.28
-     * @name shopInfoSave
+     * @name updateShopInfoSave
      * @api {patch} /user
-     * @des 회원 ID를 입력받아 회원 탈퇴 여부 변경
+     * @des 가게 정보를 입력 받아 수정한다
      */
     @PatchMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ApiOperation(value = "가게 정보 수정", notes = "가게 정보를 입력 받아 수정한다. ")

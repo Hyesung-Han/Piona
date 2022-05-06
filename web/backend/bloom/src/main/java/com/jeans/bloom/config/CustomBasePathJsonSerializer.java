@@ -28,4 +28,5 @@ public class CustomBasePathJsonSerializer extends JsonSerializer {
         }
         return super.toJson(toSerialize);
     }
+
 }
