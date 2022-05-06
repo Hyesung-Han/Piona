@@ -286,5 +286,28 @@ export const WishListAPI = {
         return err.response.data;
       });
   },
+};
 
+export const alarmAPI = {
+  get: async user_id => {
+    return await request
+      .get('/alarm', {params: {user_id: user_id}})
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+
+  patch: async user_id => {
+    return await request
+      .patch('/alarm', {params: {user_id: user_id}})
+      .then(response => {
+        return response.data.statusCode;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 };

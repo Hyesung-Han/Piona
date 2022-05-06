@@ -28,68 +28,6 @@ const SearchResultPage = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [heartStatus, setHeartStaus] = useState(false);
 
-  //getData에 완료된 예약 정보 가져오는 api를 넣자!!!
-  const getData = () => {
-    setLoading(true);
-    fetch('http://jsonplaceholder.typicode.com/posts')
-      //해당 api를 통해서 받아오는 정보는 userId, id, title, body이다.
-      .then(res => res.json())
-      .then(res => setData(res));
-  };
-
-  const DATA = [
-    //괄호 하나하나가 item이 된다.
-    {
-      shop_number: 1,
-      shopName: '호진이가게',
-      address: '호진이가게,ㅁㄴㅇ',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-      wish: '',
-    },
-    {
-      shop_number: 2,
-      shopName: '소원이가게',
-      address: '소원이가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-      wish: '1',
-    },
-    {
-      shop_number: 3,
-      shopName: '혜성이가게',
-      address: '혜성이가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-      wish: '',
-    },
-    {
-      shop_number: 4,
-      shopName: '동준이형가게',
-      address: '동준이형가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-      wish: '',
-    },
-    {
-      shop_number: 5,
-      shopName: '정아누나가게',
-      address: '정아누나가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-    },
-    {
-      shop_number: 6,
-      shopName: '윤택이형가게',
-      address: '윤택이형가게',
-      imgUrl: 'https://reactjs.org/logo-og.png',
-      score: 5,
-    },
-  ];
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const renderItem = ({item}) => {
     item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
@@ -121,7 +59,7 @@ const SearchResultPage = ({navigation}) => {
         <FlatList
           //리스트의 소스를 담는 속성
           //data={data}
-          data={DATA}
+          data={data}
           //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
           //item의 고유의 키를 부여하는 속성
