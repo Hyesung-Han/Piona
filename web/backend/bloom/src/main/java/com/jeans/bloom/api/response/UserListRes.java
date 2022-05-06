@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 /**
  * OYT | 2022.05.04
  * @name UserRes
@@ -22,7 +24,7 @@ public class UserListRes {
     String nickname;
     String phone;
     String is_del;
-    String created_at;
+    LocalDateTime created_at;
     String shop_number;
     String tel;
     String address;
@@ -36,7 +38,7 @@ public class UserListRes {
                     .nickname(user.getNickName())
                     .phone(user.getPhone())
                     .is_del(String.valueOf(user.getIsDel()))
-                    .created_at(String.valueOf(user.getCreatedAt()))
+                    .created_at(user.getCreatedAt())
                     .shop_number(user.getShop().getShopNumber())
                     .tel(user.getShop().getTel())
                     .address(user.getShop().getAddress() + " " + user.getShop().getDetailAddress())
@@ -49,7 +51,7 @@ public class UserListRes {
                     .nickname(user.getNickName())
                     .phone(user.getPhone())
                     .is_del(String.valueOf(user.getIsDel()))
-                    .created_at(String.valueOf(user.getCreatedAt()))
+                    .created_at(user.getCreatedAt())
                     .build();
         }
     }

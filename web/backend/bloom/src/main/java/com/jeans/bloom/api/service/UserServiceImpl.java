@@ -184,6 +184,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * OYT | 2022.05.04
+     * @name updateShopInfoSave
+     * @des 가게 정보를 입력 받아 수정한다
+     */
     @Override
     public Shop updateShopInfoSave(ShopInfoReq shopInfoReq) throws Exception {
         Shop shop = shopRepository.findShopByShopNumber(shopInfoReq.getShop_number());
@@ -202,6 +207,11 @@ public class UserServiceImpl implements UserService {
         return shopRepository.save(shop);
     }
 
+    /**
+     * OYT | 2022.05.06
+     * @name findUserByUserCodeAndIsDelNot
+     * @des 회원 목록 반환
+     */
     @Override
     public List<UserListRes> findUserByUserCodeAndIsDelNot(UserCode a) throws Exception {
         Optional<List<User>>  optionalUsers = userRepository.findUserByUserCodeAndIsDelNot(a, StatusType.Y);

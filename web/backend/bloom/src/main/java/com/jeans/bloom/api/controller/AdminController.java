@@ -1,5 +1,6 @@
 package com.jeans.bloom.api.controller;
 
+import com.jeans.bloom.api.response.ReviewRes;
 import com.jeans.bloom.api.response.UserListRes;
 import com.jeans.bloom.api.service.ReviewService;
 import com.jeans.bloom.api.service.UserService;
@@ -81,13 +82,13 @@ public class AdminController {
 
     /**
      * OYT | 2022.05.06
-     * @name userList
+     * @name findUserByUserCodeAndIsDelNot
      * @api {get} /admin/userList
      * @des 회원 목록 반환
      */
     @GetMapping("/userList")
     @ApiOperation(value = "회원 목록", notes = "회원 목록 반환")
-    public ResponseEntity<BaseResponseBody> userList(
+    public ResponseEntity<BaseResponseBody> findUserByUserCodeAndIsDelNot(
             @RequestParam @ApiParam(value = "유저코드", example = "M",required = true) UserCode code) {
 
         try{
@@ -117,6 +118,23 @@ public class AdminController {
             userService.deleteUser(user_id, status_type);
             return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
         }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+
+    /**
+     * OYT | 2022.05.06
+     * @name findReviewsByIsBan
+     * @api {get} /admin/review
+     * @des 신고된 리뷰 리스트 받기
+     */
+    @GetMapping("/review")
+    @ApiOperation(value = "리뷰 리스트", notes = "신고된 리뷰 리스트 받아오기")
+    public ResponseEntity<BaseResponseBody> findReviewsByIsBan(){
+        try{
+            List<ReviewRes> reviewResList = reviewService.findReviewsByIsBan(StatusType.Y);
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", reviewResList));
+        }catch(Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
     }

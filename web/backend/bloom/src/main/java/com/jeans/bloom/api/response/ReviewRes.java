@@ -25,17 +25,22 @@ public class ReviewRes {
     int score;
     StatusType is_ban;
     LocalDateTime created_at;
+    String user_id;
+    String shop_name;
+
 
     public static ReviewRes of(Review review){
         return ReviewRes.builder()
                 .review_id(review.getReviewId())
                 .reservation_id(review.getReservation().getReservationId())
                 .nickname(review.getUser().getNickName())
+                .user_id(review.getUser().getUserId())
                 .image_url(review.getImageUrl())
                 .content(review.getContent())
                 .score(review.getScore())
                 .is_ban(review.getIsBan())
                 .created_at(review.getCreatedAt())
+                .shop_name(review.getReservation().getShop().getName())
                 .build();
     }
 
