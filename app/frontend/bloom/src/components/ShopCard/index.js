@@ -16,18 +16,20 @@ import {useSelector} from 'react-redux';
  */
 
 const ShopCard = ({item, navigation}, props) => {
-  const [heartStatus, setHeartStaus] = useState(props.heartStatus);
-
+  const [heartStatus, setHeartStaus] = useState(
+    item.wish_id === 0 ? false : true,
+  );
+  const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
   const scoreNum = item.score.toFixed(2);
 
   const addWish = async () => {
     try {
-      const res = await WishListAPI.add(
-        item.shop_number,
-        props.user_id,
-        props.token,
-      );
+      const res = await WishListAPI.add(item.shop_number, user_id, token);
       console.log(res);
+      console.log(item.shop_number);
+      console.log(user_id);
+      console.log(token);
     } catch (error) {
       console.log('위시리스트 추가', error);
     }
@@ -43,7 +45,8 @@ const ShopCard = ({item, navigation}, props) => {
 
   const startScore = () => {
     const result = [];
-    for (let i = 0; i < item.score - 1; i++) {
+    const row = Math.floor(item.score);
+    for (let i = 0; i < row; i++) {
       result.push(
         <Icon
           name="star"
