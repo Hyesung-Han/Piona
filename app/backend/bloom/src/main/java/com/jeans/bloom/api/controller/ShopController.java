@@ -14,10 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(value = "가게 API", tags = {"Shop"})
-@RequestMapping("/api/shop")
+@RequestMapping("/shop")
 @RestController
 @CrossOrigin(value = {"*"}, maxAge = 6000)
 public class ShopController {
@@ -120,5 +123,26 @@ public class ShopController {
             }
         }else{
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", "잘못된 type값 입니다."));
-        }}
+        }
+    }
+
+
+    /**
+     * LJA | 2022.05.04
+     * @name getUnableDate
+     * @api {get} /shop/reservation
+     * @des item_id와 quantity를 입력받아 해당 아이템을 예약할 수 없는 날짜를 리턴
+     */
+    @GetMapping("/reservation")
+    @ApiOperation(value = "예약불가일 조회", notes = "item_id와 quantity를 입력받아 예약이 불가능한 날짜를 조회한다")
+    public ResponseEntity<BaseResponseBody> getReservationDate(
+            @RequestParam @ApiParam(value = "상품 ID", required = true) int item_id, @ApiParam(value = "수량", required = true) int quantity){
+        try{
+            List<Date> unableDateList = shopService.getUnableDate(item_id, quantity);
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", unableDateList.stream()
+                    .map(date -> new SimpleDateFormat("yyyy-MM-dd").format(date)).collect(Collectors.toList())));
+        }catch(Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
 }

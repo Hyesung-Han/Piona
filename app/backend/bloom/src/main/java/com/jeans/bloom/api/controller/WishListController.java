@@ -19,7 +19,7 @@ import java.util.List;
  * @des 위시리스트 API 사용을 위한 Controller
  */
 @Api(value = "위시리스트 API", tags = {"WishList"})
-@RequestMapping("/api/wishlist")
+@RequestMapping("/wishlist")
 @RestController
 @CrossOrigin(value = {"*"}, maxAge = 6000)
 public class WishListController {

@@ -18,7 +18,7 @@ import java.util.List;
  * @des 피크닉 API 사용을 위한 Controller
  */
 @RestController
-@RequestMapping("/api/picnic")
+@RequestMapping("/picnic")
 @Api(value = "피크닉 API", tags = {"Picnic"})
 public class PicnicController {
 

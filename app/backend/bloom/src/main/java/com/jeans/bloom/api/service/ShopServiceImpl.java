@@ -7,6 +7,7 @@ import com.jeans.bloom.db.entity.Review;
 import com.jeans.bloom.db.entity.Shop;
 import com.jeans.bloom.db.entity.WishList;
 import com.jeans.bloom.db.repository.ItemRepository;
+import com.jeans.bloom.db.repository.ReservationDetailRepository;
 import com.jeans.bloom.db.repository.ReviewRepository;
 import com.jeans.bloom.db.repository.ShopRepository;
 import com.jeans.bloom.db.repository.WishListRepository;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +41,10 @@ public class ShopServiceImpl implements ShopService{
 
     @Autowired
     private WishListRepository wishListRepository;
+
+
+    @Autowired
+    private ReservationDetailRepository reservationDetailRepository;
 
     /**
      * HHS | 2022.05.02
@@ -141,6 +148,16 @@ public class ShopServiceImpl implements ShopService{
             }
         }
         return shopResList;
+    }
+
+    /**
+     * LJA | 2022.05.04
+     * @name getUnableDate
+     * @des item_id와 quantity를 입력받아 해당 아이템을 예약할 수 없는 날짜를 리턴
+     */
+    @Override
+    public List<Date> getUnableDate(int itemId, int quantity) throws Exception {
+        return reservationDetailRepository.getUnableDate(itemId, LocalDate.of(2022,4,28), quantity);
     }
 
 }

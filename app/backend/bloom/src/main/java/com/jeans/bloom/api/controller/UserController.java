@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @Api(value = "유저 API", tags = {"User"})
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 @RestController
 public class UserController {
 
@@ -42,8 +42,8 @@ public class UserController {
             @RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegiPostReq registerInfo) {
 
         try{
-            User userGetByUserId = userService.findUserByUserId(registerInfo.getUserId());
-            User userGetByNickname = userService.findUserByNickName(registerInfo.getNickName());
+            User userGetByUserId = userService.findUserByUserId(registerInfo.getUser_id());
+            User userGetByNickname = userService.findUserByNickName(registerInfo.getNickname());
 
             if(userGetByUserId != null){
                 return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 아이디입니다.."));
