@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import CartCardList from '../../components/CartCard';
 import CartFooter from '../../components/CartCard/footer';
+import {cartAPI} from '../../utils/Axios';
+import {useSelector} from 'react-redux';
 
 /**
  * CSW | 2022.04.28
@@ -19,7 +21,6 @@ import CartFooter from '../../components/CartCard/footer';
  * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
  * TODO
  * 1. navition 카드별로 적용
- * 2. api 적용
  *  */
 
 const CartPage = ({navigation}) => {
@@ -29,81 +30,27 @@ const CartPage = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [heartStatus, setHeartStaus] = useState(false);
 
-  //getData에 완료된 예약 정보 가져오는 api를 넣자!!!
-  const getData = () => {
-    setLoading(true);
-    fetch('http://jsonplaceholder.typicode.com/posts')
-      //해당 api를 통해서 받아오는 정보는 userId, id, title, body이다.
-      .then(res => res.json())
-      .then(res => setData(res));
+  const user_id = useSelector(state => state.user.id);
+
+  // 추후 piona자리에 user_id로 대체
+  const getCart = async () => {
+    try {
+      const res = await cartAPI.getCartList('piona');
+      setData(res.data);
+    } catch (error) {
+      console.log('위시리스트 검색', error);
+    }
   };
-
-  const DATA = [
-    //괄호 하나하나가 item이 된다.
-    {
-      item_id: 1,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 2,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 1,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 2,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 1,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-    {
-      item_id: 2,
-      item_name: '할리갈리',
-      price: 12000,
-      image_url: 'https://reactjs.org/logo-og.png',
-      quantity: 2,
-      shop_name: '호진이가게',
-      reservation_date: '2022-05-14',
-    },
-  ];
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const renderItem = ({item}) => {
-    item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
-    return <CartCardList item={item} />;
+    return <CartCardList item={item} navigation={navigation} />;
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      getCart();
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
@@ -111,11 +58,11 @@ const CartPage = ({navigation}) => {
         <FlatList
           //리스트의 소스를 담는 속성
           //data={data}
-          data={DATA}
+          data={data}
           //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
           //item의 고유의 키를 부여하는 속성
-          keyExtractor={item => String(item.id)}
+          keyExtractor={item => item.cart_id}
           //무한 스크롤때문에 넣은듯
           // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
           // onEndReachedThreshold={0.4}

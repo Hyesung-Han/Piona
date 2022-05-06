@@ -1,29 +1,19 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {StatusBar, BackHandler, Alert} from 'react-native';
-import {configureStore} from 'redux';
+import React, {useEffect, useState} from 'react';
+import {StatusBar} from 'react-native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import {Provider} from 'react-redux';
-import MyApp from './src/navigations/MyAppNav';
-import SplashScreen from 'react-native-splash-screen'; /** 추가 **/
-//import UserReducer from './src/redux/reducers';
+import {Provider, useSelector} from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
+import store from './src/redux/store';
+import AppInner from './AppInner';
 
 /**
- * LDJ | 2022.04.26
+ * LDJ | 2022.05.04
  * @name App.js
  * @api -
  * @des
  * 1. App 시작시 제일 처음 뜨는 Splash Page
- * useEffect 안에 시간을 줘서(2000ms), 경과후 다음 페이지로 이동
- * catch는 에러발생 시 문구
+ * useEffect 안에 시간을 줘서(2000ms), 경과후 다음 페이지로 이동 / catch는 에러발생 시 문구
+ * 2. Redux 셋팅 [Provider 적용(밖에서 안으로 사용 불가) 때문에 안의 내용을 따로 만들었음 파일로 : AppInner]
  */
 
 const App = () => {
@@ -37,6 +27,7 @@ const App = () => {
       console.warn(e);
     }
   });
+
   return (
     <SafeAreaProvider>
       <StatusBar
@@ -45,9 +36,9 @@ const App = () => {
         backgroundColor="#F2A7B3"
         translucent={true}
       />
-      <NavigationContainer>
-        <MyApp />
-      </NavigationContainer>
+      <Provider store={store}>
+        <AppInner />
+      </Provider>
     </SafeAreaProvider>
   );
 };

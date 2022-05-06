@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {cartAPI} from '../../utils/Axios';
 
 /**
  * CSW | 2022.05.03
@@ -19,6 +20,17 @@ import Icon from 'react-native-vector-icons/Ionicons';
  */
 
 const CartFooter = props => {
+
+
+  // const deleteCart = async () => {
+  //   try {
+  //     const res = await cartAPI.deleteCartList(1);
+  //     console.log(res);
+  //   } catch (error) {
+  //     console.log('위시리스트 검색', error);
+  //   }
+  // };
+  
   return (
     <View style={styles.container}>
       <View style={styles.trashcan}>
