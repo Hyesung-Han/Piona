@@ -93,7 +93,9 @@ const SearchResultPage = ({navigation}) => {
 
   const renderItem = ({item}) => {
     item.wish === '' ? setHeartStaus(false) : setHeartStaus(true);
-    return <ShopCard item={item} heartStatus={heartStatus} />;
+    return (
+      <ShopCard item={item} heartStatus={heartStatus} navigation={navigation} />
+    );
   };
 
   return (

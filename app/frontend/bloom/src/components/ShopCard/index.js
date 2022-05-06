@@ -4,9 +4,11 @@ import HorizonLine from '../HorizonLine';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {WishListAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
+import shopSlice, {shop} from '../../redux/slices/shop';
+import {useDispatch} from 'react-redux';
 
 /**
- * CSW | 2022.05.04
+ * CSW,LHJ | 2022.05.06
  * @name ShopCard
  * @api WishListAPI/addWishList, WishListAPI/deleteWishList
  * @des
@@ -18,6 +20,8 @@ import {useSelector} from 'react-redux';
 const ShopCard = ({item, navigation}, props) => {
   const [heartStatus, setHeartStaus] = useState(props.heartStatus);
   const user_id = useSelector(state => state.id);
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.user.accessToken);
 
   const addWish = async () => {
     try {
@@ -52,14 +56,23 @@ const ShopCard = ({item, navigation}, props) => {
     return result;
   };
 
+  const setShopNumberAtRedux = () => {
+    dispatch(
+      shopSlice.actions.setShopNumber({
+        shopNumber: `${item.shop_number}`,
+      }),
+    );
+  };
+
   return (
     <View style={styles.CardList}>
       <TouchableOpacity
-        onPress={() =>
+        onPress={() => {
+          setShopNumberAtRedux();
           navigation.navigate('ShopDetail', {
             shopNumber: `${item.shop_number}`,
-          })
-        }>
+          });
+        }}>
         <View style={styles.seperateContainer}>
           <View style={{width: '95%'}}>
             <Image
