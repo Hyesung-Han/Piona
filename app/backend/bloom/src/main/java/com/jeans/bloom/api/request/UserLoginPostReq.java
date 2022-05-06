@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class UserLoginPostReq {
     @ApiModelProperty(name="유저 ID")
-    String userId;
+    String user_id;
     @ApiModelProperty(name="유저 Password")
     String password;
 
