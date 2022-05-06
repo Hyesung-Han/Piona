@@ -13,13 +13,13 @@ import lombok.Setter;
 public class UserRegiPostReq {
 
     @ApiModelProperty(name="유저 ID")
-    String userId;
+    String user_id;
     @ApiModelProperty(name="유저 Password")
     String password;
     @ApiModelProperty(name="유저 PhoneNumber")
     String phone;
     @ApiModelProperty(name="유저 Name")
     String name;
-    @ApiModelProperty(name="유저 NickName")
-    String nickName;
+    @ApiModelProperty(name="사업자 번호")
+    String shop_number;
 }
