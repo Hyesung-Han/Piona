@@ -28,7 +28,7 @@ public class ShopInfoReq {
 //    @JsonProperty("hours")
     String hours;
 
-    @ApiParam(value="가게 우편번호")
+    @ApiParam(value="가게 우편번호", example = "0")
 //    @JsonProperty("zip_code")
     Integer zip_code;
 
@@ -56,11 +56,11 @@ public class ShopInfoReq {
 //    @JsonProperty("image_url")
     String image_url;
 
-    @ApiParam(value="가게 경도")
+    @ApiParam(value="가게 경도", example = "0")
 //    @JsonProperty("shop_lng")
     BigDecimal shop_lng;
 
-    @ApiParam(value="가게 위도")
+    @ApiParam(value="가게 위도", example = "0")
 //    @JsonProperty("shop_lat")
     BigDecimal shop_lat;
 

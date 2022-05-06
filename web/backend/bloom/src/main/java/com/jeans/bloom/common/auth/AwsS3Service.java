@@ -26,6 +26,9 @@ public class AwsS3Service {
 
     private final AmazonS3 amazonS3;
 
+    @Value("${cloud.aws.s3.path}")
+    private String path;
+
     public String uploadImage(MultipartFile multipartFile) {
 
             String fileName = createFileName(multipartFile.getOriginalFilename());
@@ -40,11 +43,12 @@ public class AwsS3Service {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
             }
 
-        return fileName;
+        return path + fileName;
     }
 
     public void deleteImage(String fileName) {
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+        String name = fileName.replace(path, "");
+        amazonS3.deleteObject(new DeleteObjectRequest(bucket, name));
     }
 
     private String createFileName(String fileName) {
