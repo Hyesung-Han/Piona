@@ -147,11 +147,9 @@ public class SearchShopServiceImpl implements SearchShopService {
                 }
 
                 String addrFull = sb.toString();
-                System.out.println(addrFull);
                 String addressElements = "addressElements";
 
                 int ele_num = addrFull.indexOf(addressElements);
-                System.out.println(ele_num);
                 String address = addrFull.substring(ele_num);
                 String lng = "x";
                 String lat = "y";
@@ -160,7 +158,6 @@ public class SearchShopServiceImpl implements SearchShopService {
                 int lat_num = addrX.indexOf(lat) + 4;
                 lng_lat[0] = Double.parseDouble(address.substring(lng_num, (address.substring(lng_num).indexOf('"') + lng_num)));
                 lng_lat[1] = Double.parseDouble(addrX.substring(lat_num, (addrX.substring(lat_num).indexOf('"') + lat_num)));
-                System.out.println(Arrays.toString(lng_lat));
                 br.close();
                 in.close();
                 http.disconnect();
@@ -168,7 +165,6 @@ public class SearchShopServiceImpl implements SearchShopService {
                 BigDecimal lng_max = BigDecimal.valueOf(lng_lat[0] + (5 / 88.74));
                 BigDecimal lat_min = BigDecimal.valueOf(lng_lat[1] - (5 / 109.958489129849955));
                 BigDecimal lat_max = BigDecimal.valueOf(lng_lat[1] + (5 / 109.958489129849955));
-                System.out.println(lng_min + " " + lng_max);
                 return shopService.findShopListByShopLngBetweenAndShopLatBetweenAndUser_userId(lng_min, lng_max, lat_min, lat_max, user_id);
 
 
