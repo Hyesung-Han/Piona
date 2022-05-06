@@ -17,16 +17,17 @@ import {useSelector} from 'react-redux';
 
 const ShopCard = ({item, navigation}, props) => {
   const [heartStatus, setHeartStaus] = useState(props.heartStatus);
-  const user_id = useSelector(state => state.id);
-  const token = useSelector(state => state.user.accessToken);
+
+  const scoreNum = item.score.toFixed(2);
 
   const addWish = async () => {
     try {
-      const res = await WishListAPI.addWishList(
-        props.shop_number,
-        user_id,
-        token,
+      const res = await WishListAPI.add(
+        item.shop_number,
+        props.user_id,
+        props.token,
       );
+      console.log(res);
     } catch (error) {
       console.log('위시리스트 추가', error);
     }
@@ -34,9 +35,9 @@ const ShopCard = ({item, navigation}, props) => {
 
   const deleteWish = async () => {
     try {
-      const res = await WishListAPI.deleteWishList(props.wish_id, token);
+      const res = await WishListAPI.delete(item.wish_id, props.token);
     } catch (error) {
-      console.log('위시리스트 추가', error);
+      console.log('위시리스트 삭제', error);
     }
   };
 
@@ -108,7 +109,7 @@ const ShopCard = ({item, navigation}, props) => {
                   <Text style={styles.itemTitle}>{item.name}</Text>
                 </View>
                 <View style={styles.scoreBox}>
-                  <Text style={styles.itemScore}>{item.score}</Text>
+                  <Text style={styles.itemScore}>{scoreNum}</Text>
                   <View style={styles.starIcons}>{startScore()}</View>
                 </View>
               </View>

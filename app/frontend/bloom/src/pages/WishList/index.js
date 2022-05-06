@@ -37,16 +37,6 @@ const WishListPage = ({navigation}, props) => {
     }
   };
 
-  //로그인 적용 시
-  // const getWish = async () => {
-  //   try {
-  //     const res = await getWishList(user_id);
-  //     setWishList(res.data);
-  //   } catch (error) {
-  //     console.log('위시리스트', error);
-  //   }
-  // };
-
   const renderItem = ({item}) => {
     return <ShopCard item={item} heartStatus={true} navigation={navigation} />;
   };
@@ -56,8 +46,6 @@ const WishListPage = ({navigation}, props) => {
       getWish();
     }, []),
   );
-
-  console.log(wishlist);
 
   return (
     <View style={styles.container}>
