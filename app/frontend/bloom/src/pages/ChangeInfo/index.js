@@ -11,11 +11,15 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import userSlice from '../../redux/slices/user';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {userAPI} from '../../utils/Axios';
 
 /**
  * LDJ | 2022.05.06
  * @name ChangeInfo
- * @api -
+ * @api 1.아직... / 2. userAPI/deleteUser
  * @des
  * 1. 회원정보 수정 페이지 (이름, 비밀번호, 닉네임, 휴대폰 번호)
  * 2. 회원탈퇴 가능
@@ -23,8 +27,11 @@ import {useSelector} from 'react-redux';
 
 const ChangeInfoPage = ({navigation, props}) => {
   const user_name = useSelector(state => state.user.name);
+  const user_id = useSelector(state => state.user.id);
   const user_nickname = useSelector(state => state.user.nickname);
   const user_phoneNumber = useSelector(state => state.user.phoneNumber);
+  const user_accessToken = useSelector(state => state.user.accessToken);
+  const dispatch = useDispatch();
 
   const [nameColor, setNameColor] = useState('#C0C0C0');
   const [passwordColor, setPasswordColor] = useState('#C0C0C0');
@@ -48,8 +55,32 @@ const ChangeInfoPage = ({navigation, props}) => {
     }
   };
 
-  // 회원수정 버튼 누르면?!
-  const sendData = () => {};
+  const editUser = useCallback(async () => {}, []);
+
+  const deleteUser = useCallback(async () => {
+    try {
+      console.log(user_id);
+      console;
+      const response = await userAPI.deleteUser(user_id, user_accessToken);
+      console.log(response);
+      dispatch(
+        userSlice.actions.setUser({
+          name: '',
+          id: '',
+          nickname: '',
+          phoneNumber: '',
+          accessToken: '',
+          refreshToken: '',
+        }),
+      );
+      await EncryptedStorage.removeItem('refreshToken');
+    } catch (error) {
+      console.error(error.response);
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    }
+  }, [user_id, user_accessToken, dispatch]);
 
   return (
     <View
@@ -392,7 +423,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               height: 40,
               justifyContent: 'center',
             }}
-            onPress={() => sendData()}>
+            onPress={editUser}>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               정보 수정
             </Text>
@@ -408,7 +439,8 @@ const ChangeInfoPage = ({navigation, props}) => {
             alignItems: 'center',
             borderRadius: 10,
             marginTop: 10,
-          }}>
+          }}
+          onPress={deleteUser}>
           <Icon name="deleteuser" color={'grey'} size={18}></Icon>
           <Text
             style={{
