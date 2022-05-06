@@ -83,7 +83,7 @@ const MyApp = () => {
         <Stack.Screen
           name="ShopDetail"
           component={TopTabStackShopScreen}
-          options={{title: '가게 상세정보'}}
+          options={({route}) => ({title: route.params.shopName})}
         />
         <Stack.Screen
           name="Map"
@@ -381,7 +381,7 @@ const MyApp = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="SignScreen" component={SignPage} />
+      {/* <Stack.Screen name="SignScreen" component={SignPage} /> */}
       <Stack.Screen name="appScreen" component={MyAppNav} />
     </Stack.Navigator>
   );

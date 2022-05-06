@@ -58,6 +58,7 @@ const ShopCard = ({item, navigation}, props) => {
         onPress={() =>
           navigation.navigate('ShopDetail', {
             shopNumber: `${item.shop_number}`,
+            shopName: `${item.name}`,
           })
         }>
         <View style={styles.seperateContainer}>
