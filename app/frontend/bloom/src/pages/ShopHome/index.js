@@ -20,6 +20,7 @@ const ShopHomePage = ({navigation, route}) => {
   //state 뒤에 오는 shop은 reducer에 설정된 이름
   //그 뒤에 오는 shopNumber는 slice에 저장된 변경하고자 하는 변수
   const shopNumber = useSelector(state => state.shop.shopNumber);
+  const shopName = useSelector(state => state.shop.shopName);
   const token = useSelector(state => state.user.accessToken);
 
   const getShopDetailInfo = async () => {

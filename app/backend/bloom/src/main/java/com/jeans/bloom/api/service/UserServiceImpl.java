@@ -37,13 +37,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(UserRegiPostReq registerInfo) throws Exception{
         User user = new User();
-        user.setUserId(registerInfo.getUserId());
+        user.setUserId(registerInfo.getUser_id());
 
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
         user.setPassword(passwordEncoder.encode(registerInfo.getPassword()));
         user.setName(registerInfo.getName());
         user.setPhone(registerInfo.getPhone());
-        user.setNickName(registerInfo.getNickName());
+        user.setNickName(registerInfo.getNickname());
 
         return userRepository.save(user);
     }
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User login(UserLoginPostReq userLogin) throws Exception {
-        String userId = userLogin.getUserId();
+        String userId = userLogin.getUser_id();
         String userPassword = userLogin.getPassword();
 
             User user = this.findUserByUserId(userId);
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User passwordCheck(UserLoginPostReq userCheck) throws Exception {
-        String userId = userCheck.getUserId();
+        String userId = userCheck.getUser_id();
         String userPassword = userCheck.getPassword();
 
         User user = this.findUserByUserId(userId);
@@ -123,12 +123,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User updateUser(UserRegiPostReq updateUserInfo) throws Exception {
-        User user = this.findUserByUserId(updateUserInfo.getUserId());
+        User user = this.findUserByUserId(updateUserInfo.getUser_id());
 
         user.setPassword(passwordEncoder.encode(updateUserInfo.getPassword()));
         user.setName(updateUserInfo.getName());
         user.setPhone(updateUserInfo.getPhone());
-        user.setNickName(updateUserInfo.getNickName());
+        user.setNickName(updateUserInfo.getNickname());
 
         return userRepository.save(user);
     }

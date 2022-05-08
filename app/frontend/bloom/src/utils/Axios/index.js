@@ -378,6 +378,23 @@ export const shopDetailAPI = {
         return error.response.status;
       });
   },
+
+  getShopItemList: async (shop_number, accessToken) => {
+    return await request
+      .get(`/shop/item?shopNumber=${shop_number}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        //response의 result는 제외한 data(배열)만을 반환
+        return response.data;
+      })
+      .catch(error => {
+        //api 반환 실패시 상태 반환
+        return error.response.status;
+      });
+  },
 };
 
 // CSW | 위시리스트에 관한 API | [목록조회, 추가, 삭제]

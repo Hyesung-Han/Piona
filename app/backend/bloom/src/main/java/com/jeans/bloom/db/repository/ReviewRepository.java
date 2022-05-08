@@ -16,4 +16,7 @@ import java.util.Optional;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
     Optional<List<Review>> findReviewsByReservation_Shop_ShopNumberAndIsBan(String shopNumber, StatusType isBan) throws Exception;
+
+    List<Review> findReviewByReservation_Shop_ShopNumber(String shopNumber);
+
 }
