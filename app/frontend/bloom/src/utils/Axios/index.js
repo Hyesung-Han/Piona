@@ -197,18 +197,18 @@ export const userAPI = {
       });
   },
 
-  // phoneCheck: async (phoneNumber, certifiedNum) => {
-  //   return await request
-  //     .get(
-  //       `/user/phoneCheck?certifiedNum=${certifiedNum}&phoneNumber=${phoneNumber}`,
-  //     )
-  //     .then(response => {
-  //       return response;
-  //     })
-  //     .catch(error => {
-  //       return error;
-  //     });
-  // },
+  phoneCheck: async (phoneNumber, certifiedNum) => {
+    return await request
+      .get(
+        `/user/phoneCheck?certifiedNum=${certifiedNum}&phoneNumber=${phoneNumber}`,
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
   pwdCheck: async (user_id, password, accessToken) => {
     return await request
