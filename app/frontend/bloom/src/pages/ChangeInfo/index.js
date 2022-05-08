@@ -17,12 +17,18 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {userAPI} from '../../utils/Axios';
 
 /**
- * LDJ | 2022.05.06
+ * LDJ | 2022.05.08
  * @name ChangeInfo
- * @api 1.아직... / 2. userAPI/deleteUser
+ * @api 1. userAPI/editUser
+ *      2. userAPI/deleteUser
+ *      3. userAPI/nickCheck
+ *      4. userAPI/phoneRequest
+ *      5. userAPI/phoneCheck
  * @des
  * 1. 회원정보 수정 페이지 (이름, 비밀번호, 닉네임, 휴대폰 번호)
- * 2. 회원탈퇴 가능
+ * 2. 회원탈퇴
+ * 3. 닉네임 중복검사
+ * 4. 핸드폰 인증요청/확인
  */
 
 const ChangeInfoPage = ({navigation, props}) => {
@@ -38,6 +44,7 @@ const ChangeInfoPage = ({navigation, props}) => {
   const [passwordCheckColor, setPasswordCheckColor] = useState('#C0C0C0');
   const [nicknameColor, setNicknameColor] = useState('#C0C0C0');
   const [phoneNumberColor, setPhoneNumberColor] = useState('#C0C0C0');
+  const [nickCheckColor, setNickCheckColor] = useState('#F15C74');
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -55,12 +62,52 @@ const ChangeInfoPage = ({navigation, props}) => {
     }
   };
 
-  const editUser = useCallback(async () => {}, []);
+  const editUser = useCallback(async () => {
+    try {
+      const response = await userAPI.editUser(
+        name,
+        nickname,
+        password,
+        phoneNumber,
+        user_id,
+        user_accessToken,
+      );
+      console.log(response.data);
+      if (response.data.result === 'success') {
+        Alert.alert('알림', '회원정보 수정!');
+        dispatch(
+          userSlice.actions.setUser({
+            name: '',
+            id: '',
+            nickname: '',
+            phoneNumber: '',
+            accessToken: '',
+            refreshToken: '',
+          }),
+        );
+        await EncryptedStorage.removeItem('refreshToken');
+      } else {
+        Alert.alert('알림', '미입력 확인바람!');
+      }
+    } catch (error) {
+      console.error(error.response);
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    }
+  }, [
+    name,
+    nickname,
+    password,
+    phoneNumber,
+    user_id,
+    user_accessToken,
+    dispatch,
+  ]);
 
   const deleteUser = useCallback(async () => {
     try {
       console.log(user_id);
-      console;
       const response = await userAPI.deleteUser(user_id, user_accessToken);
       console.log(response);
       dispatch(
@@ -81,6 +128,23 @@ const ChangeInfoPage = ({navigation, props}) => {
       }
     }
   }, [user_id, user_accessToken, dispatch]);
+
+  // const nickCheck = useCallback(async () => {
+  //   try {
+  //     const response = await userAPI.nickCheck(nickname);
+  //     if (response.data.data === true) {
+  //       Alert.alert('알림', '사용 가능합니다!');
+  //       setNickCheckColor('#A6DB9E');
+  //     } else {
+  //       Alert.alert('알림', '이미 있는 닉네임입니다!');
+  //     }
+  //   } catch (error) {
+  //     console.error(error.response);
+  //     if (error.response) {
+  //       Alert.alert('알림', error.response.data.message);
+  //     }
+  //   }
+  // }, [nickname]);
 
   return (
     <View
@@ -280,10 +344,9 @@ const ChangeInfoPage = ({navigation, props}) => {
             }}>
             닉네임
           </Text>
-          {/* <TouchableOpacity onPress={() => checkId()}></TouchableOpacity> */}
           <TouchableOpacity
             style={{
-              backgroundColor: '#F15C74',
+              backgroundColor: nickCheckColor,
               color: 'black',
               width: '22%',
               alignItems: 'center',
@@ -292,7 +355,8 @@ const ChangeInfoPage = ({navigation, props}) => {
               marginRight: 40,
               height: 24,
               justifyContent: 'center',
-            }}>
+            }}
+            onPress={() => nickCheck()}>
             <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>
               중복 확인
             </Text>
