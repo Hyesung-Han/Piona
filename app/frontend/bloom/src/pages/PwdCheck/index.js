@@ -12,7 +12,7 @@ import {userAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 
 /**
- * LDJ | 2022.05.06
+ * LDJ | 2022.05.08
  * @name PwdCheck
  * @api userAPI/pwdCheck
  * @des
@@ -74,7 +74,7 @@ const PwdCheckPage = ({navigation}) => {
             fontSize: 18,
             color: 'black',
             fontWeight: 'bold',
-            marginLeft: 30,
+            marginLeft: 40,
             marginTop: 10,
           }}>
           비밀번호
@@ -85,7 +85,7 @@ const PwdCheckPage = ({navigation}) => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          width: '100%',
+          width: '95%',
           marginTop: 10,
         }}>
         <View
@@ -95,7 +95,7 @@ const PwdCheckPage = ({navigation}) => {
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: '#EEEEEE',
-            borderRadius: 20,
+            borderRadius: 5,
           }}>
           <View style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
             <TextInput
@@ -140,7 +140,7 @@ const PwdCheckPage = ({navigation}) => {
             color: 'black',
             width: '100%',
             alignItems: 'center',
-            borderRadius: 12,
+            borderRadius: 5,
             height: 40,
             justifyContent: 'center',
           }}
