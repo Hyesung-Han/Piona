@@ -47,27 +47,102 @@ const ChangeInfoPage = ({navigation, props}) => {
   const [nickCheckColor, setNickCheckColor] = useState('#F15C74');
   const [phoneCheckColor, setPhoneCheckColor] = useState('#F15C74');
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(user_name);
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [nickname, setNickname] = useState(user_nickname);
+  const [phoneNumber, setPhoneNumber] = useState(user_phoneNumber);
   const [certifiedNumber, setCertifiedNumber] = useState('');
   const [certification, setCertification] = useState('인증 요청');
 
-  // 비밀번호 확인 작성 -> 비밀번호 일치 여부 확인
-  const handlePassword = data => {
-    setCheckPassword(data);
-    if (password === data) {
-      setPasswordCheckColor('#A6DB9E');
-    } else {
-      setPasswordCheckColor('#FFABAB');
-    }
-  };
+  const onChangeName = useCallback(text => {
+    setName(text.trim());
+  }, []);
+
+  const onChangePassword = useCallback(text => {
+    setPassword(text.trim());
+  }, []);
+
+  const onChangeCheckPassword = useCallback(
+    text => {
+      setCheckPassword(text.trim());
+      if (password === text.trim()) {
+        setPasswordCheckColor('#A6DB9E');
+      } else {
+        setPasswordCheckColor('#FFABAB');
+      }
+    },
+    [password],
+  );
+
+  const onChangeNickname = useCallback(async text => {
+    setNickname(text.trim());
+  }, []);
+
+  const onChangePhoneNumber = useCallback(text => {
+    setPhoneNumber(text.trim());
+  }, []);
 
   const onChangeCertifiedNumber = useCallback(text => {
     setCertifiedNumber(text.trim());
   }, []);
+
+  const nickCheck = useCallback(async () => {
+    try {
+      const response = await userAPI.nickCheck(nickname);
+      if (response.data.data === true) {
+        Alert.alert('알림', '사용 가능합니다!');
+        setNickCheckColor('#A6DB9E');
+      } else {
+        Alert.alert('알림', '이미 있는 닉네임입니다!');
+      }
+    } catch (error) {
+      console.error(error.response);
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    }
+  }, [nickname]);
+
+  const phoneRequestAndCheck = useCallback(async () => {
+    if (certifiedNumber === '') {
+      // 인증요청
+      try {
+        const response = await userAPI.phoneRequest(phoneNumber);
+        console.log(response.data.result);
+        if (response.data.result === 'success') {
+          Alert.alert('알림', '인증번호를 확인해주세요!');
+          setCertification('인증 확인');
+          setPhoneCheckColor('#9ecddb');
+        } else {
+          Alert.alert('알림', response.data.data);
+        }
+      } catch (error) {
+        console.error(error.response);
+        if (error.response) {
+          Alert.alert('알림', error.response.data.message);
+        }
+      }
+    } else {
+      // 인증확인
+      try {
+        const response = await userAPI.phoneCheck(phoneNumber, certifiedNumber);
+        console.log(response.data.data);
+        if (response.data.data === true) {
+          Alert.alert('알림', '인증 완료!');
+          setCertification('인증 완료');
+          setPhoneCheckColor('#A6DB9E');
+        } else {
+          Alert.alert('알림', '인증번호 틀렸어요!');
+        }
+      } catch (error) {
+        console.error(error.response);
+        if (error.response) {
+          Alert.alert('알림', error.response.data.message);
+        }
+      }
+    }
+  }, [phoneNumber, certifiedNumber]);
 
   const editUser = useCallback(async () => {
     try {
@@ -136,63 +211,6 @@ const ChangeInfoPage = ({navigation, props}) => {
     }
   }, [user_id, user_accessToken, dispatch]);
 
-  const nickCheck = useCallback(async () => {
-    try {
-      const response = await userAPI.nickCheck(nickname);
-      if (response.data.data === true) {
-        Alert.alert('알림', '사용 가능합니다!');
-        setNickCheckColor('#A6DB9E');
-      } else {
-        Alert.alert('알림', '이미 있는 닉네임입니다!');
-      }
-    } catch (error) {
-      console.error(error.response);
-      if (error.response) {
-        Alert.alert('알림', error.response.data.message);
-      }
-    }
-  }, [nickname]);
-
-  const phoneRequestAndCheck = useCallback(async () => {
-    if (certifiedNumber === '') {
-      // 인증요청
-      try {
-        const response = await userAPI.phoneRequest(phoneNumber);
-        console.log(response.data.result);
-        if (response.data.result === 'success') {
-          Alert.alert('알림', '인증번호를 확인해주세요!');
-          setCertification('인증 확인');
-          setPhoneCheckColor('#9ecddb');
-        } else {
-          Alert.alert('알림', response.data.data);
-        }
-      } catch (error) {
-        console.error(error.response);
-        if (error.response) {
-          Alert.alert('알림', error.response.data.message);
-        }
-      }
-    } else {
-      // 인증확인
-      try {
-        const response = await userAPI.phoneCheck(phoneNumber, certifiedNumber);
-        console.log(response.data.data);
-        if (response.data.data === true) {
-          Alert.alert('알림', '인증 완료!');
-          setCertification('인증 완료');
-          setPhoneCheckColor('#A6DB9E');
-        } else {
-          Alert.alert('알림', '인증번호 틀렸어요!');
-        }
-      } catch (error) {
-        console.error(error.response);
-        if (error.response) {
-          Alert.alert('알림', error.response.data.message);
-        }
-      }
-    }
-  }, [phoneNumber, certifiedNumber]);
-
   return (
     <View
       style={{
@@ -245,9 +263,9 @@ const ChangeInfoPage = ({navigation, props}) => {
             <View
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
-                onChangeText={setName}
-                placeholder={user_name}
-                placeholderTextColor="#C0C0C0"
+                onChangeText={onChangeName}
+                // placeholder={user_name}
+                // placeholderTextColor="#C0C0C0"
                 value={name}
                 style={{
                   width: '85%',
@@ -308,7 +326,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
                 secureTextEntry={true}
-                onChangeText={setPassword}
+                onChangeText={onChangePassword}
                 value={password}
                 style={{
                   width: '85%',
@@ -361,7 +379,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
                 secureTextEntry={true}
-                onChangeText={handlePassword}
+                onChangeText={onChangeCheckPassword}
                 value={checkPassword}
                 style={{
                   width: '85%',
@@ -430,9 +448,9 @@ const ChangeInfoPage = ({navigation, props}) => {
             <View
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
-                onChangeText={setNickname}
-                placeholder={user_nickname}
-                placeholderTextColor="#C0C0C0"
+                onChangeText={onChangeNickname}
+                // placeholder={user_nickname}
+                // placeholderTextColor="#C0C0C0"
                 value={nickname}
                 style={{
                   width: '85%',
@@ -502,9 +520,9 @@ const ChangeInfoPage = ({navigation, props}) => {
             <View
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
-                onChangeText={setPhoneNumber}
-                placeholder={user_phoneNumber}
-                placeholderTextColor="#C0C0C0"
+                onChangeText={onChangePhoneNumber}
+                // placeholder={user_phoneNumber}
+                // placeholderTextColor="#C0C0C0"
                 value={phoneNumber}
                 style={{
                   width: '85%',
