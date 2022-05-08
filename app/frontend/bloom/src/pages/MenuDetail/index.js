@@ -5,6 +5,14 @@ import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import {MenuDetailAPI} from '../../utils/Axios';
 
+/**
+ * CSW | 2022.05.08
+ * @name MenuDetailPage
+ * @api MenuDetailAPI/get
+ * @des
+ * 메뉴상세정보를 보여주는 페이지입니다.
+ *  */
+
 const MenuDetailPage = ({navigation, route}) => {
   const [data, setData] = useState([]);
   const [quantityStatus, setquantityStaus] = useState(1);
@@ -14,7 +22,6 @@ const MenuDetailPage = ({navigation, route}) => {
     try {
       const res = await MenuDetailAPI.get(route.params.item_id, token);
       setData(res.data);
-      console.log(data);
     } catch (error) {
       console.log('메뉴상세정보 검색', error);
     }
