@@ -35,6 +35,7 @@ const MenuDetailPage = ({navigation, route}) => {
             width: '100%',
             height: '100%',
             borderRadius: 15,
+            resizeMode: 'cover',
           }}
         />
       </View>
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     flex: 0.8,
     width: '70%',
     marginTop: '10%',
-    elevation: 5,
+    elevation: 3,
     borderRadius: 15,
   },
   menuInfo: {
