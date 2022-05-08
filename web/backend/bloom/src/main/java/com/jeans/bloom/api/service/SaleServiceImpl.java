@@ -1,15 +1,13 @@
 package com.jeans.bloom.api.service;
 
-import com.jeans.bloom.api.response.ReservationRes;
 import com.jeans.bloom.api.response.SaleRes;
-import com.jeans.bloom.db.entity.Reservation;
-import com.jeans.bloom.db.entity.type.OrderStatus;
 import com.jeans.bloom.db.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,8 +27,14 @@ public class SaleServiceImpl implements SaleService {
      * @des shop_number를 사용해 매출 현황을 가져오는 메소드
      */
     @Override
-    public List<SaleRes> getTotalSale(String shopNumber) throws Exception {
-        List<Object[]> objectList = reservationRepository.getTotalSale(shopNumber);
+    public List<SaleRes> getTotalSale(String shopNumber, LocalDate startDate, LocalDate endDate) throws Exception {
+        if(startDate == null) {
+            startDate = LocalDate.parse("2022-05-01", DateTimeFormatter.ISO_DATE);
+        }
+        if(endDate == null) {
+            endDate = LocalDate.now();
+        }
+        List<Object[]> objectList = reservationRepository.getTotalSale(shopNumber, startDate, endDate);
         List<SaleRes> saleResList = objectList.stream().map(
                 objects -> new SaleRes((String) objects[0],
                         (Integer) objects[1],
