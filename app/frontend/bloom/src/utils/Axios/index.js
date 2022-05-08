@@ -505,3 +505,21 @@ export const searchAPI = {
       });
   },
 };
+
+//CSW, MenuDetail페이지를 위한 API
+export const MenuDetailAPI = {
+  get: async (itemId, accessToken) => {
+    return await request
+      .get(`/shop/${itemId}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+};
