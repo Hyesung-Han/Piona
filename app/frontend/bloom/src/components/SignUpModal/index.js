@@ -91,22 +91,22 @@ const SignUpModal = props => {
     }
   }, [id]);
 
-  // const nickCheck = useCallback(async () => {
-  //   try {
-  //     const response = await userAPI.nickCheck(nickname);
-  //     if (response.data.data === true) {
-  //       Alert.alert('알림', '사용 가능합니다!');
-  //       setNickCheckColor('#A6DB9E');
-  //     } else {
-  //       Alert.alert('알림', '이미 있는 닉네임입니다!');
-  //     }
-  //   } catch (error) {
-  //     console.error(error.response);
-  //     if (error.response) {
-  //       Alert.alert('알림', error.response.data.message);
-  //     }
-  //   }
-  // }, [nickname]);
+  const nickCheck = useCallback(async () => {
+    try {
+      const response = await userAPI.nickCheck(nickname);
+      if (response.data.data === true) {
+        Alert.alert('알림', '사용 가능합니다!');
+        setNickCheckColor('#A6DB9E');
+      } else {
+        Alert.alert('알림', '이미 있는 닉네임입니다!');
+      }
+    } catch (error) {
+      console.error(error.response);
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    }
+  }, [nickname]);
 
   // 휴대폰 번호 인증요청 버튼 누르면?!
   // const phone = async () => {
