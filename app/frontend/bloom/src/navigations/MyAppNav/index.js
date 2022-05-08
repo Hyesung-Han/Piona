@@ -91,6 +91,11 @@ const MyApp = () => {
           component={MapPage}
           options={{title: '지도'}}
         />
+        <Stack.Screen
+          name="MenuDetail"
+          component={MenuDetailPage}
+          options={({route}) => ({title: route.params.menuName})}
+        />
       </Stack.Navigator>
     );
   }
@@ -106,11 +111,6 @@ const MyApp = () => {
           name="Shoptap"
           component={ShopNav}
           options={{title: '가게이름'}}
-        />
-        <Stack.Screen
-          name="MenuDetail"
-          component={MenuDetailPage}
-          options={({route}) => ({title: route.params.menuName})}
         />
       </Stack.Navigator>
     );
