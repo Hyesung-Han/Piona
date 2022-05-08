@@ -107,6 +107,11 @@ const MyApp = () => {
           component={ShopNav}
           options={{title: '가게이름'}}
         />
+        <Stack.Screen
+          name="MenuDetail"
+          component={MenuDetailPage}
+          options={{title: '상품상세페이지'}}
+        />
       </Stack.Navigator>
     );
   }
