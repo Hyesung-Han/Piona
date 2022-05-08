@@ -129,22 +129,22 @@ const ChangeInfoPage = ({navigation, props}) => {
     }
   }, [user_id, user_accessToken, dispatch]);
 
-  // const nickCheck = useCallback(async () => {
-  //   try {
-  //     const response = await userAPI.nickCheck(nickname);
-  //     if (response.data.data === true) {
-  //       Alert.alert('알림', '사용 가능합니다!');
-  //       setNickCheckColor('#A6DB9E');
-  //     } else {
-  //       Alert.alert('알림', '이미 있는 닉네임입니다!');
-  //     }
-  //   } catch (error) {
-  //     console.error(error.response);
-  //     if (error.response) {
-  //       Alert.alert('알림', error.response.data.message);
-  //     }
-  //   }
-  // }, [nickname]);
+  const nickCheck = useCallback(async () => {
+    try {
+      const response = await userAPI.nickCheck(nickname);
+      if (response.data.data === true) {
+        Alert.alert('알림', '사용 가능합니다!');
+        setNickCheckColor('#A6DB9E');
+      } else {
+        Alert.alert('알림', '이미 있는 닉네임입니다!');
+      }
+    } catch (error) {
+      console.error(error.response);
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    }
+  }, [nickname]);
 
   return (
     <View
