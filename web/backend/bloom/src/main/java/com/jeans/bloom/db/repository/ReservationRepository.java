@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,11 +34,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
                     " INNER JOIN reservation_detail_t rdt " +
                     " ON rt.reservation_id = rdt.reservation_id " +
                     " WHERE rt.shop_number = ?1 " +
+                    " AND rdt.reservation_date BETWEEN ?2 AND ?3" +
                     " GROUP BY DATE_FORMAT(rdt.reservation_date, '%Y-%m-%d'), rdt.item_id) a " +
                     "INNER JOIN (SELECT item_id, name from item_t) b " +
                     " on a.item_id = b.item_id "
             , nativeQuery = true
     )
-    List<Object[]> getTotalSale(String shopNumber);
+    List<Object[]> getTotalSale(String shopNumber, LocalDate startDate, LocalDate EndDate);
 
 }
