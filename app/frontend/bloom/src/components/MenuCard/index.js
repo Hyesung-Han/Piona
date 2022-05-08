@@ -44,7 +44,7 @@ const MenuCardList = ({item, navigation}) => {
         onPress={() => {
           navigation.navigate('MenuDetail', {
             shopNumber: `${item.shop_number}`,
-            shopName: `${item.name}`,
+            menuName: `${item.item_name}`,
             item_id: `${item.item_id}`,
           });
         }}>
