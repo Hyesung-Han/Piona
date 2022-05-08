@@ -186,16 +186,16 @@ export const userAPI = {
       });
   },
 
-  // phoneRequest: async phoneNumber => {
-  //   return await request
-  //     .get(`/user/phoneRequest?phoneNumber=${phoneNumber}`)
-  //     .then(response => {
-  //       return response;
-  //     })
-  //     .catch(error => {
-  //       return error;
-  //     });
-  // },
+  phoneRequest: async phoneNumber => {
+    return await request
+      .get(`/user/phoneRequest?phoneNumber=${phoneNumber}`)
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
   // phoneCheck: async (phoneNumber, certifiedNum) => {
   //   return await request
