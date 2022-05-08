@@ -240,7 +240,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#EEEEEE',
-              borderRadius: 20,
+              borderRadius: 5,
             }}>
             <View
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -302,7 +302,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#EEEEEE',
-              borderRadius: 20,
+              borderRadius: 5,
             }}>
             <View
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -355,7 +355,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#EEEEEE',
-              borderRadius: 20,
+              borderRadius: 5,
             }}>
             <View
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -425,7 +425,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#EEEEEE',
-              borderRadius: 20,
+              borderRadius: 5,
             }}>
             <View
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -497,7 +497,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#EEEEEE',
-              borderRadius: 20,
+              borderRadius: 5,
             }}>
             <View
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
@@ -564,7 +564,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               color: 'black',
               width: '100%',
               alignItems: 'center',
-              borderRadius: 12,
+              borderRadius: 5,
               height: 40,
               justifyContent: 'center',
             }}
