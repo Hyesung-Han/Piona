@@ -48,6 +48,14 @@ const SignUpModal = props => {
   const [certifiedNumber, setCertifiedNumber] = useState('');
   const [certification, setCertification] = useState('인증 요청');
 
+  const onChangeName = useCallback(text => {
+    setName(text.trim());
+  }, []);
+
+  const onChangeId = useCallback(text => {
+    setId(text.trim());
+  }, []);
+
   const onChangePassword = useCallback(text => {
     setPassword(text.trim());
   }, []);
@@ -63,10 +71,6 @@ const SignUpModal = props => {
     },
     [password],
   );
-
-  const onChangeName = useCallback(text => {
-    setName(text.trim());
-  }, []);
 
   const onChangeNickname = useCallback(async text => {
     setNickname(text.trim());
@@ -418,7 +422,7 @@ const SignUpModal = props => {
               <View
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
-                  onChangeText={setId}
+                  onChangeText={onChangeId}
                   value={id}
                   style={{
                     width: '85%',
