@@ -2,6 +2,7 @@ package com.jeans.bloom.api.service;
 
 import com.jeans.bloom.api.response.ReservationRes;
 import com.jeans.bloom.db.entity.Reservation;
+import com.jeans.bloom.db.entity.type.OrderStatus;
 import com.jeans.bloom.db.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,20 @@ public class ReservationServiceImpl implements ReservationService {
     public List<ReservationRes> findReservationsByShop_ShopNumber(String shopNumber) throws Exception {
         List<Reservation> reservationResList = reservationRepository.findReservationsByShop_ShopNumber(shopNumber).orElse(null);
         return reservationResList.stream().map(reservation -> ReservationRes.of(reservation)).collect(Collectors.toList());
+    }
+
+    /**
+     * LJA | 2022.05.08
+     * @name ReservationController
+     * @api {patch} /reservation
+     * @des 예약의 OrderStatus를 변경해주는 메소드
+     */
+    @Override
+    public void changeOrderStatus(int reservationId, OrderStatus status) throws Exception {
+        Reservation reservation = reservationRepository.getOne(reservationId);
+        if(reservation != null) {
+            reservation.setStatus(status);
+            reservationRepository.save(reservation);
+        }
     }
 }
