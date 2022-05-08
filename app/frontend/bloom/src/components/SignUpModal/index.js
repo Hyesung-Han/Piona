@@ -12,25 +12,32 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {userAPI} from '../../utils/Axios';
 
 /**
- * LDJ | 2022.05.06
+ * LDJ | 2022.05.08
  * @name SignUpModal
- * @api /user/signup
+ * @api 1. userAPI/signup
+ *      2. userAPI/idCheck
+ *      3. userAPI/nickCheck
+ *      4. userAPI/phoneRequest
+ *      5. userAPI/phoneCheck
  * @des
  * 1. Sign Page에서 회원가입 버튼을 누르면 뜨는 모달 창
  * 2. 유저 정보를 입력받아 회원가입을 진행
+ * 3. 아이디 중북검사, 닉네임 중복검사
+ * 4. 핸드폰 인증요청/확인
  */
 
 const SignUpModal = props => {
   const [loading, setLoading] = useState(false);
 
+  const [nameColor, setNameColor] = useState('#C0C0C0');
   const [idColor, setIdColor] = useState('#C0C0C0');
-  const [idCheckColor, setIdCheckColor] = useState('#C0C0C0');
   const [passwordColor, setPasswordColor] = useState('#C0C0C0');
   const [passwordCheckColor, setPasswordCheckColor] = useState('#C0C0C0');
-  const [nameColor, setNameColor] = useState('#C0C0C0');
-  const [nameCheckColor, setNameCheckColor] = useState('#C0C0C0');
   const [nicknameColor, setNicknameColor] = useState('#C0C0C0');
   const [phoneNumberColor, setPhoneNumberColor] = useState('#C0C0C0');
+  const [idCheckColor, setIdCheckColor] = useState('#F15C74');
+  const [nickCheckColor, setNickCheckColor] = useState('#F15C74');
+  const [phoneCheckColor, setPhoneCheckColor] = useState('#F15C74');
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -38,36 +45,6 @@ const SignUpModal = props => {
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-
-  // useEffect(() => {
-  //   const response = userAPI.idCheck(id);
-  //   console.log(response.data.data);
-  //   if (id.length > 0) {
-  //     if (response.data.data === true) {
-  //       setIdCheckColor('#A6DB9E');
-  //     } else {
-  //       setIdCheckColor('#FFABAB');
-  //     }
-  //   } else {
-  //     setIdCheckColor('#C0C0C0');
-  //   }
-  // }, [id]);
-
-  // const checkId = useCallback(async () => {
-  //   try {
-  //     const response = await userAPI.idCheck(id);
-  //     console.log(response.data.data);
-  //     if (id.length > 0) {
-  //       if (response.data.data) {
-  //         setIdCheckColor('#A6DB9E');
-  //       } else {
-  //         setIdCheckColor('#FFABAB');
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error(error.response);
-  //   }
-  // }, [id]);
 
   const onChangePassword = useCallback(text => {
     setPassword(text.trim());
@@ -97,25 +74,39 @@ const SignUpModal = props => {
     setPhoneNumber(text.trim());
   }, []);
 
-  // 아이디 중복확인 버튼 누르면?!
-  // const checkId = async () => {
-  //   const result = await userAPI.emailCheck(id);
-  //   if (result === 200) {
-  //     setIdColor('#A6DB9E');
-  //   } else if (result === 409) {
-  //     setIdColor('#FFABAB');
-  //   }
-  // };
+  const idCheck = useCallback(async () => {
+    try {
+      const response = await userAPI.idCheck(id);
+      if (response.data.data === true) {
+        Alert.alert('알림', '사용 가능합니다!');
+        setIdCheckColor('#A6DB9E');
+      } else {
+        Alert.alert('알림', '이미 있는 아이디입니다!');
+      }
+    } catch (error) {
+      console.error(error.response);
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    }
+  }, [id]);
 
-  // 닉네임 중복확인 버튼 누르면?!
-  // const checkNickname = async () => {
-  //   const result = await userAPI.emailCheck(id);
-  //   if (result === 200) {
-  //     setIdColor('#A6DB9E');
-  //   } else if (result === 409) {
-  //     setIdColor('#FFABAB');
+  // const nickCheck = useCallback(async () => {
+  //   try {
+  //     const response = await userAPI.nickCheck(nickname);
+  //     if (response.data.data === true) {
+  //       Alert.alert('알림', '사용 가능합니다!');
+  //       setNickCheckColor('#A6DB9E');
+  //     } else {
+  //       Alert.alert('알림', '이미 있는 닉네임입니다!');
+  //     }
+  //   } catch (error) {
+  //     console.error(error.response);
+  //     if (error.response) {
+  //       Alert.alert('알림', error.response.data.message);
+  //     }
   //   }
-  // };
+  // }, [nickname]);
 
   // 휴대폰 번호 인증요청 버튼 누르면?!
   // const phone = async () => {
@@ -353,19 +344,9 @@ const SignUpModal = props => {
               }}>
               아이디
             </Text>
-            <Text
+            <TouchableOpacity
               style={{
-                fontSize: 12,
-                fontWeight: 'bold',
-                marginRight: 40,
-                marginTop: 15,
-                color: idCheckColor,
-              }}>
-              중복검사 통과여부
-            </Text>
-            {/* <TouchableOpacity
-              style={{
-                backgroundColor: '#F15C74',
+                backgroundColor: idCheckColor,
                 color: 'black',
                 width: '22%',
                 alignItems: 'center',
@@ -374,11 +355,12 @@ const SignUpModal = props => {
                 marginRight: 40,
                 height: 24,
                 justifyContent: 'center',
-              }}>
+              }}
+              onPress={() => idCheck()}>
               <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>
                 중복 확인
               </Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -534,10 +516,9 @@ const SignUpModal = props => {
               }}>
               닉네임
             </Text>
-            {/* <TouchableOpacity onPress={() => checkId()}></TouchableOpacity> */}
             <TouchableOpacity
               style={{
-                backgroundColor: '#F15C74',
+                backgroundColor: nickCheckColor,
                 color: 'black',
                 width: '22%',
                 alignItems: 'center',
@@ -546,7 +527,8 @@ const SignUpModal = props => {
                 marginRight: 40,
                 height: 24,
                 justifyContent: 'center',
-              }}>
+              }}
+              onPress={() => nickCheck()}>
               <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>
                 중복 확인
               </Text>
@@ -605,7 +587,7 @@ const SignUpModal = props => {
             {/* <TouchableOpacity onPress={() => checkId()}></TouchableOpacity> */}
             <TouchableOpacity
               style={{
-                backgroundColor: '#F15C74',
+                backgroundColor: phoneCheckColor,
                 color: 'black',
                 width: '22%',
                 alignItems: 'center',
