@@ -45,6 +45,8 @@ const SignUpModal = props => {
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [certifiedNumber, setCertifiedNumber] = useState('');
+  const [certification, setCertification] = useState('인증 요청');
 
   const onChangePassword = useCallback(text => {
     setPassword(text.trim());
@@ -72,6 +74,10 @@ const SignUpModal = props => {
 
   const onChangePhoneNumber = useCallback(text => {
     setPhoneNumber(text.trim());
+  }, []);
+
+  const onChangeCertifiedNumber = useCallback(text => {
+    setCertifiedNumber(text.trim());
   }, []);
 
   const idCheck = useCallback(async () => {
@@ -108,17 +114,46 @@ const SignUpModal = props => {
     }
   }, [nickname]);
 
-  // 휴대폰 번호 인증요청 버튼 누르면?!
-  // const phone = async () => {
-  //   const result = await userAPI.emailCheck(id);
-  //   if (result === 200) {
-  //     setIdColor('#A6DB9E');
-  //   } else if (result === 409) {
-  //     setIdColor('#FFABAB');
-  //   }
-  // };
+  const phoneRequestAndCheck = useCallback(async () => {
+    if (certifiedNumber === '') {
+      // 인증요청
+      try {
+        const response = await userAPI.phoneRequest(phoneNumber);
+        console.log(response.data.result);
+        if (response.data.result === 'success') {
+          Alert.alert('알림', '인증번호를 확인해주세요!');
+          setCertification('인증 확인');
+          setPhoneCheckColor('#9ecddb');
+        } else {
+          Alert.alert('알림', response.data.data);
+        }
+      } catch (error) {
+        console.error(error.response);
+        if (error.response) {
+          Alert.alert('알림', error.response.data.message);
+        }
+      }
+    } else {
+      // 인증확인
+      try {
+        const response = await userAPI.phoneCheck(phoneNumber, certifiedNumber);
+        console.log(response.data.data);
+        if (response.data.data === true) {
+          Alert.alert('알림', '인증 완료!');
+          setCertification('인증 완료');
+          setPhoneCheckColor('#A6DB9E');
+        } else {
+          Alert.alert('알림', '인증번호 틀렸어요!');
+        }
+      } catch (error) {
+        console.error(error.response);
+        if (error.response) {
+          Alert.alert('알림', error.response.data.message);
+        }
+      }
+    }
+  }, [phoneNumber, certifiedNumber]);
 
-  // 회원가입 버튼을 누르면!
   const onSubmit = useCallback(async () => {
     if (loading) {
       return;
@@ -584,7 +619,6 @@ const SignUpModal = props => {
               }}>
               휴대폰 번호
             </Text>
-            {/* <TouchableOpacity onPress={() => checkId()}></TouchableOpacity> */}
             <TouchableOpacity
               style={{
                 backgroundColor: phoneCheckColor,
@@ -596,13 +630,13 @@ const SignUpModal = props => {
                 marginRight: 40,
                 height: 24,
                 justifyContent: 'center',
-              }}>
+              }}
+              onPress={phoneRequestAndCheck}>
               <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>
-                인증 요청
+                {certification}
               </Text>
             </TouchableOpacity>
           </View>
-
           <View
             style={{
               flexDirection: 'row',
@@ -635,6 +669,39 @@ const SignUpModal = props => {
                   }}
                 />
                 <Icon name="checkcircle" color={phoneNumberColor} size={17} />
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '95%',
+            }}>
+            <View
+              style={{
+                width: '85%',
+                height: 40,
+                margin: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#EEEEEE',
+                borderRadius: 5,
+              }}>
+              <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                <TextInput
+                  onChangeText={onChangeCertifiedNumber}
+                  placeholder="인증번호 입력 후 인증 확인을 눌러주세요"
+                  placeholderTextColor="#C0C0C0"
+                  value={certifiedNumber}
+                  style={{
+                    width: '85%',
+                    textAlign: 'center',
+                    backgroundColor: '#EEEEEE',
+                    borderRadius: 20,
+                  }}
+                />
               </View>
             </View>
           </View>
