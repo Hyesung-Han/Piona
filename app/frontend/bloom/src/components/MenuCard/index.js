@@ -45,7 +45,7 @@ const MenuCardList = ({item, navigation}) => {
           navigation.navigate('MenuDetail', {
             shopNumber: `${item.shop_number}`,
             shopName: `${item.name}`,
-            item: `${item}`,
+            item_id: `${item.item_id}`,
           });
         }}>
         <View style={styles.doneCardList}>
