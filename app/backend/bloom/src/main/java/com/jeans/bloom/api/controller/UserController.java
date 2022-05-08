@@ -6,9 +6,10 @@ import com.jeans.bloom.api.response.UserRes;
 import com.jeans.bloom.api.service.MessageService;
 import com.jeans.bloom.api.service.UserService;
 import com.jeans.bloom.common.response.BaseResponseBody;
-import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.User;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @Api(value = "유저 API", tags = {"User"})
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 @RestController
 public class UserController {
 
@@ -42,8 +43,8 @@ public class UserController {
             @RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegiPostReq registerInfo) {
 
         try{
-            User userGetByUserId = userService.findUserByUserId(registerInfo.getUserId());
-            User userGetByNickname = userService.findUserByNickName(registerInfo.getNickName());
+            User userGetByUserId = userService.findUserByUserId(registerInfo.getUser_id());
+            User userGetByNickname = userService.findUserByNickName(registerInfo.getNickname());
 
             if(userGetByUserId != null){
                 return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "중복된 아이디입니다.."));
@@ -158,8 +159,11 @@ public class UserController {
             @RequestBody @ApiParam(value = "유저 정보", required = true) UserLoginPostReq userInfo){
         try{
             User userInfoPostRes = userService.passwordCheck(userInfo);
+            if(userInfoPostRes != null) {
+                return ResponseEntity.status(201).body(BaseResponseBody.of("success"));
+            }
+            return ResponseEntity.status(201).body(BaseResponseBody.of("fail"));
 
-            return ResponseEntity.status(201).body(BaseResponseBody.of("success"));
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
@@ -188,16 +192,16 @@ public class UserController {
     /**
      * OYT | 2022.04.28
      * @name deleteUser
-     * @api {patch} /user/delete
+     * @api {patch} /user/delete/{user_id}
      * @des 회원 ID를 입력받아 회원 탈퇴 여부 변경
      */
-    @PatchMapping("/delete")
+    @PatchMapping("/delete/{user_id}")
     @ApiOperation(value = "회원 탈퇴", notes = "회원 ID를 입력 받아 탈퇴 여부를 수정한다. ")
     public ResponseEntity<BaseResponseBody> deleteUser(
-            @RequestBody @ApiParam(value="회원 ID", required = true) String userId) {
+            @PathVariable @ApiParam(value="회원 ID", required = true) String user_id) {
 
         try{
-            userService.deleteUser(userId);
+            userService.deleteUser(user_id);
             return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
