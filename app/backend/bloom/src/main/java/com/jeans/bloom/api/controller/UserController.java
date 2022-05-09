@@ -192,16 +192,16 @@ public class UserController {
     /**
      * OYT | 2022.04.28
      * @name deleteUser
-     * @api {patch} /user/delete
+     * @api {patch} /user/delete/{user_id}
      * @des 회원 ID를 입력받아 회원 탈퇴 여부 변경
      */
-    @PatchMapping("/delete")
+    @PatchMapping("/delete/{user_id}")
     @ApiOperation(value = "회원 탈퇴", notes = "회원 ID를 입력 받아 탈퇴 여부를 수정한다. ")
     public ResponseEntity<BaseResponseBody> deleteUser(
-            @RequestBody @ApiParam(value="회원 ID", required = true) String userId) {
+            @PathVariable @ApiParam(value="회원 ID", required = true) String user_id) {
 
         try{
-            userService.deleteUser(userId);
+            userService.deleteUser(user_id);
             return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
         }catch (Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
