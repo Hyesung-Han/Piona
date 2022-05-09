@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useFocusEffect} from '@react-navigation/native';
+import {TabRouter, useFocusEffect} from '@react-navigation/native';
 import {
   View,
   StyleSheet,
@@ -23,9 +23,11 @@ import NaverMapView, {
   Polyline,
   Polygon,
 } from 'react-native-nmap';
+import Geolocation from 'react-native-geolocation-service';
+import {Platform, PermissionsAndroid} from 'react-native';
 
 /**
- * LHJ | 2022.05.02
+ * LHJ, CSW | 2022.05.09
  * @name MapPage
  * @des
  * 메인페이지에서 지도에서 찾기 버튼을 누르면 이동하는 페이지
@@ -34,41 +36,72 @@ import NaverMapView, {
  * 1. 전달받은 가게 화면에 지도에 뿌려주기
  *  */
 
-const MapPage = ({navigation}) => {
-  const start = {latitude: 37.564362, longitude: 126.977011};
-  const end = {latitude: 37.565051, longitude: 126.978567};
+const MapPage = ({navigation, route}) => {
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
+  const [center, setCenter] = useState({
+    zoom: 15,
+    tilt: 1,
+    latitude: 0.0,
+    longitude: 0.0,
+  });
+  const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
+
+  async function requestPermission() {
+    try {
+      if (Platform.OS === 'ios') {
+        return await Geolocation.requestAuthorization('always');
+      }
+      if (Platform.OS === 'android') {
+        return await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    if (route.params.page === 'main') {
+      requestPermission().then(result => {
+        console.log({result});
+        if (result === 'granted') {
+          Geolocation.getCurrentPosition(
+            pos => {
+              setCoordinate({
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+              });
+              setCenter({
+                zoom: 15,
+                tilt: 1,
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+              });
+            },
+            error => {
+              console.log(error);
+            },
+            {enableHighAccuracy: true, timeout: 3600, maximumAge: 3600},
+          );
+        }
+      });
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
       <NaverMapView
         style={{width: '100%', height: '100%'}}
         zoomControl={false}
-        center={{
-          zoom: 10,
-          tilt: 50,
-          latitude: (start.latitude + end.latitude) / 2,
-          longitude: (start.longitude + end.longitude) / 2,
-        }}>
+        center={center}>
         <Marker
           coordinate={{
-            latitude: start.latitude,
-            longitude: start.longitude,
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude,
           }}
           pinColor="blue"
-        />
-        <Path
-          coordinates={[
-            {
-              latitude: start.latitude,
-              longitude: start.longitude,
-            },
-            {latitude: end.latitude, longitude: end.longitude},
-          ]}
-        />
-        <Marker
-          coordinate={{latitude: end.latitude, longitude: end.longitude}}
         />
       </NaverMapView>
       <View style={styles.searchBtn}>
@@ -109,4 +142,5 @@ const styles = StyleSheet.create({
     height: '10%',
   },
 });
+
 export default MapPage;
