@@ -8,12 +8,12 @@ import store from './src/redux/store';
 import AppInner from './AppInner';
 
 /**
- * LDJ | 2022.05.06
+ * LDJ | 2022.05.09
  * @name App.js
  * @api -
  * @des
  * 1. App 시작시 제일 처음 뜨는 Splash Page
- * useEffect 안에 시간을 줘서(2000ms), 경과후 다음 페이지로 이동 / catch는 에러발생 시 문구
+ *    useEffect 안에 시간을 줘서(2000ms), 경과후 다음 페이지로 이동 / catch는 에러발생 시 문구
  * 2. Redux 셋팅 [Provider 적용(밖에서 안으로 사용 불가) 때문에 안의 내용을 따로 만들었음 파일로 : AppInner]
  */
 
