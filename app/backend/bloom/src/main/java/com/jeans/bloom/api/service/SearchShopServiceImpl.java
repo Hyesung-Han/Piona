@@ -161,10 +161,10 @@ public class SearchShopServiceImpl implements SearchShopService {
                 br.close();
                 in.close();
                 http.disconnect();
-                BigDecimal lng_min = BigDecimal.valueOf(lng_lat[0] - (5 / 88.74));
-                BigDecimal lng_max = BigDecimal.valueOf(lng_lat[0] + (5 / 88.74));
-                BigDecimal lat_min = BigDecimal.valueOf(lng_lat[1] - (5 / 109.958489129849955));
-                BigDecimal lat_max = BigDecimal.valueOf(lng_lat[1] + (5 / 109.958489129849955));
+                BigDecimal lng_min = BigDecimal.valueOf(lng_lat[0] - (15 / 88.74));
+                BigDecimal lng_max = BigDecimal.valueOf(lng_lat[0] + (15 / 88.74));
+                BigDecimal lat_min = BigDecimal.valueOf(lng_lat[1] - (15 / 109.958489129849955));
+                BigDecimal lat_max = BigDecimal.valueOf(lng_lat[1] + (15 / 109.958489129849955));
                 return shopService.findShopListByShopLngBetweenAndShopLatBetweenAndUser_userId(lng_min, lng_max, lat_min, lat_max, user_id);
 
 
@@ -172,10 +172,10 @@ public class SearchShopServiceImpl implements SearchShopService {
                 throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
             }
         }else{
-            BigDecimal lng_min = BigDecimal.valueOf(user_lng - (5 / 88.74));
-            BigDecimal lng_max = BigDecimal.valueOf(user_lng + (5 / 88.74));
-            BigDecimal lat_min = BigDecimal.valueOf(user_lat - (5 / 109.958489129849955));
-            BigDecimal lat_max = BigDecimal.valueOf(user_lat + (5 / 109.958489129849955));
+            BigDecimal lng_min = BigDecimal.valueOf(user_lng - (15 / 88.74));
+            BigDecimal lng_max = BigDecimal.valueOf(user_lng + (15 / 88.74));
+            BigDecimal lat_min = BigDecimal.valueOf(user_lat - (15 / 109.958489129849955));
+            BigDecimal lat_max = BigDecimal.valueOf(user_lat + (15 / 109.958489129849955));
 
             return shopService.findShopListByShopLngBetweenAndShopLatBetweenAndUser_userId(lng_min, lng_max, lat_min, lat_max, user_id);
         }
