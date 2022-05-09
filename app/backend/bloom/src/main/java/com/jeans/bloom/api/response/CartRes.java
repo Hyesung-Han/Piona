@@ -23,6 +23,7 @@ public class CartRes {
     int price;
     String image_url;
     int quantity;
+    int total_quantity;
     LocalDateTime reservation_date;
     String shop_name;
 
@@ -34,6 +35,7 @@ public class CartRes {
                 .price(cart.getItem().getPrice())
                 .image_url(cart.getItem().getImageUrl())
                 .quantity(cart.getQuantity())
+                .total_quantity(cart.getItem().getTotalQuantity())
                 .reservation_date(cart.getReservationDate())
                 .shop_name(cart.getItem().getShop().getName())
                 .build();
