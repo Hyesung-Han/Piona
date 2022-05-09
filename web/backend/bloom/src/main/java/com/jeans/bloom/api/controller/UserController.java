@@ -15,6 +15,7 @@ import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.Shop;
 import com.jeans.bloom.db.entity.User;
 import com.jeans.bloom.db.entity.type.StatusType;
+import com.jeans.bloom.db.entity.type.UserCode;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -81,7 +82,7 @@ public class UserController {
 
         try{
             User userLoginPostRes = userService.login(userLogin);
-            if(userLoginPostRes != null && userLoginPostRes.getShop() != null)
+            if(userLoginPostRes != null && userLoginPostRes.getUserCode() != UserCode.M)
                 return ResponseEntity.status(201).body(BaseResponseBody.of("success", UserRes.of(userLoginPostRes)));
 
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", "정보가 올바르지 않습니다."));
