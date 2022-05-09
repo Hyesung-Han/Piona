@@ -36,7 +36,7 @@ import {Platform, PermissionsAndroid} from 'react-native';
  * 1. 전달받은 가게 화면에 지도에 뿌려주기
  *  */
 
-const MapPage = ({navigation, route}) => {
+const MapPage = ({navigation: {goBack}, route}) => {
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
   const [center, setCenter] = useState({
@@ -46,6 +46,7 @@ const MapPage = ({navigation, route}) => {
     longitude: 0.0,
   });
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
+  const [data, setData] = useState([]);
 
   async function requestPermission() {
     try {
@@ -87,6 +88,7 @@ const MapPage = ({navigation, route}) => {
           );
         }
       });
+    } else if (route.params.page === 'search') {
     }
   }, []);
 
@@ -114,15 +116,7 @@ const MapPage = ({navigation, route}) => {
           width={50}
           alignItems="center"
           justifyContent="center"
-          onPress={() =>
-            navigation.navigate('Map', {
-              type: 'location',
-              word: 'hi',
-              user_id: user_id,
-              user_lat: 0,
-              user_lng: 0,
-            })
-          }
+          onPress={() => goBack()}
         />
       </View>
     </View>
