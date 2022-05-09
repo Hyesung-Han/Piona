@@ -31,12 +31,12 @@ const PicnicingPage = ({navigation}) => {
     try {
       //const response = await getMyReservationList('piona');
       const response = await getMyReservationList(user_id, token);
-      const filteredByStatus = response.data.filter(
-        item => item.status !== 'D',
-      );
+      const res = response.data;
+      const filteredByStatus = res.filter(item => item.status !== 'D');
       setData(filteredByStatus);
       console.log(response.data);
     } catch (error) {
+      console.log(user_id);
       console.log('예약현황 조회 실패', error);
     }
   };

@@ -1,10 +1,8 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-
 /**
- * LDJ, LHJ, CSW | 2022.05.06
+ * LDJ, LHJ, CSW | 2022.05.08
  * @name utils/Axios
  * @api 모든 API 만드는 곳
  * @des
@@ -131,7 +129,7 @@ export const changeInfo = async (userNickname, petName) => {
     });
 };
 
-// LDJ | 유저에 관한 API | [로그인, 회원가입, 아이디중복, 닉네임중복, 비밀번호확인, 회원정보수정, 회원탈퇴]
+// LDJ | 유저에 관한 API | [로그인, 회원가입, 아이디중복, 닉네임중복, 폰인증요청, 폰인증확인, 비밀번호확인, 회원정보수정, 회원탈퇴]
 export const userAPI = {
   signin: async (user_id, password) => {
     return await request
@@ -188,16 +186,29 @@ export const userAPI = {
       });
   },
 
-  // nickCheck: async userNickname => {
-  //   return await request
-  //     .get(`/users/nickname/${userNickname}`, {})
-  //     .then(response => {
-  //       return response.data.statusCode;
-  //     })
-  //     .catch(error => {
-  //       return error.response.status;
-  //     });
-  // },
+  phoneRequest: async phoneNumber => {
+    return await request
+      .get(`/user/phoneRequest?phoneNumber=${phoneNumber}`)
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+
+  phoneCheck: async (phoneNumber, certifiedNum) => {
+    return await request
+      .get(
+        `/user/phoneCheck?certifiedNum=${certifiedNum}&phoneNumber=${phoneNumber}`,
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
   pwdCheck: async (user_id, password, accessToken) => {
     return await request
@@ -218,20 +229,24 @@ export const userAPI = {
       });
   },
 
-  // editUser: async (userId, accessToken) => {
-  //   return await request
-  //     .patch('/user', userId, {
-  //       headers: {
-  //         Authorization: accessToken,
-  //       },
-  //     })
-  //     .then(response => {
-  //       return response;
-  //     })
-  //     .catch(error => {
-  //       return error;
-  //     });
-  // },
+  editUser: async (name, nickname, password, phone, user_id, accessToken) => {
+    return await request
+      .patch(
+        '/user',
+        {name, nickname, password, phone, user_id},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
   deleteUser: async (user_id, accessToken) => {
     return await request
@@ -251,17 +266,6 @@ export const userAPI = {
         return error;
       });
   },
-
-  // emailCheck: async userEmail => {
-  //   return await request
-  //     .get(`/users/email/${userEmail}`, {})
-  //     .then(response => {
-  //       return response.data.statusCode;
-  //     })
-  //     .catch(error => {
-  //       return error.response.status;
-  //     });
-  // },
 };
 
 // CSW | 장바구니에 관한 API | [목록조회, 추가, 삭제]
@@ -395,6 +399,43 @@ export const shopDetailAPI = {
         return error.response.status;
       });
   },
+
+  // LHJ | 2022.05.09
+  // shop_number에 해당하는 shop의 리뷰 리스트 가져오는 api
+  getReviewList: async (shop_number, accessToken) => {
+    return await request
+      .get(`/review?shopNumber=${shop_number}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        //response의 result는 제외한 data(배열)만을 반환
+        return response.data;
+      })
+      .catch(error => {
+        //api 반환 실패시 상태 반환
+        return error.response.status;
+      });
+  },
+};
+
+//LHJ | 2022.05.09
+// 리뷰 등록 api
+export const RegisterReviewApi = async (formData, accessToken) => {
+  return await request
+    .post('/review', formData, {
+        headers: {
+          Authorization: accessToken,
+        },
+      },
+    )
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
 };
 
 // CSW | 위시리스트에 관한 API | [목록조회, 추가, 삭제]
