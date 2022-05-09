@@ -1,5 +1,6 @@
 package com.jeans.bloom.api.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jeans.bloom.db.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL) //null 데이터 전송 x
 public class UserRes {
 
     String user_id;
@@ -27,6 +29,8 @@ public class UserRes {
         return UserRes.builder()
                 .user_id(user.getUserId())
                 .shop_number(user.getShop().getShopNumber())
+                .name(user.getName())
+                .phone(user.getPhone())
                 .access_token(user.getAccessToken())
                 .refresh_token(user.getRefreshToken())
                 .build();
