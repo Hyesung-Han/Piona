@@ -18,6 +18,22 @@ import {useDispatch} from 'react-redux';
  */
 
 const ShopCard = ({item, navigation}, props) => {
+  // "data": {
+  //   "shop_number": "10",
+  //   "tel": "031121513",
+  //   "hours": "아홉시부터열시까지바짝벌어요",
+  //   "zip_code": 21364,
+  //   "address": "서울특별시 가나다라동",
+  //   "name": "pipipi",
+  //   "description": "우리가게가제일조아용",
+  //   "url": "dbdkfdpf",
+  //   "image_url": "bdkdfpdf",
+  //   "shop_lng": 127.0134068,
+  //   "shop_lat": 37.5051003,
+  //   "score": 2.6666666666666665,
+  //   "review_cnt": 3,
+  //   "wish_id": 0
+  // }
   const dispatch = useDispatch();
   const [heartStatus, setHeartStaus] = useState(
     item.wish_id === 0 ? false : true,
@@ -62,6 +78,7 @@ const ShopCard = ({item, navigation}, props) => {
     dispatch(
       shopSlice.actions.setShopNumber({
         shopNumber: `${item.shop_number}`,
+        shopName: `${item.name}`,
       }),
     );
   };

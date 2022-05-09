@@ -268,10 +268,15 @@ export const userAPI = {
   },
 };
 
+// CSW | 장바구니에 관한 API | [목록조회, 추가, 삭제]
 export const cartAPI = {
-  getCartList: async userId => {
+  getCartList: async (user_id, accessToken) => {
     return await request
-      .get('/cart', {params: {userId: userId}})
+      .get(`/cart?userId=${user_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
       .then(response => {
         return response.data;
       })
@@ -286,15 +291,24 @@ export const cartAPI = {
     reservationDate,
     shopNumber,
     itemId,
+    accessToken,
   ) => {
     return await request
-      .post('/user', {
-        userId,
-        quantity,
-        reservationDate,
-        shopNumber,
-        itemId,
-      })
+      .post(
+        '/user',
+        {
+          userId,
+          quantity,
+          reservationDate,
+          shopNumber,
+          itemId,
+        },
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
       .then(response => {
         return response.data.statusCode;
       })
@@ -303,9 +317,17 @@ export const cartAPI = {
       });
   },
 
-  deleteCartList: async cartId => {
+  deleteCartList: async (cartId, accessToken) => {
     return await request
-      .delete('/cart', {cartId})
+      .delete(
+        '/cart',
+        {cartId},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
       .then(response => {
         return response.data.statusCode;
       })
@@ -360,8 +382,26 @@ export const shopDetailAPI = {
         return error.response.status;
       });
   },
+
+  getShopItemList: async (shop_number, accessToken) => {
+    return await request
+      .get(`/shop/item?shopNumber=${shop_number}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        //response의 result는 제외한 data(배열)만을 반환
+        return response.data;
+      })
+      .catch(error => {
+        //api 반환 실패시 상태 반환
+        return error.response.status;
+      });
+  },
 };
 
+// CSW | 위시리스트에 관한 API | [목록조회, 추가, 삭제]
 export const WishListAPI = {
   getWishList: async (user_id, accessToken) => {
     return await request
@@ -412,7 +452,7 @@ export const WishListAPI = {
   },
 };
 
-//CSW, Alarm Page와 Main Alarm아이콘을 위한 API
+// CSW | 알람에 관한 API | [목록조회, 읽음으로 갱신 ]
 export const alarmAPI = {
   get: async (user_id, accessToken) => {
     return await request
@@ -461,6 +501,24 @@ export const searchAPI = {
           },
         },
       )
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+};
+
+//CSW, MenuDetail페이지를 위한 API
+export const MenuDetailAPI = {
+  get: async (itemId, accessToken) => {
+    return await request
+      .get(`/shop/${itemId}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
       .then(response => {
         return response.data;
       })

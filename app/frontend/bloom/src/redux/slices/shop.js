@@ -20,6 +20,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   shopNumber: '',
+  shopName: '',
 };
 
 const shopSlice = createSlice({
@@ -28,6 +29,7 @@ const shopSlice = createSlice({
   reducers: {
     setShopNumber(state, action) {
       state.shopNumber = action.payload.shopNumber;
+      state.shopName = action.payload.shopName;
     },
   },
   extraReducers: builder => {},

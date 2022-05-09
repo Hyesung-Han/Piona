@@ -1,17 +1,57 @@
 import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {View, Dimensions, Alert, Text} from 'react-native';
+import {View, Dimensions, Alert, Text, FlatList} from 'react-native';
+import {useSelector} from 'react-redux';
+import {shopDetailAPI} from '../../utils/Axios';
+import MenuCard from '../../components/MenuCard';
+
+/**
+ * LHJ | 2022.05.09
+ * @name shopMenu
+ * @api .
+ * @des
+ * 1. 컴포넌트 설명:
+ * 2. 해당 페이지 설명 : 가게 상세 정보 보기 이후 탭을 통해 이동 가능한 '상품 리스트 조회'이다.
+ */
 
 const ShopMenuPage = ({navigation}) => {
+  const [data, setData] = useState([]);
+  const shopNumber = useSelector(state => state.shop.shopNumber);
+  const shopName = useSelector(state => state.shop.shopName);
+  const token = useSelector(state => state.user.accessToken);
+
+  const getShopItemList = async () => {
+    try {
+      const res = await shopDetailAPI.getShopItemList(shopNumber, token);
+      setData(res.data);
+      console.log(res);
+    } catch (error) {
+      console.log('위시리스트 검색', error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getShopItemList();
+    }, []),
+  );
+
+  const renderItem = ({item}) => {
+    return <MenuCard item={item} navigation={navigation} />;
+  };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#F9F9F9',
-      }}>
-      <Text>ShopReviewPage</Text>
+    <View>
+      <View>
+        <FlatList
+          //리스트의 소스를 담는 속성
+          data={data}
+          //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
+          renderItem={renderItem}
+          //item의 고유의 키를 부여하는 속성
+          keyExtractor={item => item.item_id}
+        />
+      </View>
     </View>
   );
 };
