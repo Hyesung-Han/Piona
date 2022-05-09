@@ -27,6 +27,26 @@ const MenuDetailPage = ({navigation, route}) => {
     }
   };
 
+  const quantityMinus = () => {
+    if (quantityStatus !== 0) {
+      setquantityStaus(prevStatus => prevStatus - 1);
+    } else if (quantityStatus <= 0) {
+      setquantityStaus(0);
+    }
+  };
+
+
+  // 백 수정 후 total_quantity ->  data.total_quantity 로 바꾸기
+
+  const total_quantity = 10;
+  const quantityPlus = () => {
+    if (quantityStatus < total_quantity || quantityStatus === 0) {
+      setquantityStaus(prevStatus => prevStatus + 1);
+    } else if (quantityStatus >= 10) {
+      setquantityStaus(total_quantity);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       getMenuDetail();
@@ -59,7 +79,7 @@ const MenuDetailPage = ({navigation, route}) => {
         </Text>
         <View style={styles.quantityBox}>
           <Icon.Button
-            onPress={() => setquantityStaus(prevStatus => prevStatus - 1)}
+            onPress={() => quantityMinus()}
             name="remove"
             color="black"
             backgroundColor="transparent"
@@ -70,7 +90,7 @@ const MenuDetailPage = ({navigation, route}) => {
             {quantityStatus}
           </Text>
           <Icon.Button
-            onPress={() => setquantityStaus(prevStatus => prevStatus + 1)}
+            onPress={() => quantityPlus()}
             name="add"
             color="black"
             backgroundColor="transparent"
