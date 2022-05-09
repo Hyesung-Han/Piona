@@ -395,6 +395,43 @@ export const shopDetailAPI = {
         return error.response.status;
       });
   },
+
+  // LHJ | 2022.05.09
+  // shop_number에 해당하는 shop의 리뷰 리스트 가져오는 api
+  getReviewList: async (shop_number, accessToken) => {
+    return await request
+      .get(`/review?shopNumber=${shop_number}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        //response의 result는 제외한 data(배열)만을 반환
+        return response.data;
+      })
+      .catch(error => {
+        //api 반환 실패시 상태 반환
+        return error.response.status;
+      });
+  },
+};
+
+//LHJ | 2022.05.09
+// 리뷰 등록 api
+export const RegisterReviewApi = async (formData, accessToken) => {
+  return await request
+    .post('/review', formData, {
+        headers: {
+          Authorization: accessToken,
+        },
+      },
+    )
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
 };
 
 // CSW | 위시리스트에 관한 API | [목록조회, 추가, 삭제]

@@ -32,12 +32,12 @@ const PicnicedPage = ({navigation}) => {
   const getMyReservation = async () => {
     try {
       const response = await getMyReservationList(user_id, token);
-      //const response = await getMyReservationList('piona');
-      const filteredByStatus = response.data.filter(item => item.status == 'D');
+      const res = response.data;
+      const filteredByStatus = res.filter(item => item.status === 'D');
       setData(filteredByStatus);
       console.log(filteredByStatus);
     } catch (error) {
-      console.log('예약현황 조회 실패', error);
+      console.log('완료된 예약현황 조회 실패', error);
     }
   };
 
