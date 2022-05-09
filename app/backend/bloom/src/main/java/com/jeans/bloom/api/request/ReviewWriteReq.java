@@ -4,22 +4,27 @@ import com.jeans.bloom.db.entity.Reservation;
 import com.jeans.bloom.db.entity.Review;
 import com.jeans.bloom.db.entity.User;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
- * LJA | 2022.04.28
+ * LJA | 2022.05.06
  * @name ReviewWriteReq
  * @des 리뷰 작성 Request DTO
  */
-@Getter @Setter
+@Getter @Setter @AllArgsConstructor
 @Builder
 @ApiModel("ReviewWriteReq")
-public class ReviewWriteReq {
+public class ReviewWriteReq implements Serializable {
     String userid;
     int reservationId;
-    String imageUrl;
+    @ApiModelProperty(hidden=true)
+    String imageUrl="";
     String content;
     int score;
     String kwReasonable;
@@ -40,8 +45,8 @@ public class ReviewWriteReq {
         reservation.setReservationId(this.reservationId);
         review.setReservation(reservation);
 
-        review.setImageUrl(this.imageUrl);
         review.setContent(this.content);
+        review.setImageUrl(this.imageUrl);
         review.setScore(this.score);
         review.setKwReasonable(this.kwReasonable);
         review.setKwMood(this.kwMood);
