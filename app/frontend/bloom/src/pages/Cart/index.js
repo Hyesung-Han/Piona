@@ -28,17 +28,16 @@ const CartPage = ({navigation}) => {
   const [data, setData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [heartStatus, setHeartStaus] = useState(false);
 
   const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
 
-  // 추후 piona자리에 user_id로 대체
   const getCart = async () => {
     try {
-      const res = await cartAPI.getCartList('piona');
+      const res = await cartAPI.getCartList(user_id, token);
       setData(res.data);
     } catch (error) {
-      console.log('위시리스트 검색', error);
+      console.log('장바구니 검색', error);
     }
   };
 
