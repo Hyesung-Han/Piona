@@ -91,11 +91,16 @@ const MyApp = () => {
           component={MapPage}
           options={{title: '지도'}}
         />
+        <Stack.Screen
+          name="MenuDetail"
+          component={MenuDetailPage}
+          options={({route}) => ({title: route.params.menuName})}
+        />
       </Stack.Navigator>
     );
   }
 
-  function TopTabStackShopScreen() {
+  function TopTabStackShopScreen({navigation}) {
     return (
       <Stack.Navigator
         screenOptions={{
