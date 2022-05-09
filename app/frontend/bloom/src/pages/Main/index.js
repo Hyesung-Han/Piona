@@ -28,6 +28,8 @@ const MainPage = ({navigation}) => {
   const [inputText, setInputText] = useState('');
   const user_nickname = useSelector(state => state.user.nickname);
   const user_id = useSelector(state => state.user.id);
+  //test 좌표
+  const user_location = {lat: 37.564362, lng: 126.977011};
 
   const clearText = () => {
     setInputText('');
@@ -75,9 +77,15 @@ const MainPage = ({navigation}) => {
               color="white"
               backgroundColor="white"
               size={20}
-              onPress={() =>
-                navigation.navigate('Map', {navigation: `${navigation}`})
-              }
+              onPress={() => {
+                navigation.navigate('Map', {
+                  type: 'location',
+                  word: '',
+                  user_id: user_id,
+                  user_lat: user_location.lat,
+                  user_lng: user_location.lng,
+                });
+              }}
             />
             <Text
               style={{color: 'white', fontWeight: 'bold'}}

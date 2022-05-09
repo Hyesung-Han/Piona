@@ -15,7 +15,7 @@ import RegisterReview from '../../pages/RegisterReview';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.06
+ * LHJ | 2022.05.09
  * @name DoneCard
  * @api x
  * @des
@@ -62,7 +62,9 @@ const DoneCardList = ({item, navigation}) => {
                   onPress={() =>
                     navigation.navigate('RegisterReview', {
                       reservationId: `${item.reservation_id}`,
-                      user_id: user_id,
+                      //user_id: user_id,
+                      reservation_id: item.reservation_id,
+                      shop_name: item.shop_name,
                     })
                   }>
                   <Text

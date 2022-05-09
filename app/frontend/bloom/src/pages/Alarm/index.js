@@ -37,8 +37,7 @@ const AlarmPage = ({navigation}) => {
 
   const patchAlarm = async () => {
     try {
-      const response = await alarmAPI.patch(user_id);
-      console.log(response);
+      const response = await alarmAPI.patch(user_id, token);
     } catch (error) {
       console.log('Alarm 검색', error);
     }
