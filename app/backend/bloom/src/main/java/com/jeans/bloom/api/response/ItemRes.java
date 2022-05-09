@@ -21,6 +21,7 @@ public class ItemRes {
     String  description;
     String  image_url;
     int total_quantity;
+    String shop_number;
 
     public static ItemRes of(Item item){
         /**
@@ -35,6 +36,7 @@ public class ItemRes {
                 .description(item.getDescription())
                 .image_url(item.getImageUrl())
                 .total_quantity(item.getTotalQuantity())
+                .shop_number(item.getShop().getShopNumber())
                 .build();
     }
 
