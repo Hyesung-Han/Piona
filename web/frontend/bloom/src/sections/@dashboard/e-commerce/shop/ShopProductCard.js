@@ -19,14 +19,14 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { name, cover, price, colors, status, priceSale } = product;
+  const { item_id, shop_number, name, price, total_quantity, description, image_url } = product;
 
   const linkTo = PATH_DASHBOARD.eCommerce.view(paramCase(name));
 
   return (
     <Card>
       <Box sx={{ position: 'relative' }}>
-        {status && (
+        {/* {status && (
           <Label
             variant="filled"
             color={(status === 'sale' && 'error') || 'info'}
@@ -40,9 +40,9 @@ export default function ShopProductCard({ product }) {
           >
             {status}
           </Label>
-        )}
+        )} */}
 
-        <Image alt={name} src={cover} ratio="1/1" />
+        <Image alt={name} src={image_url} ratio="1/1" />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
@@ -53,14 +53,14 @@ export default function ShopProductCard({ product }) {
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={colors} />
+          {/* <ColorPreview colors={colors} /> */}
 
           <Stack direction="row" spacing={0.5}>
-            {priceSale && (
+            {/* {priceSale && (
               <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
                 {fCurrency(priceSale)}
               </Typography>
-            )}
+            )} */}
 
             <Typography variant="subtitle1">{fCurrency(price)}</Typography>
           </Stack>

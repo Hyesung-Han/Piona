@@ -11,6 +11,8 @@ import { getProducts, filterProducts } from '../../redux/slices/product';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+// Axios
+import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -33,6 +35,8 @@ export default function EcommerceShop() {
   const dispatch = useDispatch();
 
   const [openFilter, setOpenFilter] = useState(false);
+  
+  const [itemList, setItemList] = useState([]);
 
   const { products, sortBy, filters } = useSelector((state) => state.product);
 
@@ -68,6 +72,34 @@ export default function EcommerceShop() {
   useEffect(() => {
     dispatch(filterProducts(values));
   }, [dispatch, values]);
+
+  useEffect(() => {
+    getItemList();
+  }, []);
+
+  useEffect(() => {
+    console.log("itemList", itemList);
+  }, [itemList])
+
+  const getItemList = async () => {
+    try {
+      const user = localStorage.getItem('user');
+      if(user != null ) {
+        const parseUser = JSON.parse(user);
+        console.log(parseUser.access_token);
+        const response = await axios.get("/api/item?shop_number=10", {
+          headers : {
+            Authorization: parseUser.access_token
+          }
+        });
+        const {data} = response.data;
+        setItemList(data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -164,7 +196,7 @@ export default function EcommerceShop() {
           )}
         </Stack>
 
-        <ShopProductList products={filteredProducts} loading={!products.length && isDefault} />
+        <ShopProductList products={itemList} loading={!itemList.length && isDefault} />
         <CartWidget />
       </Container>
     </Page>
