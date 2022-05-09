@@ -47,7 +47,7 @@ export default function ShopProductCard({ product }) {
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link to={linkTo} color="inherit" component={RouterLink}>
-          <Typography variant="subtitle2" noWrap>
+          <Typography variant="subtitle1" noWrap>
             {name}
           </Typography>
         </Link>
@@ -55,14 +55,15 @@ export default function ShopProductCard({ product }) {
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           {/* <ColorPreview colors={colors} /> */}
 
-          <Stack direction="row" spacing={0.5}>
+          <Stack direction="row" >
             {/* {priceSale && (
               <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
                 {fCurrency(priceSale)}
               </Typography>
             )} */}
 
-            <Typography variant="subtitle1">{fCurrency(price)}</Typography>
+            <Typography variant="subtitle1">{price}원</Typography>
+            <Typography variant="subtitle2" color="rgba(132, 132, 132, 1)" ml={11}>수량 : {total_quantity}개</Typography>
           </Stack>
         </Stack>
       </Stack>
