@@ -24,6 +24,25 @@ const CartCardList = props => {
 
   const date = props.item.reservation_date.split('T');
 
+  const quantityMinus = () => {
+    if (quantityStatus !== 0) {
+      setquantityStaus(prevStatus => prevStatus - 1);
+    } else if (quantityStatus <= 0) {
+      setquantityStaus(0);
+    }
+  };
+
+
+  // 백 수정 후 total_quantity ->  props.item.total_quantity 로 바꾸기 ( 여기는 콘솔로 찍어보고 변수 바꿔줘 )
+  const total_quantity = 10;
+  const quantityPlus = () => {
+    if (quantityStatus < total_quantity || quantityStatus === 0) {
+      setquantityStaus(prevStatus => prevStatus + 1);
+    } else if (quantityStatus >= 10) {
+      setquantityStaus(total_quantity);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -78,7 +97,7 @@ const CartCardList = props => {
               </Text>
               <View style={styles.quantityBox}>
                 <Icon.Button
-                  onPress={() => setquantityStaus(prevStatus => prevStatus - 1)}
+                  onPress={() => quantityMinus()}
                   name="remove"
                   color="black"
                   backgroundColor="transparent"
@@ -87,7 +106,7 @@ const CartCardList = props => {
                 />
                 <Text>{quantityStatus}</Text>
                 <Icon.Button
-                  onPress={() => setquantityStaus(prevStatus => prevStatus + 1)}
+                  onPress={() => quantityPlus()}
                   name="add"
                   color="black"
                   backgroundColor="transparent"
