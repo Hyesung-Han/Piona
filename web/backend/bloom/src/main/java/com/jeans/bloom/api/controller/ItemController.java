@@ -1,11 +1,13 @@
 package com.jeans.bloom.api.controller;
 
+import com.jeans.bloom.api.request.ItemFormDataReq;
 import com.jeans.bloom.api.request.ItemWriteReq;
 import com.jeans.bloom.api.response.ItemRes;
 import com.jeans.bloom.api.response.ReviewRes;
 import com.jeans.bloom.api.service.ItemService;
 import com.jeans.bloom.common.auth.AwsS3Service;
 import com.jeans.bloom.common.response.BaseResponseBody;
+import com.jeans.bloom.db.entity.Item;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -74,11 +76,75 @@ public class ItemController {
     public ResponseEntity<BaseResponseBody> findItemByItemId(
             @PathVariable @ApiParam(value = "상품 아이디", required = true) int item_id){
         try{
-            ItemRes itemDetail = itemService.findItemByItemId(item_id);
+            ItemRes itemDetail = ItemRes.of(itemService.findItemByItemId(item_id));
             return ResponseEntity.status(200).body(BaseResponseBody.of("success", itemDetail));
         }catch(Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
     }
 
+    /**
+     * HHS | 2022.05.07
+     * @name findItemsByShop_ShopNumber
+     * @api {get} /item?shop_number=shop_number
+     * @des 사업자 등록번호를 통한 상품 리스트 받기
+     */
+    @GetMapping
+    @ApiOperation(value = "상품 리스트", notes = "사업자 번호를 통해 해당 가게의 상품 리스트 받아오기")
+    public ResponseEntity<BaseResponseBody> findItemsByShop_ShopNumber(
+            @RequestParam @ApiParam(value = "사업자 등록 번호", required = true) String shop_number){
+        try{
+            List<ItemRes> itemResList = itemService.findItemsByShop_ShopNumber(shop_number);
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", itemResList));
+        }catch(Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+    /**
+     * HHS | 2022.05.07
+     * @name deleteItem
+     * @api {delete} /item?item_id=item_id
+     * @des 상품 번호를 통한 상품 삭제하기
+     */
+    @DeleteMapping
+    @ApiOperation(value = "상품 삭제", notes = "상품 번호를 통해 해당 상품을 삭제한다")
+    public ResponseEntity<BaseResponseBody> deleteItem(
+            @RequestParam @ApiParam(value = "상품 번호", required = true) int item_id){
+        try{
+            Boolean result = itemService.deleteItem(item_id);
+            if(result){
+                return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
+            }
+            return ResponseEntity.status(201).body(BaseResponseBody.of( "fail", "상품 삭제를 실패했습니다"));
+
+        }catch(Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+
+
+    /**
+     * HHS | 2022.05.07
+     * @name updateItemInfo
+     * @api {patch} /item
+     * @des 상품 정보를 입력 받아 수정한다
+     */
+    @PatchMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @ApiOperation(value = "상품 정보 수정", notes = "상품 정보를 입력 받아 수정한다. ")
+    public ResponseEntity<BaseResponseBody> updateItemInfo(
+            @ModelAttribute ItemFormDataReq formData ) {
+        try{
+            Item item = itemService.findItemByItemId(formData.getItemInfoReq().getItem_id());
+            if (formData.getFile() != null) {
+                if(formData.getItemInfoReq() != null && formData.getItemInfoReq().getImage_url() != null)
+                    awsS3Service.deleteImage(item.getImageUrl());
+                formData.getItemInfoReq().setImage_url(awsS3Service.uploadImage(formData.getFile()));
+            }
+            item = itemService.updateItemInfo(formData.getItemInfoReq());
+            return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+
+    }
 }
