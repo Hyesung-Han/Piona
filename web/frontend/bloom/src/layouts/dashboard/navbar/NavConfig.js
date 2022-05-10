@@ -42,7 +42,7 @@ const navConfig = [
           { title: '상품 수정하기', path: PATH_DASHBOARD.user.list },
         ],
       },
-      { title: '예약 관리', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
+      { title: '예약 관리', path: PATH_DASHBOARD.invoice.root, icon: ICONS.dashboard },
       { title: '정산 관리', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
       { title: '리뷰 관리', path: PATH_DASHBOARD.review.root, icon: ICONS.banking },
       { title: '정보 수정', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },

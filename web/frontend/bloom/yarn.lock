@@ -2424,6 +2424,13 @@
     "prop-types" "^15.7.2"
     "react-is" "^17.0.2"
 
+"@mui/icons-material@^5.6.2":
+  "integrity" "sha512-9QdI7axKuBAyaGz4mtdi7Uy1j73/thqFmEuxpJHxNC7O8ADEK1Da3t2veK2tgmsXsUlAHcAG63gg+GvWWeQNqQ=="
+  "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.6.2.tgz"
+  "version" "5.6.2"
+  dependencies:
+    "@babel/runtime" "^7.17.2"
+
 "@mui/lab@^5.0.0-alpha.76":
   "integrity" "sha512-MCx6t28L6xo5S3/GXFZqIfXBdFXfCO8UblEb+sf48UREDx1awUDLS7/n0BLC9N6pj6P95OpMx+at25gTSd2CQQ=="
   "resolved" "https://registry.npmjs.org/@mui/lab/-/lab-5.0.0-alpha.76.tgz"
@@ -3298,7 +3305,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.6 || ^17.0.0 || ^18.0.0", "@types/react@>=16":
+"@types/react@*", "@types/react@^16.8.6 || ^17.0.0 || ^18.0.0", "@types/react@^17.0.0 || ^18.0.0", "@types/react@>=16":
   "integrity" "sha512-0WwKHUbWuQWOce61UexYuWTGuGY/8JvtUe/dtQ6lR4sZ3UiylHotJeWpf3ArP9+DSGUoLY3wbU59VyMrJps5VQ=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-17.0.14.tgz"
   "version" "17.0.14"

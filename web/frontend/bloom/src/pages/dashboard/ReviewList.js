@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 import {
   Box,
@@ -9,14 +8,10 @@ import {
   Tab,
   Tabs,
   Table,
-  Stack,
   Switch,
-  Button,
-  Tooltip,
   Divider,
   TableBody,
   Container,
-  IconButton,
   TableContainer,
   TablePagination,
   FormControlLabel,
@@ -28,28 +23,18 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useTabs from '../../hooks/useTabs';
 import useSettings from '../../hooks/useSettings';
-import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
-// _mock_
-import { _invoices } from '../../_mock';
+import useTable, { emptyRows } from '../../hooks/useTable';
+
 // components
 import Page from '../../components/Page';
-import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { TableNoData, TableEmptyRows, TableHeadCustom, TableSelectedActions } from '../../components/table';
+import { TableNoData, TableEmptyRows, TableHeadCustom } from '../../components/table';
 // sections
 import { InvoiceTableRow } from '../../sections/@dashboard/review/list';
 
 // ----------------------------------------------------------------------
 
-// const SERVICE_OPTIONS = [
-//   'all',
-//   'full stack development',
-//   'backend development',
-//   'ui design',
-//   'ui/ux design',
-//   'front end development',
-// ];
 const STATUS_OPTIONS = ['all', 'Y', 'N'];
 
 const TABLE_HEAD = [
@@ -63,11 +48,8 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function ReviewList() {
-  // const theme = useTheme();
 
   const { themeStretch } = useSettings();
-
-  const navigate = useNavigate();
 
   const {
     dense,
@@ -75,12 +57,8 @@ export default function ReviewList() {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
     selected,
-    setSelected,
-    onSelectRow,
-    onSelectAllRows,
 
     //
     onSort,
@@ -97,30 +75,21 @@ export default function ReviewList() {
     getReviewList();
   }, []);
 
-  // if (filterStatus !== 'all') {
-  //   const data = reviewList.filter((item) => item.is_ban === filterStatus);
-  //   setReviewList(data);
-  // }
-
-
-  const handleViewRow = (id) => {
-    navigate(PATH_DASHBOARD.invoice.view(id));
-  };
 
   const handleIsBanRow = async (id) => {
     try {
-      // const user = localStorage.getItem('user');
-      // if(user != null){
-        // const parseUser = JSON.parse(user);
-        const response = await axios.patch(`/review/${id}`, {
-          // headers : {
-          //   Authorization: parseUser.access_token
-          // }
+      const user = localStorage.getItem('user');
+      if(user != null){
+        const parseUser = JSON.parse(user);
+        const response = await axios.patch(`/api/review/${id}`, {
+          headers : {
+            Authorization: parseUser.access_token
+          }
         })
         console.log(response);
         alert("리뷰를 신고했습니다.", "success")
         await getReviewList();
-      // }
+      }
     } catch (error) {
       console.error(error);
     }
@@ -128,20 +97,21 @@ export default function ReviewList() {
     
   const getReviewList = async () => {
     try {
-      // const user = localStorage.getItem('user');
-      // if(user != null){
-        // const parseUser = JSON.parse(user);
-        const response = await axios.get(`/review?shop_number=${10}`, {
-          // headers : {
-          //   Authorization: parseUser.access_token
-          // }
+      const user = localStorage.getItem('user');
+      if(user != null){
+        const parseUser = JSON.parse(user);
+        console.log(parseUser);
+        const response = await axios.get(`/api/review?shop_number=${parseUser.shop_number}`, {
+          headers : {
+            Authorization: parseUser.access_token
+          }
         });
         if(response.data.result === 'success'){
           const {data} = response.data;
           
           return setReviewList(data);
         }
-      // }
+      }
     } catch (error) {
       console.error(error);
     }
@@ -197,12 +167,6 @@ export default function ReviewList() {
                   rowCount={reviewList.length}
                   numSelected={selected.length}
                   onSort={onSort}
-                  // onSelectAllRows={(checked) =>
-                  //   onSelectAllRows(
-                  //     checked,
-                  //     tableData.map((row) => row.id)
-                  //   )
-                  // }
                 />
 
                 <TableBody>
@@ -212,11 +176,7 @@ export default function ReviewList() {
                       key={row.review_id}
                       row={row}
                       selected={selected.includes(row.review_id)}
-                      onSelectRow={() => onSelectRow(row.review_id)}
-                      onViewRow={() => handleViewRow(row.id)}
                       onIsbanRow={() => handleIsBanRow(row.review_id)}
-                      // onEditRow={() => handleEditRow(row.id)}
-                      // onDeleteRow={() => handleBanRows(row.review_id)}
                     />
                   ))}
 
