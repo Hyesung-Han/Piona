@@ -29,8 +29,8 @@ const PicnicingPage = ({navigation}) => {
 
   const getMyReservation = async () => {
     try {
-      //const response = await getMyReservationList('piona');
-      const response = await getMyReservationList(user_id, token);
+      const response = await getMyReservationList('user6', token);
+      //const response = await getMyReservationList(user_id, token);
       const res = response.data;
       const filteredByStatus = res.filter(item => item.status !== 'D');
       setData(filteredByStatus);
