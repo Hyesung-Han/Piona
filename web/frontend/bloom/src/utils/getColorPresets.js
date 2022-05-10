@@ -5,9 +5,18 @@ import palette from '../theme/palette';
 
 export const colorPresets = [
   // DEFAULT
+  // {
+  //   name: 'default',
+  //   ...palette.light.primary,
+  // },
   {
-    name: 'default',
-    ...palette.light.primary,
+    name: 'pink',
+    lighter: '#FAF2F2',
+    light: '#F2A7B3',
+    main: '#F15C74',
+    dark: '#F53251',
+    darker: '#E92040',
+    contrastText: '#fff',
   },
   // PURPLE
   {
