@@ -1,36 +1,48 @@
-import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Button,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useCallback} from 'react';
+import {View, StyleSheet, Text, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {cartAPI} from '../../utils/Axios';
+import {useDispatch} from 'react-redux';
+import cartSlice from '../../redux/slices/cart';
+import {useSelector} from 'react-redux';
 
 /**
- * CSW | 2022.05.03
+ * CSW, LDJ | 2022.05.10
  * @name CartFooter
- * @api x
+ * @api cartAPI/deleteCart
  * @des
- * CartPage 아랫부분에 들어갈 내용이다.
- * Flatlist는 scrollview에 들어갈 수 없어서 footer로 넣어주어야한다.
+ * Cart Page 하단 부분 [삭제, 금액, 구매]
+ * Flatlist는 Scrollview에 들어갈 수 없어서 footer로 넣어줌
  */
 
 const CartFooter = props => {
+  const dispatch = useDispatch();
+  const user_accessToken = useSelector(state => state.user.accessToken);
+  const cart_id = useSelector(state => state.cart.id);
+  const quantity = useSelector(state => state.cart.quantity);
+  const price = useSelector(state => state.cart.price);
+  const total_price = quantity * price;
 
+  const deleteCart = useCallback(async () => {
+    try {
+      const response = await cartAPI.deleteCart(cart_id, user_accessToken);
+      console.log(response.data.result);
+      if (response.data.result === 'success') {
+        Alert.alert('알림', '삭제되었습니다!');
+      }
+      dispatch(
+        cartSlice.actions.setCart({
+          id: '',
+          quantity: '',
+          price: '',
+        }),
+      );
+    } catch (error) {
+      Alert.alert('알림', '삭제할 아이템을 선택해주세요!');
+      console.log(error);
+    }
+  }, [cart_id, user_accessToken, dispatch]);
 
-  // const deleteCart = async () => {
-  //   try {
-  //     const res = await cartAPI.deleteCartList(1);
-  //     console.log(res);
-  //   } catch (error) {
-  //     console.log('위시리스트 검색', error);
-  //   }
-  // };
-  
   return (
     <View style={styles.container}>
       <View style={styles.trashcan}>
@@ -38,12 +50,13 @@ const CartFooter = props => {
           name="trash-outline"
           color="black"
           backgroundColor="transparent"
-          size={35}
+          size={25}
+          onPress={deleteCart}
         />
       </View>
       <View style={styles.bottomBox}>
         <View style={styles.total}>
-          <Text style={{fontWeight: 'bold'}}>총 원</Text>
+          <Text style={{fontWeight: 'bold'}}>총 {total_price}원</Text>
         </View>
         <View style={styles.buyBtn}>
           <View
@@ -58,7 +71,7 @@ const CartFooter = props => {
                 color: 'black',
                 width: '100%',
                 alignItems: 'center',
-                borderRadius: 25,
+                borderRadius: 5,
                 height: 40,
                 justifyContent: 'center',
               }}>
@@ -81,12 +94,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 45,
+    marginHorizontal: 55,
   },
   trashcan: {
     position: 'relative',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginRight: 15,
+    marginTop: 5,
   },
 });
 
