@@ -33,6 +33,7 @@ const CartPage = ({navigation}) => {
     return <CartCardList item={item} navigation={navigation} />;
   };
 
+  // getCartlist로 받은 item의 변화가 생기면(컴포넌트에[CartCard] 변화가 생기면) 랜더링!
   useFocusEffect(
     useCallback(() => {
       getCartlist();
