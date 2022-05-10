@@ -31,6 +31,7 @@ const PicnicedPage = ({navigation}) => {
   //picnicing에서 사용했던 api를 그대로 사용하여 프론트단에서 필터링 하여 나타냄
   const getMyReservation = async () => {
     try {
+      //const response = await getMyReservationList('user6', token);
       const response = await getMyReservationList(user_id, token);
       const res = response.data;
       const filteredByStatus = res.filter(item => item.status === 'D');

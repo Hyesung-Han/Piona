@@ -10,10 +10,17 @@ import {
   Pressable,
   TextInput,
   TouchableOpacity,
+  Image,
+  Button,
+  FlatList,
+  SafeAreaView,
 } from 'react-native';
 import Stars from 'react-native-stars';
 import {useSelector} from 'react-redux';
-import RegisterReviewApi from '../../utils/Axios';
+import {RegisterReviewApi} from '../../utils/Axios';
+// //import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+// import MultipleImagePicker from '@baronha/react-native-multiple-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 
 /**
  * LHJ | 2022.05.09
@@ -35,7 +42,7 @@ const RegisterReview = ({navigation, route}) => {
   const user_id = useSelector(state => state.user.id);
   const [comment, onChangeText] = React.useState(null);
   const [starCount, setState] = useState(1);
-  const [file, setImageSource] = useState('');
+  //const [file, setImage] = useState('');
 
   const [kwClean, setKwClean] = useState('N');
   const [kwReasonable, setKwReasonable] = useState('N');
@@ -51,13 +58,14 @@ const RegisterReview = ({navigation, route}) => {
   const [kwAdorableColor, setKwAdorableColor] = useState('#C0C0C0');
   const [kwMoodColor, setKwMoodColor] = useState('#C0C0C0');
 
+  let formData = new FormData();
+
   const register = async () => {
-    const formData = new FormData();
     formData.append('score', starCount);
     formData.append('kwClean', kwClean);
     formData.append('kwReasonable', kwReasonable);
     formData.append('kwVarious', kwVarious);
-    formData.append('file', file);
+    formData.append('file', image);
     formData.append('reservationId', route.params.reservationId);
     formData.append('kwKind', kwKind);
     formData.append('kwAdorable', kwAdorable);
@@ -67,35 +75,168 @@ const RegisterReview = ({navigation, route}) => {
     console.log(formData);
     try {
       const response = await RegisterReviewApi(formData, token);
+      //console.log(response.data);
+      //console.log(JSON.stringify(formData));
     } catch (error) {
       console.log('리뷰 등록 실패', error);
     }
   };
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     setColor();
-  //   }, []),
-  // );
-
-  const setColor = () => {
+  const setResonble = () => {
     if (kwReasonable === 'N') {
-      //초기 상태면 색과 상태값 변경
       setKwReasonable('Y');
-      console.log(kwReasonable);
       setKwReasonableColor('#c98b8b');
-      console.log(kwReasonableColor);
     } else {
-      // 초기 상태가 아니라면 원래의 상태값과 색으로 변경
       setKwReasonable('N');
-      console.log(kwReasonable);
       setKwReasonableColor('#C0C0C0');
-      console.log(kwReasonableColor);
     }
   };
 
+  const setKind = () => {
+    if (kwKind === 'N') {
+      setKwKind('Y');
+      setKwKindColor('#c98b8b');
+    } else {
+      setKwKind('N');
+      setKwKindColor('#C0C0C0');
+    }
+  };
+
+  const setAdorable = () => {
+    if (kwKind === 'N') {
+      setKwAdorable('Y');
+      setKwAdorableColor('#c98b8b');
+    } else {
+      setKwAdorable('N');
+      setKwAdorableColor('#C0C0C0');
+    }
+  };
+
+  const setVarious = () => {
+    if (kwKind === 'N') {
+      setKwVarious('Y');
+      setKwVariousColor('#c98b8b');
+    } else {
+      setKwVarious('N');
+      setKwVariousColor('#C0C0C0');
+    }
+  };
+
+  const setMood = () => {
+    if (kwKind === 'N') {
+      setKwMood('Y');
+      setKwMoodColor('#c98b8b');
+    } else {
+      setKwMood('N');
+      setKwMoodColor('#C0C0C0');
+    }
+  };
+
+  const setClean = () => {
+    if (kwKind === 'N') {
+      setKwClean('Y');
+      setKwCleanColor('#c98b8b');
+    } else {
+      setKwClean('N');
+      setKwCleanColor('#C0C0C0');
+    }
+  };
+
+  //const state = {avatar: ''};
+  // const [image, setImagesss] = useState('');
+
+  // const showImage = () => {
+  //   launchImageLibrary({}, response => {
+  //     //alert(response.uri);
+  //     setImagesss(response.assets[0].uri);
+  //     console.warn(response.assets[0].uri);
+  //   });
+  // };
+
+  const [images, setImages] = useState([]);
+  // const [preview, setPreview] = useState();
+  // setPreview({uri: `data:${response.mime};base64,${response.data}`});
+  const [image, setImage] = useState({uri: '', name: '', type: ''});
+  let list = [];
+  const openImagePicker = () => {
+    ImagePicker.openPicker({
+      //includeBase64: true,
+      multiple: true,
+      waitAnimationEnd: false,
+      includeExif: true,
+      forceJpg: true,
+      maxFiles: 5,
+      compressImageQuality: 0.8,
+      mediaType: 'photo',
+    })
+      .then(image => {
+        image.map((item, index) => {
+          setImage({uri: item.path, type: 'image/jpeg', name: item.path});
+          list.push(image);
+
+          console.log('list' + list);
+          // formData.append(
+          //   'file',
+          //   //{
+          //     // uri: item.path,
+          //     // type: 'image/jpeg',
+          //     // name: item.path,
+          //     //name: item.filename || `temp_image_${index}.jpg`,
+          //     //}
+          //     image,
+          //     );
+              setImages(image);
+              console.log(image);
+        });
+      })
+      .catch(e => alert(e));
+  };
+
+  const onDelete = value => {
+    const data = images.filter(
+      item =>
+        item?.localIdentifier &&
+        item?.localIdentifier !== value?.localIdentifier,
+    );
+    setImages(data);
+  };
+  const renderItem = ({item, index}) => {
+    return (
+      <View>
+        <Image
+          width={IMAGE_WIDTH}
+          source={{
+            uri:
+              item?.type === 'video'
+                ? item?.thumbnail ?? ''
+                : 'file://' + (item?.crop?.cropPath ?? item.path),
+          }}
+          style={styles.media}
+        />
+        {/* <TouchableOpacity
+          onPress={() => onDelete(item)}
+          activeOpacity={0.9}
+          style={styles.buttonDelete}>
+          <Text style={styles.titleDelete}>삭제</Text>
+        </TouchableOpacity> */}
+      </View>
+    );
+  };
+
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        style={[
+          styles.container,
+          {
+            paddingTop: 6,
+          },
+        ]}
+        data={images}
+        keyExtractor={(item, index) => (item?.filename ?? item?.path) + index}
+        renderItem={renderItem}
+        numColumns={3}
+      />
       <View>
         <Text>{route.params.shop_name}의 서비스에 만족하셨나요?</Text>
       </View>
@@ -124,9 +265,7 @@ const RegisterReview = ({navigation, route}) => {
         <TouchableOpacity
           style={{backgroundColor: kwReasonableColor}}
           onPress={() => {
-            //setKwReasonableColor('#B2B2B2');
-            setColor();
-            //setKwReasonable('Y');
+            setResonble();
           }}>
           <View>
             <Text>가성비가 좋아요</Text>
@@ -134,38 +273,41 @@ const RegisterReview = ({navigation, route}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setKwMoodColor('#B2B2B2');
-            setKwMood('Y');
+            setMood();
           }}>
           <Text>감성 넘쳐요</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setKwCleanColor('#B2B2B2');
-            setKwClean('Y');
+            setClean();
           }}>
           <Text>깔끔해요</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setKwAdorableColor('#B2B2B2');
-            setKwAdorable('Y');
+            setAdorable();
           }}>
           <Text>아기자기해요</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setKwVariousColor('#B2B2B2');
-            setKwVarious('Y');
+            setVarious();
           }}>
           <Text>구성이 다양해요</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setKwKindColor('#B2B2B2');
-            setKwKind('Y');
+            setKind();
           }}>
           <Text>친절해요</Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            openImagePicker();
+          }}>
+          <Text>select images</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.menuAddBtn}>
@@ -188,16 +330,61 @@ const RegisterReview = ({navigation, route}) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
-
+const {width} = Dimensions.get('window');
+const IMAGE_WIDTH = (width - 24) / 3;
 const styles = StyleSheet.create({
   input: {
     height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  container: {
+    flex: 1,
+  },
+  imageView: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingVertical: 24,
+  },
+  media: {
+    marginLeft: 6,
+    width: IMAGE_WIDTH,
+    height: IMAGE_WIDTH,
+    marginBottom: 6,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+  },
+  bottom: {
+    padding: 24,
+  },
+  openText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#fff',
+    paddingVertical: 12,
+  },
+  openPicker: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000',
+  },
+  buttonDelete: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    backgroundColor: '#ffffff92',
+    borderRadius: 4,
+  },
+  titleDelete: {
+    fontWeight: 'bold',
+    fontSize: 12,
+    color: '#000',
   },
 });
 
