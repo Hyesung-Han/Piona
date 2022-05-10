@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+apply plugin: "com.google.gms.google-services" //FCM 세팅
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
 
@@ -273,6 +273,10 @@ dependencies {
     //vector icon setting
     implementation project(':react-native-vector-icons')
 
+    // FCM 세팅
+    implementation platform('com.google.firebase:firebase-bom:30.0.0')
+    plementation 'com.google.firebase:firebase-analytics:17.3.0'
+
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
@@ -298,6 +302,8 @@ dependencies {
 
     //네이버 지도
     implementation 'com.naver.maps:map-sdk:3.14.0'
+    // FCM
+    implementation 'com.google.firebase:firebase-analytics'    
 }
 
 if (isNewArchitectureEnabled()) {
