@@ -26,13 +26,13 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    user_id: Yup.string().required('Email is required'),
     password: Yup.string().required('Password is required'),
   });
 
   const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: 'demo1234',
+    user_id: 'jj',
+    password: 'jj',
     remember: true,
   };
 
@@ -50,14 +50,13 @@ export default function LoginForm() {
 
   const onSubmit = async (data) => {
     try {
-      await login(data.email, data.password);
+      await login(data.user_id, data.password);
     } catch (error) {
       console.error(error);
 
       reset();
-
       if (isMountedRef.current) {
-        setError('afterSubmit', { ...error, message: error.message });
+        setError('afterSubmit', { ...error, message: error.data });
       }
     }
   };
@@ -67,7 +66,7 @@ export default function LoginForm() {
       <Stack spacing={3}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="user_id" label="id" />
 
         <RHFTextField
           name="password"
@@ -87,8 +86,8 @@ export default function LoginForm() {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <RHFCheckbox name="remember" label="Remember me" />
-        <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
-          Forgot password?
+        <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.register}>
+        Don’t have an account?
         </Link>
       </Stack>
 

@@ -24,7 +24,7 @@ const handlers = {
   },
   LOGIN: (state, action) => {
     const { user } = action.payload;
-
+    
     return {
       ...state,
       isAuthenticated: true,
@@ -70,7 +70,7 @@ function AuthProvider({ children }) {
     const initialize = async () => {
       try {
         const accessToken = localStorage.getItem('accessToken');
-
+        
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
@@ -108,21 +108,33 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
-      email,
+  const login = async (user_id, password) => {
+    const response = await axios.post('/api/user/signIn', {
+      user_id,
       password,
     });
-    const { accessToken, user } = response.data;
 
-    setSession(accessToken);
+    const login_result = response.data.result;
+    if(login_result === "success") {
+      const user = {
+        user_id: response.data.data.user_id,
+        name: response.data.data.name,
+        shop_number: response.data.data.shop_number,
+        nickname: response.data.data.nickname,
+        phone: response.data.data.phone,
+        access_token: response.data.data.access_token,
+      };
 
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user,
-      },
-    });
+      const accessToken = user.access_token;
+      setSession(accessToken);
+      localStorage.setItem("user", JSON.stringify(user));
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          user,
+        },
+      });
+    }
   };
 
   const register = async (email, password, firstName, lastName) => {
@@ -146,6 +158,7 @@ function AuthProvider({ children }) {
 
   const logout = async () => {
     setSession(null);
+    localStorage.setItem("user", null);
     dispatch({ type: 'LOGOUT' });
   };
 

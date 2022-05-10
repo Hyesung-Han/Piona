@@ -72,31 +72,13 @@ export default function Login() {
       <RootStyle>
         <HeaderStyle>
           <Logo />
-          {smUp && (
-            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Don’t have an account? {''}
-              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                Get started
-              </Link>
-            </Typography>
-          )}
         </HeaderStyle>
-
-        {mdUp && (
-          <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <Image visibleByDefault disabledEffect src="/assets/illustrations/illustration_login.png" alt="login" />
-          </SectionStyle>
-        )}
-
         <Container maxWidth="sm">
           <ContentStyle>
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to Minimal
+                  피어나 ADMIN
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
               </Box>
@@ -105,27 +87,14 @@ export default function Login() {
                 <>
                   <Image
                     disabledEffect
-                    src={`https://minimal-assets-api-dev.vercel.app/assets/icons/auth/ic_${method}.png`}
-                    sx={{ width: 32, height: 32 }}
+                    src="/assets/piona_logo.png" alt="logo"
+                    sx={{ width: 100, height: 100 }}
                   />
                 </>
               </Tooltip>
             </Stack>
 
-            <Alert severity="info" sx={{ mb: 3 }}>
-              Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-            </Alert>
-
             <LoginForm />
-
-            {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Don’t have an account?{' '}
-                <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                  Get started
-                </Link>
-              </Typography>
-            )}
           </ContentStyle>
         </Container>
       </RootStyle>
