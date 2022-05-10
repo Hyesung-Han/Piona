@@ -140,7 +140,7 @@ public class ShopController {
         try{
             List<Date> unableDateList = shopService.getUnableDate(item_id, quantity);
             return ResponseEntity.status(200).body(BaseResponseBody.of("success", unableDateList.stream()
-                    .map(date -> new SimpleDateFormat("yyyy-MM-dd").format(date)).collect(Collectors.toList())));
+                    .map(date -> new SimpleDateFormat("yyyy-MM-dd").format(date)).distinct().collect(Collectors.toList())));
         }catch(Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
