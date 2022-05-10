@@ -12,6 +12,8 @@ import { getProduct, addCart, onGotoStep } from '../../redux/slices/product';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+// Axios
+import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
@@ -71,7 +73,38 @@ export default function EcommerceProductDetails() {
   useEffect(() => {
     dispatch(getProduct(name));
   }, [dispatch, name]);
+  
+  const [itemDetail, setItemDetail] = useState([]);
+  useEffect(() => {
+    getItemDetail();
+  }, []);
 
+  useEffect(() => {
+    console.log("itemDetail", itemDetail);
+  }, [itemDetail])
+
+  const getItemDetail = async () => {
+    try {
+      // 3. 로컬스토리지에서 user정보를 가져옴
+      const user = localStorage.getItem('user');
+      if(user != null ) {
+        // 4. object인가 string인가를 JSON 형태로 사용하기 위해 파싱해줌(그래야 .access_token 이런식으로 사용 가능)
+        const parseUser = JSON.parse(user);
+        console.log(parseUser.access_token);
+        // 5. api 호출!! 헤더에 access_token을 넣음
+        const response = await axios.get("/api/item/1", {
+          headers : {
+            Authorization: parseUser.access_token
+          }
+        });
+        const {data} = response.data;
+        // 6. item 스테이트에 데이터 셋해줌!
+        setItemDetail(data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
   const handleAddCart = (product) => {
     dispatch(addCart(product));
   };
@@ -81,10 +114,10 @@ export default function EcommerceProductDetails() {
   };
 
   return (
-    <Page title="Ecommerce: Product Details">
+    <Page title="Ecommerce: Item Details">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Product Details"
+          heading="Item Details"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
@@ -92,7 +125,7 @@ export default function EcommerceProductDetails() {
               href: PATH_DASHBOARD.eCommerce.root,
             },
             {
-              name: 'Shop',
+              name: 'Item',
               href: PATH_DASHBOARD.eCommerce.shop,
             },
             { name: sentenceCase(name) },
@@ -101,43 +134,40 @@ export default function EcommerceProductDetails() {
 
         <CartWidget />
 
-        {product && (
+        {itemDetail && (
           <>
             <Card>
               <Grid container>
                 <Grid item xs={12} md={6} lg={7}>
-                  <ProductDetailsCarousel product={product} />
+                  {/* <ProductDetailsCarousel product={product} /> */}
                 </Grid>
                 <Grid item xs={12} md={6} lg={5}>
-                  <ProductDetailsSummary
-                    product={product}
-                    cart={checkout.cart}
-                    onAddCart={handleAddCart}
-                    onGotoStep={handleGotoStep}
-                  />
+                  {/* <ProductDetailsSummary */}
+                    {/* shop_number={itemDetail.shop_number} */}
+                    {/* cart={checkout.cart} */}
+                    {/* onAddCart={handleAddCart} */}
+                    {/* onGotoStep={handleGotoStep} */}
+                  {/* /> */}
                 </Grid>
               </Grid>
             </Card>
 
             <Grid container sx={{ my: 8 }}>
-              {PRODUCT_DESCRIPTION.map((item) => (
-                <Grid item xs={12} md={4} key={item.title}>
+                <Grid itemDetail xs={12} md={4} key={itemDetail.name}>
                   <Box sx={{ my: 2, mx: 'auto', maxWidth: 280, textAlign: 'center' }}>
-                    <IconWrapperStyle>
-                      <Iconify icon={item.icon} width={36} height={36} />
-                    </IconWrapperStyle>
                     <Typography variant="subtitle1" gutterBottom>
-                      {item.title}
+                      {itemDetail.name}
                     </Typography>
-                    <Typography sx={{ color: 'text.secondary' }}>{item.description}</Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>가격 : {itemDetail.price}원</Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>남은 수량 : {itemDetail.total_quantity}개</Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>{itemDetail.description}</Typography>
                   </Box>
                 </Grid>
-              ))}
             </Grid>
 
             <Card>
               <TabContext value={value}>
-                <Box sx={{ px: 3, bgcolor: 'background.neutral' }}>
+                {/* <Box sx={{ px: 3, bgcolor: 'background.neutral' }}>
                   <TabList onChange={(e, value) => setValue(value)}>
                     <Tab disableRipple value="1" label="Description" />
                     <Tab
@@ -147,24 +177,24 @@ export default function EcommerceProductDetails() {
                       sx={{ '& .MuiTab-wrapper': { whiteSpace: 'nowrap' } }}
                     />
                   </TabList>
-                </Box>
+                </Box> */}
 
                 <Divider />
 
                 <TabPanel value="1">
                   <Box sx={{ p: 3 }}>
-                    <Markdown children={product.description} />
+                    <Markdown children={itemDetail.description} />
                   </Box>
                 </TabPanel>
                 <TabPanel value="2">
-                  <ProductDetailsReview product={product} />
+                  {/* <ProductDetailsReview product={itemDetail} /> */}
                 </TabPanel>
               </TabContext>
             </Card>
           </>
         )}
 
-        {!product && <SkeletonProduct />}
+        {!itemDetail && <SkeletonProduct />}
 
         {error && <Typography variant="h6">404 Product not found</Typography>}
       </Container>
