@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {
@@ -28,9 +28,6 @@ const SearchResultPage = ({navigation, route}) => {
 
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
-
-  //test 좌표
-  const user_location = {lat: 37.564362, lng: 126.977011};
 
   const getShop = async () => {
     try {
@@ -72,7 +69,6 @@ const SearchResultPage = ({navigation, route}) => {
     }, []),
   );
 
-  console.log(data);
   return (
     <View style={styles.container}>
       <View style={styles.searchBox}>
