@@ -1,8 +1,7 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
- * LDJ, LHJ, CSW | 2022.05.08
+ * LDJ, LHJ, CSW | 2022.05.10
  * @name utils/Axios
  * @api 모든 API 만드는 곳
  * @des
@@ -14,121 +13,6 @@ let request = axios.create({
   baseURL: 'https://k6a201.p.ssafy.io/api',
 });
 
-// request.interceptors.request.use(async config => {
-//   if (await AsyncStorage.getItem('token')) {
-//     config.headers['Authorization'] = await AsyncStorage.getItem('token');
-//   }
-//   return config;
-// });
-
-// request.interceptors.response.use(
-//   response => {
-//     return response;
-//   },
-//   async err => {
-//     const originalConfig = err.config;
-//     if (err.response) {
-//       if (err.response.status === 420 && !originalConfig.retry) {
-//         originalConfig.retry = true;
-//         try {
-//           const refresh = await request
-//             .post('/auth/reissue', {
-//               refreshToken: await AsyncStorage.getItem('refresh'),
-//             })
-//             .then(response => response.data);
-//           AsyncStorage.removeItem('refresh');
-//           AsyncStorage.removeItem('token');
-//           AsyncStorage.setItem('refresh', refresh.refreshToken);
-//           setToken(refresh.accessToken);
-//           request.defaults.headers.common['Authorization'] =
-//             'Bearer ' + refresh.accessToken;
-//           return request(originalConfig);
-//         } catch (error) {
-//           if (error.response && error.response.data) {
-//             return Promise.reject(error.response.data);
-//           }
-//           return Promise.reject(error);
-//         }
-//       }
-//     }
-//     return Promise.reject(err);
-//   },
-// );
-
-// function setToken(value) {
-//   AsyncStorage.setItem('token', `Bearer ${value}`);
-// }
-
-export const withdraw = async () => {
-  return await request
-    .delete(`/users`, {})
-    .then(response => {
-      return response.data.statusCode;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
-export const shareUser = async searchKeyword => {
-  return await request
-    .get('/users/sharing', {
-      params: {
-        searchKeyword: searchKeyword,
-      },
-    })
-    .then(response => {
-      return response.data;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
-export const getVisual = async () => {
-  return await request.get(`/visual`, {}).then(response => {
-    return response.data.UsersTagList;
-  });
-};
-
-export const uploadProfile = async userProfileUrl => {
-  return await request
-    .put('/users/profile', {
-      userProfileUrl,
-    })
-    .then(response => {
-      return response.data.statusCode;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
-export const modifyNick = async userNickname => {
-  return await request
-    .get(`/users/me/nickname/${userNickname}`, {})
-    .then(response => {
-      return response.data;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
-export const changeInfo = async (userNickname, petName) => {
-  return await request
-    .put('/users', {
-      userNickname,
-      petName,
-    })
-    .then(response => {
-      return response.data.statusCode;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
 // LDJ | 유저에 관한 API | [로그인, 회원가입, 아이디중복, 닉네임중복, 폰인증요청, 폰인증확인, 비밀번호확인, 회원정보수정, 회원탈퇴]
 export const userAPI = {
   signin: async (user_id, password) => {
@@ -139,8 +23,6 @@ export const userAPI = {
       })
       .then(response => {
         return response;
-        // AsyncStorage.setItem('refresh', response.data.refreshToken);
-        // setToken(response.data.accessToken);
       })
       .catch(error => {
         return error;
@@ -268,7 +150,7 @@ export const userAPI = {
   },
 };
 
-// CSW | 장바구니에 관한 API | [목록조회, 추가, 삭제]
+// CSW, LDJ | 장바구니에 관한 API | [목록조회, 추가, 삭제]
 export const cartAPI = {
   getCartList: async (user_id, accessToken) => {
     return await request
@@ -285,23 +167,23 @@ export const cartAPI = {
       });
   },
 
-  addCartList: async (
-    userId,
+  addCart: async (
+    itemId,
     quantity,
     reservationDate,
     shopNumber,
-    itemId,
+    userId,
     accessToken,
   ) => {
     return await request
       .post(
-        '/user',
+        '/cart',
         {
-          userId,
+          itemId,
           quantity,
           reservationDate,
           shopNumber,
-          itemId,
+          userId,
         },
         {
           headers: {
@@ -310,32 +192,29 @@ export const cartAPI = {
         },
       )
       .then(response => {
-        return response.data.statusCode;
+        return response;
       })
       .catch(error => {
-        return error.response.status;
+        return error;
       });
   },
 
-  deleteCartList: async (cartId, accessToken) => {
+  deleteCart: async (cartId, accessToken) => {
     return await request
-      .delete(
-        '/cart',
-        {cartId},
-        {
-          headers: {
-            Authorization: accessToken,
-          },
+      .delete(`/cart/${cartId}`, {
+        headers: {
+          Authorization: accessToken,
         },
-      )
+      })
       .then(response => {
-        return response.data.statusCode;
+        return response;
       })
       .catch(error => {
-        return error.response.status;
+        return error;
       });
   },
 };
+
 /**
  * LHJ | 2022.05.06
  * 나의 예약현황 보기
@@ -425,11 +304,10 @@ export const shopDetailAPI = {
 export const RegisterReviewApi = async (formData, accessToken) => {
   return await request
     .post('/review', formData, {
-        headers: {
-          Authorization: accessToken,
-        },
+      headers: {
+        Authorization: accessToken,
       },
-    )
+    })
     .then(response => {
       return response;
     })
@@ -547,7 +425,7 @@ export const searchAPI = {
   },
 };
 
-//CSW, MenuDetail페이지를 위한 API
+// CSW | MenuDetail 페이지를 위한 API
 export const MenuDetailAPI = {
   get: async (itemId, accessToken) => {
     return await request
