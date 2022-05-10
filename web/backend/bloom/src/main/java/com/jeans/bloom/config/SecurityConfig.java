@@ -82,8 +82,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user/nickCheck",
                         "/user/phoneRequest",
                         "/user/phoneCheck").permitAll()     //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
+//                .anyRequest().permitAll()
                 .and().cors();
     }
 }
