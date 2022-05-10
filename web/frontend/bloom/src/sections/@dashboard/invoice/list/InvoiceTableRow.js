@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Checkbox, TableRow, TableCell, Typography, Stack, Link, MenuItem } from '@mui/material';
+import { Box, Table, TableCell, Collapse, TableHead, TableBody, TableRow,IconButton, Typography, MenuItem } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 // utils
 import { fDate } from '../../../../utils/formatTime';
-import createAvatar from '../../../../utils/createAvatar';
-import { fCurrency } from '../../../../utils/formatNumber';
 // components
 import Label from '../../../../components/Label';
-import Avatar from '../../../../components/Avatar';
-import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
 
 // ----------------------------------------------------------------------
@@ -18,16 +16,13 @@ import { TableMoreMenu } from '../../../../components/table';
 InvoiceTableRow.propTypes = {
   row: PropTypes.object.isRequired,
   selected: PropTypes.bool,
-  onSelectRow: PropTypes.func,
-  onViewRow: PropTypes.func,
-  onEditRow: PropTypes.func,
-  onDeleteRow: PropTypes.func,
+  onChangeRow: PropTypes.func,
 };
 
-export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditRow, onDeleteRow }) {
+export default function InvoiceTableRow({ row, selected, onChangeRow }) {
   const theme = useTheme();
 
-  const { sent, invoiceNumber, createDate, dueDate, status, invoiceTo, totalPrice } = row;
+  const { reservation_id, user_id, name, phone, total_price, detail, status } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -39,50 +34,57 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
     setOpenMenuActions(null);
   };
 
+  const [open, setOpen] = useState(false);
+
   return (
+    <>
     <TableRow hover selected={selected}>
-      <TableCell padding="checkbox">
-        <Checkbox checked={selected} onClick={onSelectRow} />
+      <TableCell align="center">
+        <IconButton
+          aria-label="expand row"
+          size="small"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        </IconButton>
       </TableCell>
 
-      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar alt={invoiceTo.name} color={createAvatar(invoiceTo.name).color} sx={{ mr: 2 }}>
-          {createAvatar(invoiceTo.name).name}
-        </Avatar>
-
-        <Stack>
+      <TableCell align="center">
           <Typography variant="subtitle2" noWrap>
-            {invoiceTo.name}
+            {fDate(detail[0].reservation_date)}
           </Typography>
-
-          <Link noWrap variant="body2" onClick={onViewRow} sx={{ color: 'text.disabled', cursor: 'pointer' }}>
-            {`INV-${invoiceNumber}`}
-          </Link>
-        </Stack>
       </TableCell>
 
-      <TableCell align="left">{fDate(createDate)}</TableCell>
+      <TableCell align="center">{name}</TableCell>
 
-      <TableCell align="left">{fDate(dueDate)}</TableCell>
+      <TableCell align="center">{phone}</TableCell>
 
-      <TableCell align="center">{fCurrency(totalPrice)}</TableCell>
+      <TableCell align="center">{reservation_id}</TableCell>
+
+      <TableCell align="center">{detail.length}</TableCell>
 
       <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
-        {sent}
+        {total_price}
       </TableCell>
 
-      <TableCell align="left">
+      <TableCell align="right">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
-            (status === 'paid' && 'success') ||
-            (status === 'unpaid' && 'warning') ||
-            (status === 'overdue' && 'error') ||
+            (status === 'R' && 'error') ||
+            (status === 'U' && 'success') ||
+            (status === 'D' && 'warning') ||
             'default'
           }
           sx={{ textTransform: 'capitalize' }}
         >
-          {status}
+          {
+          (status === 'R' && '준비중') ||
+          (status === 'U' && '대여중') ||
+          (status === 'C' && '예약취소') ||
+          (status === 'D' && '반납완료') ||
+          (status === 'F' && '미반납')
+          }
         </Label>
       </TableCell>
 
@@ -95,38 +97,72 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
             <>
               <MenuItem
                 onClick={() => {
-                  onDeleteRow();
+                  onChangeRow('D');
+                  handleCloseMenu();
+                }}
+                sx={{ color: 'seccess.main' }}
+              >
+                반납 완료
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => {
+                  onChangeRow('U');
+                  handleCloseMenu();
+                }}
+              >
+                대여중
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => {
+                  onChangeRow('F');
                   handleCloseMenu();
                 }}
                 sx={{ color: 'error.main' }}
               >
-                <Iconify icon={'eva:trash-2-outline'} />
-                Delete
-              </MenuItem>
-
-              <MenuItem
-                onClick={() => {
-                  onViewRow();
-                  handleCloseMenu();
-                }}
-              >
-                <Iconify icon={'eva:eye-fill'} />
-                View
-              </MenuItem>
-
-              <MenuItem
-                onClick={() => {
-                  onEditRow();
-                  handleCloseMenu();
-                }}
-              >
-                <Iconify icon={'eva:edit-fill'} />
-                Edit
+                미반납
               </MenuItem>
             </>
           }
         />
       </TableCell>
     </TableRow>
+    <TableRow>
+      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <Box sx={{ margin: 1 }}>
+            <Typography variant="h6" gutterBottom component="div">
+              예약 상품
+            </Typography>
+            <Table size="small" aria-label="purchases">
+              <TableHead>
+                <TableRow>
+                  <TableCell>상품명</TableCell>
+                  <TableCell>수량</TableCell>
+                  <TableCell align="right">단가 (원)</TableCell>
+                  <TableCell align="right">총 금액 (원)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {detail.map((row) => (
+                  <TableRow key={row.item_id}>
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+                    <TableCell>{row.total_quantity}</TableCell>
+                    <TableCell align="right">{row.price}</TableCell>
+                    <TableCell align="right">
+                      {row.total_quantity * row.price}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        </Collapse>
+      </TableCell>
+    </TableRow>
+    </>
   );
 }
