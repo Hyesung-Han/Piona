@@ -90,6 +90,8 @@ public class ShopRes {
                 .address(shopRes.address)
                 .score(shopRes.getScore())
                 .wish_id(wishId)
+                .shop_lng(shopRes.getShop_lng())
+                .shop_lat(shopRes.getShop_lat())
                 .build();
     }
 }
