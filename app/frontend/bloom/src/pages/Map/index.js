@@ -64,6 +64,22 @@ const MapPage = ({navigation, route}) => {
     }
   };
 
+  // 현재 화면에서 재검색하기 위한 중간 좌표 필요
+  const relocation = async () => {
+    try {
+      const res = await searchAPI.getMap(
+        'location',
+        user_id,
+        coordinate.latitude,
+        coordinate.longitude,
+        token,
+      );
+      setData(res.data);
+    } catch (error) {
+      console.log('검색결과', error);
+    }
+  };
+
   const fromSearch = async () => {
     const res = await route.params.shop;
     setData(res);
@@ -77,7 +93,6 @@ const MapPage = ({navigation, route}) => {
 
   const getLocation = () => {
     requestPermission().then(result => {
-      // console.log({result});
       if (result === 'granted') {
         Geolocation.getCurrentPosition(
           pos => {
@@ -220,6 +235,13 @@ const MapPage = ({navigation, route}) => {
               />
             </View>
           )}
+          <TouchableOpacity
+            style={styles.relocation}
+            onPress={() => relocation()}>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>
+              현위치에서 검색
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
     </>
@@ -257,6 +279,17 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: '40%',
     width: '100%',
+  },
+  relocation: {
+    position: 'absolute',
+    top: 10,
+    left: 110,
+    backgroundColor: '#F15C74',
+    width: '40%',
+    alignItems: 'center',
+    borderRadius: 25,
+    height: 30,
+    justifyContent: 'center',
   },
 });
 
