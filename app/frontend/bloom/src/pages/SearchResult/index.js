@@ -126,11 +126,8 @@ const SearchResultPage = ({navigation, route}) => {
           justifyContent="center"
           onPress={() =>
             navigation.navigate('Map', {
-              type: 'location',
-              word: null,
-              user_id: user_id,
-              user_lat: user_location.lat,
-              user_lng: user_location.lng,
+              page: 'search',
+              shop: data,
             })
           }
         />

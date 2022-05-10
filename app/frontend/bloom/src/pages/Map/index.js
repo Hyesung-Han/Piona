@@ -25,7 +25,6 @@ import NaverMapView, {
 } from 'react-native-nmap';
 import Geolocation from 'react-native-geolocation-service';
 import {Platform, PermissionsAndroid} from 'react-native';
-
 /**
  * LHJ, CSW | 2022.05.09
  * @name MapPage
@@ -48,6 +47,35 @@ const MapPage = ({navigation: {goBack}, route}) => {
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
   const [data, setData] = useState([]);
 
+  const fromMain = async () => {
+    try {
+      const res = await searchAPI.getMap(
+        'location',
+        user_id,
+        coordinate.latitude,
+        coordinate.longitude,
+        token,
+      );
+      setData(res.data);
+      console.log(res);
+    } catch (error) {
+      console.log('검색결과', error);
+    }
+  };
+
+  // 받아온 상점들 마커로 뿌려주기
+  const Markers = () => {
+    return data.map(row => (
+      <Marker
+        coordinate={{
+          latitude: row.data.shop_lat,
+          longitude: row.data.shop_lng,
+        }}
+        pinColor="blue"
+      />
+    ));
+  };
+
   async function requestPermission() {
     try {
       if (Platform.OS === 'ios') {
@@ -66,7 +94,7 @@ const MapPage = ({navigation: {goBack}, route}) => {
   useEffect(() => {
     if (route.params.page === 'main') {
       requestPermission().then(result => {
-        console.log({result});
+        // console.log({result});
         if (result === 'granted') {
           Geolocation.getCurrentPosition(
             pos => {
@@ -80,11 +108,12 @@ const MapPage = ({navigation: {goBack}, route}) => {
                 latitude: pos.coords.latitude,
                 longitude: pos.coords.longitude,
               });
+              fromMain();
             },
             error => {
               console.log(error);
             },
-            {enableHighAccuracy: true, timeout: 3600, maximumAge: 3600},
+            {enableHighAccuracy: true, timeout: 3600},
           );
         }
       });
@@ -103,8 +132,9 @@ const MapPage = ({navigation: {goBack}, route}) => {
             latitude: coordinate.latitude,
             longitude: coordinate.longitude,
           }}
-          pinColor="blue"
+          pinColor="white"
         />
+        <Markers />
       </NaverMapView>
       <View style={styles.searchBtn}>
         <Icon.Button
