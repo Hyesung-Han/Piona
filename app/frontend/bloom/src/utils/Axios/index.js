@@ -545,6 +545,23 @@ export const searchAPI = {
         return error;
       });
   },
+  getMap: async (type, user_id, user_lat, user_lng, accessToken) => {
+    return await request
+      .get(
+        `shop/search?type=${type}&user_id=${user_id}&user_lat=${user_lat}&user_lng=${user_lng}`,
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 };
 
 //CSW, MenuDetail페이지를 위한 API
