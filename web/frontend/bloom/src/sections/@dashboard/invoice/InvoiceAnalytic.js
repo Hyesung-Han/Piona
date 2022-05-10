@@ -19,7 +19,7 @@ InvoiceAnalytic.propTypes = {
 
 export default function InvoiceAnalytic({ title, total, icon, color, percent, price }) {
   return (
-    <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 200 }}>
+    <Stack direction="row" alignItems="center" justifyContent="center" sx={{ width: 1, minWidth: 180 }}>
       <Stack alignItems="center" justifyContent="center" sx={{ position: 'relative' }}>
         <Iconify icon={icon} sx={{ color, width: 24, height: 24, position: 'absolute' }} />
 
@@ -40,12 +40,8 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
         <Typography variant="subtitle2">
           {fShortenNumber(total)}{' '}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            invoice
+            건
           </Box>
-        </Typography>
-
-        <Typography variant="subtitle2" sx={{ color }}>
-          {fCurrency(price)}
         </Typography>
       </Stack>
     </Stack>
