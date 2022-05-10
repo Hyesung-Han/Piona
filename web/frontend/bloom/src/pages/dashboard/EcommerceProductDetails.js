@@ -1,9 +1,14 @@
 import { sentenceCase } from 'change-case';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, Link as RouterLink} from 'react-router-dom';
 import { useEffect, useState } from 'react';
+
 // @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Tab, Card, Grid, Divider, Container, Typography } from '@mui/material';
+import { Button, Box, Tab, Card, Grid, Divider, Container, Typography } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
@@ -20,6 +25,8 @@ import Iconify from '../../components/Iconify';
 import Markdown from '../../components/Markdown';
 import { SkeletonProduct } from '../../components/skeleton';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
+import Image from '../../components/Image';
+
 // sections
 import {
   ProductDetailsSummary,
@@ -131,28 +138,98 @@ export default function EcommerceProductDetails() {
             { name: sentenceCase(name) },
           ]}
         />
+          <Typography fontSize={30} textAlign={"center"}  marginBottom={10}>{itemDetail.name}</Typography>
 
         <CartWidget />
 
         {itemDetail && (
           <>
-            <Card>
-              <Grid container>
-                <Grid item xs={12} md={6} lg={7}>
-                  {/* <ProductDetailsCarousel product={product} /> */}
+            <Grid container spacing={2}>
+              <Grid item xs={5} >
+                <Image alt={name} src={itemDetail.image_url}/>
+              </Grid> 
+              <Grid item xs={7}>
+                <Grid container >
+                  <Grid itemDetail xs={12} key={itemDetail.name} 
+>
+                    <Box>
+                      {/* <Typography variant="subtitle1" gutterBottom>
+                        {itemDetail.name}
+                      </Typography> */}
+                      <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
+                        <Grid item xs={6}>
+                          <Typography>가격 : </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            id="outlined-name"
+                            size='small'
+                            value={itemDetail.price}
+                          />
+                        </Grid>
+                      </Grid>  
+                      <Grid item xs={12} sx={{mb:2}}>
+                        남은 수량 : 
+                        <TextField
+                          id="outlined-name"
+                          size='small'
+                          value={itemDetail.total_quantity}
+                        />
+                      </Grid>  
+                      <Grid item xs={12}>
+                        <TextField
+                          id="outlined-multiline-static"
+                          multiline
+                          rows={4}
+                          value={itemDetail.description}
+                        />
+                      {/* <TextField
+                        helperText=" "
+                        id="demo-helper-text-aligned-no-helper"
+                        label={itemDetail.price} 
+                      />원 */}
+                      </Grid>
+                      {/* <Typography sx={{ color: 'text.secondary' }}>가격 : {itemDetail.price}원</Typography> */}
+                      {/* <Typography sx={{ color: 'text.secondary' }}>남은 수량 : {itemDetail.total_quantity}개</Typography> */}
+                      {/* <Typography sx={{ color: 'text.secondary' }}>{itemDetail.description}</Typography> */}
+                    </Box>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} md={6} lg={5}>
+
+                  {/* <Image alt={name} src={itemDetail.image_url} ratio="1/1" /> */}
+                {/* <Grid item xs={12} md={6} lg={7}>
+                  <ProductDetailsCarousel product={product} />
+                </Grid> */}
+                {/* <Grid item xs={12} md={6} lg={5}> */}
                   {/* <ProductDetailsSummary */}
                     {/* shop_number={itemDetail.shop_number} */}
                     {/* cart={checkout.cart} */}
                     {/* onAddCart={handleAddCart} */}
                     {/* onGotoStep={handleGotoStep} */}
                   {/* /> */}
-                </Grid>
+                {/* </Grid> */}
+              <Grid textAlign={"center"} spacing={12}>
+              <Button 
+                variant="contained"
+                startIcon={<Iconify icon="eva:plus-fill" />}
+                component={RouterLink}
+                to={PATH_DASHBOARD.eCommerce.new}
+                >
+                상품 수정
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<Iconify icon="eva:minus-fill" />}
+                component={RouterLink}
+                to={PATH_DASHBOARD.eCommerce.new}
+                >
+                상품 삭제
+              </Button>
+            </Grid>
               </Grid>
-            </Card>
+            </Grid>
 
-            <Grid container sx={{ my: 8 }}>
+            {/* <Grid container sx={{ my: 8 }}>
                 <Grid itemDetail xs={12} md={4} key={itemDetail.name}>
                   <Box sx={{ my: 2, mx: 'auto', maxWidth: 280, textAlign: 'center' }}>
                     <Typography variant="subtitle1" gutterBottom>
@@ -163,40 +240,16 @@ export default function EcommerceProductDetails() {
                     <Typography sx={{ color: 'text.secondary' }}>{itemDetail.description}</Typography>
                   </Box>
                 </Grid>
-            </Grid>
+            </Grid> */}
 
-            <Card>
-              <TabContext value={value}>
-                {/* <Box sx={{ px: 3, bgcolor: 'background.neutral' }}>
-                  <TabList onChange={(e, value) => setValue(value)}>
-                    <Tab disableRipple value="1" label="Description" />
-                    <Tab
-                      disableRipple
-                      value="2"
-                      label={`Review (${product.reviews.length})`}
-                      sx={{ '& .MuiTab-wrapper': { whiteSpace: 'nowrap' } }}
-                    />
-                  </TabList>
-                </Box> */}
-
-                <Divider />
-
-                <TabPanel value="1">
-                  <Box sx={{ p: 3 }}>
-                    <Markdown children={itemDetail.description} />
-                  </Box>
-                </TabPanel>
-                <TabPanel value="2">
-                  {/* <ProductDetailsReview product={itemDetail} /> */}
-                </TabPanel>
-              </TabContext>
-            </Card>
+            
+          
           </>
         )}
 
         {!itemDetail && <SkeletonProduct />}
 
-        {error && <Typography variant="h6">404 Product not found</Typography>}
+        {/* {error && <Typography variant="h6">404 Product not found</Typography>} */}
       </Container>
     </Page>
   );

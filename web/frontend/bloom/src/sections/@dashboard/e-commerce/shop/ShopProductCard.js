@@ -46,7 +46,8 @@ export default function ShopProductCard({ product }) {
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
-        <Link to={linkTo} color="inherit" component={RouterLink}>
+        <Link to='/dashboard/e-commerce/product/nike-air-force-1-ndestrukt' color="inherit" component={RouterLink}>
+        {/* <Link to={`/${item_id}`} color="inherit" component={RouterLink}> */}
           <Typography variant="subtitle1" noWrap>
             {name}
           </Typography>
