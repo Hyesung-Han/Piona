@@ -1,43 +1,31 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, FlatList} from 'react-native';
 import CartCardList from '../../components/CartCard';
 import CartFooter from '../../components/CartCard/footer';
 import {cartAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 
 /**
- * CSW | 2022.04.28
+ * CSW, LDJ | 2022.05.10
  * @name CartPage
+ * @api cartAPI/getCartList
  * @des
- * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
- * TODO
- * 1. navition 카드별로 적용
+ * 장바구니에 담은 item 목록 조회
+ * # 사용 컴포넌트 : CartCard(index.js / footer.js)
  *  */
 
 const CartPage = ({navigation}) => {
-  const [inputText, setInputText] = useState('');
-  const [data, setData] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
-
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
+  const [data, setData] = useState([]);
 
-  const getCart = async () => {
+  const getCartlist = async () => {
     try {
       const res = await cartAPI.getCartList(user_id, token);
       setData(res.data);
     } catch (error) {
-      console.log('장바구니 검색', error);
+      console.log('카트 목록조회 에러 :', error);
     }
   };
 
@@ -47,8 +35,8 @@ const CartPage = ({navigation}) => {
 
   useFocusEffect(
     useCallback(() => {
-      getCart();
-    }, []),
+      getCartlist();
+    }, [data]),
   );
 
   return (
@@ -56,7 +44,6 @@ const CartPage = ({navigation}) => {
       <View style={styles.list}>
         <FlatList
           //리스트의 소스를 담는 속성
-          //data={data}
           data={data}
           //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
