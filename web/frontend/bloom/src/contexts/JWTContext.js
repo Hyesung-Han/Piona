@@ -36,15 +36,6 @@ const handlers = {
     isAuthenticated: false,
     user: null,
   }),
-  REGISTER: (state, action) => {
-    const { user } = action.payload;
-
-    return {
-      ...state,
-      isAuthenticated: true,
-      user,
-    };
-  },
 };
 
 const reducer = (state, action) => (handlers[action.type] ? handlers[action.type](state, action) : state);
@@ -137,23 +128,18 @@ function AuthProvider({ children }) {
     }
   };
 
-  const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post('/api/account/register', {
-      email,
+  const register = async (name, user_id, password, phone, shop_number) => {
+    const response = await axios.post('/api/user/signUp', {
+      name,
+      user_id,
       password,
-      firstName,
-      lastName,
+      phone,
+      shop_number,
     });
-    const { accessToken, user } = response.data;
-
-    localStorage.setItem('accessToken', accessToken);
-
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        user,
-      },
-    });
+    const {result} = response.data;
+    if(result === 'success') {
+      return result;
+    }
   };
 
   const logout = async () => {
