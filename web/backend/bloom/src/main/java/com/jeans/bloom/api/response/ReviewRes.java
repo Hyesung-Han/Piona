@@ -27,9 +27,12 @@ public class ReviewRes {
     LocalDateTime created_at;
     String user_id;
     String shop_name;
+    boolean comment;
 
 
     public static ReviewRes of(Review review){
+        boolean flag = false;
+        if(review.getReviewComment() != null) flag =true;
         return ReviewRes.builder()
                 .review_id(review.getReviewId())
                 .reservation_id(review.getReservation().getReservationId())
@@ -41,6 +44,7 @@ public class ReviewRes {
                 .is_ban(review.getIsBan())
                 .created_at(review.getCreatedAt())
                 .shop_name(review.getReservation().getShop().getName())
+                .comment(flag)
                 .build();
     }
 
