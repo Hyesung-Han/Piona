@@ -35,7 +35,7 @@ import {Platform, PermissionsAndroid} from 'react-native';
  * 1. 전달받은 가게 화면에 지도에 뿌려주기
  *  */
 
-const MapPage = ({navigation: {goBack}, route}) => {
+const MapPage = ({navigation, route}) => {
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
   const [center, setCenter] = useState({
@@ -47,6 +47,7 @@ const MapPage = ({navigation: {goBack}, route}) => {
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
   const [data, setData] = useState([]);
   const [appear, setAppear] = useState(false);
+  const [shopInfo, setShopInfo] = useState([]);
 
   const fromMain = async () => {
     try {
@@ -58,7 +59,6 @@ const MapPage = ({navigation: {goBack}, route}) => {
         token,
       );
       setData(res.data);
-      console.log(data);
     } catch (error) {
       console.log('검색결과', error);
     }
@@ -67,9 +67,8 @@ const MapPage = ({navigation: {goBack}, route}) => {
   const fromSearch = async () => {
     const res = await route.params.shop;
     setData(res);
-    console.log(res);
     setCenter({
-      zoom: 1,
+      zoom: 12,
       tilt: 1,
       latitude: data[0].shop_lat,
       longitude: data[0].shop_lng,
@@ -112,6 +111,11 @@ const MapPage = ({navigation: {goBack}, route}) => {
           longitude: row.shop_lng,
         }}
         pinColor="blue"
+        onClick={() => {
+          setAppear(prevStatus => (prevStatus ? false : true));
+          setShopInfo(row);
+          console.log(appear);
+        }}
       />
     ));
   };
@@ -138,9 +142,8 @@ const MapPage = ({navigation: {goBack}, route}) => {
       } else if (route.params.page === 'search') {
         fromSearch();
       }
-    }, [data]),
+    }, []),
   );
-
   return (
     <>
       {data && (
@@ -158,9 +161,6 @@ const MapPage = ({navigation: {goBack}, route}) => {
                 type="t"
                 size="small"
                 color="green"
-                onClick={() =>
-                  setAppear(prevStatus => (prevStatus ? false : true))
-                }
               />
               <Markers />
             </NaverMapView>
@@ -183,9 +183,43 @@ const MapPage = ({navigation: {goBack}, route}) => {
               width={50}
               alignItems="center"
               justifyContent="center"
-              onPress={() => goBack()}
+              onPress={() => navigation.goBack()}
             />
           </View>
+          {appear ? (
+            <View style={styles.openshopCard}>
+              <View style={styles.searchBtn2}>
+                <Icon.Button
+                  name="menu-sharp"
+                  color="white"
+                  backgroundColor="#F2A7B3"
+                  size={20}
+                  borderRadius={30}
+                  width={50}
+                  alignItems="center"
+                  justifyContent="center"
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+              <View style={styles.shopCard}>
+                <ShopCard item={shopInfo} navigation={navigation} />
+              </View>
+            </View>
+          ) : (
+            <View style={styles.searchBtn}>
+              <Icon.Button
+                name="menu-sharp"
+                color="white"
+                backgroundColor="#F2A7B3"
+                size={20}
+                borderRadius={30}
+                width={50}
+                alignItems="center"
+                justifyContent="center"
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          )}
         </View>
       )}
     </>
@@ -203,6 +237,26 @@ const styles = StyleSheet.create({
     bottom: 10,
     width: '11%',
     height: '10%',
+  },
+  searchBtn2: {
+    position: 'absolute',
+    right: 15,
+    top: -50,
+    width: '11%',
+    height: '20%',
+  },
+  shopCard: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: '100%',
+  },
+  openshopCard: {
+    flexDirection: 'column',
+    position: 'absolute',
+    bottom: 0,
+    height: '40%',
+    width: '100%',
   },
 });
 
