@@ -23,10 +23,11 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useTabs from '../../hooks/useTabs';
 import useSettings from '../../hooks/useSettings';
-import useTable, { emptyRows } from '../../hooks/useTable';
+import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
 
 // components
 import Page from '../../components/Page';
+import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableNoData, TableEmptyRows, TableHeadCustom } from '../../components/table';
@@ -34,8 +35,6 @@ import { TableNoData, TableEmptyRows, TableHeadCustom } from '../../components/t
 import { InvoiceTableRow } from '../../sections/@dashboard/review/list';
 
 // ----------------------------------------------------------------------
-
-const STATUS_OPTIONS = ['all', 'Y', 'N'];
 
 const TABLE_HEAD = [
   { id: 'invoiceNumber', label: '이름', align: 'left' },
@@ -67,7 +66,7 @@ export default function ReviewList() {
     onChangeRowsPerPage,
   } = useTable({ defaultOrderBy: 'createDate' });
 
-  const [reviewList, setReviewList] = useState([]);
+  const [tableData, setReviewList] = useState([]);
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
 
@@ -116,8 +115,20 @@ export default function ReviewList() {
       console.error(error);
     }
   };
+  const dataFiltered = applySortFilter({
+    tableData,
+    comparator: getComparator(order, orderBy),
+    filterStatus,
+  });
+  const getLengthByStatus = (status) => tableData.filter((item) => item.comment === status).length;
+  const STATUS_OPTIONS = [
+    { value: 'all', label: 'All', color: 'info', count: tableData.length },
+    { value: true, label: '답변완료', color: 'success', count: getLengthByStatus(true) },
+    { value: false, label: '미답변', color: 'warning', count: getLengthByStatus(false) },
+  ];
 
-  const isNotFound = !reviewList.length;
+  const isNotFound =
+    (!dataFiltered.length && !!filterStatus);
 
   const denseHeight = dense ? 56 : 76;
 
@@ -132,7 +143,7 @@ export default function ReviewList() {
     <Page title="Review: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Review List"
+          heading="리뷰 목록"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'Reviews', href: PATH_DASHBOARD.review.root },
@@ -150,7 +161,13 @@ export default function ReviewList() {
               sx={{ px: 2, bgcolor: 'background.neutral' }}
             >
               {STATUS_OPTIONS.map((tab) => (
-                <Tab disableRipple key={tab} label={tab} value={tab} />
+                <Tab 
+                  disableRipple 
+                  key={tab.value} 
+                  value={tab.value} 
+                  icon={<Label color={tab.color}> {tab.count} </Label>}
+                  label={tab.label}
+                />
               ))}
             </Tabs>
 
@@ -164,14 +181,14 @@ export default function ReviewList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={reviewList.length}
+                  rowCount={dataFiltered.length}
                   numSelected={selected.length}
                   onSort={onSort}
                 />
 
                 <TableBody>
-                  {console.log(reviewList)}
-                  {reviewList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  {console.log(dataFiltered)}
+                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     <InvoiceTableRow
                       key={row.review_id}
                       row={row}
@@ -180,7 +197,7 @@ export default function ReviewList() {
                     />
                   ))}
 
-                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, reviewList.length)} />
+                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)} />
 
                   <TableNoData isNotFound={isNotFound} />
                 </TableBody>
@@ -192,7 +209,7 @@ export default function ReviewList() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={reviewList.length}
+              count={dataFiltered.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={onChangePage}
@@ -212,3 +229,24 @@ export default function ReviewList() {
 }
 
 // ----------------------------------------------------------------------
+
+function applySortFilter({
+  tableData,
+  comparator,
+  filterStatus,
+}) {
+
+  const stabilizedThis = tableData.map((el, index) => [el, index]);
+
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+
+  if (filterStatus !== 'all') {
+    tableData = tableData.filter((item) => item.comment === filterStatus);
+  }
+
+  return tableData;
+}
