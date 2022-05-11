@@ -15,7 +15,7 @@ import RegisterReview from '../../pages/RegisterReview';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.09
+ * LHJ | 2022.05.11
  * @name DoneCard
  * @api x
  * @des
@@ -28,7 +28,40 @@ import {useSelector} from 'react-redux';
 const DoneCardList = ({item, navigation}) => {
   const [registerReviewModal, setReviewModal] = useState(false);
   const user_id = useSelector(state => state.id);
-
+  //const status = item.writeReview;
+  //console.log(item);
+  const registerButton = () => {
+    const result = [];
+    if (item.writeReview === 'Y') {
+      console.log('이미 리뷰가 작성됨');
+    } else {
+      result.push(
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#F15C74',
+            color: 'black',
+            width: '60%',
+            alignItems: 'center',
+            borderRadius: 20,
+            height: 20,
+            justifyContent: 'center',
+          }}
+          onPress={() =>
+            navigation.navigate('RegisterReview', {
+              reservationId: `${item.reservation_id}`,
+              //user_id: user_id,
+              reservation_id: item.reservation_id,
+              shop_name: item.shop_name,
+            })
+          }>
+          <Text style={{color: 'white', fontSize: 11, fontWeight: 'bold'}}>
+            리뷰쓰기
+          </Text>
+        </TouchableOpacity>
+      );
+      return result;
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.doneCardList}>
@@ -48,31 +81,7 @@ const DoneCardList = ({item, navigation}) => {
               <View>
                 <Text style={styles.itemDesc}>{item.description}</Text>
               </View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: '#F15C74',
-                    color: 'black',
-                    width: '60%',
-                    alignItems: 'center',
-                    borderRadius: 20,
-                    height: 20,
-                    justifyContent: 'center',
-                  }}
-                  onPress={() =>
-                    navigation.navigate('RegisterReview', {
-                      reservationId: `${item.reservation_id}`,
-                      //user_id: user_id,
-                      reservation_id: item.reservation_id,
-                      shop_name: item.shop_name,
-                    })
-                  }>
-                  <Text
-                    style={{color: 'white', fontSize: 11, fontWeight: 'bold'}}>
-                    리뷰쓰기
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <View style={styles.buttonContainer}>{registerButton()}</View>
               <View style={{width: '60%'}}></View>
             </View>
           </View>
