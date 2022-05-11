@@ -21,8 +21,9 @@ import {useSelector} from 'react-redux';
 import {RegisterReviewApi} from '../../utils/Axios';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer';
+import Icon from 'react-native-vector-icons/Ionicons';
 /**
- * LHJ | 2022.05.10
+ * LHJ, CSW | 2022.05.10
  * @name RegisterReview
  * @api RegisterReviewApi
  * @des
@@ -219,10 +220,21 @@ const RegisterReview = ({navigation, route}) => {
   //   );
   // };
 
+  console.log(preview);
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-      {/* <FlatList
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          width: '100%',
+          marginVertical: 10,
+          marginHorizontal: '8%',
+        }}>
+        {/* <FlatList
         style={[
           styles.container,
           {
@@ -234,89 +246,173 @@ const RegisterReview = ({navigation, route}) => {
         renderItem={renderItem}
         numColumns={3}
       /> */}
-      {/* 기존의 플랫리스트 부분은 이미지 슬라이더 적용해서 구현하면 될 듯하다 */}
-      <View style={styles.preview}>
-        {preview && <Image style={styles.previewImage} source={preview} />}
-      </View>
-      <View>
-        <Text>{route.params.shop_name}의 서비스에 만족하셨나요?</Text>
-      </View>
-      <View>
-        <Text>별점{starCount}</Text>
-      </View>
-      <View style={{alignItems: 'center'}}>
-        <Stars
-          half={false}
-          default={5}
-          update={setState}
-          spacing={4}
-          starSize={40}
-          count={5}
-          fullStar={require('../../assets/select_star.png')}
-          emptyStar={require('../../assets/unselect_star.png')}
-        />
-      </View>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeText}
-        value={comment}
-        placeholder="서비스에 대한 솔직한 리뷰를 남겨주세요!"
-      />
-      <View>
-        <TouchableOpacity
-          style={{backgroundColor: kwReasonableColor}}
-          onPress={() => {
-            setResonble();
+        {/* 기존의 플랫리스트 부분은 이미지 슬라이더 적용해서 구현하면 될 듯하다 */}
+        <View>
+          <Text
+            style={{
+              color: 'black',
+              fontWeight: 'bold',
+              fontSize: 18,
+              marginBottom: 30,
+              marginTop: 30,
+            }}>
+            {route.params.shop_name} 의 서비스에 만족하셨나요?
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 10,
           }}>
-          <View>
-            <Text>가성비가 좋아요</Text>
+          <View style={{}}>
+            <Text style={{fontSize: 15, color: 'black', marginRight: 15}}>
+              별점
+            </Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-        style={{backgroundColor: kwMoodColor}}
-          onPress={() => {
-            setMood();
+          <View style={{alignItems: 'center'}}>
+            <Stars
+              half={false}
+              default={5}
+              update={setState}
+              spacing={4}
+              starSize={30}
+              count={5}
+              fullStar={require('../../assets/select_star.png')}
+              emptyStar={require('../../assets/unselect_star.png')}
+            />
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '80%',
           }}>
-          <Text>감성 넘쳐요</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        style={{backgroundColor: kwCleanColor}}
-          onPress={() => {
-            setClean();
+          <TouchableOpacity
+            style={{
+              backgroundColor: kwReasonableColor,
+              borderRadius: 15,
+              padding: 4,
+              paddingHorizontal: 8,
+              marginVertical: 8,
+              marginHorizontal: 8,
+            }}
+            onPress={() => {
+              setResonble();
+            }}>
+            <View>
+              <Text style={{fontSize: 12, color: 'black'}}>
+                가성비가 좋아요
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: kwMoodColor,
+              borderRadius: 15,
+              padding: 4,
+              paddingHorizontal: 8,
+              marginVertical: 8,
+              marginHorizontal: 8,
+            }}
+            onPress={() => {
+              setMood();
+            }}>
+            <Text style={{fontSize: 12, color: 'black'}}>감성 넘쳐요</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: kwCleanColor,
+              borderRadius: 15,
+              padding: 4,
+              paddingHorizontal: 8,
+              marginVertical: 8,
+              marginHorizontal: 8,
+            }}
+            onPress={() => {
+              setClean();
+            }}>
+            <Text style={{fontSize: 12, color: 'black'}}>깔끔해요</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: kwAdorableColor,
+              borderRadius: 15,
+              padding: 4,
+              paddingHorizontal: 8,
+              marginVertical: 8,
+              marginHorizontal: 8,
+            }}
+            onPress={() => {
+              setAdorable();
+            }}>
+            <Text style={{fontSize: 12, color: 'black'}}>아기자기해요</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: kwVariousColor,
+              borderRadius: 15,
+              padding: 4,
+              paddingHorizontal: 8,
+              marginVertical: 8,
+              marginHorizontal: 8,
+            }}
+            onPress={() => {
+              setVarious();
+            }}>
+            <Text style={{fontSize: 12, color: 'black'}}>구성이 다양해요</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: kwKindColor,
+              borderRadius: 15,
+              padding: 4,
+              paddingHorizontal: 8,
+              marginVertical: 8,
+              marginHorizontal: 8,
+            }}
+            onPress={() => {
+              setKind();
+            }}>
+            <Text style={{fontSize: 12, color: 'black'}}>친절해요</Text>
+          </TouchableOpacity>
+        </View>
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={comment}
+          placeholder="서비스에 대한 솔직한 리뷰를 남겨주세요!"
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
-          <Text>깔끔해요</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        style={{backgroundColor: kwAdorableColor}}
-          onPress={() => {
-            setAdorable();
-          }}>
-          <Text>아기자기해요</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        style={{backgroundColor: kwVariousColor}}
-          onPress={() => {
-            setVarious();
-          }}>
-          <Text>구성이 다양해요</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        style={{backgroundColor: kwKindColor}}
-          onPress={() => {
-            setKind();
-          }}>
-          <Text>친절해요</Text>
-        </TouchableOpacity>
-      </View>
-      <Pressable style={styles.button} onPress={onChangeFile}>
-        <Text style={styles.buttonText}>이미지 선택</Text>
-      </Pressable>
-      <View style={styles.menuAddBtn}>
+          <View style={styles.preview}>
+            {preview && <Image style={styles.previewImage} source={preview} />}
+          </View>
+          <Pressable style={styles.button} onPress={onChangeFile}>
+            <View style={styles.iconBox}>
+              <Icon
+                name="camera-outline"
+                color="black"
+                backgroundColor="transparent"
+                size={28}
+              />
+              <Text>사진</Text>
+            </View>
+          </Pressable>
+        </View>
         <TouchableOpacity
           style={{
             backgroundColor: '#F15C74',
             color: 'black',
-            width: '100%',
+            width: '85%',
             alignItems: 'center',
             borderRadius: 5,
             height: 40,
@@ -330,7 +426,6 @@ const RegisterReview = ({navigation, route}) => {
           </Text>
         </TouchableOpacity>
       </View>
-      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -338,10 +433,13 @@ const {width} = Dimensions.get('window');
 const IMAGE_WIDTH = (width - 24) / 3;
 const styles = StyleSheet.create({
   input: {
-    height: 40,
+    height: 80,
     margin: 12,
-    borderWidth: 1,
+    borderWidth: 0.8,
     padding: 10,
+    flexWrap: 'wrap',
+    width: '82%',
+    flexDirection: 'column',
   },
   container: {
     flex: 1,
@@ -389,18 +487,24 @@ const styles = StyleSheet.create({
   },
   preview: {
     marginHorizontal: 10,
-    width: Dimensions.get('window').width - 20,
-    height: Dimensions.get('window').height / 3,
-    backgroundColor: '#D2D2D2',
     marginBottom: 10,
+    width: 60,
+    height: 60,
   },
   previewImage: {
-    height: Dimensions.get('window').height / 3,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
+    width: '100%',
+    height: '100%',
   },
   button: {
-    backgroundColor: 'blue',
+    width: 60,
+    height: 60,
     marginBottom: 10,
+    borderWidth: 1,
+    borderRadius: 5,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
     color: 'white',
