@@ -106,7 +106,7 @@ const MyInfoPage = ({navigation}) => {
             color: 'grey',
             marginRight: 16,
           }}>
-          포인트어쩔껴~ P
+          10000 P
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
