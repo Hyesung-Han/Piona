@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import MyApp from './src/navigations/MyAppNav';
 import MyApp_Sign from './src/navigations/MyAppNav_Sign/indes';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import SplashScreen from 'react-native-splash-screen';
 
 /**
- * LDJ | 2022.05.06
+ * LDJ | 2022.05.09
  * @name AppInner.js
  * @api -
  * @des
@@ -16,6 +19,23 @@ const AppInner = () => {
   // Provider 밖에서는 사용 불가
   const isLoggedIn = useSelector(state => !!state.user.id);
   console.log('isLoggedIn', isLoggedIn);
+
+  // const dispatch = useDispatch();
+  // 앱 실행 시 토큰 있으면 로그인하는 코드(껏다 키거나 새로고침해도 로그인 유지 / refreshtoken을 통한 API 있어야 됨)
+  // useEffect(() => {
+  //   const getTokenAndRefresh = async () => {
+  //     try {
+  //       const token = await EncryptedStorage.getItem('refreshToken');
+  //       if (token) {
+  //         return;
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     } finally {
+  //     }
+  //   };
+  //   getTokenAndRefresh();
+  // }, [dispatch]);
 
   return isLoggedIn ? <MyApp /> : <MyApp_Sign />;
 };

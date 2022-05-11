@@ -15,9 +15,9 @@ import userSlice from '../../redux/slices/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 /**
- * LDJ | 2022.05.04
+ * LDJ | 2022.05.10
  * @name SignInModal
- * @api /user/signin
+ * @api userAPI/signin
  * @des
  * 1. Sign Page에서 로그인 버튼을 누르면 뜨는 모달 창
  * 2. 유저 정보를 입력받아 로그인을 진행 [아이디, 비밀번호]
@@ -54,30 +54,26 @@ const SignInModal = props => {
     try {
       setLoading(true);
       const response = await userAPI.signin(id, password);
-      Alert.alert('알림', '로그인 되었습니다.');
-      console.log(response);
-      dispatch(
-        userSlice.actions.setUser({
-          name: response.data.data.name,
-          id: response.data.data.user_id,
-          nickname: response.data.data.nickname,
-          phoneNumber: response.data.data.phone,
-          accessToken: response.data.data.access_token,
-          refreshToken: response.data.data.refresh_token,
-        }),
-      );
-
-      await EncryptedStorage.setItem(
-        'refreshToken',
-        response.data.data.refresh_token,
-      );
-
-      // 완료 후 모달 닫고 Main page로!
-    } catch (error) {
-      console.error(error.response);
-      if (error.response) {
-        Alert.alert('알림', error.response.data.message);
+      if (response.data.result === 'success') {
+        Alert.alert('알림', '로그인 되었습니다.');
+        dispatch(
+          userSlice.actions.setUser({
+            name: response.data.data.name,
+            id: response.data.data.user_id,
+            nickname: response.data.data.nickname,
+            phoneNumber: response.data.data.phone,
+            accessToken: response.data.data.access_token,
+            refreshToken: response.data.data.refresh_token,
+          }),
+        );
+        await EncryptedStorage.setItem(
+          'refreshToken',
+          response.data.data.refresh_token,
+        );
       }
+    } catch (error) {
+      console.log(error);
+      Alert.alert('알림', '등록되지 않은 유저정보입니다!');
     } finally {
       setLoading(false);
     }
@@ -148,7 +144,6 @@ const SignInModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '95%',
-              marginTop: 5,
             }}>
             <Text
               style={{
@@ -187,7 +182,6 @@ const SignInModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
-              marginTop: 5,
             }}>
             <Text
               style={{

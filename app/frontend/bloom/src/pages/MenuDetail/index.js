@@ -1,51 +1,78 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
-import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import {MenuDetailAPI} from '../../utils/Axios';
+import {cartAPI} from '../../utils/Axios';
 
 /**
- * CSW | 2022.05.08
+ * CSW, LDJ | 2022.05.10
  * @name MenuDetailPage
- * @api MenuDetailAPI/get
+ * @api 1. MenuDetailAPI/get
+ *      2. cartAPI/addCart [임시, 원래는 날짜선택 모달로 넘어가고 거기서 함]
  * @des
- * 메뉴상세정보를 보여주는 페이지입니다.
+ * 메뉴 상세정보를 보여주는 페이지
  *  */
 
 const MenuDetailPage = ({navigation, route}) => {
-  const [data, setData] = useState([]);
-  const [quantityStatus, setquantityStaus] = useState(1);
+  const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
+  const item_id = route.params.item_id;
+  const [quantityStatus, setquantityStaus] = useState(1);
+  const [data, setData] = useState([]);
+  const shop_number = data.shop_number;
 
   const getMenuDetail = async () => {
     try {
-      const res = await MenuDetailAPI.get(route.params.item_id, token);
+      const res = await MenuDetailAPI.get(item_id, token);
       setData(res.data);
     } catch (error) {
-      console.log('메뉴상세정보 검색', error);
+      console.log('메뉴상세정보 검색에러', error);
     }
   };
 
   const quantityMinus = () => {
-    if (quantityStatus !== 0) {
+    if (quantityStatus !== 1) {
       setquantityStaus(prevStatus => prevStatus - 1);
-    } else if (quantityStatus <= 0) {
-      setquantityStaus(0);
+    } else if (quantityStatus <= 1) {
+      setquantityStaus(1);
     }
   };
 
-
-  // 백 수정 후 total_quantity ->  data.total_quantity 로 바꾸기
-
-  const total_quantity = 10;
   const quantityPlus = () => {
-    if (quantityStatus < total_quantity || quantityStatus === 0) {
+    if (quantityStatus < data.total_quantity || quantityStatus === 1) {
       setquantityStaus(prevStatus => prevStatus + 1);
-    } else if (quantityStatus >= 10) {
-      setquantityStaus(total_quantity);
+    } else if (quantityStatus >= data.total_quantity) {
+      setquantityStaus(data.total_quantity);
     }
   };
+
+  const addCart = useCallback(async () => {
+    try {
+      const response = await cartAPI.addCart(
+        item_id,
+        quantityStatus,
+        '2022-05-20T11:11:11.111Z',
+        shop_number,
+        user_id,
+        token,
+      );
+      console.log(response.data.data);
+      Alert.alert('알림', '장바구니에 담겼습니다!');
+    } catch (error) {
+      if (error.response) {
+        Alert.alert('알림', error.response.data.message);
+      }
+    }
+  }, [item_id, quantityStatus, shop_number, user_id, token]);
 
   useFocusEffect(
     useCallback(() => {
@@ -110,7 +137,7 @@ const MenuDetailPage = ({navigation, route}) => {
             height: 40,
             justifyContent: 'center',
           }}
-          onPress={() => '#'}>
+          onPress={addCart}>
           <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
             {data.price * quantityStatus} 원 담기
           </Text>
