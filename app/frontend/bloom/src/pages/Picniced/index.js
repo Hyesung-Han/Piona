@@ -7,7 +7,7 @@ import {getMyReservationList} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.06
+ * LHJ | 2022.05.11
  * @name PicnicedPage
  * @api getMyReservationList
  * @des
@@ -31,12 +31,13 @@ const PicnicedPage = ({navigation}) => {
   //picnicing에서 사용했던 api를 그대로 사용하여 프론트단에서 필터링 하여 나타냄
   const getMyReservation = async () => {
     try {
-      //const response = await getMyReservationList('user6', token);
       const response = await getMyReservationList(user_id, token);
       const res = response.data;
-      const filteredByStatus = res.filter(item => item.status === 'D');
-      setData(filteredByStatus);
-      console.log(filteredByStatus);
+      const firstFilteredByStatus = res.filter(item => item.status === 'D');
+      const secondFilteredByStatus = res.filter(item => item.status === 'C');
+      const newArr = [...firstFilteredByStatus, ...secondFilteredByStatus];
+      setData(newArr);
+      console.log(newArr);
     } catch (error) {
       console.log('완료된 예약현황 조회 실패', error);
     }

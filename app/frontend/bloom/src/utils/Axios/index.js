@@ -317,6 +317,48 @@ export const RegisterReviewApi = async (formData, accessToken) => {
     });
 };
 
+// LHJ | 2022.05.11
+// reservation_id를 넘겨 예약 상태를 C(취소)로 바꾼다
+// 현재 상태가 R인 상태에서만 이 API를 호출해야한다.
+export const cancelReservation = async (reservation_id, accessToken) => {
+  return await request
+    .patch(
+      `/picnic?reservationId=${reservation_id}`,
+      {},
+      {
+        headers: {
+          Authorization: accessToken,
+        },
+      },
+    )
+    .then(response => {
+      return response.data.statusCode;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+// LHJ | 2022.05.11
+// item_id와 quantity를 통해서 현재 날짜 기준으로 2주까지 예약 불가능한 날짜 전달 받는 API
+// MenuDetail에서 달력을 표시할 때 사용
+export const getNotResList = async (item_id, quantity, accessToken) => {
+  return await request
+    .get(`/shop/reservation?item_id=${item_id}&quantity=${quantity}`, {
+      headers: {
+        Authorization: accessToken,
+      },
+    })
+    .then(response => {
+      //response의 result는 제외한 data(배열)만을 반환
+      return response;
+    })
+    .catch(error => {
+      //api 반환 실패시 상태 반환
+      return error.response.status;
+    });
+};
+
 // CSW | 위시리스트에 관한 API | [목록조회, 추가, 삭제]
 export const WishListAPI = {
   getWishList: async (user_id, accessToken) => {

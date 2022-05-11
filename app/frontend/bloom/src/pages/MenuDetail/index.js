@@ -8,18 +8,23 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  Modal,
+  Pressable,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {MenuDetailAPI} from '../../utils/Axios';
-import {cartAPI} from '../../utils/Axios';
+// import {cartAPI} from '../../utils/Axios';
+import {getNotResList} from '../../utils/Axios';
+import CalenderModal from '../../components/CalenderModal';
 
 /**
- * CSW, LDJ | 2022.05.10
+ * CSW, LDJ, LHJ | 2022.05.11
  * @name MenuDetailPage
  * @api 1. MenuDetailAPI/get
- *      2. cartAPI/addCart [임시, 원래는 날짜선택 모달로 넘어가고 거기서 함]
+ *      2. getNotResList
  * @des
  * 메뉴 상세정보를 보여주는 페이지
+ * 모달을 띄울때 getNotResList API를 호출하여 모달에 넘겨줌
  *  */
 
 const MenuDetailPage = ({navigation, route}) => {
@@ -28,7 +33,9 @@ const MenuDetailPage = ({navigation, route}) => {
   const item_id = route.params.item_id;
   const [quantityStatus, setquantityStaus] = useState(1);
   const [data, setData] = useState([]);
+  const [notRedData, setnotRedData] = useState([]);
   const shop_number = data.shop_number;
+  const [calenderModal, setCalenderModal] = useState(false);
 
   const getMenuDetail = async () => {
     try {
@@ -55,24 +62,27 @@ const MenuDetailPage = ({navigation, route}) => {
     }
   };
 
-  const addCart = useCallback(async () => {
+  const getNotReservationList = async () => {
     try {
-      const response = await cartAPI.addCart(
-        item_id,
-        quantityStatus,
-        '2022-05-20T11:11:11.111Z',
-        shop_number,
-        user_id,
-        token,
-      );
-      console.log(response.data.data);
-      Alert.alert('알림', '장바구니에 담겼습니다!');
-    } catch (error) {
-      if (error.response) {
-        Alert.alert('알림', error.response.data.message);
+      const res = await getNotResList(item_id, 10, token);
+      //const sss = res.data.data;
+      if (res.data.result === 'success') {
+        //setnotRedData(res.data.data);
+        //setnotRedData(...notRedData, sss);
+        //console.log(sss);
+        setnotRedData(res.data.data);
+        //etTheArray(oldArray => [...oldArray, newElement]);
+        // console.log(res.data.data);
+        // console.log(Array.isArray(res.data.data));
+        // console.log(typeof res.data.data);
       }
+      // console.log('1');
+      // console.log(res.data.data);
+      //console.log(notRedData);
+    } catch (error) {
+      console.log('예약 불가일 불러오기 실패', error);
     }
-  }, [item_id, quantityStatus, shop_number, user_id, token]);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -137,12 +147,28 @@ const MenuDetailPage = ({navigation, route}) => {
             height: 40,
             justifyContent: 'center',
           }}
-          onPress={addCart}>
+          //onPress={addCart}
+          onPress={() => {
+            setCalenderModal(true);
+            getNotReservationList();
+          }}>
           <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
             {data.price * quantityStatus} 원 담기
           </Text>
         </TouchableOpacity>
       </View>
+      <Modal animationType={'fade'} transparent={true} visible={calenderModal}>
+        <CalenderModal
+          // data={data => handleData(data)},
+          item_id={item_id}
+          quantityStatus={quantityStatus}
+          shop_number={shop_number}
+          user_id={user_id}
+          token={token}
+          notRedData={notRedData}
+          exit={data => setCalenderModal(data)}
+        />
+      </Modal>
     </View>
   );
 };
