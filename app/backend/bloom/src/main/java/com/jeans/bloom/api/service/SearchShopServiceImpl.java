@@ -30,7 +30,7 @@ public class SearchShopServiceImpl implements SearchShopService {
     private ShopService shopService;
 
     /**
-     * HHS | 2022.05.06
+     * HHS | 2022.05.11
      * @name search
      * @des 검색어로 네이버 API 검색을 통해 주소값 얻어오기
      */
@@ -125,12 +125,11 @@ public class SearchShopServiceImpl implements SearchShopService {
     }
 
     /**
-     * HHS | 2022.05.06
+     * HHS | 2022.05.11
      * @name addrToNum
      * @des 검색어로 네이버 API 검색을 통해 위도, 경도값 얻고, 반경 계산하여 shopService의 method불러오기
      */
     public List<ShopRes> addrToNum(String ad, String user_id, double user_lng, double user_lat) throws Exception{
-        double lng_lat[] = new double[2];
 
         if(ad != null) {
 
@@ -158,26 +157,22 @@ public class SearchShopServiceImpl implements SearchShopService {
                 while ((line = br.readLine()) != null) {
                     sb.append(line).append("\n");
                 }
+                JSONParser parser = new JSONParser();
+                Object obj = parser.parse(sb.toString());
+                JSONObject jsonObject = (JSONObject) obj;
+                JSONArray getArray = (JSONArray) jsonObject.get("addresses");
 
-                String addrFull = sb.toString();
-                String addressElements = "addressElements";
+                JSONObject object = (JSONObject) getArray.get(0);
+                double xnum = Double.parseDouble((String) object.get("x"));
+                double ynum = Double.parseDouble((String) object.get("y"));
 
-                int ele_num = addrFull.indexOf(addressElements);
-                String address = addrFull.substring(ele_num);
-                String lng = "x";
-                String lat = "y";
-                int lng_num = address.indexOf(lng) + 4;
-                String addrX = address.substring(lng_num);
-                int lat_num = addrX.indexOf(lat) + 4;
-                lng_lat[0] = Double.parseDouble(address.substring(lng_num, (address.substring(lng_num).indexOf('"') + lng_num)));
-                lng_lat[1] = Double.parseDouble(addrX.substring(lat_num, (addrX.substring(lat_num).indexOf('"') + lat_num)));
                 br.close();
                 in.close();
                 http.disconnect();
-                BigDecimal lng_min = BigDecimal.valueOf(lng_lat[0] - (5 / 88.74));
-                BigDecimal lng_max = BigDecimal.valueOf(lng_lat[0] + (5 / 88.74));
-                BigDecimal lat_min = BigDecimal.valueOf(lng_lat[1] - (5 / 109.958489129849955));
-                BigDecimal lat_max = BigDecimal.valueOf(lng_lat[1] + (5 / 109.958489129849955));
+                BigDecimal lng_min = BigDecimal.valueOf(xnum - (5 / 88.74));
+                BigDecimal lng_max = BigDecimal.valueOf(xnum + (5 / 88.74));
+                BigDecimal lat_min = BigDecimal.valueOf(ynum - (5 / 109.958489129849955));
+                BigDecimal lat_max = BigDecimal.valueOf(ynum + (5 / 109.958489129849955));
                 return shopService.findShopListByShopLngBetweenAndShopLatBetweenAndUser_userId(lng_min, lng_max, lat_min, lat_max, user_id);
 
 
