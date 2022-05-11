@@ -29,7 +29,9 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public List<SaleRes> getTotalSale(String shopNumber, LocalDate startDate, LocalDate endDate) throws Exception {
         if(startDate == null) {
-            startDate = LocalDate.parse("2022-05-01", DateTimeFormatter.ISO_DATE);
+//            startDate = LocalDate.parse("2022-05-01", DateTimeFormatter.ISO_DATE);
+//            startDate = LocalDate.now().minusDays(7);
+            startDate = LocalDate.now().withDayOfMonth(1);
         }
         if(endDate == null) {
             endDate = LocalDate.now();
