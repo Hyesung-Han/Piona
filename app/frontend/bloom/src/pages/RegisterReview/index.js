@@ -394,7 +394,10 @@ const RegisterReview = ({navigation, route}) => {
             alignItems: 'center',
           }}>
           <View style={styles.preview}>
-            {preview && <Image style={styles.previewImage} source={preview} />}
+            {preview.uri && (
+              <Image style={styles.previewImage} source={preview} />
+            )}
+            {/* <Image style={styles.previewImage} source={preview} /> */}
           </View>
           <Pressable style={styles.button} onPress={onChangeFile}>
             <View style={styles.iconBox}>
