@@ -1,6 +1,9 @@
 package com.jeans.bloom.api.service;
 
 import com.jeans.bloom.api.response.ShopRes;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +14,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * HHS | 2022.05.06
  * @name SearchShopServiceImpl
@@ -49,15 +55,22 @@ public class SearchShopServiceImpl implements SearchShopService {
             Map<String, String> requestHeaders = new HashMap<>();
             requestHeaders.put("X-Naver-Client-Id", "jc2OcvvYJ7a3__Mt7845");
             requestHeaders.put("X-Naver-Client-Secret", "rVCza6mVSn");
-            String responseBody = get(apiURL, requestHeaders);
-            String ad = "address\":\"";
-            int ad_num = responseBody.indexOf(ad) + ad.length();
 
-            if (ad_num < ad.length()) {
+            String responseBody = get(apiURL, requestHeaders);
+//            System.out.println(responseBody.toString());
+
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(responseBody.toString());
+
+
+            JSONObject jsonObject = (JSONObject) obj;
+            JSONArray getArray = (JSONArray) jsonObject.get("items");
+            if(getArray.isEmpty()){
                 shops = addrToNum(word, user_id, user_lng, user_lat);
-            } else {
-                String addr = responseBody.substring(ad_num, (responseBody.substring(ad_num).indexOf('"') + ad_num));
-                shops = addrToNum(addr, user_id, user_lng, user_lat);
+            }else{
+                JSONObject object = (JSONObject) getArray.get(0);
+                String address = (String) object.get("address");
+                shops = addrToNum(address, user_id, user_lng, user_lat);
             }
         }
         return shops;
