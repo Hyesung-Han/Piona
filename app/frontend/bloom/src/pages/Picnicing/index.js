@@ -6,7 +6,7 @@ import {getMyReservationList} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.06
+ * LHJ | 2022.05.11
  * @name PicnicingPage
  * @api getMyReservationList
  * @des
@@ -29,11 +29,17 @@ const PicnicingPage = ({navigation}) => {
 
   const getMyReservation = async () => {
     try {
-      const response = await getMyReservationList('user6', token);
-      //const response = await getMyReservationList(user_id, token);
+      const response = await getMyReservationList(user_id, token);
       const res = response.data;
-      const filteredByStatus = res.filter(item => item.status !== 'D');
-      setData(filteredByStatus);
+      const addFirstFilteredByStatus = res.filter(item => item.status === 'R');
+      const addSecondFilteredByStatus = res.filter(item => item.status === 'U');
+      const addThirdFilteredByStatus = res.filter(item => item.status === 'F');
+      const newArr = [
+        ...addFirstFilteredByStatus,
+        ...addSecondFilteredByStatus,
+        ...addThirdFilteredByStatus,
+      ];
+      setData(newArr);
       console.log(response.data);
     } catch (error) {
       console.log(user_id);

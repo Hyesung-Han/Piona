@@ -22,6 +22,7 @@
     "native-base": "^3.4.3",
     "react": "17.0.2",
     "react-native": "0.68.1",
+    "react-native-calendars": "^1.1283.0",
     "react-native-config": "^1.4.5",
     "react-native-encrypted-storage": "^4.0.2",
     "react-native-flipper": "^0.143.0",
