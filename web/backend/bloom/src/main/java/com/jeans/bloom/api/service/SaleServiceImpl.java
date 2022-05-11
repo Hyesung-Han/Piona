@@ -34,8 +34,8 @@ public class SaleServiceImpl implements SaleService {
             startDate = LocalDate.now().withDayOfMonth(1);
         }
         if(endDate == null) {
-            endDate = LocalDate.now();
-        }
+            endDate = LocalDate.now().plusDays(1);
+        }else endDate = endDate.plusDays(1);
         List<Object[]> objectList = reservationRepository.getTotalSale(shopNumber, startDate, endDate);
         List<SaleRes> saleResList = objectList.stream().map(
                 objects -> new SaleRes((String) objects[0],
