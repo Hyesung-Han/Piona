@@ -147,7 +147,6 @@ const MapPage = ({navigation, route}) => {
         onClick={() => {
           setAppear(prevStatus => (prevStatus ? false : true));
           setShopInfo(row);
-          console.log(appear);
         }}
       />
     ));
@@ -175,10 +174,9 @@ const MapPage = ({navigation, route}) => {
       } else if (route.params.page === 'search') {
         fromSearch();
       }
-    }, []),
+    }, [data]),
   );
 
-  console.log(move);
   return (
     <>
       {data && (
