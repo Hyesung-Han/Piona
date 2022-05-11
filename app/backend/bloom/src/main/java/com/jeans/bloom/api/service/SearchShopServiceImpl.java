@@ -50,10 +50,10 @@ public class SearchShopServiceImpl implements SearchShopService {
             requestHeaders.put("X-Naver-Client-Id", "jc2OcvvYJ7a3__Mt7845");
             requestHeaders.put("X-Naver-Client-Secret", "rVCza6mVSn");
             String responseBody = get(apiURL, requestHeaders);
-            String ad = "address";
-            int ad_num = responseBody.indexOf(ad) + 11;
+            String ad = "address\":\"";
+            int ad_num = responseBody.indexOf(ad) + ad.length();
 
-            if (ad_num < 11) {
+            if (ad_num < ad.length()) {
                 shops = addrToNum(word, user_id, user_lng, user_lat);
             } else {
                 String addr = responseBody.substring(ad_num, (responseBody.substring(ad_num).indexOf('"') + ad_num));
