@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {userAPI} from '../../utils/Axios';
 
 /**
- * LDJ | 2022.05.08
+ * LDJ | 2022.05.11
  * @name SignUpModal
  * @api 1. userAPI/signup
  *      2. userAPI/idCheck
@@ -24,6 +24,7 @@ import {userAPI} from '../../utils/Axios';
  * 2. 유저 정보를 입력받아 회원가입을 진행
  * 3. 아이디 중북검사, 닉네임 중복검사
  * 4. 핸드폰 인증요청/확인
+ * 5. 유효성 검사 추가 [다 녹색으로 통과하지 못하면 회원가입 불가]
  */
 
 const SignUpModal = props => {
@@ -48,20 +49,96 @@ const SignUpModal = props => {
   const [certifiedNumber, setCertifiedNumber] = useState('');
   const [certification, setCertification] = useState('인증 요청');
 
-  const onChangeName = useCallback(text => {
-    setName(text.trim());
-  }, []);
+  // #A6DB9E : 녹색
+  // #FFABAB : 분홍색
+  // #C0C0C0 : 회색
 
-  const onChangeId = useCallback(text => {
-    setId(text.trim());
-  }, []);
+  const regNm = /^[가-힣]{2,}$/;
+  const regId = /^[a-z0-9]{4,}$/;
+  const regPwd = /^[a-z0-9#?!@$ %^&*-]{7,14}$/;
+  const regNnm = /^[가-힣]{2,}$/;
+  const regPhonenum = /^[0-9]{10,11}$/;
 
-  const onChangePassword = useCallback(text => {
-    setPassword(text.trim());
-  }, []);
+  const [canGoNext, setCanGoNext] = useState(true);
+
+  useEffect(() => {
+    if (
+      nameColor === '#A6DB9E' &&
+      idColor === '#A6DB9E' &&
+      passwordColor === '#A6DB9E' &&
+      passwordCheckColor === '#A6DB9E' &&
+      nicknameColor === '#A6DB9E' &&
+      phoneNumberColor === '#A6DB9E' &&
+      idCheckColor === '#A6DB9E' &&
+      nickCheckColor === '#A6DB9E' &&
+      phoneCheckColor === '#A6DB9E'
+    ) {
+      setCanGoNext(false);
+    } else {
+      setCanGoNext(true);
+    }
+  }, [
+    nameColor,
+    idColor,
+    passwordColor,
+    passwordCheckColor,
+    nicknameColor,
+    phoneNumberColor,
+    idCheckColor,
+    nickCheckColor,
+    phoneCheckColor,
+  ]);
+
+  const onChangeName = useCallback(
+    async text => {
+      setName(text.trim());
+      if (name.length > 1) {
+        if (regNm.test(name)) {
+          setNameColor('#A6DB9E');
+        } else {
+          setNameColor('#FFABAB');
+        }
+      } else {
+        setNameColor('#C0C0C0');
+      }
+    },
+    [regNm, name],
+  );
+
+  const onChangeId = useCallback(
+    async text => {
+      setId(text.trim());
+      if (id.length > 3) {
+        if (regId.test(id)) {
+          setIdColor('#A6DB9E');
+        } else {
+          setIdColor('#FFABAB');
+        }
+      } else {
+        setIdColor('#C0C0C0');
+      }
+    },
+    [regId, id],
+  );
+
+  const onChangePassword = useCallback(
+    async text => {
+      setPassword(text.trim());
+      if (password.length > 7 && password.length < 16) {
+        if (regPwd.test(password)) {
+          setPasswordColor('#A6DB9E');
+        } else {
+          setPasswordColor('#FFABAB');
+        }
+      } else {
+        setPasswordColor('#C0C0C0');
+      }
+    },
+    [regPwd, password],
+  );
 
   const onChangeCheckPassword = useCallback(
-    text => {
+    async text => {
       setCheckPassword(text.trim());
       if (password === text.trim()) {
         setPasswordCheckColor('#A6DB9E');
@@ -72,13 +149,37 @@ const SignUpModal = props => {
     [password],
   );
 
-  const onChangeNickname = useCallback(async text => {
-    setNickname(text.trim());
-  }, []);
+  const onChangeNickname = useCallback(
+    async text => {
+      setNickname(text.trim());
+      if (nickname.length > 1) {
+        if (regNnm.test(nickname)) {
+          setNicknameColor('#A6DB9E');
+        } else {
+          setNicknameColor('#FFABAB');
+        }
+      } else {
+        setNicknameColor('#C0C0C0');
+      }
+    },
+    [regNnm, nickname],
+  );
 
-  const onChangePhoneNumber = useCallback(text => {
-    setPhoneNumber(text.trim());
-  }, []);
+  const onChangePhoneNumber = useCallback(
+    async text => {
+      setPhoneNumber(text.trim());
+      if (phoneNumber.length > 1) {
+        if (regPhonenum.test(phoneNumber)) {
+          setPhoneNumberColor('#A6DB9E');
+        } else {
+          setPhoneNumberColor('#FFABAB');
+        }
+      } else {
+        setPhoneNumberColor('#C0C0C0');
+      }
+    },
+    [regPhonenum, phoneNumber],
+  );
 
   const onChangeCertifiedNumber = useCallback(text => {
     setCertifiedNumber(text.trim());
@@ -229,46 +330,6 @@ const SignUpModal = props => {
     props.exit(false);
   }, [props]);
 
-  // const sendData = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const response = await userAPI.signup(
-  //       id,
-  //       password,
-  //       name,
-  //       nickname,
-  //       phoneNumber,
-  //     );
-  //     console.log(response);
-  //     Alert.alert('알림', '회원가입 완료!');
-  //   } catch (error) {
-  //     console.log(error.response);
-  //     if (error) {
-
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  //   if (passwordColor === '#A6DB9E' && idColor === '#A6DB9E') {
-  //     props.user({id: id, password: password});
-  //     props.now(false);
-  //     props.next(true);
-  //   } else if (id.length < 2) {
-  //     alert('아이디를 입력해주세요.');
-  //   } else if (idColor === '#000000') {
-  //     alert('아이디 중복확인을 해주세요.');
-  //   } else if (idColor === '#FFABAB') {
-  //     alert('중복된 아이디입니다. 다시 확인해주세요.');
-  //   } else if (password.length < 1) {
-  //     alert('비밀번호를 입력해주세요.');
-  //   } else {
-  //     alert('비밀번호를 확인해주세요.');
-  //   }
-  // };
-
-  // const canGoNext =
-  //   id && password && checkPassword && name && nickname && phoneNumber;
-
   return (
     <View
       style={{
@@ -339,7 +400,6 @@ const SignUpModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '95%',
-              marginTop: 5,
             }}>
             <View
               style={{
@@ -355,6 +415,8 @@ const SignUpModal = props => {
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
                   onChangeText={onChangeName}
+                  placeholder="한글만, 최소 2자"
+                  placeholderTextColor="#C0C0C0"
                   value={name}
                   style={{
                     width: '85%',
@@ -407,7 +469,6 @@ const SignUpModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '95%',
-              marginTop: 5,
             }}>
             <View
               style={{
@@ -423,6 +484,8 @@ const SignUpModal = props => {
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
                   onChangeText={onChangeId}
+                  placeholder="영소문자+숫자, 최소 4자"
+                  placeholderTextColor="#C0C0C0"
                   value={id}
                   style={{
                     width: '85%',
@@ -440,7 +503,7 @@ const SignUpModal = props => {
             style={{
               width: '100%',
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-start',
             }}>
             <Text
               style={{
@@ -451,6 +514,14 @@ const SignUpModal = props => {
               }}>
               비밀번호
             </Text>
+            <Text
+              style={{
+                fontSize: 10,
+                marginLeft: 34,
+                marginTop: 15,
+              }}>
+              영소문자+숫자+특수문자 각 1개 이상 / 8~15자
+            </Text>
           </View>
           <View
             style={{
@@ -458,7 +529,6 @@ const SignUpModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '95%',
-              marginTop: 5,
             }}>
             <View
               style={{
@@ -510,7 +580,6 @@ const SignUpModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '95%',
-              marginTop: 5,
             }}>
             <View
               style={{
@@ -579,7 +648,6 @@ const SignUpModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '95%',
-              marginTop: 5,
             }}>
             <View
               style={{
@@ -595,6 +663,8 @@ const SignUpModal = props => {
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
                   onChangeText={onChangeNickname}
+                  placeholder="한글만, 최소 2자"
+                  placeholderTextColor="#C0C0C0"
                   value={nickname}
                   style={{
                     width: '85%',
@@ -647,7 +717,6 @@ const SignUpModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '95%',
-              marginTop: 5,
             }}>
             <View
               style={{
@@ -663,6 +732,8 @@ const SignUpModal = props => {
                 style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
                 <TextInput
                   onChangeText={onChangePhoneNumber}
+                  placeholder="숫자만, 11자"
+                  placeholderTextColor="#C0C0C0"
                   value={phoneNumber}
                   style={{
                     width: '85%',
@@ -687,7 +758,6 @@ const SignUpModal = props => {
               style={{
                 width: '85%',
                 height: 40,
-                margin: 10,
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#EEEEEE',
@@ -714,7 +784,6 @@ const SignUpModal = props => {
               margin: 20,
               alignItems: 'center',
               width: '80%',
-              // marginHorizontal: '10%',
             }}>
             <TouchableOpacity
               style={{
@@ -726,7 +795,7 @@ const SignUpModal = props => {
                 height: 40,
                 justifyContent: 'center',
               }}
-              disabled={loading}
+              disabled={canGoNext || loading}
               onPress={onSubmit}>
               {loading ? (
                 <ActivityIndicator color={'white'} />
