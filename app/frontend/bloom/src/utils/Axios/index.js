@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-
 /**
- * LDJ, LHJ, CSW | 2022.05.10
+ * LDJ, LHJ, CSW | 2022.05.11
  * @name utils/Axios
  * @api 모든 API 만드는 곳
  * @des
@@ -70,16 +68,29 @@ export const userAPI = {
       });
   },
 
-  // nickCheck: async userNickname => {
-  //   return await request
-  //     .get(`/users/nickname/${userNickname}`, {})
-  //     .then(response => {
-  //       return response.data.statusCode;
-  //     })
-  //     .catch(error => {
-  //       return error.response.status;
-  //     });
-  // },
+  phoneRequest: async phoneNumber => {
+    return await request
+      .get(`/user/phoneRequest?phoneNumber=${phoneNumber}`)
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+
+  phoneCheck: async (phoneNumber, certifiedNum) => {
+    return await request
+      .get(
+        `/user/phoneCheck?certifiedNum=${certifiedNum}&phoneNumber=${phoneNumber}`,
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
   pwdCheck: async (user_id, password, accessToken) => {
     return await request
@@ -100,20 +111,24 @@ export const userAPI = {
       });
   },
 
-  // editUser: async (userId, accessToken) => {
-  //   return await request
-  //     .patch('/user', userId, {
-  //       headers: {
-  //         Authorization: accessToken,
-  //       },
-  //     })
-  //     .then(response => {
-  //       return response;
-  //     })
-  //     .catch(error => {
-  //       return error;
-  //     });
-  // },
+  editUser: async (name, nickname, password, phone, user_id, accessToken) => {
+    return await request
+      .patch(
+        '/user',
+        {name, nickname, password, phone, user_id},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 
   deleteUser: async (user_id, accessToken) => {
     return await request
@@ -133,17 +148,6 @@ export const userAPI = {
         return error;
       });
   },
-
-  // emailCheck: async userEmail => {
-  //   return await request
-  //     .get(`/users/email/${userEmail}`, {})
-  //     .then(response => {
-  //       return response.data.statusCode;
-  //     })
-  //     .catch(error => {
-  //       return error.response.status;
-  //     });
-  // },
 };
 
 // CSW, LDJ | 장바구니에 관한 API | [목록조회, 추가, 삭제]
