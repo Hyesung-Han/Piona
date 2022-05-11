@@ -35,7 +35,6 @@ export default function UserAccount() {
         })
         const { data } = response;
         setShop(data.data);
-        console.log("상위shop",data.data);
       } catch (e) {
         console.error(e);
       }

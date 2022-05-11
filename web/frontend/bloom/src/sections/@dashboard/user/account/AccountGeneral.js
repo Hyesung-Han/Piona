@@ -21,12 +21,14 @@ export default function AccountGeneral({shop}) {
   const { enqueueSnackbar } = useSnackbar();
   // const { user_id, shop_number, access_token } = JSON.parse(localStorage.getItem("user"));
   const { user } = useAuth();
+  const { currentImageUrl } = shop?.image_url || '';
 
   const UpdateUserSchema = Yup.object().shape({
-    // displayName: Yup.string().required('Name is required'),
+    name: Yup.string().required('Name is required'),
   });
 
   const defaultValues = {
+    shop_number: shop?.shop_number || '',
     name: shop?.name || '',
     zip_code: shop?.zip_code || '',
     address: shop?.address || '',
@@ -35,6 +37,7 @@ export default function AccountGeneral({shop}) {
     tel: shop?.tel || '',
     url: shop?.url || '',
     description: shop?.description || '',
+    image_url: shop?.image_url || '',
   };
 
   const methods = useForm({
@@ -48,14 +51,44 @@ export default function AccountGeneral({shop}) {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async () => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      enqueueSnackbar('Update success!');
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const onSubmit = async (shopInfo) => {
+      const { shop_number, address, description, detail_address, hours, image_url, name, tel, url, zip_code } = shopInfo;
+      const shop_lng = 0;
+      const shop_lat = 0;
+
+      const fd = new FormData();
+      if(typeof image_url === 'string') {
+        // fd.append('file', null);
+      } else {
+        console.log("파일있")
+        fd.append('file', image_url);
+      }
+      fd.append('shopInfoReq.address', address);
+      fd.append('shopInfoReq.description', description);
+      fd.append('shopInfoReq.detail_address', detail_address);
+      fd.append('shopInfoReq.hours', hours);
+      fd.append('shopInfoReq.name', name);
+      fd.append('shopInfoReq.tel', tel);
+      fd.append('shopInfoReq.url', url);
+      fd.append('shopInfoReq.zip_code', zip_code);
+      fd.append('shopInfoReq.shop_lat', shop_lat);
+      fd.append('shopInfoReq.shop_lng', shop_lng);
+      fd.append('shopInfoReq.shop_number', shop_number)
+      fd.append('shopInfoReq.image_url', currentImageUrl);
+      
+      try {
+        const response = await axios.patch(`/api/user`, fd, { headers: {
+            Authorization: user.access_token
+        }});
+        const { data } = response;
+        console.log(data);
+      } catch (e) {
+        console.error(e);
+      }
+      
+      // await new Promise((resolve) => setTimeout(resolve, 500));
+      // enqueueSnackbar('Update success!');
+    };
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -63,7 +96,7 @@ export default function AccountGeneral({shop}) {
 
       if (file) {
         setValue(
-          'photoURL',
+          'image_url',
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -85,7 +118,7 @@ export default function AccountGeneral({shop}) {
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <RHFUploadAvatar
-              name="photoURL"
+              name="image_url"
               accept="image/*"
               maxSize={3145728}
               onDrop={handleDrop}
