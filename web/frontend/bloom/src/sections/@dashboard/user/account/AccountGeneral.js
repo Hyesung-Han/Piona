@@ -1,44 +1,40 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Box, Grid, Card, Stack, Typography } from '@mui/material';
+import { Box, Grid, Card, Stack, Typography, Button } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '../../../../hooks/useAuth';
 // utils
 import { fData } from '../../../../utils/formatNumber';
-// _mock
-import { countries } from '../../../../_mock';
+import axios from '../../../../utils/axios';
 // components
-import { FormProvider, RHFSwitch, RHFSelect, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
+import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
-export default function AccountGeneral() {
+export default function AccountGeneral({shop}) {
   const { enqueueSnackbar } = useSnackbar();
-
+  // const { user_id, shop_number, access_token } = JSON.parse(localStorage.getItem("user"));
   const { user } = useAuth();
 
   const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required'),
+    // displayName: Yup.string().required('Name is required'),
   });
 
   const defaultValues = {
-    displayName: user?.displayName || '',
-    email: user?.email || '',
-    photoURL: user?.photoURL || '',
-    phoneNumber: user?.phoneNumber || '',
-    country: user?.country || '',
-    address: user?.address || '',
-    state: user?.state || '',
-    city: user?.city || '',
-    zipCode: user?.zipCode || '',
-    about: user?.about || '',
-    isPublic: user?.isPublic || false,
+    name: shop?.name || '',
+    zip_code: shop?.zip_code || '',
+    address: shop?.address || '',
+    detail_address: shop?.detail_address || '',
+    hours: shop?.hours || '',
+    tel: shop?.tel || '',
+    url: shop?.url || '',
+    description: shop?.description || '',
   };
 
   const methods = useForm({
@@ -76,7 +72,13 @@ export default function AccountGeneral() {
     },
     [setValue]
   );
+  
+  const onClickSearchAddress = () => {
+    console.log("주소검색");
+    console.log("하위shop", shop);
+  };
 
+  // if (shop.length === 0 || !shop) return <>loading중..</>;
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
@@ -103,8 +105,6 @@ export default function AccountGeneral() {
                 </Typography>
               }
             />
-
-            <RHFSwitch name="isPublic" labelPlacement="start" label="Public Profile" sx={{ mt: 5 }} />
           </Card>
         </Grid>
 
@@ -113,34 +113,32 @@ export default function AccountGeneral() {
             <Box
               sx={{
                 display: 'grid',
-                rowGap: 3,
-                columnGap: 2,
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+                rowGap: 2,
               }}
             >
-              <RHFTextField name="displayName" label="Name" />
-              <RHFTextField name="email" label="Email Address" />
-
-              <RHFTextField name="phoneNumber" label="Phone Number" />
-              <RHFTextField name="address" label="Address" />
-
-              <RHFSelect name="country" label="Country" placeholder="Country">
-                <option value="" />
-                {countries.map((option) => (
-                  <option key={option.code} value={option.label}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
-
-              <RHFTextField name="state" label="State/Region" />
-
-              <RHFTextField name="city" label="City" />
-              <RHFTextField name="zipCode" label="Zip/Code" />
+              <RHFTextField name="name" label="상호명" />
+              <Box
+                sx={{
+                  display: 'grid',
+                  rowGap: 2,
+                  colGap: 2,
+                  gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: '2fr 1fr' },
+                }}
+              >
+                <RHFTextField name="zip_code" label="우편번호" />
+                <Button
+                  sx={{ml:3}}
+                  onClick={()=>onClickSearchAddress()}>주소검색</Button>
+              </Box>
+              <RHFTextField name="address" label="주소" />
+              <RHFTextField name="detail_address" label="상세주소" />
+              <RHFTextField name="hours" multiline rows={2} label="영업시간" />
+              <RHFTextField name="tel" label="가게 전화번호" />
+              <RHFTextField name="url" label="가게 사이트 주소(SNS, 웹사이트 등)" />
             </Box>
 
-            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-              <RHFTextField name="about" multiline rows={4} label="About" />
+            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 2 }}>
+              <RHFTextField name="description" multiline rows={4} label="가게 설명" />
 
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                 Save Changes
