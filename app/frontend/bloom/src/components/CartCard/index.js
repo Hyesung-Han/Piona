@@ -1,74 +1,83 @@
-import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Button,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HorizonLine from '../HorizonLine';
+import {useDispatch} from 'react-redux';
+import cartSlice from '../../redux/slices/cart';
 
 /**
- * CSW | 2022.05.03
+ * CSW, LDJ | 2022.05.10
  * @name CartCard
- * @api x
+ * @api -
  * @des
- * FlatList에 보여줄 item 컴포넌트이다.
+ * FlatList에 보여줄 item 컴포넌트
  */
 
 const CartCardList = props => {
+  const dispatch = useDispatch();
   const [checkStatus, setcheckStaus] = useState(false);
-  const [quantityStatus, setquantityStaus] = useState(props.item.quantity);
+  const cart_id = props.item.cart_id;
+  const item_id = props.item.item_id;
+  const item_name = props.item.item_name;
+  const price = props.item.price;
+  const image_url = props.item.image_url;
+  const quantity = props.item.quantity;
+  const total_quantity = props.item.total_quantity;
+  const reservation_date = props.item.reservation_date.split('T')[0];
+  const shop_name = props.item.shop_name;
 
-  const date = props.item.reservation_date.split('T');
-
-  const quantityMinus = () => {
-    if (quantityStatus !== 0) {
-      setquantityStaus(prevStatus => prevStatus - 1);
-    } else if (quantityStatus <= 0) {
-      setquantityStaus(0);
+  const selectCartItem = useCallback(() => {
+    if (checkStatus) {
+      // 빼고, 회색으로
+      dispatch(
+        cartSlice.actions.setCart({
+          id: '',
+          quantity: '',
+          price: '',
+        }),
+      );
+      setcheckStaus(false);
+    } else {
+      // 담고, 분홍색으로
+      dispatch(
+        cartSlice.actions.setCart({
+          id: cart_id,
+          quantity: quantity,
+          price: price,
+        }),
+      );
+      setcheckStaus(true);
     }
-  };
-
-
-  // 백 수정 후 total_quantity ->  props.item.total_quantity 로 바꾸기 ( 여기는 콘솔로 찍어보고 변수 바꿔줘 )
-  const total_quantity = 10;
-  const quantityPlus = () => {
-    if (quantityStatus < total_quantity || quantityStatus === 0) {
-      setquantityStaus(prevStatus => prevStatus + 1);
-    } else if (quantityStatus >= 10) {
-      setquantityStaus(total_quantity);
-    }
-  };
+  }, [checkStatus, cart_id, quantity, price, dispatch]);
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() =>
           props.navigation.navigate('Menus', {
-            item_id: `${props.item.item_id}`,
+            item_id: `${item_id}`,
           })
         }>
         <View style={styles.CartCard}>
           <View style={styles.checkBox}>
             <View style={styles.iconBox}>
               {checkStatus === false ? (
+                // 클릭하면 클릭(담김)
                 <Icon.Button
-                  onPress={() =>
-                    setcheckStaus(prevStatus => (prevStatus ? false : true))
-                  }
+                  onPress={() => {
+                    selectCartItem();
+                  }}
                   name="checkbox"
                   color="#DADADA"
                   backgroundColor="transparent"
                   size={25}
                 />
               ) : (
+                // 클릭하면 해제(뺌)
                 <Icon.Button
-                  onPress={() =>
-                    setcheckStaus(prevStatus => (prevStatus ? false : true))
-                  }
+                  onPress={() => {
+                    selectCartItem();
+                  }}
                   name="checkbox"
                   color="#F2A7B3"
                   backgroundColor="transparent"
@@ -80,45 +89,45 @@ const CartCardList = props => {
           <View style={styles.informationBox}>
             <View style={styles.TopBox}>
               <View style={styles.shopname}>
-                <Text style={{fontSize: 15, color: 'black'}}>
-                  {props.item.shop_name}
-                </Text>
+                <Text style={{fontSize: 15, color: 'black'}}>{shop_name}</Text>
               </View>
               <View style={styles.reservationDate}>
-                <Text style={{fontSize: 13, color: 'black'}}>{date[0]}</Text>
+                <Text style={{fontSize: 13, color: 'black'}}>
+                  {reservation_date}
+                </Text>
               </View>
             </View>
             <View style={styles.itemname}>
-              <Text style={{fontSize: 12}}>{props.item.item_name}</Text>
+              <Text style={{fontSize: 12}}>{item_name}</Text>
             </View>
             <View style={styles.quantity}>
               <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 10}}>
-                수량
+                수량 : {quantity}
               </Text>
-              <View style={styles.quantityBox}>
-                <Icon.Button
+              {/* <View style={styles.quantityBox}> */}
+              {/* <Icon.Button
                   onPress={() => quantityMinus()}
                   name="remove"
                   color="black"
                   backgroundColor="transparent"
                   size={13}
                   style={styles.removeIcon}
-                />
-                <Text>{quantityStatus}</Text>
-                <Icon.Button
+                /> */}
+              {/* <Text>{quantityStatus}</Text> */}
+              {/* <Icon.Button
                   onPress={() => quantityPlus()}
                   name="add"
                   color="black"
                   backgroundColor="transparent"
                   size={13}
                   style={styles.addIcon}
-                />
-              </View>
+                /> */}
+              {/* </View> */}
             </View>
           </View>
           <View style={styles.imgBox}>
             <Image
-              source={{uri: `${props.item.image_url}`}}
+              source={{uri: `${image_url}`}}
               style={{
                 width: 60,
                 height: 60,
@@ -126,7 +135,7 @@ const CartCardList = props => {
               }}
             />
             <Text style={{marginTop: 5, fontWeight: 'bold'}}>
-              {props.item.price * quantityStatus} 원
+              {price * quantity} 원
             </Text>
           </View>
         </View>
@@ -141,10 +150,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
   },
   CartCard: {
     width: '100%',
     backgroundColor: 'white',
+    marginTop: 10,
     paddingVertical: 15,
     flexDirection: 'row',
     alignItems: 'center',
@@ -152,39 +163,41 @@ const styles = StyleSheet.create({
   TopBox: {
     flexDirection: 'row',
   },
-  quantityBox: {
-    flexDirection: 'row',
-    backgroundColor: '#FDECC8',
-    borderRadius: 50,
-    alignItems: 'center',
-    width: '45%',
-    justifyContent: 'center',
-    height: 27,
-  },
   quantity: {
     flexDirection: 'row',
     marginTop: 20,
     alignItems: 'center',
+    width: '50%',
   },
   reservationDate: {
     marginLeft: 10,
   },
   imgBox: {
     flexDirection: 'column',
-    marginLeft: 40,
+    marginLeft: 60,
+    marginRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  removeIcon: {
-    position: 'relative',
-    left: 5,
-    top: -1,
-  },
-  addIcon: {
-    position: 'relative',
-    right: -5,
-    bottom: 1,
-  },
+  // quantityBox: {
+  //   flexDirection: 'row',
+  //   backgroundColor: '#FDECC8',
+  //   borderRadius: 5,
+  //   alignItems: 'center',
+  //   width: '35%',
+  //   justifyContent: 'center',
+  //   height: 27,
+  // },
+  // removeIcon: {
+  //   position: 'relative',
+  //   left: 5,
+  //   top: -1,
+  // },
+  // addIcon: {
+  //   position: 'relative',
+  //   right: -5,
+  //   bottom: 1,
+  // },
 });
 
 export default CartCardList;
