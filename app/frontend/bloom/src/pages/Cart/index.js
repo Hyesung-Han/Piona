@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {View, StyleSheet, FlatList} from 'react-native';
 import CartCardList from '../../components/CartCard';
@@ -24,14 +24,18 @@ const CartPage = ({navigation}) => {
     try {
       const res = await cartAPI.getCartList(user_id, token);
       setData(res.data);
+      // console.log(res.data);
     } catch (error) {
       console.log('카트 목록조회 에러 :', error);
     }
   };
 
-  const renderItem = ({item}) => {
-    return <CartCardList item={item} navigation={navigation} />;
-  };
+  const renderItem = useCallback(
+    ({item}) => {
+      return <CartCardList item={item} navigation={navigation} />;
+    },
+    [navigation],
+  );
 
   // getCartlist로 받은 item의 변화가 생기면(컴포넌트에[CartCard] 변화가 생기면) 랜더링!
   useFocusEffect(
