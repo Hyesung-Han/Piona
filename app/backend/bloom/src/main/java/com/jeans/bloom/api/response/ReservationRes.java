@@ -28,7 +28,7 @@ public class ReservationRes {
     LocalDateTime reservation_date;
     int total_price;
     OrderStatus status;
-    boolean writeReview;
+    String writeReview;
     List<ItemRes> detail;
 
     public static ReservationRes of(Reservation reservation) {
@@ -45,7 +45,7 @@ public class ReservationRes {
                 .reservation_date(reservation.getReservationDetails().get(0).getReservationDate())
                 .total_price(reservation.getTotalPrice())
                 .status(reservation.getStatus())
-                .writeReview(reviewId==0?false:true)
+                .writeReview(reviewId==0?"N":"Y")
                 .detail(reservation.getReservationDetails().stream().map(detail -> ItemRes.of(detail)).collect(Collectors.toList()))
                 .build();
     }
