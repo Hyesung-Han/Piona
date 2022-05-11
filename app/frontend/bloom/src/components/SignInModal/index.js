@@ -144,7 +144,6 @@ const SignInModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '95%',
-              marginTop: 5,
             }}>
             <Text
               style={{
@@ -183,7 +182,6 @@ const SignInModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
-              marginTop: 5,
             }}>
             <Text
               style={{
