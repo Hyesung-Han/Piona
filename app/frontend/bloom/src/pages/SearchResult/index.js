@@ -124,7 +124,11 @@ const SearchResultPage = ({navigation, route}) => {
           onPress={() =>
             navigation.navigate('Map', {
               page: 'search',
-              shop: data,
+              type: route.params.type,
+              word: route.params.word,
+              user_id: user_id,
+              user_lat: 0,
+              user_lng: 0,
             })
           }
         />
@@ -149,8 +153,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     backgroundColor: 'white',
     justifyContent: 'center',
-    width: '70%',
-    height: '11%',
+    width: 250,
+    height: 80,
     borderRadius: 10,
     borderColor: '#F2A7B3',
     borderWidth: 1.5,
@@ -168,6 +172,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
   list: {
     flex: 3,
