@@ -22,6 +22,7 @@ import NaverMapView, {
   Path,
   Polyline,
   Polygon,
+  getCenter,
 } from 'react-native-nmap';
 import Geolocation from 'react-native-geolocation-service';
 import {Platform, PermissionsAndroid} from 'react-native';
@@ -39,7 +40,7 @@ const MapPage = ({navigation, route}) => {
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
   const [center, setCenter] = useState({
-    zoom: 15,
+    zoom: 12,
     tilt: 1,
     latitude: 0.0,
     longitude: 0.0,
@@ -48,6 +49,7 @@ const MapPage = ({navigation, route}) => {
   const [data, setData] = useState([]);
   const [appear, setAppear] = useState(false);
   const [shopInfo, setShopInfo] = useState([]);
+  const [move, setMove] = useState([]);
 
   const fromMain = async () => {
     try {
@@ -66,12 +68,28 @@ const MapPage = ({navigation, route}) => {
 
   // 현재 화면에서 재검색하기 위한 중간 좌표 필요
   const relocation = async () => {
+    var re_lat = 0;
+    var re_lng = 0;
+    move.map(e => {
+      re_lat += e.latitude;
+      re_lng += e.longitude;
+    });
+    re_lat = re_lat / 5;
+    re_lng = re_lng / 5;
+
+    setCenter({
+      zoom: 12,
+      tilt: 1,
+      latitude: re_lat,
+      longitude: re_lng,
+    });
+
     try {
       const res = await searchAPI.getMap(
         'location',
         user_id,
-        coordinate.latitude,
-        coordinate.longitude,
+        re_lat,
+        re_lng,
         token,
       );
       setData(res.data);
@@ -101,7 +119,7 @@ const MapPage = ({navigation, route}) => {
               longitude: pos.coords.longitude,
             });
             setCenter({
-              zoom: 15,
+              zoom: 12,
               tilt: 1,
               latitude: pos.coords.latitude,
               longitude: pos.coords.longitude,
@@ -159,6 +177,8 @@ const MapPage = ({navigation, route}) => {
       }
     }, []),
   );
+
+  console.log(move);
   return (
     <>
       {data && (
@@ -167,7 +187,8 @@ const MapPage = ({navigation, route}) => {
             <NaverMapView
               style={{width: '100%', height: '100%'}}
               zoomControl={false}
-              center={center}>
+              center={center}
+              onCameraChange={e => setMove(e.coveringRegion)}>
               <Marker
                 coordinate={{
                   latitude: coordinate.latitude,
