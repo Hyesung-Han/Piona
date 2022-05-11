@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /**
- * LDJ, LHJ, CSW | 2022.05.11
+ * LDJ, LHJ, CSW | 2022.05.12
  * @name utils/Axios
  * @api 모든 API 만드는 곳
  * @des
@@ -160,7 +160,7 @@ export const cartAPI = {
         },
       })
       .then(response => {
-        return response.data;
+        return response;
       })
       .catch(error => {
         return error;
