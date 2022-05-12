@@ -235,7 +235,7 @@ public class UserController {
         try{
             Shop shop = userService.findShopByShopNumber(formData.getShopInfoReq().getShop_number());
             if (formData.getFile() != null) {
-                if(formData.getShopInfoReq() != null && formData.getShopInfoReq().getImage_url() != null)
+                if(formData.getShopInfoReq() != null && formData.getShopInfoReq().getImage_url() != null && !formData.getShopInfoReq().getImage_url().equals(""))
                     awsS3Service.deleteImage(shop.getImageUrl());
                 formData.getShopInfoReq().setImage_url(awsS3Service.uploadImage(formData.getFile()));
             }
