@@ -39,7 +39,6 @@ const navConfig = [
         children: [
           { title: '상품 등록하기', path: PATH_DASHBOARD.user.profile },
           { title: '상품 목록보기', path: PATH_DASHBOARD.eCommerce.root },
-          { title: '상품 수정하기', path: PATH_DASHBOARD.user.list },
         ],
       },
       { title: '예약 관리', path: PATH_DASHBOARD.invoice.root, icon: ICONS.dashboard },
