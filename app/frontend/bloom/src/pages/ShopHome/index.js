@@ -1,27 +1,13 @@
 import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {
-  View,
-  Dimensions,
-  Alert,
-  Text,
-  Image,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, Image, ScrollView, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import {shopDetailAPI} from '../../utils/Axios';
 import Icon from 'react-native-vector-icons/Ionicons';
-import NaverMapView, {
-  Circle,
-  Marker,
-  Path,
-  Polyline,
-  Polygon,
-} from 'react-native-nmap';
+import NaverMapView, {Marker} from 'react-native-nmap';
 
 /**
- * LHJ, CSW | 2022.05.12
+ * LHJ, CSW | 2022.05.13
  * @name shopHome
  * @api shopDetailAPI/getShopDetail
  * @des
@@ -35,8 +21,8 @@ const ShopHomePage = ({navigation, route}) => {
   // const [modalVisible, setModalVisible] = useState(true);
   //state 뒤에 오는 shop은 reducer에 설정된 이름
   //그 뒤에 오는 shopNumber는 slice에 저장된 변경하고자 하는 변수
-  const shopNumber = useSelector(state => state.shop.shopNumber);
-  const shopName = useSelector(state => state.shop.shopName);
+  const shopNumber = useSelector(state => state.shop.number);
+  const shopName = useSelector(state => state.shop.name);
   const token = useSelector(state => state.user.accessToken);
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
   const [center, setCenter] = useState({
