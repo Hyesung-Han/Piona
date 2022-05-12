@@ -32,7 +32,6 @@ const SignInModal = props => {
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const [Ptoken, setPToken] = useState('');
   const onChangeId = useCallback(text => {
     setId(text.trim());
   }, []);
@@ -79,17 +78,13 @@ const SignInModal = props => {
           const token = await messaging().getToken();
           console.log('phone token', token);
           dispatch(userSlice.actions.setPhoneToken(token));
-          setPToken(token);
-          return axios.post('https://k6a201.p.ssafy.io/api/phonetoken', {
-            token,
-          });
         } catch (error) {
           console.error(error);
         }
       }
       getToken();
 
-      const response = await userAPI.signin(id, password, Ptoken);
+      const response = await userAPI.signin(id, password);
       if (response.data.result === 'success') {
         Alert.alert('알림', '로그인 되었습니다.');
         dispatch(
@@ -113,7 +108,7 @@ const SignInModal = props => {
     } finally {
       setLoading(false);
     }
-  }, [loading, id, password, Ptoken, dispatch]);
+  }, [loading, id, password, dispatch]);
 
   return (
     <View

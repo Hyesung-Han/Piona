@@ -43,22 +43,22 @@ const AppInner = () => {
   // }, [dispatch]);
 
   // 토큰 설정
-  useEffect(() => {
-    async function getToken() {
-      try {
-        if (!messaging().isDeviceRegisteredForRemoteMessages) {
-          await messaging().registerDeviceForRemoteMessages();
-        }
-        const token = await messaging().getToken();
-        console.log('phone token', token);
-        dispatch(userSlice.actions.setPhoneToken(token));
-        return axios.post('https://k6a201.p.ssafy.io/api/phonetoken', {token});
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getToken();
-  }, [dispatch]);
+  // useEffect(() => {
+  //   async function getToken() {
+  //     try {
+  //       if (!messaging().isDeviceRegisteredForRemoteMessages) {
+  //         await messaging().registerDeviceForRemoteMessages();
+  //       }
+  //       const token = await messaging().getToken();
+  //       console.log('phone token', token);
+  //       dispatch(userSlice.actions.setPhoneToken(token));
+  //       // return axios.post('https://k6a201.p.ssafy.io/api/phonetoken', {token});
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  //   getToken();
+  // }, [dispatch]);
 
   return isLoggedIn ? <MyApp /> : <MyApp_Sign />;
 };
