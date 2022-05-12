@@ -211,9 +211,6 @@ const MapPage = ({navigation, route}) => {
     }, []),
   );
 
-  console.log('gd', data);
-  console.log('gzz', move);
-
   return (
     <>
       {data ? (
