@@ -136,7 +136,7 @@ public class ItemController {
         try{
             Item item = itemService.findItemByItemId(formData.getItemInfoReq().getItem_id());
             if (formData.getFile() != null) {
-                if(formData.getItemInfoReq() != null && formData.getItemInfoReq().getImage_url() != null)
+                if(formData.getItemInfoReq() != null && formData.getItemInfoReq().getImage_url() != null && !formData.getItemInfoReq().getImage_url().equals(""))
                     awsS3Service.deleteImage(item.getImageUrl());
                 formData.getItemInfoReq().setImage_url(awsS3Service.uploadImage(formData.getFile()));
             }
