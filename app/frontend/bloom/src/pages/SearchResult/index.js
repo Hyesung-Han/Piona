@@ -9,10 +9,12 @@ import {
   FlatList,
   TouchableOpacity,
   KeyboardAvoidingViewBase,
+  KeyboardAvoidingView,
 } from 'react-native';
 import ShopCard from '../../components/ShopCard';
 import {searchAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
+
 /**
  * CSW | 2022.05.06
  * @name SearchResultPage
@@ -70,65 +72,71 @@ const SearchResultPage = ({navigation, route}) => {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.searchBox}>
-        <View style={styles.inputBox}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="검색어를 입력하세요."
-            value={inputText}
-            onChangeText={setInputText}></TextInput>
-          <View style={styles.iconBox}>
-            <Icon.Button
-              onPress={() =>
-                navigation.navigate('Search', {
-                  type: 'location',
-                  word: `${inputText}`,
-                  user_id: user_id,
-                  user_lat: 0,
-                  user_lng: 0,
-                })
-              }
-              name="search-outline"
-              color="black"
-              backgroundColor="transparent"
-            />
+    <KeyboardAvoidingView behavior="height" style={{flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.searchBox}>
+          <View style={styles.inputBox}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="검색어를 입력하세요."
+              value={inputText}
+              onChangeText={setInputText}></TextInput>
+            <View style={styles.iconBox}>
+              <Icon.Button
+                onPress={() =>
+                  navigation.navigate('Search', {
+                    type: 'location',
+                    word: `${inputText}`,
+                    user_id: user_id,
+                    user_lat: 0,
+                    user_lng: 0,
+                  })
+                }
+                name="search-outline"
+                color="black"
+                backgroundColor="transparent"
+              />
+            </View>
           </View>
         </View>
+        <View style={styles.list}>
+          <FlatList
+            //리스트의 소스를 담는 속성
+            //data={data}
+            data={data}
+            //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
+            renderItem={renderItem}
+            //item의 고유의 키를 부여하는 속성
+            keyExtractor={item => item.shop_number}
+            //무한 스크롤때문에 넣은듯
+            // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
+            // onEndReachedThreshold={0.4}
+          />
+        </View>
+        <View style={styles.mapBtn}>
+          <Icon.Button
+            name="map-outline"
+            color="white"
+            backgroundColor="#F2A7B3"
+            size={20}
+            borderRadius={30}
+            width={50}
+            alignItems="center"
+            justifyContent="center"
+            onPress={() =>
+              navigation.navigate('Map', {
+                page: 'search',
+                type: route.params.type,
+                word: route.params.word,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
+            }
+          />
+        </View>
       </View>
-      <View style={styles.list}>
-        <FlatList
-          //리스트의 소스를 담는 속성
-          //data={data}
-          data={data}
-          //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
-          renderItem={renderItem}
-          //item의 고유의 키를 부여하는 속성
-          keyExtractor={item => item.shop_number}
-          //무한 스크롤때문에 넣은듯
-          // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
-          // onEndReachedThreshold={0.4}
-        />
-      </View>
-      <View style={styles.mapBtn}>
-        <Icon.Button
-          name="map-outline"
-          color="white"
-          backgroundColor="#F2A7B3"
-          size={20}
-          borderRadius={30}
-          width={50}
-          alignItems="center"
-          justifyContent="center"
-          onPress={() =>
-            navigation.navigate('Map', {
-              page: 'search',
-              shop: data,
-            })
-          }
-        />
-      </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -136,6 +144,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F8F8',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     fontSize: 14,
@@ -146,13 +156,10 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     backgroundColor: 'white',
     justifyContent: 'center',
-    width: '70%',
-    height: '11%',
+    width: '100%',
     borderRadius: 10,
     borderColor: '#F2A7B3',
     borderWidth: 1.5,
-    marginTop: '9%',
-    marginBottom: '9%',
   },
   iconBox: {
     flex: 1,
@@ -162,9 +169,13 @@ const styles = StyleSheet.create({
     right: 0,
   },
   searchBox: {
-    flex: 1,
+    flex: 0.6,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    width: 250,
+    height: 100,
+    marginVertical: 15,
   },
   list: {
     flex: 3,
