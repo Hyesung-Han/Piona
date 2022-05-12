@@ -80,7 +80,6 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 export default function EcommerceProductUpdate() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
-  // const [value, setValue] = useState('1');
   const navigate = useNavigate();
   
   const { name } = useParams();
@@ -88,18 +87,12 @@ export default function EcommerceProductUpdate() {
   const { product, error, checkout } = useSelector((state) => state.product);
 console.log("여기다",item_id)
 const [itemDetail, setItemDetail] = useState([]);
-  // useEffect(() => {
-  //   getItemDetail();
-  //   console.log("로케이션",location.state)
-  // }, []);
+
 
 const location = useLocation();
   const data = location.state.data; // location으로 데이터에 접근해서 받아온다!
   console.log(data)
   
-  // useEffect(() => {
-  //     console.log("itemDetail", itemDetail);
-  //   }, [itemDetail])
 
 
   
@@ -129,17 +122,6 @@ const location = useLocation();
     formState: { isSubmitting },
   } = methods;
   
-  
-  // const [disabled, setDisabled] = useState(true);
-
-  
-  // const handleAddCart = (product) => {
-  //   dispatch(addCart(product));
-  // };
-  
-  // const handleGotoStep = (step) => {
-  //   dispatch(onGotoStep(step));
-  // };
   
 const onSubmit = async (itemInfo) => {
   const { description, image_url, item_id, name, price, total_quantity } = itemInfo;
@@ -256,7 +238,6 @@ const handleDrop = useCallback(
           <>
             <Grid container spacing={2}>
               <Grid item xs={5.5}>
-                {/* <Image alt={itemDetail.image_url} src={itemDetail.image_url} name="image_url" /> */}
                 <RHFUploadAvatar
                   name="image_url"
                   accept="image/*"
@@ -282,16 +263,10 @@ const handleDrop = useCallback(
               <Grid item xs={0.5}/>
               <Grid item xs={6}>
                 <Grid container>
-                  <Grid item xs={12} 
-                  // key={itemDetail.name} 
-                  >
+                  <Grid item xs={12}>
                     <Box >
-                      {/* <Typography variant="subtitle1" gutterBottom>
-                        {itemDetail.name}
-                      </Typography> */}
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
                         <Grid>
-                        {/* <RHFTextField name="id" label="ID"/> */}
                           <RHFTextField
                             // id="outlined-name"
                             // size='small'
@@ -327,20 +302,12 @@ const handleDrop = useCallback(
                           // defaultValue={itemDetail.description}
                           style ={{width: '100%'}}
                         />
-                      {/* <TextField
-                        helperText=" "
-                        id="demo-helper-text-aligned-no-helper"
-                        label={itemDetail.price} 
-                      />원 */}
                       </Grid>
                     </Box>
                   </Grid>
                 </Grid>
               <Grid textAlign={"center"}>
-              <LoadingButton type="submit" variant="contained" 
-              loading={isSubmitting}
-              // onClick={onClickItemUpdateHandler}
-              >
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                 상품 수정
               </LoadingButton>
 
@@ -354,22 +321,6 @@ const handleDrop = useCallback(
             </Grid>
               </Grid>
             </Grid>
-
-            {/* <Grid container sx={{ my: 8 }}>
-                <Grid itemDetail xs={12} md={4} key={itemDetail.name}>
-                  <Box sx={{ my: 2, mx: 'auto', maxWidth: 280, textAlign: 'center' }}>
-                    <Typography variant="subtitle1" gutterBottom>
-                      {itemDetail.name}
-                    </Typography>
-                    <Typography sx={{ color: 'text.secondary' }}>가격 : {itemDetail.price}원</Typography>
-                    <Typography sx={{ color: 'text.secondary' }}>남은 수량 : {itemDetail.total_quantity}개</Typography>
-                    <Typography sx={{ color: 'text.secondary' }}>{itemDetail.description}</Typography>
-                  </Box>
-                </Grid>
-            </Grid> */}
-
-            
-          
           </>
         )}
 
