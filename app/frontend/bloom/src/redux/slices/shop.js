@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 /**
- * LHJ | 2022.05.06
- * @name shopNumber
+ * LHJ, LDJ | 2022.05.12
+ * @name shopSlice
  * @api .
  * @des
  * 해당 리덕스 기능 :
@@ -19,17 +19,34 @@ import {createSlice} from '@reduxjs/toolkit';
 // selector: 리덕스에 저장되어있는 친구 불러올 때 사용
 
 const initialState = {
-  shopNumber: '',
-  shopName: '',
+  number: '',
+  name: '',
+  wish_list: '',
+  search_list: '',
 };
 
 const shopSlice = createSlice({
   name: 'shop',
   initialState,
   reducers: {
-    setShopNumber(state, action) {
-      state.shopNumber = action.payload.shopNumber;
-      state.shopName = action.payload.shopName;
+    setShop(state, action) {
+      state.number = action.payload.number;
+      state.name = action.payload.name;
+    },
+
+    addWishList(state, action) {
+      state.wish_list = action.payload;
+    },
+
+    deleteWish(state, action) {
+      var result = state.wish_list.filter(function (data) {
+        return data.wish_id !== action.payload;
+      });
+      state.wish_list = result;
+    },
+
+    setSearchList(state, action) {
+      state.search_list = action.payload;
     },
   },
   extraReducers: builder => {},

@@ -6,11 +6,11 @@ import {useDispatch} from 'react-redux';
 import cartSlice from '../../redux/slices/cart';
 
 /**
- * CSW, LDJ | 2022.05.10
+ * CSW, LDJ | 2022.05.13
  * @name CartCard
  * @api -
  * @des
- * FlatList에 보여줄 item 컴포넌트
+ * Cart Page에 보여줄 단일 컴포넌트
  */
 
 const CartCardList = props => {
@@ -104,25 +104,6 @@ const CartCardList = props => {
               <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 10}}>
                 수량 : {quantity}
               </Text>
-              {/* <View style={styles.quantityBox}> */}
-              {/* <Icon.Button
-                  onPress={() => quantityMinus()}
-                  name="remove"
-                  color="black"
-                  backgroundColor="transparent"
-                  size={13}
-                  style={styles.removeIcon}
-                /> */}
-              {/* <Text>{quantityStatus}</Text> */}
-              {/* <Icon.Button
-                  onPress={() => quantityPlus()}
-                  name="add"
-                  color="black"
-                  backgroundColor="transparent"
-                  size={13}
-                  style={styles.addIcon}
-                /> */}
-              {/* </View> */}
             </View>
           </View>
           <View style={styles.imgBox}>
@@ -179,25 +160,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // quantityBox: {
-  //   flexDirection: 'row',
-  //   backgroundColor: '#FDECC8',
-  //   borderRadius: 5,
-  //   alignItems: 'center',
-  //   width: '35%',
-  //   justifyContent: 'center',
-  //   height: 27,
-  // },
-  // removeIcon: {
-  //   position: 'relative',
-  //   left: 5,
-  //   top: -1,
-  // },
-  // addIcon: {
-  //   position: 'relative',
-  //   right: -5,
-  //   bottom: 1,
-  // },
 });
 
 export default CartCardList;
