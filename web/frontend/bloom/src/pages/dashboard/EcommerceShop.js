@@ -96,7 +96,7 @@ export default function EcommerceShop() {
         const parseUser = JSON.parse(user);
         console.log(parseUser.access_token);
         // 5. api 호출!! 헤더에 access_token을 넣음
-        const response = await axios.get("/api/item?shop_number=10", {
+        const response = await axios.get(`/api/item?shop_number=${parseUser.shop_number}`, {
           headers : {
             Authorization: parseUser.access_token
           }

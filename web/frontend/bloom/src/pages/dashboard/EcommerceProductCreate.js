@@ -117,7 +117,6 @@ const onSubmit = async (itemInfo) => {
   const fd = new FormData();
   if(typeof image_url === 'string' || image_url === '') {
     console.log("난 바보야")
-    // fd.append('file', null);
   } else {
     console.log("파일있")
     fd.append('file', image_url);
@@ -125,7 +124,6 @@ const onSubmit = async (itemInfo) => {
   const user = localStorage.getItem('user');
   const parseUser = JSON.parse(user);
   fd.append('totalQuantity', total_quantity);
-  // fd.append('image_url', image_url);
   fd.append('price', price);
   fd.append('name', name);
   fd.append('description', description);
@@ -161,13 +159,19 @@ const handleDrop = useCallback(
   [setValue]
 );
 
+const spanStyle = {
+  // textAlign:'center',
+  marginRight: '40px',
+  // border: '5px solid pink'
+};
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
     <Page title="Ecommerce: Item Details">
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Item Details"
+          heading="Create Item"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
@@ -175,13 +179,12 @@ const handleDrop = useCallback(
               href: PATH_DASHBOARD.eCommerce.root,
             },
             {
-              name: 'Item/Update',
+              name: 'item',
               href: PATH_DASHBOARD.eCommerce.shop,
             },
-            // { name: sentenceCase(name) },
           ]}
         />
-          {/* <Typography fontSize={30} textAlign={"center"}  marginBottom={10}>{name}</Typography> */}
+          <Typography fontSize={30} textAlign={"center"} variant="h3" marginBottom={10} gutterBottom>상품 등록</Typography>
 
         <CartWidget />
 
@@ -189,7 +192,9 @@ const handleDrop = useCallback(
           <>
             <Grid container spacing={2}>
               <Grid item xs={5.5}>
+                <Typography color={"gray"}>상품 이미지를 등록해주세요.</Typography>
                 <RHFUploadAvatar
+                  sx={{mt:2}}
                   name="image_url"
                   accept="image/*"
                   maxSize={3145728}
@@ -198,7 +203,7 @@ const handleDrop = useCallback(
                     <Typography
                       variant="caption"
                       sx={{
-                        mt: 2,
+                        mt: 3,
                         mx: 'auto',
                         display: 'block',
                         textAlign: 'center',
@@ -217,62 +222,93 @@ const handleDrop = useCallback(
                   <Grid item xs={12}>
                     <Box >
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
-                        <Grid>
-                          <RHFTextField
-                            // id="outlined-name"
-                            // size='small'
-                            // required="true"
-                            name="name"
-                            label="이름"
-                            // onChange={OnChangeHandler("price")}
-                            // defaultValue={itemDetail.price}
-                            // style ={{width: '20%'}}
-                          />
-                        </Grid>
+                        <TextField xs={3} style ={{width: '20%'}}
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                              "& > fieldset": {
+                                border: "none"
+                              }
+                            },
+                          }}
+                        label="상품 이름 : "
+                        disabled
+                        font-color='black'/>
+                        <RHFTextField
+                          // id="outlined-name"
+                          // size='small'
+                          // required="true"
+                          xs={8}
+                          name="name"
+                          label=""
+                          // onChange={OnChangeHandler("price")}
+                          // defaultValue={itemDetail.price}
+                          style ={{width: '60%', ml:"1"}}
+                        />
                       </Grid>  
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
-                        <Grid>
+                      <TextField xs={3} style ={{width: '20%'}}
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                              "& > fieldset": {
+                                border: "none"
+                              }
+                            },
+                          }}
+                        label="가격 : "
+                        disabled
+                        font-color='black'/>
                           <RHFTextField
                             // id="outlined-name"
                             // size='small'
                             // required="true"
                             name="price"
-                            label="가격"
+                            label=""
                             // onChange={OnChangeHandler("price")}
                             // defaultValue={itemDetail.price}
-                            // style ={{width: '20%'}}
+                            style ={{width: '60%'}}
                           />
-                        </Grid>
+                        
                       </Grid>  
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
+                      <TextField xs={3} style ={{width: '20%'}}
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                              "& > fieldset": {
+                                border: "none"
+                              }
+                            },
+                          }}
+                        label="수량 : "
+                        disabled
+                        font-color='black'/>
                           <RHFTextField
                             // id="outlined-name"
                             // size='small'
                             // defaultValue={itemDetail.total_quantity}
                             // onChange={OnChangeHandler("total_quantity")}
                             name="total_quantity"
-                            label="수량"
-                            style ={{width: '20%'}}
+                            label=""
+                            style ={{width: '60%'}}
                             />
                       </Grid>  
                       <Grid item xs={12} sx={{mb:2}}>
                         <RHFTextField 
                           name="description"
-                          label="상세정보"
+                          label="상품 설명"
                           // id="outlined-multiline-static"
                           // required="true"
                           multiline
                           rows={6}
                           // onChange={OnChangeHandler("description")}
                           // defaultValue={itemDetail.description}
-                          style ={{width: '100%'}}
+                          style ={{width: '80%'}}
                         />
                       </Grid>
                     </Box>
                   </Grid>
                 </Grid>
-              <Grid textAlign={"center"}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              <Grid>
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting} style={{width:'80%'}}>
                 상품 등록
               </LoadingButton>
             </Grid>
