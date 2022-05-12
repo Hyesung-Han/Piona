@@ -15,7 +15,7 @@ import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 /**
- * LHJ | 2022.05.09
+ * LHJ | 2022.05.13
  * @name MenuCard
  * @api x
  * @des
@@ -25,28 +25,28 @@ import Icon from 'react-native-vector-icons/Ionicons';
  */
 
 const MenuCardList = ({item, navigation}) => {
-    // 0: {
-    //     comment: "감사감사~"
-    //     content: "여름이었다..."
-    //     created_at: "2022-05-29T09:00:00"
-    //     image_url: "sdf"
-    //     kw_adorable: "Y"
-    //     kw_clean: "Y"
-    //     kw_kind: "N"
-    //     kw_mood: "Y"
-    //     kw_reasonable: "Y"
-    //     kw_various: "N"
-    //     nickname: "asdasd"
-    //     reservation_id: 1
-    //     review_id: 1
-    //     score: 5
-    //     shop_name: "pipipi"
-    //    }
+  // 0: {
+  //     comment: "감사감사~"
+  //     content: "여름이었다..."
+  //     created_at: "2022-05-29T09:00:00"
+  //     image_url: "sdf"
+  //     kw_adorable: "Y"
+  //     kw_clean: "Y"
+  //     kw_kind: "N"
+  //     kw_mood: "Y"
+  //     kw_reasonable: "Y"
+  //     kw_various: "N"
+  //     nickname: "asdasd"
+  //     reservation_id: 1
+  //     review_id: 1
+  //     score: 5
+  //     shop_name: "pipipi"
+  //    }
   const user_id = useSelector(state => state.id);
   const token = useSelector(state => state.user.accessToken);
   //shopNumber는 현재 있는 가게이므로 리덕스에 있는 shopNumber사용 or 이전 화면(shopMenu에서 전달받기)
-  const shopNumber = useSelector(state => state.shop.shopNumber);
-  //const shopName = useSelector(state => state.shop.shopName);
+  const shopNumber = useSelector(state => state.shop.number);
+  //const shopName = useSelector(state => state.shop.name);
 
   //스코어에 따라서 별 아이콘 추가하는 함수
   const StartScore = () => {

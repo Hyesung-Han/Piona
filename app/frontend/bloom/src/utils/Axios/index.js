@@ -360,7 +360,7 @@ export const getNotResList = async (item_id, quantity, accessToken) => {
     });
 };
 
-// CSW | 위시리스트에 관한 API | [목록조회, 추가, 삭제]
+// CSW, LDJ | 위시리스트에 관한 API | [목록조회, 추가, 삭제]
 export const WishListAPI = {
   getWishList: async (user_id, accessToken) => {
     return await request
@@ -370,27 +370,13 @@ export const WishListAPI = {
         },
       })
       .then(response => {
-        return response.data;
+        return response;
       })
-      .catch(err => {
-        return err.response.data;
+      .catch(error => {
+        return error;
       });
   },
 
-  delete: async (wish_id, accessToken) => {
-    return await request
-      .delete(`/wishlist?wish_id=${wish_id}`, {
-        headers: {
-          Authorization: accessToken,
-        },
-      })
-      .then(response => {
-        return response.data.statusCode;
-      })
-      .catch(err => {
-        return err.response.data;
-      });
-  },
   add: async (shop_number, user_id, accessToken) => {
     return await request
       .post(
@@ -403,10 +389,25 @@ export const WishListAPI = {
         },
       )
       .then(response => {
-        return response.data.statusCode;
+        return response;
       })
-      .catch(err => {
-        return err.response.data;
+      .catch(error => {
+        return error;
+      });
+  },
+
+  delete: async (wish_id, accessToken) => {
+    return await request
+      .delete(`/wishlist?wish_id=${wish_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
       });
   },
 };
@@ -448,7 +449,7 @@ export const alarmAPI = {
   },
 };
 
-//CSW, SearchResult Page와 MapPage 위한 API
+//CSW, LDJ | SearchResult Page와 MapPage 위한 API
 export const searchAPI = {
   get: async (type, user_id, user_lat, user_lng, word, accessToken) => {
     return await request
@@ -461,7 +462,7 @@ export const searchAPI = {
         },
       )
       .then(response => {
-        return response.data;
+        return response;
       })
       .catch(error => {
         return error;
