@@ -37,9 +37,8 @@ const navConfig = [
         path: PATH_DASHBOARD.general.ecommerce, 
         icon: ICONS.ecommerce,
         children: [
-          { title: '상품 등록하기', path: PATH_DASHBOARD.user.profile },
-          { title: '상품 목록보기', path: PATH_DASHBOARD.user.cards },
-          { title: '상품 수정하기', path: PATH_DASHBOARD.user.list },
+          { title: '상품 등록하기', path: PATH_DASHBOARD.eCommerce.new },
+          { title: '상품 목록보기', path: PATH_DASHBOARD.eCommerce.root },
         ],
       },
       { title: '예약 관리', path: PATH_DASHBOARD.invoice.root, icon: ICONS.dashboard },
@@ -55,7 +54,7 @@ const navConfig = [
     subheader: 'admin',
     items: [
       { title: '회원 관리', path: PATH_DASHBOARD.user.root, icon: ICONS.user,},
-      { title: '리뷰 관리', path: PATH_DASHBOARD.eCommerce.root, icon: ICONS.cart},
+      { title: '리뷰 관리', path: PATH_DASHBOARD.review.root, icon: ICONS.cart},
       { title: '기업 관리', path: PATH_DASHBOARD.invoice.root, icon: ICONS.invoice},
     ],
   },
