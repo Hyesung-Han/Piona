@@ -61,6 +61,11 @@ public class WishListServiceImpl implements WishListService{
         return optionalWishLists.map(wishLists -> wishLists.stream().map(wishList -> WishListRes.of(wishList, getScoreAvg(wishList.getShop().getShopNumber()))).collect(Collectors.toList())).orElse(null);
     }
 
+    @Override
+    public WishList findWishListByUser_UserIdAndShop_ShopNumber(String userId, String shopNumber) throws Exception {
+        return wishListRepository.findWishListByUser_UserIdAndShop_ShopNumber(userId, shopNumber);
+    }
+
     /**
      * HHS | 2022.05.02
      * @name getScoreAvg
@@ -70,5 +75,6 @@ public class WishListServiceImpl implements WishListService{
         List<Review> review = reviewRepository.findReviewByReservation_Shop_ShopNumber(shopNumber);
         return review.stream().mapToInt(Review::getScore).average().orElse(0.0);
     }
+
 
 }
