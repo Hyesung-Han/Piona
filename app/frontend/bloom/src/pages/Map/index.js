@@ -192,15 +192,19 @@ const MapPage = ({navigation, route}) => {
     ));
   };
 
+  const blooming = useCallback(() => {
+    if (route.params.page === 'main') {
+      getLocation();
+      console.log('무한?');
+    } else if (route.params.page === 'search') {
+      fromSearch();
+    }
+  }, [getLocation, fromSearch, route.params.page]);
+
   useFocusEffect(
     useCallback(() => {
-      if (route.params.page === 'main') {
-        getLocation();
-        console.log('무한?');
-      } else if (route.params.page === 'search') {
-        fromSearch();
-      }
-    }, [route.params.page, getLocation, fromSearch]),
+      blooming();
+    }, []),
   );
 
   return (
