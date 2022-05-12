@@ -1,74 +1,83 @@
-import React, {useState, useCallback, useMemo} from 'react';
+import React, {useState, useCallback} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   StyleSheet,
   TextInput,
-  ScrollView,
   FlatList,
-  TouchableOpacity,
-  KeyboardAvoidingViewBase,
   KeyboardAvoidingView,
 } from 'react-native';
 import ShopCard from '../../components/ShopCard';
 import {searchAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import shopSlice from '../../redux/slices/shop';
 
 /**
- * CSW | 2022.05.06
+ * CSW, LDJ | 2022.05.13
  * @name SearchResultPage
  * @des
- * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
+ * # 사용 컴포넌트 : ShopCard
+ * # 무한 루프 에러 해결?! [리덕스로~]
  *  */
 
 const SearchResultPage = ({navigation, route}) => {
-  const [inputText, setInputText] = useState('');
-  const [data, setData] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
+  const search_list = useSelector(state => state.shop.search_list);
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
+  const type = route.params.type;
+  const user_lat = route.params.user_lat;
+  const user_lng = route.params.user_lng;
+  const word = route.params.word;
+  const [inputText, setInputText] = useState('');
 
-  const getShop = async () => {
+  const getShop = useCallback(async () => {
     try {
       const res = await searchAPI.get(
-        route.params.type,
+        type,
         user_id,
-        route.params.user_lat,
-        route.params.user_lng,
-        route.params.word,
+        user_lat,
+        user_lng,
+        word,
         token,
       );
-      setData(res.data);
+      const search_data = res.data.data;
+      if (res.data.result === 'success') {
+        dispatch(shopSlice.actions.setSearchList(search_data));
+      }
     } catch (error) {
-      console.log('검색결과', error);
+      console.log('검색어 결과 에러 : ', error);
     }
-  };
+  }, [type, user_id, user_lat, user_lng, word, token, dispatch]);
 
-  const setText = () => {
-    if (route.params.word === 'kw_reasonable') {
+  const setText = useCallback(() => {
+    if (word === 'kw_reasonable') {
       setInputText('#가성비');
-    } else if (route.params.word === 'kw_clean') {
+    } else if (word === 'kw_clean') {
       setInputText('#깔끔');
-    } else if (route.params.word === 'kw_mood') {
+    } else if (word === 'kw_mood') {
       setInputText('#감성');
-    } else if (route.params.word === 'kw_various') {
+    } else if (word === 'kw_various') {
       setInputText('#다양한구성');
     } else {
-      setInputText(route.params.word);
+      setInputText(word);
     }
-  };
-  const renderItem = ({item}) => {
-    return <ShopCard item={item} navigation={navigation} />;
-  };
+  }, [word]);
+
+  const renderItem = useCallback(
+    ({item}) => {
+      return <ShopCard item={item} navigation={navigation} />;
+    },
+    [navigation],
+  );
 
   useFocusEffect(
     useCallback(() => {
       setText();
       getShop();
-    }, []),
+    }, [getShop, setText]),
   );
 
   return (
@@ -102,15 +111,11 @@ const SearchResultPage = ({navigation, route}) => {
         <View style={styles.list}>
           <FlatList
             //리스트의 소스를 담는 속성
-            //data={data}
-            data={data}
+            data={search_list}
             //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
             renderItem={renderItem}
             //item의 고유의 키를 부여하는 속성
             keyExtractor={item => item.shop_number}
-            //무한 스크롤때문에 넣은듯
-            // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
-            // onEndReachedThreshold={0.4}
           />
         </View>
         <View style={styles.mapBtn}>
