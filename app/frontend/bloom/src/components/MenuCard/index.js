@@ -15,7 +15,7 @@ import RegisterReview from '../../pages/RegisterReview';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.09
+ * LHJ | 2022.05.13
  * @name MenuCard
  * @api x
  * @des
@@ -35,8 +35,8 @@ const MenuCardList = ({item, navigation}) => {
   const user_id = useSelector(state => state.id);
   const token = useSelector(state => state.user.accessToken);
   //shopNumber는 현재 있는 가게이므로 리덕스에 있는 shopNumber사용 or 이전 화면(shopMenu에서 전달받기)
-  const shopNumber = useSelector(state => state.shop.shopNumber);
-  //const shopName = useSelector(state => state.shop.shopName);
+  const shopNumber = useSelector(state => state.shop.number);
+  //const shopName = useSelector(state => state.shop.name);
 
   return (
     <View style={styles.container}>

@@ -17,7 +17,7 @@ import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
 
 /**
- * LDJ | 2022.05.10
+ * LDJ | 2022.05.13
  * @name SignInModal
  * @api userAPI/signin
  * @des
@@ -114,17 +114,6 @@ const SignInModal = props => {
       setLoading(false);
     }
   }, [loading, id, password, Ptoken, dispatch]);
-
-  // const sendData = () => {
-  //   if (id && password) {
-  //     props.user({id: id, password: password});
-  //     props.next(false);
-  //   } else if (!id) {
-  //     alert('아이디를 입력해주세요!');
-  //   } else if (password.length < 1) {
-  //     alert('비밀번호를 입력해주세요!');
-  //   }
-  // };
 
   return (
     <View
