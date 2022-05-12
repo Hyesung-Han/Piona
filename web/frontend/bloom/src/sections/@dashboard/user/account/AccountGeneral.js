@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
-import { useSnackbar } from 'notistack';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import RealAxios from 'axios';
 // swal
 import Swal from 'sweetalert2';
 // @mui
@@ -26,8 +26,10 @@ export default function AccountGeneral({shop}) {
   const { user } = useAuth();
   const [currentImageUrl, setCurrentImageUrl] = useState(shop?.image_url || '');
   const [isOpen, setIsOpen] = useState(false);
-  const [zip_code, setZipCode] = useState();
-  const [address, setAddress] = useState();
+  const [zip_code, setZipCode] = useState(shop?.zip_code || '');
+  const [address, setAddress] = useState(shop?.address || '');
+  const [shop_lng, setShopLng] = useState(0);
+  const [shop_lat, setShopLat] = useState(0);
 
   const UpdateUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -55,23 +57,15 @@ export default function AccountGeneral({shop}) {
     formState: { isSubmitting },
   } = methods;
 
-  useEffect(()=>{
-    console.log("zip_code",zip_code);
-    console.log("address",address);
-  },[zip_code, address]);
-
   const onSubmit = async (shopInfo) => {
       const { shop_number, description, detail_address, hours, image_url, name, tel, url } = shopInfo;
-      const shop_lng = 0;
-      const shop_lat = 0;
-      
       const fd = new FormData();
       if(typeof image_url === 'string' || image_url === '') {
         setCurrentImageUrl('');
       } else {
         fd.append('file', image_url);
       }
-
+      console.log(shop_lng);
       fd.append('shopInfoReq.address', address);
       fd.append('shopInfoReq.description', description);
       fd.append('shopInfoReq.detail_address', detail_address);
@@ -87,16 +81,37 @@ export default function AccountGeneral({shop}) {
       
       try {
         const response = await axios.patch(`/api/user`, fd, { headers: {
-            Authorization: user.access_token
-        }});
-        const { data } = response;
-        if(data.result === 'success') {
-          Swal.fire('수정 되었습니다.')
-        }
-      } catch (e) {
-        console.error(e);
+        Authorization: user.access_token
+      }});
+      const { data } = response;
+      if(data.result === 'success') {
+        Swal.fire('수정 되었습니다.')
       }
-    };
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getCoords = async (searchAddress) => {
+    try {
+      const response = await RealAxios.get(`https://k6a201.p.ssafy.io/api/shop/coords?address=${searchAddress}`,
+      {headers : {
+        Authorization: user.access_token
+      }});
+      const {data} = response;
+      console.log(data);
+      console.log("result",data.result);
+      if(data.result === 'success') {
+        const {x, y} = data.data;
+        setShopLng(x);
+        setShopLat(y);
+        console.log("쳌,,",x);
+      }
+    } catch(e) {
+      console.error('error', e);
+    }
+   
+  }
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -125,7 +140,6 @@ export default function AccountGeneral({shop}) {
   const handlePostCode = (data) => {
     let fullAddress = data.address;
     let extraAddress = '';
-
     if (data.addressType === 'R') {
         if (data.bname !== '') {
             extraAddress += data.bname;
@@ -138,6 +152,8 @@ export default function AccountGeneral({shop}) {
         setZipCode(data.zonecode);
         setAddress(fullAddress);
     }
+      
+    getCoords(data.address);
     closePostCode();
   }
 
