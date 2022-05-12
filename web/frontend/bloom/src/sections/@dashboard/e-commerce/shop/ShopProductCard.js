@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { paramCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 // @mui
 import { Box, Card, Link, Typography, Stack } from '@mui/material';
 // routes
@@ -22,6 +23,10 @@ export default function ShopProductCard({ product }) {
   const { item_id, shop_number, name, price, total_quantity, description, image_url } = product;
 
   const linkTo = PATH_DASHBOARD.eCommerce.view(paramCase(name));
+
+  useEffect(() => {
+    console.log(item_id);
+  }, []);
 
   return (
     <Card>
@@ -46,8 +51,8 @@ export default function ShopProductCard({ product }) {
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
-        <Link to='/dashboard/e-commerce/product/nike-air-force-1-ndestrukt' color="inherit" component={RouterLink}>
-        {/* <Link to={`/${item_id}`} color="inherit" component={RouterLink}> */}
+        {/* <Link to='/dashboard/e-commerce/product/nike-air-force-1-ndestrukt' color="inherit" component={RouterLink}> */}
+        <Link to={`/dashboard/e-commerce/product/${item_id}`} color="inherit" component={RouterLink}>
           <Typography variant="subtitle1" noWrap>
             {name}
           </Typography>

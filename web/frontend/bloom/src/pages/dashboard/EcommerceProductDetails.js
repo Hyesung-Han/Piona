@@ -10,6 +10,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+// import Link from 'src/theme/overrides/Link';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getProduct, addCart, onGotoStep } from '../../redux/slices/product';
@@ -34,6 +35,7 @@ import {
   ProductDetailsCarousel,
 } from '../../sections/@dashboard/e-commerce/product-details';
 import CartWidget from '../../sections/@dashboard/e-commerce/CartWidget';
+import EcommerceProductUpdate from './EcommerceProductUpdate';
 
 // ----------------------------------------------------------------------
 
@@ -74,18 +76,23 @@ export default function EcommerceProductDetails() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const [value, setValue] = useState('1');
-  const { name = '' } = useParams();
+  // const item_i = match.params.item_id;
+  const { name } = useParams();
+  // const params = useParams();
+  // const name = params.name;
+  const item_id = name;
   const { product, error, checkout } = useSelector((state) => state.product);
-
-  useEffect(() => {
-    dispatch(getProduct(name));
-  }, [dispatch, name]);
+  // useEffect(() => {
+    //   dispatch(getProduct(name));
+    // }, [dispatch, name]);
   
   const [itemDetail, setItemDetail] = useState([]);
   useEffect(() => {
+    // console.log(params);
+    console.log(item_id);
     getItemDetail();
   }, []);
-
+  
   useEffect(() => {
     console.log("itemDetail", itemDetail);
   }, [itemDetail])
@@ -99,12 +106,13 @@ export default function EcommerceProductDetails() {
         const parseUser = JSON.parse(user);
         console.log(parseUser.access_token);
         // 5. api 호출!! 헤더에 access_token을 넣음
-        const response = await axios.get("/api/item/1", {
+        const response = await axios.get(`/api/item/${item_id}`, {
           headers : {
             Authorization: parseUser.access_token
           }
         });
-        const {data} = response.data;
+        console.log(item_id);
+        const data = response.data.data;
         // 6. item 스테이트에 데이터 셋해줌!
         setItemDetail(data);
       }
@@ -115,7 +123,7 @@ export default function EcommerceProductDetails() {
   const handleAddCart = (product) => {
     dispatch(addCart(product));
   };
-
+  
   const handleGotoStep = (step) => {
     dispatch(onGotoStep(step));
   };
@@ -135,7 +143,7 @@ export default function EcommerceProductDetails() {
               name: 'Item',
               href: PATH_DASHBOARD.eCommerce.shop,
             },
-            { name: sentenceCase(name) },
+            // { name: sentenceCase(name) },
           ]}
         />
           <Typography fontSize={30} textAlign={"center"}  marginBottom={10}>{itemDetail.name}</Typography>
@@ -145,44 +153,28 @@ export default function EcommerceProductDetails() {
         {itemDetail && (
           <>
             <Grid container spacing={2}>
-              <Grid item xs={5} >
-                <Image alt={name} src={itemDetail.image_url}/>
+              <Grid item xs={5.5}>
+                <Image alt={itemDetail.image_url} src={itemDetail.image_url}/>
               </Grid> 
-              <Grid item xs={7}>
-                <Grid container >
-                  <Grid itemDetail xs={12} key={itemDetail.name} 
->
-                    <Box>
+              <Grid item xs={0.5}/>
+              <Grid item xs={6}>
+                <Grid container sx={{mt:5}}>
+                  <Grid item xs={12} key={itemDetail.name} >
+                    <Box >
                       {/* <Typography variant="subtitle1" gutterBottom>
                         {itemDetail.name}
                       </Typography> */}
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
-                        <Grid item xs={6}>
-                          <Typography>가격 : </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <TextField
-                            id="outlined-name"
-                            size='small'
-                            value={itemDetail.price}
-                          />
-                        </Grid>
+                        <div>가격 : &nbsp;{itemDetail.price} 원</div>
+                      </Grid>  
+                      <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
+                          남은 수량 : &nbsp;{itemDetail.total_quantity} 개
                       </Grid>  
                       <Grid item xs={12} sx={{mb:2}}>
-                        남은 수량 : 
-                        <TextField
-                          id="outlined-name"
-                          size='small'
-                          value={itemDetail.total_quantity}
-                        />
-                      </Grid>  
-                      <Grid item xs={12}>
-                        <TextField
-                          id="outlined-multiline-static"
-                          multiline
-                          rows={4}
-                          value={itemDetail.description}
-                        />
+                        <Typography>
+                          {itemDetail.description}
+                        </Typography>
+                        
                       {/* <TextField
                         helperText=" "
                         id="demo-helper-text-aligned-no-helper"
@@ -208,23 +200,31 @@ export default function EcommerceProductDetails() {
                     {/* onGotoStep={handleGotoStep} */}
                   {/* /> */}
                 {/* </Grid> */}
-              <Grid textAlign={"center"} spacing={12}>
-              <Button 
+              <Grid textAlign={"center"}>
+              <RouterLink  to={{
+                  pathname: PATH_DASHBOARD.eCommerce.update(item_id),
+                  // search: "?item_id=item_id",
+                  // hash: "#the-hash",
+                }}
+              state = {{ data: itemDetail }}
+              >
+                <Button sx={{mr:3}}
                 variant="contained"
-                startIcon={<Iconify icon="eva:plus-fill" />}
-                component={RouterLink}
-                to={PATH_DASHBOARD.eCommerce.new}
-                >
-                상품 수정
-              </Button>
-              <Button
+                startIcon={<Iconify icon="eva:minus-fill" />}>
+                  상품 수정 및 삭제
+                </Button>
+              </RouterLink>
+
+
+              {/* <Button sx={{mr:3}}
                 variant="contained"
                 startIcon={<Iconify icon="eva:minus-fill" />}
                 component={RouterLink}
-                to={PATH_DASHBOARD.eCommerce.new}
+                to={PATH_DASHBOARD.eCommerce.update(item_id)}
+                state={{ data: itemDetail }}
                 >
-                상품 삭제
-              </Button>
+                상품 수정 및 삭제
+              </Button> */}
             </Grid>
               </Grid>
             </Grid>
@@ -246,7 +246,6 @@ export default function EcommerceProductDetails() {
           
           </>
         )}
-
         {!itemDetail && <SkeletonProduct />}
 
         {/* {error && <Typography variant="h6">404 Product not found</Typography>} */}
