@@ -15,12 +15,11 @@ let request = axios.create({
 
 // LDJ | 유저에 관한 API | [로그인, 회원가입, 아이디중복, 닉네임중복, 폰인증요청, 폰인증확인, 비밀번호확인, 회원정보수정, 회원탈퇴]
 export const userAPI = {
-  signin: async (user_id, password, phoneToken) => {
+  signin: async (user_id, password) => {
     return await request
       .post('/user/signin', {
         user_id,
         password,
-        phoneToken,
       })
       .then(response => {
         return response;
@@ -479,7 +478,7 @@ export const searchAPI = {
         },
       )
       .then(response => {
-        return response.data;
+        return response;
       })
       .catch(error => {
         return error;

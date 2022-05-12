@@ -1,44 +1,29 @@
-import React, {useState, useCallback, useEffect, useMemo} from 'react';
+import React, {useState, useCallback} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {TabRouter, useFocusEffect} from '@react-navigation/native';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-  KeyboardAvoidingViewBase,
-  Dimensions,
-  Alert,
-  Text,
-} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import ShopCard from '../../components/ShopCard';
 import {searchAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
-import NaverMapView, {
-  Circle,
-  Marker,
-  Path,
-  Polyline,
-  Polygon,
-  getCenter,
-} from 'react-native-nmap';
+import NaverMapView, {Marker} from 'react-native-nmap';
 import Geolocation from 'react-native-geolocation-service';
 import {Platform, PermissionsAndroid} from 'react-native';
+import {useDispatch} from 'react-redux';
+import shopSlice from '../../redux/slices/shop';
 /**
- * LHJ, CSW | 2022.05.10
+ * LHJ, CSW | 2022.05.13
  * @name MapPage
  * @des
  * 메인페이지에서 지도에서 찾기 버튼을 누르면 이동하는 페이지
  * 네이버맵을 상단에 띄움
- * TODO
- * 1. 전달받은 가게 화면에 지도에 뿌려주기
  *  */
 
 const MapPage = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
+  const shop_list = useSelector(state => state.shop.shop_list);
+
   const [center, setCenter] = useState({
     zoom: 12,
     tilt: 1,
@@ -46,12 +31,51 @@ const MapPage = ({navigation, route}) => {
     longitude: 0.0,
   });
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
-  const [data, setData] = useState([]);
   const [appear, setAppear] = useState(false);
   const [shopInfo, setShopInfo] = useState([]);
   const [move, setMove] = useState([]);
 
-  const fromMain = async () => {
+  async function requestPermission() {
+    try {
+      if (Platform.OS === 'ios') {
+        return await Geolocation.requestAuthorization('always');
+      }
+      if (Platform.OS === 'android') {
+        return await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  const getLocation = useCallback(() => {
+    requestPermission().then(result => {
+      if (result === 'granted') {
+        Geolocation.getCurrentPosition(
+          pos => {
+            setCoordinate({
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+            });
+            setCenter({
+              zoom: 12,
+              tilt: 1,
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+            });
+            fromMain();
+          },
+          error => {
+            console.log(error);
+          },
+          {enableHighAccuracy: true, timeout: 3600},
+        );
+      }
+    });
+  }, [fromMain]);
+
+  const fromMain = useCallback(async () => {
     try {
       const res = await searchAPI.getMap(
         'location',
@@ -60,14 +84,17 @@ const MapPage = ({navigation, route}) => {
         coordinate.longitude,
         token,
       );
-      setData(res.data);
+      const shop_data = res.data.data;
+      if (res.data.result === 'success') {
+        dispatch(shopSlice.actions.setShopList(shop_data));
+      }
     } catch (error) {
       console.log('검색결과', error);
     }
-  };
+  }, [user_id, coordinate, token, dispatch]);
 
   // 현재 화면에서 재검색하기 위한 중간 좌표 필요
-  const relocation = async () => {
+  const relocation = useCallback(async () => {
     var re_lat = 0;
     var re_lng = 0;
     move.map(e => {
@@ -92,24 +119,16 @@ const MapPage = ({navigation, route}) => {
         re_lng,
         token,
       );
-      setData(res.data);
+      const shop_data = res.data.data;
+      if (res.data.result === 'success') {
+        dispatch(shopSlice.actions.setShopList(shop_data));
+      }
     } catch (error) {
       console.log('검색결과', error);
     }
-  };
+  }, [user_id, token, move, dispatch]);
 
-  // const fromSearch = async () => {
-  //   const res = await route.params.shop;
-  //   setData(res);
-  //   setCenter({
-  //     zoom: 12,
-  //     tilt: 1,
-  //     latitude: data[0].shop_lat,
-  //     longitude: data[0].shop_lng,
-  //   });
-  // };
-
-  const fromSearch = async () => {
+  const fromSearch = useCallback(async () => {
     try {
       if (route.params.type === 'location') {
         const res = await searchAPI.get(
@@ -120,7 +139,10 @@ const MapPage = ({navigation, route}) => {
           route.params.word,
           token,
         );
-        setData(res.data);
+        const shop_data = res.data.data;
+        if (res.data.result === 'success') {
+          dispatch(shopSlice.actions.setShopList(shop_data));
+        }
       } else if (route.params.type === 'keyword') {
         const res = await searchAPI.get(
           route.params.type,
@@ -130,48 +152,32 @@ const MapPage = ({navigation, route}) => {
           route.params.word,
           token,
         );
-        setData(res.data);
+        const shop_data = res.data.data;
+        if (res.data.result === 'success') {
+          dispatch(shopSlice.actions.setShopList(shop_data));
+        }
       }
       setCenter({
         zoom: 12,
         tilt: 1,
-        latitude: data[0].shop_lat,
-        longitude: data[0].shop_lng,
+        latitude: shop_list[0].shop_lat,
+        longitude: shop_list[0].shop_lng,
       });
     } catch (error) {
       console.log('검색결과', error);
     }
-  };
-
-  const getLocation = () => {
-    requestPermission().then(result => {
-      if (result === 'granted') {
-        Geolocation.getCurrentPosition(
-          pos => {
-            setCoordinate({
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-            });
-            setCenter({
-              zoom: 12,
-              tilt: 1,
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-            });
-            fromMain();
-          },
-          error => {
-            console.log(error);
-          },
-          {enableHighAccuracy: true, timeout: 3600},
-        );
-      }
-    });
-  };
+  }, [
+    route.params.type,
+    route.params.word,
+    user_id,
+    token,
+    shop_list,
+    dispatch,
+  ]);
 
   // 받아온 상점들 마커로 뿌려주기
   const Markers = () => {
-    return data.map(row => (
+    return shop_list.map(row => (
       <Marker
         coordinate={{
           latitude: row.shop_lat,
@@ -186,34 +192,20 @@ const MapPage = ({navigation, route}) => {
     ));
   };
 
-  async function requestPermission() {
-    try {
-      if (Platform.OS === 'ios') {
-        return await Geolocation.requestAuthorization('always');
-      }
-      if (Platform.OS === 'android') {
-        return await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        );
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   useFocusEffect(
     useCallback(() => {
       if (route.params.page === 'main') {
         getLocation();
+        console.log('무한?');
       } else if (route.params.page === 'search') {
         fromSearch();
       }
-    }, []),
+    }, [route.params.page, getLocation, fromSearch]),
   );
 
   return (
     <>
-      {data ? (
+      {shop_list ? (
         <View style={styles.container}>
           {route.params.page === 'main' ? (
             <NaverMapView
