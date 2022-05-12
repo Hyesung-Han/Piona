@@ -98,15 +98,49 @@ const MapPage = ({navigation, route}) => {
     }
   };
 
+  // const fromSearch = async () => {
+  //   const res = await route.params.shop;
+  //   setData(res);
+  //   setCenter({
+  //     zoom: 12,
+  //     tilt: 1,
+  //     latitude: data[0].shop_lat,
+  //     longitude: data[0].shop_lng,
+  //   });
+  // };
+
   const fromSearch = async () => {
-    const res = await route.params.shop;
-    setData(res);
-    setCenter({
-      zoom: 12,
-      tilt: 1,
-      latitude: data[0].shop_lat,
-      longitude: data[0].shop_lng,
-    });
+    try {
+      if (route.params.type === 'location') {
+        const res = await searchAPI.get(
+          route.params.type,
+          user_id,
+          0,
+          0,
+          route.params.word,
+          token,
+        );
+        setData(res.data);
+      } else if (route.params.type === 'keyword') {
+        const res = await searchAPI.get(
+          route.params.type,
+          user_id,
+          0,
+          0,
+          route.params.word,
+          token,
+        );
+        setData(res.data);
+      }
+      setCenter({
+        zoom: 12,
+        tilt: 1,
+        latitude: data[0].shop_lat,
+        longitude: data[0].shop_lng,
+      });
+    } catch (error) {
+      console.log('검색결과', error);
+    }
   };
 
   const getLocation = () => {
@@ -174,12 +208,15 @@ const MapPage = ({navigation, route}) => {
       } else if (route.params.page === 'search') {
         fromSearch();
       }
-    }, [data]),
+    }, []),
   );
+
+  console.log('gd', data);
+  console.log('gzz', move);
 
   return (
     <>
-      {data && (
+      {data ? (
         <View style={styles.container}>
           {route.params.page === 'main' ? (
             <NaverMapView
@@ -202,7 +239,8 @@ const MapPage = ({navigation, route}) => {
             <NaverMapView
               style={{width: '100%', height: '100%'}}
               zoomControl={false}
-              center={center}>
+              center={center}
+              onCameraChange={e => setMove(e.coveringRegion)}>
               <Markers />
             </NaverMapView>
           )}
@@ -254,6 +292,35 @@ const MapPage = ({navigation, route}) => {
               />
             </View>
           )}
+          <TouchableOpacity
+            style={styles.relocation}
+            onPress={() => relocation()}>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>
+              현위치에서 검색
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <NaverMapView
+            style={{width: '100%', height: '100%'}}
+            zoomControl={false}
+            center={center}
+            onCameraChange={e => setMove(e.coveringRegion)}></NaverMapView>
+
+          <View style={styles.searchBtn}>
+            <Icon.Button
+              name="menu-sharp"
+              color="white"
+              backgroundColor="#F2A7B3"
+              size={20}
+              borderRadius={30}
+              width={50}
+              alignItems="center"
+              justifyContent="center"
+              onPress={() => navigation.goBack()}
+            />
+          </View>
           <TouchableOpacity
             style={styles.relocation}
             onPress={() => relocation()}>
