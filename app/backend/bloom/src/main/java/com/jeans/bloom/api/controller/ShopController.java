@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Api(value = "가게 API", tags = {"Shop"})
@@ -126,6 +128,26 @@ public class ShopController {
         }
     }
 
+    /**
+     * LJA | 2022.05.13
+     * @name getCoordsByAddress
+     * @api {get} /shop/coords?address={address}
+     * @des 주소를 이용하여 위도, 경도 반환
+     */
+    @GetMapping("/coords")
+    @ApiOperation(value = "주소", notes = "주소를 이용하여 위도, 경도 불러오기")
+    public ResponseEntity<BaseResponseBody> getCoordsByAddress(
+            @RequestParam @ApiParam(value = "주소", required = true) String address) {
+        try {
+            double[] coords = searchShopService.addrToCoords(address);
+            Map map = new HashMap();
+            map.put("x", coords[0]);
+            map.put("y", coords[1]);
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", map));
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
 
     /**
      * LJA | 2022.05.04
