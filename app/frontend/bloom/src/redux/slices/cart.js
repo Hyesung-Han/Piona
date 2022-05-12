@@ -12,6 +12,7 @@ const initialState = {
   id: '',
   quantity: '',
   price: '',
+  cart_list: '',
 };
 
 const cartSlice = createSlice({
@@ -22,6 +23,15 @@ const cartSlice = createSlice({
       state.id = action.payload.id;
       state.quantity = action.payload.quantity;
       state.price = action.payload.price;
+    },
+    addCartList(state, action) {
+      state.cart_list = action.payload;
+    },
+    deleteCart(state, action) {
+      var result = state.cart_list.filter(function (data) {
+        return data.cart_id !== action.payload;
+      });
+      state.cart_list = result;
     },
   },
   extraReducers: builder => {},
