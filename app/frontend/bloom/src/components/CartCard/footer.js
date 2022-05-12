@@ -2,12 +2,12 @@ import React, {useCallback} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {cartAPI} from '../../utils/Axios';
+import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import cartSlice from '../../redux/slices/cart';
-import {useSelector} from 'react-redux';
 
 /**
- * CSW, LDJ | 2022.05.10
+ * CSW, LDJ | 2022.05.12
  * @name CartFooter
  * @api cartAPI/deleteCart
  * @des
@@ -26,17 +26,18 @@ const CartFooter = props => {
   const deleteCart = useCallback(async () => {
     try {
       const response = await cartAPI.deleteCart(cart_id, user_accessToken);
-      console.log(response.data.result);
+      console.log(response.data);
       if (response.data.result === 'success') {
         Alert.alert('알림', '삭제되었습니다!');
+        dispatch(cartSlice.actions.deleteCart(cart_id));
+        dispatch(
+          cartSlice.actions.setCart({
+            id: '',
+            quantity: '',
+            price: '',
+          }),
+        );
       }
-      dispatch(
-        cartSlice.actions.setCart({
-          id: '',
-          quantity: '',
-          price: '',
-        }),
-      );
     } catch (error) {
       Alert.alert('알림', '삭제할 아이템을 선택해주세요!');
       console.log(error);
