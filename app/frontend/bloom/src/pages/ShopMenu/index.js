@@ -6,7 +6,7 @@ import {shopDetailAPI} from '../../utils/Axios';
 import MenuCard from '../../components/MenuCard';
 
 /**
- * LHJ | 2022.05.09
+ * LHJ | 2022.05.13
  * @name shopMenu
  * @api .
  * @des
@@ -16,8 +16,8 @@ import MenuCard from '../../components/MenuCard';
 
 const ShopMenuPage = ({navigation}) => {
   const [data, setData] = useState([]);
-  const shopNumber = useSelector(state => state.shop.shopNumber);
-  const shopName = useSelector(state => state.shop.shopName);
+  const shopNumber = useSelector(state => state.shop.number);
+  const shopName = useSelector(state => state.shop.name);
   const token = useSelector(state => state.user.accessToken);
 
   const getShopItemList = async () => {
