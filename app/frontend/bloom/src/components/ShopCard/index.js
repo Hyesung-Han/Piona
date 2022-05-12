@@ -4,59 +4,48 @@ import HorizonLine from '../HorizonLine';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {WishListAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
-import shopSlice, {shop} from '../../redux/slices/shop';
+import shopSlice from '../../redux/slices/shop';
 import {useDispatch} from 'react-redux';
 
 /**
- * CSW,LHJ | 2022.05.06
+ * CSW, LHJ, LDJ | 2022.05.13
  * @name ShopCard
  * @api WishListAPI/addWishList, WishListAPI/deleteWishList
  * @des
- * 1. 컴포넌트 목록 :
- * 2. 페이지 기능 :
- * FlatList에 보여줄 item 컴포넌트이다.
+
  */
 
-const ShopCard = ({item, navigation}, props) => {
-  // "data": {
-  //   "shop_number": "10",
-  //   "tel": "031121513",
-  //   "hours": "아홉시부터열시까지바짝벌어요",
-  //   "zip_code": 21364,
-  //   "address": "서울특별시 가나다라동",
-  //   "name": "pipipi",
-  //   "description": "우리가게가제일조아용",
-  //   "url": "dbdkfdpf",
-  //   "image_url": "bdkdfpdf",
-  //   "shop_lng": 127.0134068,
-  //   "shop_lat": 37.5051003,
-  //   "score": 2.6666666666666665,
-  //   "review_cnt": 3,
-  //   "wish_id": 0
-  // }
+const ShopCard = ({item, heartStatus, navigation}) => {
   const dispatch = useDispatch();
-  const [heartStatus, setHeartStaus] = useState(
-    item.wish_id === 0 ? false : true,
-  );
+  const shop_number = item.shop_number;
+  const shop_name = item.name;
+  const shop_imaage_url = item.image_url;
+  const shop_score = item.score.toFixed(2);
+  const wish_id = item.wish_id;
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
-  const scoreNum = item.score.toFixed(2);
+  const [heartShape, setHeartShape] = useState(wish_id !== 0 ? true : false);
 
-  const addWish = async () => {
-    try {
-      const res = await WishListAPI.add(item.shop_number, user_id, token);
-    } catch (error) {
-      console.log('위시리스트 추가', error);
+  const changeWishStatus = useCallback(async () => {
+    if (heartShape) {
+      try {
+        const res = await WishListAPI.delete(wish_id, token);
+        if (res.data.result === 'success') {
+          dispatch(shopSlice.actions.deleteWish(wish_id));
+        }
+      } catch (error) {
+        console.log('좋아요 취소 에러 : ', error);
+      }
+    } else {
+      try {
+        const res = await WishListAPI.add(shop_number, user_id, token);
+        if (res.data.result === 'success') {
+        }
+      } catch (error) {
+        console.log('좋아요 에러 : ', error);
+      }
     }
-  };
-
-  const deleteWish = async () => {
-    try {
-      const res = await WishListAPI.delete(item.wish_id, token);
-    } catch (error) {
-      console.log('위시리스트 삭제', error);
-    }
-  };
+  }, [heartShape, wish_id, shop_number, user_id, token, dispatch]);
 
   const startScore = () => {
     const result = [];
@@ -74,29 +63,29 @@ const ShopCard = ({item, navigation}, props) => {
     return result;
   };
 
-  const setShopNumberAtRedux = () => {
+  const setShop = useCallback(() => {
     dispatch(
-      shopSlice.actions.setShopNumber({
-        shopNumber: `${item.shop_number}`,
-        shopName: `${item.name}`,
+      shopSlice.actions.setShop({
+        number: shop_number,
+        name: shop_name,
       }),
     );
-  };
+  }, [shop_number, shop_name, dispatch]);
 
   return (
     <View style={styles.CardList}>
       <TouchableOpacity
         onPress={() => {
-          setShopNumberAtRedux();
+          setShop();
           navigation.navigate('ShopDetail', {
-            shopNumber: `${item.shop_number}`,
-            shopName: `${item.name}`,
-          })
+            shopNumber: shop_number,
+            shopName: shop_name,
+          });
         }}>
         <View style={styles.seperateContainer}>
           <View style={{width: '95%'}}>
             <Image
-              source={{uri: `${item.image_url}`}}
+              source={{uri: shop_imaage_url}}
               style={{
                 resizeMode: 'cover',
                 width: '100%',
@@ -105,26 +94,26 @@ const ShopCard = ({item, navigation}, props) => {
               }}
             />
             <View style={styles.iconBox}>
-              {heartStatus === false ? (
-                <Icon.Button
-                  name="heart-outline"
-                  color="#F15C74"
-                  backgroundColor="transparent"
-                  size={25}
-                  onPress={() => {
-                    setHeartStaus(prevStatus => (prevStatus ? false : true));
-                    addWish();
-                  }}
-                />
-              ) : (
+              {heartShape ? (
                 <Icon.Button
                   name="heart"
                   color="#F15C74"
                   backgroundColor="transparent"
                   size={25}
                   onPress={() => {
-                    setHeartStaus(prevStatus => (prevStatus ? false : true));
-                    deleteWish();
+                    setHeartShape(false);
+                    changeWishStatus();
+                  }}
+                />
+              ) : (
+                <Icon.Button
+                  name="heart-outline"
+                  color="#F15C74"
+                  backgroundColor="transparent"
+                  size={25}
+                  onPress={() => {
+                    setHeartShape(true);
+                    changeWishStatus();
                   }}
                 />
               )}
@@ -137,7 +126,7 @@ const ShopCard = ({item, navigation}, props) => {
                   <Text style={styles.itemTitle}>{item.name}</Text>
                 </View>
                 <View style={styles.scoreBox}>
-                  <Text style={styles.itemScore}>{scoreNum}</Text>
+                  <Text style={styles.itemScore}>{shop_score}</Text>
                   <View style={styles.starIcons}>{startScore()}</View>
                 </View>
               </View>
