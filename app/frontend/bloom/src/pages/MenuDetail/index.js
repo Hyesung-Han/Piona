@@ -18,7 +18,7 @@ import {getNotResList} from '../../utils/Axios';
 import CalenderModal from '../../components/CalenderModal';
 
 /**
- * CSW, LDJ, LHJ | 2022.05.11
+ * CSW, LDJ, LHJ | 2022.05.12
  * @name MenuDetailPage
  * @api 1. MenuDetailAPI/get
  *      2. getNotResList
@@ -36,7 +36,20 @@ const MenuDetailPage = ({navigation, route}) => {
   const [notRedData, setnotRedData] = useState([]);
   const shop_number = data.shop_number;
   const [calenderModal, setCalenderModal] = useState(false);
-
+  // const [resDateAtt, setResDateAtt] = useState({
+  //   data: '',
+  //   att: `{
+  //       customStyles: {
+  //         container: {
+  //           backgroundColor: 'green',
+  //         },
+  //         text: {
+  //           color: 'black',
+  //           fontWeight: 'bold',
+  //         },
+  //       },
+  //     },`,
+  // });
   const getMenuDetail = async () => {
     try {
       const res = await MenuDetailAPI.get(item_id, token);
@@ -62,6 +75,14 @@ const MenuDetailPage = ({navigation, route}) => {
     }
   };
 
+  // const rendering = () => {
+  //   const result = [];
+  //   for (let i = 0; i < notRedData.length; i++) {
+  //     result.push(setResDateAtt(notRedData[i]));
+  //   }
+  //   return result;
+  // };
+
   const getNotReservationList = async () => {
     try {
       const res = await getNotResList(item_id, 10, token);
@@ -76,6 +97,8 @@ const MenuDetailPage = ({navigation, route}) => {
         // console.log(Array.isArray(res.data.data));
         // console.log(typeof res.data.data);
       }
+      //반복문으로 처리해서 모달로 넘겨주기
+      //setResDateAtt();
       // console.log('1');
       // console.log(res.data.data);
       //console.log(notRedData);
