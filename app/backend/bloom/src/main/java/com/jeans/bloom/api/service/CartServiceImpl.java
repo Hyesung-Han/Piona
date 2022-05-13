@@ -39,8 +39,21 @@ public class CartServiceImpl implements CartService{
      * @des 아이템 정보를 받아 장바구니(cart)에 아이템을 추가해주는 메소드
      */
     @Override
-    public void addCartItem(CartReq cartItem) throws Exception {
-        cartRepository.save(cartItem.toCart());
+    public String addCartItem(CartReq cartItem) throws Exception {
+        List<Cart> cartList = cartRepository.findCartsByUser_UserId(cartItem.getUserId()).orElse(null);
+        if(cartList != null) {
+            String shopNumber = cartItem.getShopNumber();
+            List<Cart> cartFilterList = cartList.stream().filter(cart->!(cart.getShop().getShopNumber().equals(shopNumber))).collect(Collectors.toList());
+            if(cartFilterList.size() > 0) {
+                return "fail";
+            } else {
+                cartRepository.save(cartItem.toCart());
+                return "success";
+            }
+        } else {
+            cartRepository.save(cartItem.toCart());
+            return "success";
+        }
     }
 
     /**
