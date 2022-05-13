@@ -17,7 +17,7 @@ import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import moment from 'moment';
 
 /**
- * lHJ | 2022.05.11
+ * lHJ | 2022.05.12
  * @name CalenderModal
  * @api cartAPI
  * @des
@@ -34,20 +34,65 @@ const CalenderModal = props => {
   const token = props.token;
   const notRedData = props.notRedData;
   const [pickedDate, setPickedDate] = useState();
-  const [resDateAtt, setResDateAtt] = useState({
-    data: '',
-    att: `{
+  const [pickedDateFilter, setPickedDateFilter] = useState();
+  const [selectDate, setSelectDate] = useState('');
+  const [pickedDateColor, setPickedDateColor] = useState('#B2B2B2');
+  let markedDates = [];
+
+  const touch = () => {
+    Alert.alert('알림', '선택한 날짜는 ' + pickedDate + '입니다');
+  };
+
+  const render = () => {
+    let twoWeek = [];
+    //const today = moment().format().split('T')[0];
+    if (selectDate === null) {
+      //받아온 예약 불가 날짜 표시해주기
+      for (let i = 0; i < notRedData.length; i++) {
+        //markedDates[notRedData[i]] = {selected: true, disableTouchEvent: true};
+        markedDates[notRedData[i]] = {
+          customStyles: {
+            container: {
+              backgroundColor: 'white',
+            },
+            text: {
+              color: '#DADADA',
+              //fontWeight: 'bold',
+            },
+          },
+          disableTouchEvent: true,
+        };
+      }
+    } else {
+      for (let i = 0; i < notRedData.length; i++) {
+        //markedDates[notRedData[i]] = {selected: true, disableTouchEvent: true};
+        markedDates[notRedData[i]] = {
+          customStyles: {
+            container: {
+              backgroundColor: 'white',
+            },
+            text: {
+              color: '#DADADA',
+              //fontWeight: 'bold',
+            },
+          },
+          disableTouchEvent: true,
+        };
+      }
+      markedDates[selectDate] = {
         customStyles: {
           container: {
-            backgroundColor: 'green',
+            backgroundColor: '#F2A7B3',
           },
           text: {
-            color: 'black',
-            fontWeight: 'bold',
+            color: 'white',
+            //fontWeight: 'bold',
           },
         },
-      },`,
-  });
+      };
+    }
+    return markedDates;
+  };
 
   const addCart = useCallback(async () => {
     try {
@@ -61,14 +106,20 @@ const CalenderModal = props => {
         token,
       );
       console.log(response.data.data);
-      // console.log(notRedData);
-      Alert.alert('알림', '장바구니에 담겼습니다!');
+      Alert.alert('알림', '장바구니에 담겼습니다!', [
+        {
+          text: '확인',
+          onPress: () => {
+            props.exit(false);
+          },
+        },
+      ]);
     } catch (error) {
       if (error.response) {
         Alert.alert('알림', error.response.data.message);
       }
     }
-  }, [item_id, pickedDate, quantityStatus, shop_number, token, user_id]);
+  }, [item_id, pickedDate, props, quantityStatus, shop_number, token, user_id]);
 
   return (
     <View
@@ -121,24 +172,12 @@ const CalenderModal = props => {
           <View style={{width: '100%'}}>
             <Calendar
               style={styles.calendar}
-              //   markedDates={notRedData}
-              //이부분은 어떻게 반복문으로 넣어야함
+              minDate={moment().format().split('T')[0]}
+              maxDate={moment().add(13, 'days').format().split('T')[0]}
               markingType={'custom'}
-              markedDates={{
-                '2022-05-28': {
-                  customStyles: {
-                    container: {
-                      backgroundColor: 'green',
-                    },
-                    text: {
-                      color: 'black',
-                      fontWeight: 'bold',
-                    },
-                  },
-                },
-              }}
+              markedDates={render()}
               theme={{
-                selectedDayBackgroundColor: 'red',
+                selectedDayBackgroundColor: 'green',
                 arrowColor: 'blue',
                 dotColor: 'green',
                 todayTextColor: '#F15C74',
@@ -147,11 +186,15 @@ const CalenderModal = props => {
                 const nowTime = moment().format('HH:mm:ss');
                 let date = day.dateString + 'T' + nowTime + '.666Z';
                 setPickedDate(date);
-                //console.log('pickedDate = ' + pickedDate);
+                setPickedDateFilter(day.dateString);
+                setSelectDate(day.dateString);
+                //renderMark();
               }}
             />
           </View>
-          <Text>{pickedDate}</Text>
+          <Text style={{alignSelf: 'flex-end'}}>
+            {/* 선택한 날짜: {pickedDateFilter} */} 
+          </Text>
           <TouchableOpacity
             style={{
               backgroundColor: '#F15C74',
@@ -165,7 +208,7 @@ const CalenderModal = props => {
             //onPress={addCart}
             onPress={() => {
               addCart();
-              props.exit(false);
+              //props.exit(false);
             }}>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               완료
