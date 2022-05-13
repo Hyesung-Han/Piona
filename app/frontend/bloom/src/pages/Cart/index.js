@@ -9,13 +9,14 @@ import {useDispatch} from 'react-redux';
 import cartSlice from '../../redux/slices/cart';
 
 /**
- * CSW, LDJ | 2022.05.12
+ * CSW, LDJ, LHJ | 2022.05.13
  * @name CartPage
  * @api cartAPI/getCartList
  * @des
  * 장바구니에 담은 item 목록 조회
  * # 사용 컴포넌트 : CartCard(index.js / footer.js)
  * # 무한 루프 에러 해결?! [리덕스로~]
+ * 05.13 > 화면 전환을 위한 컴포넌트에 네비게이션 전달
  *  */
 
 const CartPage = ({navigation}) => {
@@ -39,6 +40,13 @@ const CartPage = ({navigation}) => {
   const renderItem = useCallback(
     ({item}) => {
       return <CartCardList item={item} navigation={navigation} />;
+    },
+    [navigation],
+  );
+
+  const cartFooter = useCallback(
+    ({item}) => {
+      return <CartFooter item={item} navigation={navigation} />;
     },
     [navigation],
   );
@@ -85,7 +93,7 @@ const CartPage = ({navigation}) => {
           renderItem={renderItem}
           //item의 고유의 키를 부여하는 속성
           keyExtractor={item => item.cart_id}
-          ListFooterComponent={CartFooter}
+          ListFooterComponent={cartFooter}
         />
       </View>
     </View>

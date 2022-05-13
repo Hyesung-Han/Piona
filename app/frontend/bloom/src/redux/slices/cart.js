@@ -12,7 +12,14 @@ const initialState = {
   id: '',
   quantity: '',
   price: '',
+  shop_number: '',
+  item_id: '',
+  item_name: '',
+  image_url: '',
+  reservation_date: '',
+  shop_name: '',
   cart_list: '',
+  select_cart_list: [],
 };
 
 const cartSlice = createSlice({
@@ -23,6 +30,12 @@ const cartSlice = createSlice({
       state.id = action.payload.id;
       state.quantity = action.payload.quantity;
       state.price = action.payload.price;
+      state.shop_number = action.payload.shop_number;
+      state.item_id = action.payload.item_id;
+      state.item_name = action.payload.item_name;
+      state.image_url = action.payload.image_url;
+      state.reservation_date = action.payload.reservation_date;
+      state.shop_name = action.payload.shop_name;
     },
     addCartList(state, action) {
       state.cart_list = action.payload;
@@ -32,6 +45,15 @@ const cartSlice = createSlice({
         return data.cart_id !== action.payload;
       });
       state.cart_list = result;
+    },
+    selectCart(state, action) {
+      state.select_cart_list.push(action.payload);
+    },
+    deleteSelectCart(state, action) {
+      var result = state.select_cart_list.filter(function (data) {
+        return data !== action.payload;
+      });
+      state.select_cart_list = result;
     },
   },
   extraReducers: builder => {},
