@@ -17,15 +17,16 @@ import { TableMoreMenu } from '../../../../components/table';
 ReviewTableRow.propTypes = {
   row: PropTypes.object.isRequired,
   selected: PropTypes.bool,
-  onIsbanRow: PropTypes.func,
+  onCancelBan: PropTypes.func,
   onOpenCompose: PropTypes.func,
-  onOpenReview: PropTypes.func
+  onOpenReview: PropTypes.func,
+  onDeleteReview: PropTypes.func,
 };
 
-export default function ReviewTableRow({ row, selected, onIsbanRow,onOpenCompose, onOpenReview}) {
+export default function ReviewTableRow({ row, selected, onCancelBan, onDeleteReview, onOpenCompose, onOpenReview}) {
   const theme = useTheme();
 
-  const { review_id, is_ban, nickname, content, comment} = row;
+  const { shop_name, review_id, is_ban, nickname, content, comment} = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -46,7 +47,7 @@ export default function ReviewTableRow({ row, selected, onIsbanRow,onOpenCompose
     <TableRow 
       hover selected={selected}
     >
-
+    <TableCell align="left" >{shop_name}</TableCell>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
         <Stack>
           <Typography variant="subtitle2" noWrap>
@@ -91,13 +92,22 @@ export default function ReviewTableRow({ row, selected, onIsbanRow,onOpenCompose
             <>
               <MenuItem
                 onClick={() => {
-                  onIsbanRow();
+                  onCancelBan();
+                  handleCloseMenu();
+                }}
+              >
+                <Iconify icon={'eva:minus-circle-outline'} />
+                신고취소
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  onDeleteReview();
                   handleCloseMenu();
                 }}
                 sx={{ color: 'error.main' }}
               >
                 <Iconify icon={'eva:trash-2-outline'} />
-                신고하기
+                리뷰삭제
               </MenuItem>
             </>
           }
