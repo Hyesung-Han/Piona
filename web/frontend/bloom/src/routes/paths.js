@@ -112,6 +112,7 @@ export const PATH_DASHBOARD = {
   },
   admin: {
     shop: path(ROOTS_DASHBOARD, '/admin/shop'),
+    review: path(ROOTS_DASHBOARD, '/admin/review'),
   },
 };
 
