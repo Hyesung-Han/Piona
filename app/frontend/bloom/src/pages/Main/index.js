@@ -9,13 +9,11 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  PermissionsAndroid,
-  Platform,
 } from 'react-native';
 import MainBackground from '../../assets/Mainbackground.jpg';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 /**
- * CSW | 2022.05.09
+ * CSW | 2022.05.13
  * @name MainPage
  * @des
  * 로그인 된 상태에서 앱을 열면 보이는 메인페이지
