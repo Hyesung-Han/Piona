@@ -101,9 +101,9 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/invoice/list" replace />, index: true },
             { path: 'list', element: <InvoiceList /> },
-            { path: ':id', element: <InvoiceDetails /> },
-            { path: ':id/edit', element: <InvoiceEdit /> },
-            { path: 'new', element: <InvoiceCreate /> },
+            // { path: ':id', element: <InvoiceDetails /> },
+            // { path: ':id/edit', element: <InvoiceEdit /> },
+            // { path: 'new', element: <InvoiceCreate /> },
           ],
         },
         {
@@ -111,9 +111,13 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/review/list" replace />, index: true },
             { path: 'list', element: <ReviewList /> },
-            { path: ':id', element: <InvoiceDetails /> },
-            { path: ':id/edit', element: <InvoiceEdit /> },
-            { path: 'new', element: <InvoiceCreate /> },
+          ],
+        },
+        {
+          path: 'sale',
+          children: [
+            { element: <Navigate to="/dashboard/sale/list" replace />, index: true },
+            { path: 'list', element: <SaleList /> },
           ],
         },
         {
@@ -207,6 +211,9 @@ const InvoiceList = Loadable(lazy(() => import('../pages/dashboard/InvoiceList')
 const InvoiceDetails = Loadable(lazy(() => import('../pages/dashboard/InvoiceDetails')));
 const InvoiceCreate = Loadable(lazy(() => import('../pages/dashboard/InvoiceCreate')));
 const InvoiceEdit = Loadable(lazy(() => import('../pages/dashboard/InvoiceEdit')));
+
+// Sale
+const SaleList = Loadable(lazy(() => import('../pages/dashboard/SaleList')));
 
 // REVIEW
 const ReviewList = Loadable(lazy(() => import('../pages/dashboard/ReviewList')));
