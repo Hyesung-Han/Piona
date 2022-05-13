@@ -13,11 +13,13 @@ import {userAPI} from '../../utils/Axios';
 import {useDispatch} from 'react-redux';
 import userSlice from '../../redux/slices/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import messaging from '@react-native-firebase/messaging';
+import axios from 'axios';
 
 /**
- * LDJ | 2022.05.04
+ * LDJ | 2022.05.13
  * @name SignInModal
- * @api /user/signin
+ * @api userAPI/signin
  * @des
  * 1. Sign Page에서 로그인 버튼을 누르면 뜨는 모달 창
  * 2. 유저 정보를 입력받아 로그인을 진행 [아이디, 비밀번호]
@@ -30,7 +32,6 @@ const SignInModal = props => {
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-
   const onChangeId = useCallback(text => {
     setId(text.trim());
   }, []);
@@ -38,7 +39,23 @@ const SignInModal = props => {
   const onChangePassword = useCallback(text => {
     setPassword(text.trim());
   }, []);
-
+  // // 토큰 설정
+  // useEffect(() => {
+  //   async function getToken() {
+  //     try {
+  //       if (!messaging().isDeviceRegisteredForRemoteMessages) {
+  //         await messaging().registerDeviceForRemoteMessages();
+  //       }
+  //       const token = await messaging().getToken();
+  //       console.log('phone token', token);
+  //       dispatch(userSlice.actions.setPhoneToken(token));
+  //       return axios.post('https://k6a201.p.ssafy.io/api/phonetoken', {token});
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  //   getToken();
+  // }, [dispatch]);
   // 로그인 버튼을 누르면!
   const onSubmit = useCallback(async () => {
     if (loading) {
@@ -53,46 +70,46 @@ const SignInModal = props => {
 
     try {
       setLoading(true);
-      const response = await userAPI.signin(id, password);
-      Alert.alert('알림', '로그인 되었습니다.');
-      console.log(response);
-      dispatch(
-        userSlice.actions.setUser({
-          name: response.data.data.name,
-          id: response.data.data.user_id,
-          nickname: response.data.data.nickname,
-          phoneNumber: response.data.data.phone,
-          accessToken: response.data.data.access_token,
-          refreshToken: response.data.data.refresh_token,
-        }),
-      );
-
-      await EncryptedStorage.setItem(
-        'refreshToken',
-        response.data.data.refresh_token,
-      );
-
-      // 완료 후 모달 닫고 Main page로!
-    } catch (error) {
-      console.error(error.response);
-      if (error.response) {
-        Alert.alert('알림', error.response.data.message);
+      async function getToken() {
+        try {
+          if (!messaging().isDeviceRegisteredForRemoteMessages) {
+            await messaging().registerDeviceForRemoteMessages();
+          }
+          const token = await messaging().getToken();
+          console.log('phone token', token);
+          dispatch(userSlice.actions.setPhoneToken(token));
+          const response = await userAPI.phoneToken(id, token);
+        } catch (error) {
+          console.error(error);
+        }
       }
+      getToken();
+
+      const response = await userAPI.signin(id, password);
+      if (response.data.result === 'success') {
+        Alert.alert('알림', '로그인 되었습니다.');
+        dispatch(
+          userSlice.actions.setUser({
+            name: response.data.data.name,
+            id: response.data.data.user_id,
+            nickname: response.data.data.nickname,
+            phoneNumber: response.data.data.phone,
+            accessToken: response.data.data.access_token,
+            refreshToken: response.data.data.refresh_token,
+          }),
+        );
+        await EncryptedStorage.setItem(
+          'refreshToken',
+          response.data.data.refresh_token,
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert('알림', '등록되지 않은 유저정보입니다!');
     } finally {
       setLoading(false);
     }
   }, [loading, id, password, dispatch]);
-
-  // const sendData = () => {
-  //   if (id && password) {
-  //     props.user({id: id, password: password});
-  //     props.next(false);
-  //   } else if (!id) {
-  //     alert('아이디를 입력해주세요!');
-  //   } else if (password.length < 1) {
-  //     alert('비밀번호를 입력해주세요!');
-  //   }
-  // };
 
   return (
     <View
@@ -148,7 +165,6 @@ const SignInModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '95%',
-              marginTop: 5,
             }}>
             <Text
               style={{
@@ -187,7 +203,6 @@ const SignInModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
-              marginTop: 5,
             }}>
             <Text
               style={{
