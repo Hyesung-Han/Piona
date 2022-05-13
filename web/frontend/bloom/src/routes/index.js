@@ -151,6 +151,7 @@ export default function Router() {
           path: 'admin',
           children: [
             { element: <Navigate to="/dashboard/admin/shop" replace />, index: true },
+            { path: 'user', element: <UserList /> },
             { path: 'shop', element: <AdminShopList /> },
             { path: 'review', element: <AdminReviewList /> },
           ],
