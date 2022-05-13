@@ -1,6 +1,5 @@
-import { paramCase } from 'change-case';
-import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import {
   Box,
@@ -10,11 +9,9 @@ import {
   Table,
   Switch,
   Button,
-  Tooltip,
   Divider,
   TableBody,
   Container,
-  IconButton,
   TableContainer,
   TablePagination,
   FormControlLabel,
@@ -25,8 +22,6 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import useTabs from '../../hooks/useTabs';
 import useSettings from '../../hooks/useSettings';
 import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
-// _mock_
-import { _userList } from '../../_mock';
 // components
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
@@ -35,30 +30,19 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
 // sections
 import { UserTableToolbar, UserTableRow } from '../../sections/@dashboard/user/list';
+// utils
+import axios from '../../utils/axios';
 
 // ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = ['all', 'active', 'banned'];
 
-const ROLE_OPTIONS = [
-  'all',
-  'ux designer',
-  'full stack designer',
-  'backend developer',
-  'project manager',
-  'leader',
-  'ui designer',
-  'ui/ux designer',
-  'front end developer',
-  'full stack developer',
-];
-
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', align: 'left' },
-  { id: 'company', label: 'Company', align: 'left' },
-  { id: 'role', label: 'Role', align: 'left' },
-  { id: 'isVerified', label: 'Verified', align: 'center' },
-  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'id', label: 'Id', align: 'left' },
+  { id: 'nickname', label: 'Nickname', align: 'left' },
+  { id: 'phone', label: 'Phone', align: 'left' },
+  { id: 'created_at', label: 'Created at', align: 'left' },
+  { id: 'status', label: 'Status', align: 'center' },
   { id: '' },
 ];
 
@@ -74,7 +58,6 @@ export default function UserList() {
     setPage,
     //
     selected,
-    setSelected,
     onSelectRow,
     onSelectAllRows,
     //
@@ -86,46 +69,24 @@ export default function UserList() {
 
   const { themeStretch } = useSettings();
 
-  const navigate = useNavigate();
-
-  const [tableData, setTableData] = useState(_userList);
+  const [tableData, setTableData] = useState([]);
 
   const [filterName, setFilterName] = useState('');
 
-  const [filterRole, setFilterRole] = useState('all');
-
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
+
+  const user = localStorage.getItem('user');
+  const parseUser = JSON.parse(user);
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
     setPage(0);
   };
 
-  const handleFilterRole = (event) => {
-    setFilterRole(event.target.value);
-  };
-
-  const handleDeleteRow = (id) => {
-    const deleteRow = tableData.filter((row) => row.id !== id);
-    setSelected([]);
-    setTableData(deleteRow);
-  };
-
-  const handleDeleteRows = (selected) => {
-    const deleteRows = tableData.filter((row) => !selected.includes(row.id));
-    setSelected([]);
-    setTableData(deleteRows);
-  };
-
-  const handleEditRow = (id) => {
-    navigate(PATH_DASHBOARD.user.edit(paramCase(id)));
-  };
-
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
     filterName,
-    filterRole,
     filterStatus,
   });
 
@@ -133,14 +94,33 @@ export default function UserList() {
 
   const isNotFound =
     (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterRole) ||
     (!dataFiltered.length && !!filterStatus);
+
+  useEffect(()=>{
+    getUserList();
+  },[]);
+
+  const getUserList = async() => {
+    try {
+      const response = await axios.get(`/api/admin/userList?code=M`, {
+        headers : {
+          Authorization: parseUser.access_token,
+        }
+      });
+      const {data} = response;
+      if(data.result === 'success') {
+        setTableData(data.data);
+      }
+    } catch(e) {
+      console.error(e);
+    }
+  }
 
   return (
     <Page title="User: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="User List"
+          heading="회원 관리"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'User', href: PATH_DASHBOARD.user.root },
@@ -176,10 +156,7 @@ export default function UserList() {
 
           <UserTableToolbar
             filterName={filterName}
-            filterRole={filterRole}
             onFilterName={handleFilterName}
-            onFilterRole={handleFilterRole}
-            optionsRole={ROLE_OPTIONS}
           />
 
           <Scrollbar>
@@ -192,15 +169,8 @@ export default function UserList() {
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData.map((row) => row.user_id)
                     )
-                  }
-                  actions={
-                    <Tooltip title="Delete">
-                      <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                        <Iconify icon={'eva:trash-2-outline'} />
-                      </IconButton>
-                    </Tooltip>
                   }
                 />
               )}
@@ -216,7 +186,7 @@ export default function UserList() {
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData.map((row) => row.user_id)
                     )
                   }
                 />
@@ -224,12 +194,11 @@ export default function UserList() {
                 <TableBody>
                   {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     <UserTableRow
-                      key={row.id}
+                      key={row.user_id}
                       row={row}
-                      selected={selected.includes(row.id)}
-                      onSelectRow={() => onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onEditRow={() => handleEditRow(row.name)}
+                      selected={selected.includes(row.user_id)}
+                      onSelectRow={() => onSelectRow(row.user_id)}
+                      getUserList={() => getUserList()}
                     />
                   ))}
 
@@ -266,7 +235,7 @@ export default function UserList() {
 
 // ----------------------------------------------------------------------
 
-function applySortFilter({ tableData, comparator, filterName, filterStatus, filterRole }) {
+function applySortFilter({ tableData, comparator, filterName, filterStatus }) {
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -278,15 +247,15 @@ function applySortFilter({ tableData, comparator, filterName, filterStatus, filt
   tableData = stabilizedThis.map((el) => el[0]);
 
   if (filterName) {
-    tableData = tableData.filter((item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
+    tableData = tableData.filter((item) => item.user_id.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
   }
 
-  if (filterStatus !== 'all') {
-    tableData = tableData.filter((item) => item.status === filterStatus);
+  if (filterStatus === 'active') {
+    tableData = tableData.filter((item) => item.is_del === 'N');
   }
 
-  if (filterRole !== 'all') {
-    tableData = tableData.filter((item) => item.role === filterRole);
+  if (filterStatus === 'banned') {
+    tableData = tableData.filter((item) => item.is_del === 'B');
   }
 
   return tableData;
