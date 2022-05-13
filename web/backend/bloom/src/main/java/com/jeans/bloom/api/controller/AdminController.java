@@ -108,7 +108,7 @@ public class AdminController {
      * @api {patch} /admin/{user_id}
      * @des 회원 ID를 입력 받아 회원 상태 여부를 수정한다
      */
-    @PatchMapping("/")
+    @PatchMapping()
     @ApiOperation(value = "회원 상태 변경", notes = "회원 ID를 입력 받아 회원 상태 여부를 수정한다. ")
     public ResponseEntity<BaseResponseBody> deleteUser(
             @RequestParam @ApiParam(value="회원 ID", required = true) String user_id,
