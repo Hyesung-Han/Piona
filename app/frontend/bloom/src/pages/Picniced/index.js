@@ -7,7 +7,7 @@ import {getMyReservationList} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.06
+ * LHJ | 2022.05.11
  * @name PicnicedPage
  * @api getMyReservationList
  * @des
@@ -33,9 +33,11 @@ const PicnicedPage = ({navigation}) => {
     try {
       const response = await getMyReservationList(user_id, token);
       const res = response.data;
-      const filteredByStatus = res.filter(item => item.status === 'D');
-      setData(filteredByStatus);
-      console.log(filteredByStatus);
+      const firstFilteredByStatus = res.filter(item => item.status === 'D');
+      const secondFilteredByStatus = res.filter(item => item.status === 'C');
+      const newArr = [...firstFilteredByStatus, ...secondFilteredByStatus];
+      setData(newArr);
+      console.log(newArr);
     } catch (error) {
       console.log('완료된 예약현황 조회 실패', error);
     }
@@ -52,7 +54,7 @@ const PicnicedPage = ({navigation}) => {
   };
 
   return (
-    <View>
+    <View style={{backgroundColor: '#F8F8F8', flex: 1}}>
       <View>
         <FlatList
           //리스트의 소스를 담는 속성

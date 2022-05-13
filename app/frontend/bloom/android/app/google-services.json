@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "604513830605",
+    "project_id": "bloom-bbe17",
+    "storage_bucket": "bloom-bbe17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604513830605:android:acaaee20b7d0c0f3b6cb84",
+        "android_client_info": {
+          "package_name": "com.bloom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604513830605-ujtc2f0jaueb5epi1rene6dmrbmaq663.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUupdVSFG6kE97xGa4-aBNqB9CIErpOD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604513830605-ujtc2f0jaueb5epi1rene6dmrbmaq663.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

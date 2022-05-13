@@ -6,7 +6,7 @@ import {shopDetailAPI} from '../../utils/Axios';
 import ReviewCard from '../../components/ReviewCard';
 
 /**
- * LHJ | 2022.05.09
+ * LHJ | 2022.05.13
  * @name ShopReview
  * @api .
  * @des
@@ -16,8 +16,8 @@ import ReviewCard from '../../components/ReviewCard';
 
 const ShopReviewPage = ({navigation}) => {
   const [data, setData] = useState([]);
-  const shopNumber = useSelector(state => state.shop.shopNumber);
-  const shopName = useSelector(state => state.shop.shopName);
+  const shopNumber = useSelector(state => state.shop.number);
+  const shopName = useSelector(state => state.shop.name);
   const token = useSelector(state => state.user.accessToken);
 
   const getReviewList = async () => {
@@ -41,8 +41,8 @@ const ShopReviewPage = ({navigation}) => {
   };
 
   return (
-    <View>
-      <View>
+    <View style={{backgroundColor: '#F8F8F8', flex: 1}}>
+      <View style={{backgroundColor: '#CBCBCB'}}>
         <FlatList
           //리스트의 소스를 담는 속성
           data={data}

@@ -1,8 +1,7 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
- * LDJ, LHJ, CSW | 2022.05.08
+ * LDJ, LHJ, CSW | 2022.05.12
  * @name utils/Axios
  * @api 모든 API 만드는 곳
  * @des
@@ -14,121 +13,6 @@ let request = axios.create({
   baseURL: 'https://k6a201.p.ssafy.io/api',
 });
 
-// request.interceptors.request.use(async config => {
-//   if (await AsyncStorage.getItem('token')) {
-//     config.headers['Authorization'] = await AsyncStorage.getItem('token');
-//   }
-//   return config;
-// });
-
-// request.interceptors.response.use(
-//   response => {
-//     return response;
-//   },
-//   async err => {
-//     const originalConfig = err.config;
-//     if (err.response) {
-//       if (err.response.status === 420 && !originalConfig.retry) {
-//         originalConfig.retry = true;
-//         try {
-//           const refresh = await request
-//             .post('/auth/reissue', {
-//               refreshToken: await AsyncStorage.getItem('refresh'),
-//             })
-//             .then(response => response.data);
-//           AsyncStorage.removeItem('refresh');
-//           AsyncStorage.removeItem('token');
-//           AsyncStorage.setItem('refresh', refresh.refreshToken);
-//           setToken(refresh.accessToken);
-//           request.defaults.headers.common['Authorization'] =
-//             'Bearer ' + refresh.accessToken;
-//           return request(originalConfig);
-//         } catch (error) {
-//           if (error.response && error.response.data) {
-//             return Promise.reject(error.response.data);
-//           }
-//           return Promise.reject(error);
-//         }
-//       }
-//     }
-//     return Promise.reject(err);
-//   },
-// );
-
-// function setToken(value) {
-//   AsyncStorage.setItem('token', `Bearer ${value}`);
-// }
-
-export const withdraw = async () => {
-  return await request
-    .delete(`/users`, {})
-    .then(response => {
-      return response.data.statusCode;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
-export const shareUser = async searchKeyword => {
-  return await request
-    .get('/users/sharing', {
-      params: {
-        searchKeyword: searchKeyword,
-      },
-    })
-    .then(response => {
-      return response.data;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
-export const getVisual = async () => {
-  return await request.get(`/visual`, {}).then(response => {
-    return response.data.UsersTagList;
-  });
-};
-
-export const uploadProfile = async userProfileUrl => {
-  return await request
-    .put('/users/profile', {
-      userProfileUrl,
-    })
-    .then(response => {
-      return response.data.statusCode;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
-export const modifyNick = async userNickname => {
-  return await request
-    .get(`/users/me/nickname/${userNickname}`, {})
-    .then(response => {
-      return response.data;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
-export const changeInfo = async (userNickname, petName) => {
-  return await request
-    .put('/users', {
-      userNickname,
-      petName,
-    })
-    .then(response => {
-      return response.data.statusCode;
-    })
-    .catch(err => {
-      return err.response.data;
-    });
-};
-
 // LDJ | 유저에 관한 API | [로그인, 회원가입, 아이디중복, 닉네임중복, 폰인증요청, 폰인증확인, 비밀번호확인, 회원정보수정, 회원탈퇴]
 export const userAPI = {
   signin: async (user_id, password) => {
@@ -139,8 +23,6 @@ export const userAPI = {
       })
       .then(response => {
         return response;
-        // AsyncStorage.setItem('refresh', response.data.refreshToken);
-        // setToken(response.data.accessToken);
       })
       .catch(error => {
         return error;
@@ -266,9 +148,23 @@ export const userAPI = {
         return error;
       });
   },
+  phoneToken: async (user_id, phone_token) => {
+    return await request
+      .patch(
+        `/alarm/push?phone_token=${phone_token}&user_id=${user_id}`,
+        {},
+        {},
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 };
 
-// CSW | 장바구니에 관한 API | [목록조회, 추가, 삭제]
+// CSW, LDJ | 장바구니에 관한 API | [목록조회, 추가, 삭제]
 export const cartAPI = {
   getCartList: async (user_id, accessToken) => {
     return await request
@@ -278,30 +174,30 @@ export const cartAPI = {
         },
       })
       .then(response => {
-        return response.data;
+        return response;
       })
       .catch(error => {
         return error;
       });
   },
 
-  addCartList: async (
-    userId,
+  addCart: async (
+    itemId,
     quantity,
     reservationDate,
     shopNumber,
-    itemId,
+    userId,
     accessToken,
   ) => {
     return await request
       .post(
-        '/user',
+        '/cart',
         {
-          userId,
+          itemId,
           quantity,
           reservationDate,
           shopNumber,
-          itemId,
+          userId,
         },
         {
           headers: {
@@ -310,32 +206,29 @@ export const cartAPI = {
         },
       )
       .then(response => {
-        return response.data.statusCode;
+        return response;
       })
       .catch(error => {
-        return error.response.status;
+        return error;
       });
   },
 
-  deleteCartList: async (cartId, accessToken) => {
+  deleteCart: async (cartId, accessToken) => {
     return await request
-      .delete(
-        '/cart',
-        {cartId},
-        {
-          headers: {
-            Authorization: accessToken,
-          },
+      .delete(`/cart/${cartId}`, {
+        headers: {
+          Authorization: accessToken,
         },
-      )
+      })
       .then(response => {
-        return response.data.statusCode;
+        return response;
       })
       .catch(error => {
-        return error.response.status;
+        return error;
       });
   },
 };
+
 /**
  * LHJ | 2022.05.06
  * 나의 예약현황 보기
@@ -425,6 +318,75 @@ export const shopDetailAPI = {
 export const RegisterReviewApi = async (formData, accessToken) => {
   return await request
     .post('/review', formData, {
+      headers: {
+        Authorization: accessToken,
+        'content-type': 'multipart/form-data',
+      },
+    })
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+// LHJ | 2022.05.11
+// reservation_id를 넘겨 예약 상태를 C(취소)로 바꾼다
+// 현재 상태가 R인 상태에서만 이 API를 호출해야한다.
+export const cancelReservation = async (reservation_id, accessToken) => {
+  return await request
+    .patch(
+      `/picnic?reservationId=${reservation_id}`,
+      {},
+      {
+        headers: {
+          Authorization: accessToken,
+        },
+      },
+    )
+    .then(response => {
+      return response.data.statusCode;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+// LHJ | 2022.05.11
+// item_id와 quantity를 통해서 현재 날짜 기준으로 2주까지 예약 불가능한 날짜 전달 받는 API
+// MenuDetail에서 달력을 표시할 때 사용
+export const getNotResList = async (item_id, quantity, accessToken) => {
+  return await request
+    .get(`/shop/reservation?item_id=${item_id}&quantity=${quantity}`, {
+      headers: {
+        Authorization: accessToken,
+      },
+    })
+    .then(response => {
+      //response의 result는 제외한 data(배열)만을 반환
+      return response;
+    })
+    .catch(error => {
+      //api 반환 실패시 상태 반환
+      return error.response.status;
+    });
+};
+
+//LHJ | 2022.05.13
+// 예약 등록 api
+export const RegisterReservation = async (
+  reservationDetailList,
+  shop_number,
+  total_price,
+  user_id,
+  accessToken,
+) => {
+  return await request
+    .post(
+      '/picnic',
+      {reservationDetailList, shop_number, total_price, user_id},
+      {
         headers: {
           Authorization: accessToken,
         },
@@ -448,27 +410,13 @@ export const WishListAPI = {
         },
       })
       .then(response => {
-        return response.data;
+        return response;
       })
-      .catch(err => {
-        return err.response.data;
+      .catch(error => {
+        return error;
       });
   },
 
-  delete: async (wish_id, accessToken) => {
-    return await request
-      .delete(`/wishlist?wish_id=${wish_id}`, {
-        headers: {
-          Authorization: accessToken,
-        },
-      })
-      .then(response => {
-        return response.data.statusCode;
-      })
-      .catch(err => {
-        return err.response.data;
-      });
-  },
   add: async (shop_number, user_id, accessToken) => {
     return await request
       .post(
@@ -481,10 +429,25 @@ export const WishListAPI = {
         },
       )
       .then(response => {
-        return response.data.statusCode;
+        return response;
       })
-      .catch(err => {
-        return err.response.data;
+      .catch(error => {
+        return error;
+      });
+  },
+
+  delete: async (wish_id, accessToken) => {
+    return await request
+      .delete(`/wishlist?wish_id=${wish_id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
       });
   },
 };
@@ -526,7 +489,7 @@ export const alarmAPI = {
   },
 };
 
-//CSW, SearchResult Page와 MapPage 위한 API
+//CSW, LDJ | SearchResult Page와 MapPage 위한 API
 export const searchAPI = {
   get: async (type, user_id, user_lat, user_lng, word, accessToken) => {
     return await request
@@ -539,7 +502,24 @@ export const searchAPI = {
         },
       )
       .then(response => {
-        return response.data;
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
+  getMap: async (type, user_id, user_lat, user_lng, accessToken) => {
+    return await request
+      .get(
+        `shop/search?type=${type}&user_id=${user_id}&user_lat=${user_lat}&user_lng=${user_lng}`,
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response;
       })
       .catch(error => {
         return error;
@@ -547,7 +527,7 @@ export const searchAPI = {
   },
 };
 
-//CSW, MenuDetail페이지를 위한 API
+// CSW | MenuDetail 페이지를 위한 API
 export const MenuDetailAPI = {
   get: async (itemId, accessToken) => {
     return await request
