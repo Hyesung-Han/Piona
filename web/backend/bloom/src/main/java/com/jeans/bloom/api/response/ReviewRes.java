@@ -28,24 +28,40 @@ public class ReviewRes {
     String user_id;
     String shop_name;
     boolean comment;
+    String comment_review;
 
 
     public static ReviewRes of(Review review){
-        boolean flag = false;
-        if(review.getReviewComment() != null) flag =true;
-        return ReviewRes.builder()
-                .review_id(review.getReviewId())
-                .reservation_id(review.getReservation().getReservationId())
-                .nickname(review.getUser().getNickName())
-                .user_id(review.getUser().getUserId())
-                .image_url(review.getImageUrl())
-                .content(review.getContent())
-                .score(review.getScore())
-                .is_ban(review.getIsBan())
-                .created_at(review.getCreatedAt())
-                .shop_name(review.getReservation().getShop().getName())
-                .comment(flag)
-                .build();
+        if(review.getReviewComment() != null){
+            return ReviewRes.builder()
+                    .review_id(review.getReviewId())
+                    .reservation_id(review.getReservation().getReservationId())
+                    .nickname(review.getUser().getNickName())
+                    .user_id(review.getUser().getUserId())
+                    .image_url(review.getImageUrl())
+                    .content(review.getContent())
+                    .score(review.getScore())
+                    .is_ban(review.getIsBan())
+                    .created_at(review.getCreatedAt())
+                    .shop_name(review.getReservation().getShop().getName())
+                    .comment(true)
+                    .comment_review(review.getReviewComment().getContent())
+                    .build();
+        }else{
+            return ReviewRes.builder()
+                    .review_id(review.getReviewId())
+                    .reservation_id(review.getReservation().getReservationId())
+                    .nickname(review.getUser().getNickName())
+                    .user_id(review.getUser().getUserId())
+                    .image_url(review.getImageUrl())
+                    .content(review.getContent())
+                    .score(review.getScore())
+                    .is_ban(review.getIsBan())
+                    .created_at(review.getCreatedAt())
+                    .shop_name(review.getReservation().getShop().getName())
+                    .comment(false)
+                    .build();
+        }
     }
 
 }
