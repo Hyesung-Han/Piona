@@ -32,7 +32,8 @@ import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableNoData, TableEmptyRows, TableHeadCustom } from '../../components/table';
 // sections
-import { InvoiceTableRow } from '../../sections/@dashboard/review/list';
+import { ReviewTableRow } from '../../sections/@dashboard/review/list';
+import ReviewCompose from '../../sections/@dashboard/review/details/ReviewCompose';
 
 // ----------------------------------------------------------------------
 
@@ -68,6 +69,14 @@ export default function ReviewList() {
 
   const [tableData, setReviewList] = useState([]);
 
+  const [openCompose, setOpenCompose] = useState(false);
+
+  const [openReview, setOpenReview] = useState('');
+
+  const [reviewDetail, setReviewDetail] = useState('');
+
+  const [reviewImg, setReviewImg] = useState([]);
+
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
 
   useEffect(() => {
@@ -80,7 +89,7 @@ export default function ReviewList() {
       const user = localStorage.getItem('user');
       if(user != null){
         const parseUser = JSON.parse(user);
-        const response = await axios.patch(`/api/review/${id}`, {
+        const response = await axios.patch(`/api/review/${id}`, {}, {
           headers : {
             Authorization: parseUser.access_token
           }
@@ -88,6 +97,37 @@ export default function ReviewList() {
         console.log(response);
         alert("리뷰를 신고했습니다.", "success")
         await getReviewList();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleOpenReviewDetail = (id) => {
+    setOpenReview(id);
+    getReviewDetail(id);
+  };
+
+  const getReviewDetail = async (id) => {
+    try {
+      const user = localStorage.getItem('user');
+      if(user != null){
+        const parseUser = JSON.parse(user);
+        const response = await axios.get(`/api/review/${id}`, {
+          headers : {
+            Authorization: parseUser.access_token
+          }
+        })
+        console.log(response.data);
+        if(response.data.result === "success"){
+          setReviewDetail(response.data.data);
+          if(response.data.data.image_url !== null){
+            setReviewImg(response.data.data.image_url.split(','));
+          }else{
+            setReviewImg([]);
+          }
+          // return response.data.data;
+        }
       }
     } catch (error) {
       console.error(error);
@@ -132,7 +172,7 @@ export default function ReviewList() {
 
   const denseHeight = dense ? 56 : 76;
 
-    async function alert(msg, icons) {
+  async function alert(msg, icons) {
     await Swal.fire({
       icon: icons,
       title: msg,
@@ -150,7 +190,6 @@ export default function ReviewList() {
             { name: 'List' },
           ]}
         />
-
         <Card>
           <Tabs
               allowScrollButtonsMobile
@@ -187,15 +226,28 @@ export default function ReviewList() {
                 />
 
                 <TableBody>
-                  {console.log(dataFiltered)}
+                  {/* {console.log(dataFiltered)} */}
+                  <>
                   {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <InvoiceTableRow
-                      key={row.review_id}
-                      row={row}
-                      selected={selected.includes(row.review_id)}
-                      onIsbanRow={() => handleIsBanRow(row.review_id)}
-                    />
+                      <ReviewTableRow
+                        key={row.review_id}
+                        row={row}
+                        selected={selected.includes(row.review_id)}
+                        onIsbanRow={() => handleIsBanRow(row.review_id)}
+                        onOpenCompose={() => setOpenCompose(true)} 
+                        onOpenReview={() => handleOpenReviewDetail(row.review_id)} 
+                      />
                   ))}
+                      <ReviewCompose 
+                        key={openReview}
+                        row={reviewDetail}
+                        image = {reviewImg}
+                        isOpenCompose={openCompose} 
+                        onCloseCompose={() => setOpenCompose(false)}
+                        onRedirect={() => getReviewList()}
+                        // row={openReview}
+                         />
+                        </>
 
                   <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)} />
 
