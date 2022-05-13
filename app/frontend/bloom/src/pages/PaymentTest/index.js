@@ -1,4 +1,4 @@
-import React, {useRef, useState, useCallback} from 'react';
+import React, {useRef, useState, useCallback, useMemo} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import {BootpayWebView} from 'react-native-bootpay';
 import {RegisterReservation} from '../../utils/Axios';
@@ -12,21 +12,25 @@ import {useDispatch} from 'react-redux';
  * @api RegisterReservation
  * @des
  * 결제 페이지
+ * 부트 페이 모듈을 사용하여 결제 진행
  */
 
 const PaymentTestPage = ({navigation, route}) => {
   const dispatch = useDispatch();
+
   const user_id = useSelector(state => state.user.id);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const token = useSelector(state => state.user.accessToken);
+
   const shop_number = route.params.shop_number;
   const tempArray = route.params.tempArray;
-  const token = useSelector(state => state.user.accessToken);
-  const [reservationDetailList, setReservationDetailList] = useState({
-    item_id: '',
-    quantity: '',
-    reservation_date: '',
-  });
-  console.log(tempArray);
+  const totalPrice = route.params.totalPrice;
+  console.log(totalPrice);
+
+//   const [totalPrice, setTotalPrice] = useState(0);
+  //const [reservationDetailList, setReservationDetailList] = useState([]);
+  const reservationDetailList = [];
+
+  //console.log(shop_number);
   const payment = useCallback(async () => {
     try {
       //tempArray에서 필요한 정보만 뽑아서 reservationDetailList에 담기
@@ -35,20 +39,41 @@ const PaymentTestPage = ({navigation, route}) => {
         let tempQuantity = tempArray[i].quantity;
         let tempReservationDate = tempArray[i].reservation_date;
         let data = {
-          tempItemId,
-          tempQuantity,
-          tempReservationDate,
+          item_id: tempItemId,
+          quantity: tempQuantity,
+          reservation_date: tempReservationDate,
         };
-        setReservationDetailList({...reservationDetailList, data});
+        // setReservationDetailList({
+        //   ...reservationDetailList,
+        //   item_id: tempItemId,
+        //   quantity: tempQuantity,
+        //   reservation_date: tempReservationDate,
+        // });
+        reservationDetailList.push(data);
       }
       //총 가격 구하기
-      let tempPrice = 0;
-      for (let i = 0; i < tempArray.length; i++) {
-        let eachPrice = tempArray[0].price * tempArray[0].quantity;
-        tempPrice = tempPrice + eachPrice;
-      }
-      console.log(tempPrice);
-      setTotalPrice(tempPrice);
+    //   let tempPrice = 0;
+    //   for (let i = 0; i < tempArray.length; i++) {
+    //     let eachPrice = tempArray[i].price * tempArray[i].quantity;
+    //     tempPrice = tempPrice + eachPrice;
+    //   }
+      //console.log(tempPrice);
+    //   setTotalPrice(tempPrice);
+      await register();
+    } catch (error) {
+      Alert.alert('알림', '위');
+      console.log(error);
+    }
+  }, [register]);
+
+  //console.log(totalPrice);
+
+  const bootpay = React.forwardRef((props, ref) => {
+    return useRef < BootpayWebView > null;
+  });
+
+  const register = useCallback(async () => {
+    try {
       const response = await RegisterReservation(
         reservationDetailList,
         shop_number,
@@ -56,35 +81,14 @@ const PaymentTestPage = ({navigation, route}) => {
         user_id,
         token,
       );
-      console.log(response.data);
       if (response.data.result === 'success') {
         console.log('성공');
-        //선택한 카트 리스트 지우기
-        // dispatch(cartSlice.actions.deleteCart(cart_id));
-        // dispatch(
-        //   cartSlice.actions.setCart({
-        //     id: '',
-        //     quantity: '',
-        //     price: '',
-        //   }),
-        // );
       }
     } catch (error) {
       Alert.alert('알림', '삭제할 아이템을 선택해주세요!');
       console.log(error);
     }
-  }, [
-    reservationDetailList,
-    shop_number,
-    tempArray,
-    token,
-    totalPrice,
-    user_id,
-  ]);
-
-  const bootpay = React.forwardRef((props, ref) => {
-    return useRef < BootpayWebView > null;
-  });
+  }, [totalPrice]);
 
   const onPress = () => {
     const payload = {
@@ -93,11 +97,11 @@ const PaymentTestPage = ({navigation, route}) => {
     //   order_id: '1234_1234', //개발사에 관리하는 주문번호
     //   method: 'easy',
     //   price: totalPrice, //결제금액
-    pg: 'kakao',  //['kcp', 'danal', 'inicis', 'nicepay', 'lgup', 'toss', 'payapp', 'easypay', 'jtnet', 'tpay', 'mobilians', 'payletter', 'onestore', 'welcome'] 중 택 1
-      name: '마스카라', //결제창에 보여질 상품명
+      pg: 'kakao', //['kcp', 'danal', 'inicis', 'nicepay', 'lgup', 'toss', 'payapp', 'easypay', 'jtnet', 'tpay', 'mobilians', 'payletter', 'onestore', 'welcome'] 중 택 1
+      name: tempArray[0].item_name + '외 ' + tempArray.length + '건', //결제창에 보여질 상품명
       order_id: '1234_1234', //개발사에 관리하는 주문번호
       method: 'easy',
-      price: 1000 //결제금액
+      price: totalPrice //결제금액
     };
 
     //결제되는 상품정보들로 통계에 사용되며, price의 합은 결제금액과 동일해야함
@@ -114,7 +118,7 @@ const PaymentTestPage = ({navigation, route}) => {
         item_name: '키보드', //통계에 반영될 상품명
         qty: 1, //수량
         unique: 'ITEM_CODE_KEYBOARD', //개발사에서 관리하는 상품고유번호
-        price: 1000, //상품단가
+        price: totalPrice, //상품단가
         cat1: '패션', //카테고리 상 , 자유롭게 기술
         cat2: '여성상의', //카테고리 중, 자유롭게 기술
         cat3: '블라우스', //카테고리 하, 자유롭게 기술
