@@ -32,6 +32,9 @@ const MyInfoPage = ({navigation}) => {
         accessToken: '',
         refreshToken: '',
       }),
+      userSlice.actions.setPhoneToken({
+        phoneToken: '',
+      }),
     );
     await EncryptedStorage.removeItem('refreshToken');
   }, [dispatch]);

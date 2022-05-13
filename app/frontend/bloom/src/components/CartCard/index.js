@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import HorizonLine from '../HorizonLine';
 import {useDispatch} from 'react-redux';
 import cartSlice from '../../redux/slices/cart';
 
@@ -85,34 +84,33 @@ const CartCardList = props => {
           props.navigation.navigate('Menus', {
             item_id: `${item_id}`,
           })
-        }>
-        <View style={styles.CartCard}>
-          <View style={styles.checkBox}>
-            <View style={styles.iconBox}>
-              {checkStatus === false ? (
-                // 클릭하면 클릭(담김)
-                <Icon.Button
-                  onPress={() => {
-                    selectCartItem();
-                  }}
-                  name="checkbox"
-                  color="#DADADA"
-                  backgroundColor="transparent"
-                  size={25}
-                />
-              ) : (
-                // 클릭하면 해제(뺌)
-                <Icon.Button
-                  onPress={() => {
-                    selectCartItem();
-                  }}
-                  name="checkbox"
-                  color="#F2A7B3"
-                  backgroundColor="transparent"
-                  size={25}
-                />
-              )}
-            </View>
+        }
+        style={styles.CartCard}>
+        <View style={styles.checkBox}>
+          <View style={styles.iconBox}>
+            {checkStatus === false ? (
+              // 클릭하면 클릭(담김)
+              <Icon.Button
+                onPress={() => {
+                  selectCartItem();
+                }}
+                name="checkbox"
+                color="#DADADA"
+                backgroundColor="transparent"
+                size={25}
+              />
+            ) : (
+              // 클릭하면 해제(뺌)
+              <Icon.Button
+                onPress={() => {
+                  selectCartItem();
+                }}
+                name="checkbox"
+                color="#F2A7B3"
+                backgroundColor="transparent"
+                size={25}
+              />
+            )}
           </View>
           <View style={styles.informationBox}>
             <View style={styles.TopBox}>
@@ -126,27 +124,34 @@ const CartCardList = props => {
             <View style={styles.itemname}>
               <Text style={{fontSize: 12}}>{item_name}</Text>
             </View>
-            <View style={styles.quantity}>
-              <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 10}}>
-                수량 : {quantity}
+            <View style={styles.reservationDate}>
+              <Text style={{fontSize: 13, color: 'black'}}>
+                {reservation_date}
               </Text>
             </View>
           </View>
-          <View style={styles.imgBox}>
-            <Image
-              source={{uri: `${image_url}`}}
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 10,
-              }}
-            />
-            <Text style={{marginTop: 5, fontWeight: 'bold'}}>
-              {price * quantity} 원
+          <View style={styles.itemname}>
+            <Text style={{fontSize: 12}}>{item_name}</Text>
+          </View>
+          <View style={styles.quantity}>
+            <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 10}}>
+              수량 : {quantity}
             </Text>
           </View>
         </View>
-        <HorizonLine />
+        <View style={styles.imgBox}>
+          <Image
+            source={{uri: `${image_url}`}}
+            style={{
+              width: 60,
+              height: 60,
+              borderRadius: 10,
+            }}
+          />
+          <Text style={{marginTop: 5, fontWeight: 'bold'}}>
+            {price * quantity} 원
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -158,11 +163,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    marginBottom: 0.5,
   },
   CartCard: {
     width: '100%',
     backgroundColor: 'white',
-    marginTop: 10,
     paddingVertical: 15,
     flexDirection: 'row',
     alignItems: 'center',
@@ -182,9 +187,11 @@ const styles = StyleSheet.create({
   imgBox: {
     flexDirection: 'column',
     marginLeft: 60,
-    marginRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  informationBox: {
+    width: '45%',
   },
 });
 

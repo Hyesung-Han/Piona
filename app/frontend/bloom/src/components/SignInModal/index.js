@@ -13,6 +13,8 @@ import {userAPI} from '../../utils/Axios';
 import {useDispatch} from 'react-redux';
 import userSlice from '../../redux/slices/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import messaging from '@react-native-firebase/messaging';
+import axios from 'axios';
 
 /**
  * LDJ | 2022.05.13
@@ -30,7 +32,6 @@ const SignInModal = props => {
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-
   const onChangeId = useCallback(text => {
     setId(text.trim());
   }, []);
@@ -38,7 +39,23 @@ const SignInModal = props => {
   const onChangePassword = useCallback(text => {
     setPassword(text.trim());
   }, []);
-
+  // // 토큰 설정
+  // useEffect(() => {
+  //   async function getToken() {
+  //     try {
+  //       if (!messaging().isDeviceRegisteredForRemoteMessages) {
+  //         await messaging().registerDeviceForRemoteMessages();
+  //       }
+  //       const token = await messaging().getToken();
+  //       console.log('phone token', token);
+  //       dispatch(userSlice.actions.setPhoneToken(token));
+  //       return axios.post('https://k6a201.p.ssafy.io/api/phonetoken', {token});
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  //   getToken();
+  // }, [dispatch]);
   // 로그인 버튼을 누르면!
   const onSubmit = useCallback(async () => {
     if (loading) {
@@ -53,6 +70,21 @@ const SignInModal = props => {
 
     try {
       setLoading(true);
+      async function getToken() {
+        try {
+          if (!messaging().isDeviceRegisteredForRemoteMessages) {
+            await messaging().registerDeviceForRemoteMessages();
+          }
+          const token = await messaging().getToken();
+          console.log('phone token', token);
+          dispatch(userSlice.actions.setPhoneToken(token));
+          const response = await userAPI.signin(id, token);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      getToken();
+
       const response = await userAPI.signin(id, password);
       if (response.data.result === 'success') {
         Alert.alert('알림', '로그인 되었습니다.');

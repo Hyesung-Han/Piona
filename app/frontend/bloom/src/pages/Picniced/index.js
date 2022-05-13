@@ -54,7 +54,7 @@ const PicnicedPage = ({navigation}) => {
   };
 
   return (
-    <View>
+    <View style={{backgroundColor: '#F8F8F8', flex: 1}}>
       <View>
         <FlatList
           //리스트의 소스를 담는 속성
