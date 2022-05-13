@@ -1,5 +1,5 @@
 <resources>
-
+    <!-- 이거 1뭉텅이 코드가 새로운 Splash 설정하면 또 생기니까 지워줘야 에러 안뜸! [220513] -->
     <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
         <item name="colorPrimaryDark">@color/splashprimary</item>
     </style>
