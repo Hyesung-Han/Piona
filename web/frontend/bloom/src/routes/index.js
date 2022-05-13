@@ -147,6 +147,13 @@ export default function Router() {
             { path: ':conversationKey', element: <Chat /> },
           ],
         },
+        {
+          path: 'admin',
+          children: [
+            { element: <Navigate to="/dashboard/admin/shop" replace />, index: true },
+            { path: 'shop', element: <AdminShopList /> },
+          ],
+        },
         { path: 'calendar', element: <Calendar /> },
         { path: 'kanban', element: <Kanban /> },
         { path: 'permission-denied', element: <PermissionDenied /> },
@@ -255,3 +262,6 @@ const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const Page403 = Loadable(lazy(() => import('../pages/Page403')));
 const Page404 = Loadable(lazy(() => import('../pages/Page404')));
+
+// ADMIN
+const AdminShopList = Loadable(lazy(() => import('../pages/dashboard/AdminShopList')));
