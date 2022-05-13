@@ -73,23 +73,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F8F8',
   },
-  textInput: {
-    fontSize: 14,
-    marginLeft: 10,
-  },
-  inputBox: {
-    flex: 1,
-    borderStyle: 'solid',
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    width: '70%',
-    height: '11%',
-    borderRadius: 10,
-    borderColor: '#F2A7B3',
-    borderWidth: 1.5,
-    marginTop: '9%',
-    marginBottom: '9%',
-  },
   iconBox: {
     flex: 1,
     position: 'absolute',
@@ -97,14 +80,8 @@ const styles = StyleSheet.create({
     top: 5,
     right: 0,
   },
-  searchBox: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   list: {
-    flex: 3,
-    marginTop: 20,
+    backgroundColor: '#CBCBCB',
   },
   Nocontainer: {
     flex: 1,

@@ -41,8 +41,8 @@ const ShopReviewPage = ({navigation}) => {
   };
 
   return (
-    <View>
-      <View>
+    <View style={{backgroundColor: '#F8F8F8', flex: 1}}>
+      <View style={{backgroundColor: '#CBCBCB'}}>
         <FlatList
           //리스트의 소스를 담는 속성
           data={data}

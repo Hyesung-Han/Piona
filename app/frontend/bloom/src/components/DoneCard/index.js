@@ -10,7 +10,6 @@ import {
   navigation,
   AppRegistry,
 } from 'react-native';
-import HorizonLine from '../HorizonLine';
 import RegisterReview from '../../pages/RegisterReview';
 import {useSelector} from 'react-redux';
 
@@ -57,7 +56,7 @@ const DoneCardList = ({item, navigation}) => {
           <Text style={{color: 'white', fontSize: 11, fontWeight: 'bold'}}>
             리뷰쓰기
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity>,
       );
       return result;
     }
@@ -97,7 +96,6 @@ const DoneCardList = ({item, navigation}) => {
           </View>
         </View>
       </View>
-      <HorizonLine />
     </View>
   );
 };
@@ -108,6 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
+    marginBottom: 1,
   },
   doneCardList: {
     width: '100%',
