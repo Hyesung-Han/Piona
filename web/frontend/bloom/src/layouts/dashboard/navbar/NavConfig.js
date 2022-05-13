@@ -55,7 +55,7 @@ const navConfig = [
     items: [
       { title: '회원 관리', path: PATH_DASHBOARD.user.list, icon: ICONS.user,},
       { title: '리뷰 관리', path: PATH_DASHBOARD.review.root, icon: ICONS.cart},
-      { title: '기업 관리', path: PATH_DASHBOARD.invoice.root, icon: ICONS.invoice},
+      { title: '기업 관리', path: PATH_DASHBOARD.admin.shop, icon: ICONS.invoice},
     ],
   },
 
