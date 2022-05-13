@@ -58,51 +58,53 @@ const CartCardList = props => {
           })
         }
         style={styles.CartCard}>
-        <View style={styles.checkBox}>
-          <View style={styles.iconBox}>
-            {checkStatus === false ? (
-              // 클릭하면 클릭(담김)
-              <Icon.Button
-                onPress={() => {
-                  selectCartItem();
-                }}
-                name="checkbox"
-                color="#DADADA"
-                backgroundColor="transparent"
-                size={25}
-              />
-            ) : (
-              // 클릭하면 해제(뺌)
-              <Icon.Button
-                onPress={() => {
-                  selectCartItem();
-                }}
-                name="checkbox"
-                color="#F2A7B3"
-                backgroundColor="transparent"
-                size={25}
-              />
-            )}
-          </View>
-        </View>
-        <View style={styles.informationBox}>
-          <View style={styles.TopBox}>
-            <View style={styles.shopname}>
-              <Text style={{fontSize: 15, color: 'black'}}>{shop_name}</Text>
+        <View style={{flexDirection: 'row'}}>
+          <View style={styles.checkBox}>
+            <View style={styles.iconBox}>
+              {checkStatus === false ? (
+                // 클릭하면 클릭(담김)
+                <Icon.Button
+                  onPress={() => {
+                    selectCartItem();
+                  }}
+                  name="checkbox"
+                  color="#DADADA"
+                  backgroundColor="transparent"
+                  size={25}
+                />
+              ) : (
+                // 클릭하면 해제(뺌)
+                <Icon.Button
+                  onPress={() => {
+                    selectCartItem();
+                  }}
+                  name="checkbox"
+                  color="#F2A7B3"
+                  backgroundColor="transparent"
+                  size={25}
+                />
+              )}
             </View>
-            <View style={styles.reservationDate}>
-              <Text style={{fontSize: 13, color: 'black'}}>
-                {reservation_date}
+          </View>
+          <View style={styles.informationBox}>
+            <View style={styles.TopBox}>
+              <View style={styles.shopname}>
+                <Text style={{fontSize: 15, color: 'black'}}>{shop_name}</Text>
+              </View>
+              <View style={styles.reservationDate}>
+                <Text style={{fontSize: 13, color: 'black'}}>
+                  {reservation_date}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.itemname}>
+              <Text style={{fontSize: 12}}>{item_name}</Text>
+            </View>
+            <View style={styles.quantity}>
+              <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 10}}>
+                수량 : {quantity}
               </Text>
             </View>
-          </View>
-          <View style={styles.itemname}>
-            <Text style={{fontSize: 12}}>{item_name}</Text>
-          </View>
-          <View style={styles.quantity}>
-            <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 10}}>
-              수량 : {quantity}
-            </Text>
           </View>
         </View>
         <View style={styles.imgBox}>
@@ -137,6 +139,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   TopBox: {
     flexDirection: 'row',
@@ -145,19 +148,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 20,
     alignItems: 'center',
-    width: '50%',
   },
   reservationDate: {
     marginLeft: 10,
   },
   imgBox: {
     flexDirection: 'column',
-    marginLeft: 60,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 25,
   },
   informationBox: {
     width: '45%',
+  },
+  checkBox: {
+    justifyContent: 'center',
   },
 });
 
