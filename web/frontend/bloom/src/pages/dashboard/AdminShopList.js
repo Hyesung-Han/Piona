@@ -29,7 +29,8 @@ import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
 // sections
-import { UserTableToolbar, UserTableRow } from '../../sections/@dashboard/user/list';
+import { UserTableToolbar } from '../../sections/@dashboard/user/list';
+import AdminShopTableRow from '../../sections/@dashboard/user/list/ShopTableRow';
 // utils
 import axios from '../../utils/axios';
 
@@ -39,7 +40,7 @@ const STATUS_OPTIONS = ['all', 'active', 'banned'];
 
 const TABLE_HEAD = [
   { id: 'id', label: 'Id', align: 'left' },
-  { id: 'nickname', label: 'Nickname', align: 'left' },
+  { id: 'shop_number', label: '사업자번호', align: 'left' },
   { id: 'phone', label: 'Phone', align: 'left' },
   { id: 'created_at', label: 'Created at', align: 'left' },
   { id: 'status', label: 'Status', align: 'center' },
@@ -102,7 +103,7 @@ export default function AdminShopList() {
 
   const getUserList = async() => {
     try {
-      const response = await axios.get(`/api/admin/userList?code=M`, {
+      const response = await axios.get(`/api/admin/userList?code=S`, {
         headers : {
           Authorization: parseUser.access_token,
         }
@@ -120,22 +121,12 @@ export default function AdminShopList() {
     <Page title="User: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="회원 관리"
+          heading="기업 회원 관리"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'User', href: PATH_DASHBOARD.user.root },
             { name: 'List' },
           ]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.user.new}
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              New User
-            </Button>
-          }
         />
 
         <Card>
@@ -193,7 +184,7 @@ export default function AdminShopList() {
 
                 <TableBody>
                   {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <UserTableRow
+                    <AdminShopTableRow
                       key={row.user_id}
                       row={row}
                       selected={selected.includes(row.user_id)}
