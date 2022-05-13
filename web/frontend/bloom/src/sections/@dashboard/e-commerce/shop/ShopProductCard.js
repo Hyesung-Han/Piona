@@ -60,7 +60,7 @@ export default function ShopProductCard({ product }) {
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack direction="row" sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }} >
                 <Typography variant="subtitle1">{price}원</Typography>
-                <Typography variant="subtitle2" color="rgba(132, 132, 132, 1)" ml={11}>수량 : {total_quantity}개</Typography>
+                <Typography variant="subtitle2" color="rgba(132, 132, 132, 1)" ml={6}>수량 : {total_quantity}개</Typography>
               </Stack>
             </Stack>
           </Stack>
