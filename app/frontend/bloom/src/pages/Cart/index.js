@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   list: {
-    flex: 3,
+    backgroundColor: '#CBCBCB',
   },
   Nocontainer: {
     flex: 1,
