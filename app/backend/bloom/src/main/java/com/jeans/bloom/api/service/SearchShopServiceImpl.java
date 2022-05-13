@@ -190,4 +190,48 @@ public class SearchShopServiceImpl implements SearchShopService {
 
     }
 
+    /**
+     * HHS | 2022.05.13
+     * @name addrToCoords
+     * @des 주소로 네이버 API 검색을 통해 위도, 경도값을 가져옴
+     */
+    public double[] addrToCoords(String ad) throws Exception{
+            String addr = null;
+            try {
+                addr = URLEncoder.encode(ad, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("검색어 인코딩 실패", e);
+            }
+            String api = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + addr;
+            StringBuffer sb = new StringBuffer();
+            try {
+                URL url = new URL(api);
+                HttpsURLConnection http = (HttpsURLConnection) url.openConnection();
+                http.setRequestProperty("Content-Type", "application/json");
+                http.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "osk4djr2wf");
+                http.setRequestProperty("X-NCP-APIGW-API-KEY", "0DIe4BituLYIEU2TCr8KmArHN3DbUMNKmJ3t6T5m");
+                http.setRequestMethod("GET");
+                http.connect();
+
+                InputStreamReader in = new InputStreamReader(http.getInputStream(), "utf-8");
+                BufferedReader br = new BufferedReader(in);
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+                JSONParser parser = new JSONParser();
+                Object obj = parser.parse(sb.toString());
+                JSONObject jsonObject = (JSONObject) obj;
+                JSONArray getArray = (JSONArray) jsonObject.get("addresses");
+
+                JSONObject object = (JSONObject) getArray.get(0);
+                double xnum = Double.parseDouble((String) object.get("x"));
+                double ynum = Double.parseDouble((String) object.get("y"));
+                return new double[]{xnum, ynum};
+            } catch (IOException e) {
+                throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
+            }
+    }
+
 }
