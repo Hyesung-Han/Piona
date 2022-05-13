@@ -89,7 +89,9 @@ const CartFooter = props => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'column',
+    backgroundColor: '#F8F8F8',
   },
   bottomBox: {
     flexDirection: 'row',

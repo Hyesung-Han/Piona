@@ -1,6 +1,5 @@
 import React, {useState, useCallback} from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
-import HorizonLine from '../HorizonLine';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {WishListAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
@@ -138,7 +137,6 @@ const ShopCard = ({item, heartStatus, navigation}) => {
               <Text style={{color: '#F15C74', fontSize: 13}}>see more</Text>
             </View>
           </View>
-          <HorizonLine />
         </View>
       </TouchableOpacity>
     </View>
@@ -150,6 +148,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'white',
     borderBottomColor: 'black',
+    marginBottom: 0.5,
   },
   seperateContainer: {
     flexDirection: 'column',

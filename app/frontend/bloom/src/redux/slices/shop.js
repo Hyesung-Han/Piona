@@ -48,6 +48,9 @@ const shopSlice = createSlice({
     setSearchList(state, action) {
       state.search_list = action.payload;
     },
+    setShopList(state, action) {
+      state.shop_list = action.payload;
+    },
   },
   extraReducers: builder => {},
 });

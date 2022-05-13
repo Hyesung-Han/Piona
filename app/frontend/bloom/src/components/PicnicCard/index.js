@@ -11,16 +11,14 @@ import {
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
-import HorizonLine from '../HorizonLine';
 import {cancelReservation} from '../../utils/Axios';
 
 /**
- * LHJ | 2022.05.11
+ * LHJ,CSW | 2022.05.13
  * @name PicnicCard
  * @api cancelReservation
  * @des
- * 1. 컴포넌트 목록 :HorizonLine
- * 2. 페이지 기능 :
+ * 페이지 기능 :
  * Picnic Page의 진행중인 예약 FlatList에 보여줄 item 컴포넌트이다.
  * 상태가 준비 중일때 예약 취소가 가능함 > cancelReservation을 통해서 상태 변경
  */
@@ -127,12 +125,12 @@ const PicnicCardList = ({item}) => {
     <View style={styles.doneCardList}>
       <View style={styles.columnSeperateContainer}>
         <View style={styles.rowSeperateContainer}>
-          <View style={{width: '35%'}}>
+          <View style={{width: '30%'}}>
             <Text numberOfLines={1} style={styles.shopName}>
               {item.shop_name}
             </Text>
           </View>
-          <View style={{width: '30%'}}>
+          <View style={{width: '35%'}}>
             <Text style={styles.resDate}>
               {item.reservation_date.split('T')[0]}
             </Text>
@@ -181,7 +179,6 @@ const PicnicCardList = ({item}) => {
             <Text style={styles.quantity}>총 {item.total_price}원</Text>
           </View>
         </View>
-        <HorizonLine />
       </View>
     </View>
   );
