@@ -65,26 +65,6 @@ public class AlarmController {
         }
     }
 
-    /**
-     * HHS | 2022.05.13
-     * @name sendMessageTo
-     * @api {post} /alarm/push?target_token=target_token&title=title&body=body
-     * @des 토큰과 메시지 내용을 받아 해당 기기로 알림을 보내주는 메소드
-     */
-    @PostMapping("/push")
-    @ApiOperation(value = "타겟 토큰과 메시지 타이틀과 바디", notes = "토큰과 메시지 내용을 받아 해당 기기로 알람을 보낸다.")
-    public ResponseEntity<BaseResponseBody> sendMessageTo(
-            @RequestParam @ApiParam(value = "target_token" , required = true) String target_token,
-            @RequestParam @ApiParam(value = "title", required = true) String title,
-            @RequestParam @ApiParam(value = "body",required = true) String body) {
-        try {
-            firebaseCloudMessageService.sendMessageTo(target_token ,title, body);
-            return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
-        } catch(Exception e) {
-            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail"));
-        }
-    }
-
 
     /**
      * HHS | 2022.05.13
@@ -102,6 +82,38 @@ public class AlarmController {
             return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
         } catch(Exception e) {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
+        }
+    }
+
+
+    /**
+     * HHS | 2022.05.13
+     * @name sendMessageUsingType
+     * @api {get} /alarm/push?type=type
+     * @des type을 입력받아 현재 날짜와 예약날짜를 비교하여 해당하는 유저에게 알림을 보낸다.
+     */
+    @GetMapping("/push")
+    @ApiOperation(value = "타입", notes = "타입을 입력받아 예약 당일인 해당 유저에게 알림을 보낸다")
+    public ResponseEntity<BaseResponseBody> sendMessageUsingType(
+            @RequestParam @ApiParam(value = "type" , required = true) String type) {
+        try {
+            String title = "";
+            String body = "";
+            if(type.equals("rent")){
+                title = "[예약 알림]";
+                body = "오늘은 즐거운 피크닉이 있는 날입니다!";
+                firebaseCloudMessageService.sendMessage(title, body);
+                return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+            }else if(type.equals("return")){
+                title = "[반납 알림]";
+                body = "피크닉 후에 반납을 잊지 마세요!";
+                firebaseCloudMessageService.sendMessage(title, body);
+                return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+            }else{
+                return ResponseEntity.status(400).body(BaseResponseBody.of( "fail", "type 제대로 입력하세요"));
+            }
+        } catch(Exception e) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail"));
         }
     }
 

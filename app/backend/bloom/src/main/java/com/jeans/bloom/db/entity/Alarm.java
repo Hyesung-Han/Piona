@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.jeans.bloom.db.entity.type.StatusType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,11 +15,13 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @Setter
 @Table(name = "alarm_t", schema = "bloom")
+@DynamicInsert
 public class Alarm {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "alarm_id")
     private Integer alarmId;
+
 
     @JsonBackReference
     @ManyToOne(fetch = LAZY)
