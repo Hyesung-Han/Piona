@@ -46,4 +46,7 @@ public class AlarmServiceImpl implements AlarmService{
             alarmRepository.saveAll(alarms);
         }
     }
+
+
+
 }
