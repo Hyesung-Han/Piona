@@ -1,8 +1,6 @@
-import React, {useState, useCallback} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   View,
-  Dimensions,
   Alert,
   Text,
   TouchableOpacity,
@@ -17,7 +15,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {userAPI} from '../../utils/Axios';
 
 /**
- * LDJ | 2022.05.08
+ * LDJ | 2022.05.11
  * @name ChangeInfo
  * @api 1. userAPI/editUser
  *      2. userAPI/deleteUser
@@ -29,12 +27,13 @@ import {userAPI} from '../../utils/Axios';
  * 2. 회원탈퇴
  * 3. 닉네임 중복검사
  * 4. 핸드폰 인증요청/확인
+ * 5. 유효성 검사 추가 [조건들 통과 못할 시 수정버튼 클릭 안됨(핸드폰은 기존꺼 유지되도 되야하므로)]
  */
 
 const ChangeInfoPage = ({navigation, props}) => {
-  const user_name = useSelector(state => state.user.name);
+  // const user_name = useSelector(state => state.user.name);
   const user_id = useSelector(state => state.user.id);
-  const user_nickname = useSelector(state => state.user.nickname);
+  // const user_nickname = useSelector(state => state.user.nickname);
   const user_phoneNumber = useSelector(state => state.user.phoneNumber);
   const user_accessToken = useSelector(state => state.user.accessToken);
   const dispatch = useDispatch();
@@ -47,24 +46,83 @@ const ChangeInfoPage = ({navigation, props}) => {
   const [nickCheckColor, setNickCheckColor] = useState('#F15C74');
   const [phoneCheckColor, setPhoneCheckColor] = useState('#F15C74');
 
-  const [name, setName] = useState(user_name);
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
-  const [nickname, setNickname] = useState(user_nickname);
+  const [nickname, setNickname] = useState('');
   const [phoneNumber, setPhoneNumber] = useState(user_phoneNumber);
   const [certifiedNumber, setCertifiedNumber] = useState('');
   const [certification, setCertification] = useState('인증 요청');
 
-  const onChangeName = useCallback(text => {
-    setName(text.trim());
-  }, []);
+  // #A6DB9E : 녹색
+  // #FFABAB : 분홍색
+  // #C0C0C0 : 회색
 
-  const onChangePassword = useCallback(text => {
-    setPassword(text.trim());
-  }, []);
+  const regNm = /^[가-힣]{2,}$/;
+  const regPwd = /^[a-z0-9#?!@$ %^&*-]{7,14}$/;
+  const regNnm = /^[가-힣]{2,}$/;
+  const regPhonenum = /^[0-9]{10,11}$/;
+
+  const [canGoNext, setCanGoNext] = useState(true);
+
+  useEffect(() => {
+    if (
+      nameColor === '#A6DB9E' &&
+      passwordColor === '#A6DB9E' &&
+      passwordCheckColor === '#A6DB9E' &&
+      nicknameColor === '#A6DB9E' &&
+      nickCheckColor === '#A6DB9E' &&
+      (phoneNumberColor === '#A6DB9E' || phoneNumberColor === '#C0C0C0') &&
+      (phoneCheckColor === '#A6DB9E' || phoneCheckColor === '#F15C74')
+    ) {
+      setCanGoNext(false);
+    } else {
+      setCanGoNext(true);
+    }
+  }, [
+    nameColor,
+    passwordColor,
+    passwordCheckColor,
+    nicknameColor,
+    nickCheckColor,
+    phoneNumberColor,
+    phoneCheckColor,
+  ]);
+
+  const onChangeName = useCallback(
+    async text => {
+      setName(text.trim());
+      if (name.length > 1) {
+        if (regNm.test(name)) {
+          setNameColor('#A6DB9E');
+        } else {
+          setNameColor('#FFABAB');
+        }
+      } else {
+        setNameColor('#C0C0C0');
+      }
+    },
+    [regNm, name],
+  );
+
+  const onChangePassword = useCallback(
+    async text => {
+      setPassword(text.trim());
+      if (password.length > 7 && password.length < 16) {
+        if (regPwd.test(password)) {
+          setPasswordColor('#A6DB9E');
+        } else {
+          setPasswordColor('#FFABAB');
+        }
+      } else {
+        setPasswordColor('#C0C0C0');
+      }
+    },
+    [regPwd, password],
+  );
 
   const onChangeCheckPassword = useCallback(
-    text => {
+    async text => {
       setCheckPassword(text.trim());
       if (password === text.trim()) {
         setPasswordCheckColor('#A6DB9E');
@@ -75,13 +133,37 @@ const ChangeInfoPage = ({navigation, props}) => {
     [password],
   );
 
-  const onChangeNickname = useCallback(async text => {
-    setNickname(text.trim());
-  }, []);
+  const onChangeNickname = useCallback(
+    async text => {
+      setNickname(text.trim());
+      if (nickname.length > 1) {
+        if (regNnm.test(nickname)) {
+          setNicknameColor('#A6DB9E');
+        } else {
+          setNicknameColor('#FFABAB');
+        }
+      } else {
+        setNicknameColor('#C0C0C0');
+      }
+    },
+    [regNnm, nickname],
+  );
 
-  const onChangePhoneNumber = useCallback(text => {
-    setPhoneNumber(text.trim());
-  }, []);
+  const onChangePhoneNumber = useCallback(
+    async text => {
+      setPhoneNumber(text.trim());
+      if (phoneNumber.length > 1) {
+        if (regPhonenum.test(phoneNumber)) {
+          setPhoneNumberColor('#A6DB9E');
+        } else {
+          setPhoneNumberColor('#FFABAB');
+        }
+      } else {
+        setPhoneNumberColor('#C0C0C0');
+      }
+    },
+    [regPhonenum, phoneNumber],
+  );
 
   const onChangeCertifiedNumber = useCallback(text => {
     setCertifiedNumber(text.trim());
@@ -248,7 +330,6 @@ const ChangeInfoPage = ({navigation, props}) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '95%',
-            marginTop: 5,
           }}>
           <View
             style={{
@@ -264,8 +345,8 @@ const ChangeInfoPage = ({navigation, props}) => {
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
                 onChangeText={onChangeName}
-                // placeholder={user_name}
-                // placeholderTextColor="#C0C0C0"
+                placeholder="한글만, 최소 2자"
+                placeholderTextColor="#C0C0C0"
                 value={name}
                 style={{
                   width: '85%',
@@ -285,23 +366,29 @@ const ChangeInfoPage = ({navigation, props}) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '95%',
-            marginTop: 5,
           }}></View>
         <View
           style={{
             width: '100%',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
           }}>
           <Text
             style={{
               fontSize: 15,
-              color: 'black',
               fontWeight: 'bold',
               marginLeft: 40,
               marginTop: 10,
             }}>
             비밀번호
+          </Text>
+          <Text
+            style={{
+              fontSize: 10,
+              marginLeft: 34,
+              marginTop: 15,
+            }}>
+            영소문자+숫자+특수문자 각 1개 이상 / 8~15자
           </Text>
         </View>
         <View
@@ -310,7 +397,6 @@ const ChangeInfoPage = ({navigation, props}) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '95%',
-            marginTop: 5,
           }}>
           <View
             style={{
@@ -363,7 +449,6 @@ const ChangeInfoPage = ({navigation, props}) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '95%',
-            marginTop: 5,
           }}>
           <View
             style={{
@@ -433,7 +518,6 @@ const ChangeInfoPage = ({navigation, props}) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '95%',
-            marginTop: 5,
           }}>
           <View
             style={{
@@ -449,8 +533,8 @@ const ChangeInfoPage = ({navigation, props}) => {
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
                 onChangeText={onChangeNickname}
-                // placeholder={user_nickname}
-                // placeholderTextColor="#C0C0C0"
+                placeholder="한글만, 최소 2자"
+                placeholderTextColor="#C0C0C0"
                 value={nickname}
                 style={{
                   width: '85%',
@@ -480,7 +564,6 @@ const ChangeInfoPage = ({navigation, props}) => {
             }}>
             휴대폰 번호
           </Text>
-          {/* <TouchableOpacity onPress={() => checkId()}></TouchableOpacity> */}
           <TouchableOpacity
             style={{
               backgroundColor: phoneCheckColor,
@@ -505,7 +588,6 @@ const ChangeInfoPage = ({navigation, props}) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '95%',
-            marginTop: 5,
           }}>
           <View
             style={{
@@ -521,7 +603,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
                 onChangeText={onChangePhoneNumber}
-                // placeholder={user_phoneNumber}
+                // placeholder="숫자만, 11자 [미입력/인증 허용]"
                 // placeholderTextColor="#C0C0C0"
                 value={phoneNumber}
                 style={{
@@ -547,7 +629,6 @@ const ChangeInfoPage = ({navigation, props}) => {
             style={{
               width: '85%',
               height: 40,
-              margin: 10,
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#EEEEEE',
@@ -574,7 +655,6 @@ const ChangeInfoPage = ({navigation, props}) => {
             margin: 20,
             alignItems: 'center',
             width: '80%',
-            // marginHorizontal: '10%',
           }}>
           <TouchableOpacity
             style={{
@@ -586,6 +666,7 @@ const ChangeInfoPage = ({navigation, props}) => {
               height: 40,
               justifyContent: 'center',
             }}
+            disabled={canGoNext}
             onPress={editUser}>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               정보 수정

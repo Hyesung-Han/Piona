@@ -10,12 +10,11 @@ import {
   navigation,
   AppRegistry,
 } from 'react-native';
-import HorizonLine from '../HorizonLine';
 import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 /**
- * LHJ | 2022.05.09
+ * LHJ,CSW | 2022.05.13
  * @name MenuCard
  * @api x
  * @des
@@ -25,28 +24,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
  */
 
 const MenuCardList = ({item, navigation}) => {
-    // 0: {
-    //     comment: "감사감사~"
-    //     content: "여름이었다..."
-    //     created_at: "2022-05-29T09:00:00"
-    //     image_url: "sdf"
-    //     kw_adorable: "Y"
-    //     kw_clean: "Y"
-    //     kw_kind: "N"
-    //     kw_mood: "Y"
-    //     kw_reasonable: "Y"
-    //     kw_various: "N"
-    //     nickname: "asdasd"
-    //     reservation_id: 1
-    //     review_id: 1
-    //     score: 5
-    //     shop_name: "pipipi"
-    //    }
   const user_id = useSelector(state => state.id);
   const token = useSelector(state => state.user.accessToken);
   //shopNumber는 현재 있는 가게이므로 리덕스에 있는 shopNumber사용 or 이전 화면(shopMenu에서 전달받기)
-  const shopNumber = useSelector(state => state.shop.shopNumber);
-  //const shopName = useSelector(state => state.shop.shopName);
+  const shopNumber = useSelector(state => state.shop.number);
+  //const shopName = useSelector(state => state.shop.name);
 
   //스코어에 따라서 별 아이콘 추가하는 함수
   const StartScore = () => {
@@ -79,130 +61,230 @@ const MenuCardList = ({item, navigation}) => {
     for (let i = 0; i < 6; i++) {
       if (i === 0 && keyword[i] === 'Y') {
         result.push(
-          <Text color="#F2A344" backgroundColor="transparent" size={15}>
-            아기자기해요
-          </Text>,
+          <View
+            style={{
+              backgroundColor: '#FFDBDB',
+              borderRadius: 15,
+              paddingHorizontal: 10,
+              marginRight: 10,
+              marginVertical: 5,
+            }}>
+            <Text style={{fontSize: 13, color: 'black'}}>아기자기해요</Text>
+          </View>,
         );
       }
       if (i === 1 && keyword[i] === 'Y') {
         result.push(
-          <Text color="#F2A344" backgroundColor="transparent" size={15}>
-            깔끔해요
-          </Text>,
+          <View
+            style={{
+              backgroundColor: '#FFDBDB',
+              borderRadius: 15,
+              paddingHorizontal: 10,
+              marginRight: 10,
+              marginVertical: 5,
+            }}>
+            <Text style={{fontSize: 13, color: 'black'}}>깔끔해요</Text>
+          </View>,
         );
       }
       if (i === 2 && keyword[i] === 'Y') {
         result.push(
-          <Text color="#F2A344" backgroundColor="transparent" size={15}>
-            친절해요
-          </Text>,
+          <View
+            style={{
+              backgroundColor: '#FFDBDB',
+              borderRadius: 15,
+              paddingHorizontal: 10,
+              marginRight: 10,
+              marginVertical: 5,
+            }}>
+            <Text style={{fontSize: 13, color: 'black'}}>친절해요</Text>
+          </View>,
         );
       }
       if (i === 3 && keyword[i] === 'Y') {
         result.push(
-          <Text color="#F2A344" backgroundColor="transparent" size={15}>
-            감성이 넘쳐요
-          </Text>,
+          <View
+            style={{
+              backgroundColor: '#FFDBDB',
+              borderRadius: 15,
+              paddingHorizontal: 10,
+              marginRight: 10,
+              marginVertical: 5,
+            }}>
+            <Text style={{fontSize: 13, color: 'black'}}>감성넘쳐요</Text>
+          </View>,
         );
       }
       if (i === 4 && keyword[i] === 'Y') {
         result.push(
-          <Text color="#F2A344" backgroundColor="transparent" size={15}>
-            가성비가 좋아요
-          </Text>,
+          <View
+            style={{
+              backgroundColor: '#FFDBDB',
+              borderRadius: 15,
+              paddingHorizontal: 10,
+              marginRight: 10,
+              marginVertical: 5,
+            }}>
+            <Text style={{fontSize: 13, color: 'black'}}>가성비가 좋아요</Text>
+          </View>,
         );
       }
       if (i === 5 && keyword[i] === 'Y') {
         result.push(
-          <Text color="#F2A344" backgroundColor="transparent" size={15}>
-            구성이 다양해요
-          </Text>,
+          <View
+            style={{
+              backgroundColor: '#FFDBDB',
+              borderRadius: 15,
+              paddingHorizontal: 10,
+              marginRight: 10,
+              marginVertical: 5,
+            }}>
+            <Text style={{fontSize: 13, color: 'black'}}>구성이 다양해요</Text>
+          </View>,
         );
       }
     }
     return result;
   };
 
-  //사장님 답변에 따라서 컴포넌트 추가
-  const Recomment = () => {
-    const result = [];
-    if (item.comment === '') {
-      //아직 사장님 답변이 달리지 않음
-    } else {
-      result.push(
-        <View>
-          <View style={{width: '35%', elevation: 5}}>
-            <Image
-              source={{
-                uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcbqsmXsyp035Mxiq-KXC1kELso0A1bixXMA&usqp=CAU',
-              }}
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 15,
-              }}
-            />
-          </View>
-          <View>
-            <Text>{item.comment}</Text>
-          </View>
-        </View>,
-      );
-    }
-    return result;
-  };
+  //   //사장님 답변에 따라서 컴포넌트 추가
+  //   const Recomment = () => {
+  //     const result = [];
+  //     if (item.comment === '') {
+  //       //아직 사장님 답변이 달리지 않음
+  //     } else {
+  //       result.push(
+  // ,
+  //       );
+  //     }
+  //     return result;
+  //   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.doneCardList}>
-        <View style={styles.seperateContainer}>
-          <View style={{width: '75%'}}>
-            <View style={styles.itemInfoContainer}>
-              <View style={styles.itemTitleAndDate}>
-                <View>
-                  <Text style={styles.itemTitle}>{item.nickname}</Text>
-                </View>
-                <View>
-                  <Text style={styles.itemDate}>
-                    {item.created_at.split('T')[0]}
-                  </Text>
-                </View>
-                <View>
-                  <Text style={styles.itemDate}>{item.content}</Text>
-                </View>
-                <View>
-                  <View style={styles.starIcons}>{StartScore()}</View>
-                </View>
-                <View>
-                  <View>{KeyWordList()}</View>
-                </View>
-                <View>
-                  <View>{Recomment()}</View>
-                </View>
-              </View>
-              <View>
-                {/* <Text style={styles.itemDesc}>{keyWordList()}</Text> */}
-              </View>
-              <View style={{width: '60%'}}></View>
+      <View style={styles.review}>
+        <View style={styles.reviewCardList}>
+          <View style={styles.itemTitleAndDate}>
+            <View>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  marginRight: 10,
+                  fontSize: 15,
+                  color: 'black',
+                }}>
+                {item.nickname}
+              </Text>
+            </View>
+            <View>
+              <Text style={styles.itemDate}>
+                {item.created_at.split('T')[0]}
+              </Text>
             </View>
           </View>
-          <View style={{width: '35%', elevation: 5}}>
-            <Image
-              source={{uri: `${item.image_url}`}}
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 15,
-              }}
-            />
+          <View>
+            <View style={styles.starIcons}>{StartScore()}</View>
+          </View>
+          <View style={{width: '35%', elevation: 5}}></View>
+          <View style={styles.keyword}>{KeyWordList()}</View>
+          {item.image_url && (
+            <View style={styles.imgBox}>
+              <Image
+                source={{uri: `${item.image_url}`}}
+                style={{
+                  resizeMode: 'contain',
+                  width: '100%',
+                  height: '100%',
+                }}
+              />
+            </View>
+          )}
+          <View>
+            <Text style={styles.itemDate}>{item.content}</Text>
           </View>
         </View>
       </View>
-      <HorizonLine />
+      {item.comment !== '' && (
+        <View style={styles.recommentBox}>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <View style={{marginRight: 10}}>
+              <Image
+                source={{
+                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcbqsmXsyp035Mxiq-KXC1kELso0A1bixXMA&usqp=CAU',
+                }}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50,
+                }}
+              />
+            </View>
+            <View>
+              <Text numberOfLines={5}>{item.comment}</Text>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F8F8F8',
+    marginBottom: 0.5,
+  },
+  review: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    width: '100%',
+    padding: 15,
+  },
+  reviewCardList: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  itemTitleAndDate: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  starIcons: {
+    flexDirection: 'row',
+    marginRight: 10,
+    marginVertical: 3,
+  },
+  keyword: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    marginVertical: 3,
+  },
+  imgBox: {
+    borderWidth: 1,
+    width: 130,
+    height: 130,
+    marginVertical: 5,
+  },
+  recommentBox: {
+    width: '90%',
+    paddingVertical: 10,
+    backgroundColor: '#F9F0F0',
+  },
+});
 
 export default MenuCardList;

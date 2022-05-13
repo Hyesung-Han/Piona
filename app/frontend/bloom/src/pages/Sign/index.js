@@ -70,13 +70,14 @@ const SignPage = props => {
   return (
     <View style={styles.container}>
       <View style={{justifyContent: 'center'}}>
-        <Image source={Logo} style={{height: '60%'}} resizeMode="contain" />
+        <Image source={Logo} style={{height: '65%'}} resizeMode="contain" />
       </View>
       <View style={{alignItems: 'center'}}>
         <View
           style={{
             flexDirection: 'column',
             alignItems: 'center',
+            height: '20%',
           }}>
           <SignBtn title="로그인" func={() => setSigninModal(true)} />
           <SignBtn title="회원가입" func={() => setSignupModal(true)} />

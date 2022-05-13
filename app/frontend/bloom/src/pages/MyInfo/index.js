@@ -32,6 +32,9 @@ const MyInfoPage = ({navigation}) => {
         accessToken: '',
         refreshToken: '',
       }),
+      userSlice.actions.setPhoneToken({
+        phoneToken: '',
+      }),
     );
     await EncryptedStorage.removeItem('refreshToken');
   }, [dispatch]);
@@ -106,7 +109,7 @@ const MyInfoPage = ({navigation}) => {
             color: 'grey',
             marginRight: 16,
           }}>
-          포인트어쩔껴~ P
+          10000 P
         </Text>
       </TouchableOpacity>
       <TouchableOpacity

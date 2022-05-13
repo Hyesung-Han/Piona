@@ -12,24 +12,18 @@ import {
 } from 'react-native';
 import MainBackground from '../../assets/Mainbackground.jpg';
 import {useSelector} from 'react-redux';
-
 /**
- * CSW | 2022.04.27
+ * CSW | 2022.05.13
  * @name MainPage
  * @des
  * 로그인 된 상태에서 앱을 열면 보이는 메인페이지
  * 검색/지도페이지로 이동할 수 있는 검색인풋박스와 맵버튼, 태그버튼들이 있는 페이지입니다
- * TODO
- * 1. 닉네임 받기
- * 2. 검색어 넘겨주기
  *  */
 
 const MainPage = ({navigation}) => {
   const [inputText, setInputText] = useState('');
   const user_nickname = useSelector(state => state.user.nickname);
   const user_id = useSelector(state => state.user.id);
-  //test 좌표
-  const user_location = {lat: 37.564362, lng: 126.977011};
 
   const clearText = () => {
     setInputText('');
@@ -71,30 +65,21 @@ const MainPage = ({navigation}) => {
               />
             </View>
           </View>
-          <View style={styles.mapBox}>
+          <TouchableOpacity
+            style={styles.mapBox}
+            onPress={() => {
+              navigation.navigate('Map', {page: 'main'});
+            }}>
             <Icon
               name="map-outline"
               color="white"
               backgroundColor="white"
               size={20}
-              onPress={() => {
-                navigation.navigate('Map', {
-                  type: 'location',
-                  word: '',
-                  user_id: user_id,
-                  user_lat: user_location.lat,
-                  user_lng: user_location.lng,
-                });
-              }}
             />
-            <Text
-              style={{color: 'white', fontWeight: 'bold'}}
-              onPress={() =>
-                navigation.navigate('Map', {navigation: `${navigation}`})
-              }>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>
               지도에서 찾기
             </Text>
-          </View>
+          </TouchableOpacity>
         </ImageBackground>
       </View>
       <View style={styles.rowBox}>
