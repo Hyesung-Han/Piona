@@ -359,7 +359,34 @@ export const getNotResList = async (item_id, quantity, accessToken) => {
     });
 };
 
-// CSW, LDJ | 위시리스트에 관한 API | [목록조회, 추가, 삭제]
+//LHJ | 2022.05.13
+// 예약 등록 api
+export const RegisterReservation = async (
+  reservationDetailList,
+  shop_number,
+  total_price,
+  user_id,
+  accessToken,
+) => {
+  return await request
+    .post(
+      '/picnic',
+      {reservationDetailList, shop_number, total_price, user_id},
+      {
+        headers: {
+          Authorization: accessToken,
+        },
+      },
+    )
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+// CSW | 위시리스트에 관한 API | [목록조회, 추가, 삭제]
 export const WishListAPI = {
   getWishList: async (user_id, accessToken) => {
     return await request

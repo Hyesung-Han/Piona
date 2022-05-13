@@ -25,6 +25,7 @@
     "native-base": "^3.4.3",
     "react": "17.0.2",
     "react-native": "0.68.1",
+    "react-native-bootpay": "^1.2.4",
     "react-native-calendars": "^1.1283.0",
     "react-native-config": "^1.4.5",
     "react-native-encrypted-storage": "^4.0.2",
@@ -47,7 +48,9 @@
     "redux": "^4.2.0",
     "redux-flipper": "^2.0.1",
     "redux-persist": "^6.0.0",
-    "rn-async-storage-flipper": "^0.0.10"
+    "rn-async-storage-flipper": "^0.0.10",
+    "react-native-device-info": "7.2.1",
+    "react-native-sensitive-info": "5.5.8"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
