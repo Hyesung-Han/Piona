@@ -148,6 +148,24 @@ export const userAPI = {
         return error;
       });
   },
+  phoneToken: async (user_id, phone_token, accessToken) => {
+    return await request
+      .patch(
+        `/alarm/push?user_id=${user_id}&phone_token=${phone_token}}`,
+        {},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        },
+      )
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error;
+      });
+  },
 };
 
 // CSW, LDJ | 장바구니에 관한 API | [목록조회, 추가, 삭제]
