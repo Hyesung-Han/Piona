@@ -160,7 +160,7 @@ const ShopHomePage = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F8F8F8',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

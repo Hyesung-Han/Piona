@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 3,
+    backgroundColor: '#CBCBCB',
   },
   mapBtn: {
     position: 'absolute',
