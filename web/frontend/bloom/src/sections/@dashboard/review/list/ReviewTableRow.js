@@ -14,13 +14,15 @@ import { TableMoreMenu } from '../../../../components/table';
 
 // ----------------------------------------------------------------------
 
-InvoiceTableRow.propTypes = {
+ReviewTableRow.propTypes = {
   row: PropTypes.object.isRequired,
   selected: PropTypes.bool,
   onIsbanRow: PropTypes.func,
+  onOpenCompose: PropTypes.func,
+  onOpenReview: PropTypes.func
 };
 
-export default function InvoiceTableRow({ row, selected, onIsbanRow}) {
+export default function ReviewTableRow({ row, selected, onIsbanRow,onOpenCompose, onOpenReview}) {
   const theme = useTheme();
 
   const { review_id, is_ban, nickname, content, comment} = row;
@@ -35,13 +37,15 @@ export default function InvoiceTableRow({ row, selected, onIsbanRow}) {
     setOpenMenuActions(null);
   };
 
-
+  const handleOpenCompose = () => {
+    onOpenCompose();
+    onOpenReview();
+  };
 
   return (
     <TableRow 
-      hover selected={selected}                 
-      onClick={() => { console.log("aaa");
-    }}>
+      hover selected={selected}
+    >
 
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
         <Stack>
@@ -50,7 +54,7 @@ export default function InvoiceTableRow({ row, selected, onIsbanRow}) {
           </Typography>
         </Stack>
       </TableCell>
-      <TableCell align="center">{content}</TableCell>
+      <TableCell align="center" onClick={handleOpenCompose} >{content}</TableCell>
 
       <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
         <Iconify
