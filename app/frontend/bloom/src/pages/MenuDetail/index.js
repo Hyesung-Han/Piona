@@ -85,7 +85,7 @@ const MenuDetailPage = ({navigation, route}) => {
 
   const getNotReservationList = async () => {
     try {
-      const res = await getNotResList(item_id, 10, token);
+      const res = await getNotResList(item_id, quantityStatus, token);
       //const sss = res.data.data;
       if (res.data.result === 'success') {
         //setnotRedData(res.data.data);
