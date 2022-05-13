@@ -148,16 +148,12 @@ export const userAPI = {
         return error;
       });
   },
-  phoneToken: async (user_id, phone_token, accessToken) => {
+  phoneToken: async (user_id, phone_token) => {
     return await request
       .patch(
-        `/alarm/push?user_id=${user_id}&phone_token=${phone_token}}`,
+        `/alarm/push?phone_token=${phone_token}&user_id=${user_id}`,
         {},
-        {
-          headers: {
-            Authorization: accessToken,
-          },
-        },
+        {},
       )
       .then(response => {
         return response;

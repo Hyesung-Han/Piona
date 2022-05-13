@@ -78,7 +78,7 @@ const SignInModal = props => {
           const token = await messaging().getToken();
           console.log('phone token', token);
           dispatch(userSlice.actions.setPhoneToken(token));
-          const response = await userAPI.signin(id, token);
+          const response = await userAPI.phoneToken(id, token);
         } catch (error) {
           console.error(error);
         }
