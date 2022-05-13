@@ -111,7 +111,9 @@ export const PATH_DASHBOARD = {
     demoView: path(ROOTS_DASHBOARD, '/blog/post/apply-these-7-secret-techniques-to-improve-event'),
   },
   admin: {
+    user: path(ROOTS_DASHBOARD, '/admin/user'),
     shop: path(ROOTS_DASHBOARD, '/admin/shop'),
+    review: path(ROOTS_DASHBOARD, '/admin/review'),
   },
 };
 

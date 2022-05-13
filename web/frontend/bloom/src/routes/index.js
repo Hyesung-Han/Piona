@@ -151,7 +151,9 @@ export default function Router() {
           path: 'admin',
           children: [
             { element: <Navigate to="/dashboard/admin/shop" replace />, index: true },
+            { path: 'user', element: <UserList /> },
             { path: 'shop', element: <AdminShopList /> },
+            { path: 'review', element: <AdminReviewList /> },
           ],
         },
         { path: 'calendar', element: <Calendar /> },
@@ -265,3 +267,4 @@ const Page404 = Loadable(lazy(() => import('../pages/Page404')));
 
 // ADMIN
 const AdminShopList = Loadable(lazy(() => import('../pages/dashboard/AdminShopList')));
+const AdminReviewList = Loadable(lazy(() => import('../pages/dashboard/AdminReviewList')));
