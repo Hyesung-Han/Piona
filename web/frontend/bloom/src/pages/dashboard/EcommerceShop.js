@@ -82,7 +82,6 @@ export default function EcommerceShop() {
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'Items',
-              href: PATH_DASHBOARD.items.root,
             },
             { name: 'list' },
           ]}

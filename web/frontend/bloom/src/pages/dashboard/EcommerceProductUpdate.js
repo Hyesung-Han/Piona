@@ -201,11 +201,11 @@ const handleDrop = useCallback(
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-    <Page title="ITEMS: Item Details">
+    <Page title="ITEMS: Item Update">
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Item Details"
+          heading="Item Update"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
