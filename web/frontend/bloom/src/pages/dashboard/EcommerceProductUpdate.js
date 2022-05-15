@@ -219,7 +219,6 @@ const handleDrop = useCallback(
         />
           <Typography fontSize={30} textAlign={"center"}  marginBottom={10}>{data.name}</Typography>
 
-        <CartWidget />
 
         {itemDetail && (
           <>

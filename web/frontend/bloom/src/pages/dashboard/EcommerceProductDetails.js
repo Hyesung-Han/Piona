@@ -108,13 +108,6 @@ export default function EcommerceProductDetails() {
       console.error(error);
     }
   }
-  const handleAddCart = (product) => {
-    dispatch(addCart(product));
-  };
-  
-  const handleGotoStep = (step) => {
-    dispatch(onGotoStep(step));
-  };
 
   return (
     <Page title="ITEMS: Item Details">
@@ -134,8 +127,6 @@ export default function EcommerceProductDetails() {
           ]}
         />
           <Typography fontSize={30} textAlign={"center"}  marginBottom={10}>{itemDetail.name}</Typography>
-
-        <CartWidget />
 
         {itemDetail && (
           <>
