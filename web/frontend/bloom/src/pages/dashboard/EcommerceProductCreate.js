@@ -44,24 +44,6 @@ import CartWidget from '../../sections/@dashboard/e-commerce/CartWidget';
 
 // ----------------------------------------------------------------------
 
-// const PRODUCT_DESCRIPTION = [
-//   {
-//     title: '100% Original',
-//     description: 'Chocolate bar candy canes ice cream toffee cookie halvah.',
-//     icon: 'ic:round-verified',
-//   },
-//   {
-//     title: '10 Day Replacement',
-//     description: 'Marshmallow biscuit donut dragée fruitcake wafer.',
-//     icon: 'eva:clock-fill',
-//   },
-//   {
-//     title: 'Year Warranty',
-//     description: 'Cotton candy gingerbread cake I love sugar sweet.',
-//     icon: 'ic:round-verified-user',
-//   },
-// ];
-
 const IconWrapperStyle = styled('div')(({ theme }) => ({
   margin: 'auto',
   display: 'flex',
@@ -110,13 +92,10 @@ export default function EcommerceProductCreate() {
   
 const onSubmit = async (itemInfo) => {
   const { total_quantity, price, name, description, image_url, shop_number } = itemInfo;
-  console.log("imageURL", image_url);
-  console.log("CURRENTimageURL", currentImageUrl);
   const fd = new FormData();
   if(typeof image_url === 'string' || image_url === '') {
-    console.log("난 바보야")
+    // console.log("")
   } else {
-    console.log("파일있")
     fd.append('file', image_url);
   }
   const user = localStorage.getItem('user');
@@ -126,15 +105,12 @@ const onSubmit = async (itemInfo) => {
   fd.append('name', name);
   fd.append('description', description);
   fd.append('shopNumber', parseUser.shop_number);
-  console.log(image_url)
 
   try {
-    console.log(parseUser.shop_number);
     const response = await axios.post(`/api/item`, fd, { headers: {
       Authorization: parseUser.access_token
     }});
     const { data } = response;
-    console.log("slkdjs",data);
   } catch (e) {
     console.error(e);
   }
@@ -157,12 +133,6 @@ const handleDrop = useCallback(
   [setValue]
 );
 
-const spanStyle = {
-  // textAlign:'center',
-  marginRight: '40px',
-  // border: '5px solid pink'
-};
-
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
     <Page title="ITEMS: Item Details">
@@ -174,7 +144,7 @@ const spanStyle = {
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'Items',
-              href: PATH_DASHBOARD.items.root,
+              href: PATH_DASHBOARD.items.list,
             },
             {
               name: 'create',
@@ -232,14 +202,9 @@ const spanStyle = {
                         disabled
                         font-color='black'/>
                         <RHFTextField
-                          // id="outlined-name"
-                          // size='small'
-                          // required="true"
                           xs={8}
                           name="name"
                           label=""
-                          // onChange={OnChangeHandler("price")}
-                          // defaultValue={itemDetail.price}
                           style ={{width: '60%', ml:"1"}}
                         />
                       </Grid>  
@@ -256,13 +221,8 @@ const spanStyle = {
                         disabled
                         font-color='black'/>
                           <RHFTextField
-                            // id="outlined-name"
-                            // size='small'
-                            // required="true"
                             name="price"
                             label=""
-                            // onChange={OnChangeHandler("price")}
-                            // defaultValue={itemDetail.price}
                             style ={{width: '60%'}}
                           />
                         
@@ -280,10 +240,6 @@ const spanStyle = {
                         disabled
                         font-color='black'/>
                           <RHFTextField
-                            // id="outlined-name"
-                            // size='small'
-                            // defaultValue={itemDetail.total_quantity}
-                            // onChange={OnChangeHandler("total_quantity")}
                             name="total_quantity"
                             label=""
                             style ={{width: '60%'}}
@@ -293,12 +249,8 @@ const spanStyle = {
                         <RHFTextField 
                           name="description"
                           label="상품 설명"
-                          // id="outlined-multiline-static"
-                          // required="true"
                           multiline
                           rows={6}
-                          // onChange={OnChangeHandler("description")}
-                          // defaultValue={itemDetail.description}
                           style ={{width: '80%'}}
                         />
                       </Grid>
@@ -314,10 +266,7 @@ const spanStyle = {
             </Grid>
           </>
         )}
-
         {/* {!itemDetail && <SkeletonProduct />} */}
-
-        {/* {error && <Typography variant="h6">404 Product not found</Typography>} */}
       </Container>
     </Page>
     </FormProvider>
