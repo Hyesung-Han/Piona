@@ -105,7 +105,7 @@ export default function EcommerceCheckout() {
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root,
+              href: PATH_DASHBOARD.items.root,
             },
             { name: 'Checkout' },
           ]}

@@ -147,24 +147,24 @@ export default function EcommerceShop() {
   // };
 
   return (
-    <Page title="Ecommerce: Shop">
+    <Page title="ITEMS: Shop">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Item"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root,
+              name: 'Items',
+              href: PATH_DASHBOARD.items.root,
             },
-            { name: 'Item' },
+            { name: 'list' },
           ]}
           action={
             <Button
               variant="contained"
               startIcon={<Iconify icon="eva:plus-fill" />}
               component={RouterLink}
-              to={PATH_DASHBOARD.eCommerce.new}
+              to={PATH_DASHBOARD.items.new}
             >
               상품 추가
             </Button>

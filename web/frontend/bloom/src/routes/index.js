@@ -57,7 +57,7 @@ export default function Router() {
 
     // Dashboard Routes
     {
-      path: 'dashboard',
+      path: '/',
       element: (
         <AuthGuard>
           <DashboardLayout />
@@ -66,19 +66,14 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'app', element: <GeneralApp /> },
-        { path: 'ecommerce', element: <GeneralEcommerce /> },
-        { path: 'analytics', element: <GeneralAnalytics /> },
-        { path: 'banking', element: <GeneralBanking /> },
-        { path: 'booking', element: <GeneralBooking /> },
-
         {
-          path: 'e-commerce',
+          path: 'items',
           children: [
-            { element: <Navigate to="/dashboard/e-commerce/product" replace />, index: true },
+            { element: <Navigate to="/dashboard/items/product" replace />, index: true },
             { path: 'product', element: <EcommerceShop /> },
             { path: 'product/:name', element: <EcommerceProductDetails /> },
             { path: 'product/update/:name', element: <EcommerceProductUpdate /> },
-            { path: 'list', element: <EcommerceProductList /> },
+            // { path: 'list', element: <EcommerceProductList /> },
             { path: 'product/new', element: <EcommerceProductCreate /> },
             { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
             { path: 'checkout', element: <EcommerceCheckout /> },
@@ -97,13 +92,10 @@ export default function Router() {
           ],
         },
         {
-          path: 'invoice',
+          path: 'reservation',
           children: [
-            { element: <Navigate to="/dashboard/invoice/list" replace />, index: true },
+            { element: <Navigate to="/dashboard/reservation/list" replace />, index: true },
             { path: 'list', element: <InvoiceList /> },
-            // { path: ':id', element: <InvoiceDetails /> },
-            // { path: ':id/edit', element: <InvoiceEdit /> },
-            // { path: 'new', element: <InvoiceCreate /> },
           ],
         },
         {
@@ -177,16 +169,16 @@ export default function Router() {
         { path: '*', element: <Navigate to="/404" replace /> },
       ],
     },
-    {
-      path: '/',
-      element: <MainLayout />,
-      children: [
-        { element: <HomePage />, index: true },
-        { path: 'about-us', element: <About /> },
-        { path: 'contact-us', element: <Contact /> },
-        { path: 'faqs', element: <Faqs /> },
-      ],
-    },
+    // {
+    //   path: '/',
+    //   element: <MainLayout />,
+    //   children: [
+    //     { element: <HomePage />, index: true },
+    //     { path: 'about-us', element: <About /> },
+    //     { path: 'contact-us', element: <Contact /> },
+    //     { path: 'faqs', element: <Faqs /> },
+    //   ],
+    // },
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
@@ -211,24 +203,18 @@ const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBoo
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
 const EcommerceProductDetails = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductDetails')));
 const EcommerceProductUpdate = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductUpdate')));
-const EcommerceProductList = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductList')));
+// const EcommerceProductList = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductList')));
 const EcommerceProductCreate = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductCreate')));
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
 
 // INVOICE
 const InvoiceList = Loadable(lazy(() => import('../pages/dashboard/InvoiceList')));
-const InvoiceDetails = Loadable(lazy(() => import('../pages/dashboard/InvoiceDetails')));
-const InvoiceCreate = Loadable(lazy(() => import('../pages/dashboard/InvoiceCreate')));
-const InvoiceEdit = Loadable(lazy(() => import('../pages/dashboard/InvoiceEdit')));
 
 // Sale
 const SaleList = Loadable(lazy(() => import('../pages/dashboard/SaleList')));
 
 // REVIEW
 const ReviewList = Loadable(lazy(() => import('../pages/dashboard/ReviewList')));
-// const ReviewDetails = Loadable(lazy(() => import('../pages/dashboard/InvoiceDetails')));
-// const ReviewCreate = Loadable(lazy(() => import('../pages/dashboard/InvoiceCreate')));
-// const ReviewEdit = Loadable(lazy(() => import('../pages/dashboard/InvoiceEdit')));
 
 
 // BLOG

@@ -186,8 +186,8 @@ export default function InvoiceList() {
           heading="예약 현황"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Invoices', href: PATH_DASHBOARD.invoice.root },
-            { name: 'List' },
+            { name: 'Reservation', href: PATH_DASHBOARD.reservation.root },
+            { name: 'list' },
           ]}
         />
 
