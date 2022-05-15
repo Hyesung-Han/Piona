@@ -153,8 +153,6 @@ const handleDrop = useCallback(
         />
           <Typography fontSize={30} textAlign={"center"} variant="h3" marginBottom={10} gutterBottom>상품 등록</Typography>
 
-        <CartWidget />
-
         { (
           <>
             <Grid container spacing={2}>
@@ -162,7 +160,6 @@ const handleDrop = useCallback(
                 <Typography color={"gray"} fontSize="12px" textAlign={'center'}>상품 이미지를 등록해주세요.</Typography>
                 <RHFUploadAvatar
                 sx={{width: 400, height:400, borderRadius: '10%', mt:2}}
-                  // sx={{mt:2}}
                   name="image_url"
                   accept="image/*"
                   maxSize={3145728}
