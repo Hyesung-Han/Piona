@@ -35,16 +35,16 @@ const navConfig = [
       { 
         title: '상품 관리', 
         path: PATH_DASHBOARD.general.ecommerce, 
-        icon: ICONS.ecommerce,
+        icon: ICONS.cart,
         children: [
-          { title: '상품 등록하기', path: PATH_DASHBOARD.eCommerce.new },
-          { title: '상품 목록보기', path: PATH_DASHBOARD.eCommerce.root },
+          { title: '상품 등록하기', path: PATH_DASHBOARD.items.new },
+          { title: '상품 목록보기', path: PATH_DASHBOARD.items.list },
         ],
       },
-      { title: '예약 관리', path: PATH_DASHBOARD.invoice.root, icon: ICONS.dashboard },
-      { title: '정산 관리', path: PATH_DASHBOARD.sale.root, icon: ICONS.analytics },
-      { title: '리뷰 관리', path: PATH_DASHBOARD.review.root, icon: ICONS.banking },
-      { title: '정보 수정', path: PATH_DASHBOARD.user.account, icon: ICONS.booking },
+      { title: '예약 관리', path: PATH_DASHBOARD.reservation.list, icon: ICONS.booking },
+      { title: '정산 관리', path: PATH_DASHBOARD.sale.list, icon: ICONS.ecommerce },
+      { title: '리뷰 관리', path: PATH_DASHBOARD.review.list, icon: ICONS.chat },
+      { title: '정보 수정', path: PATH_DASHBOARD.user.account, icon: ICONS.user },
     ],
   },
 
@@ -54,8 +54,8 @@ const navConfig = [
     subheader: 'admin',
     items: [
       { title: '회원 관리', path: PATH_DASHBOARD.admin.user, icon: ICONS.user,},
-      { title: '리뷰 관리', path: PATH_DASHBOARD.admin.review, icon: ICONS.cart},
-      { title: '기업 관리', path: PATH_DASHBOARD.admin.shop, icon: ICONS.invoice},
+      { title: '리뷰 관리', path: PATH_DASHBOARD.admin.review, icon: ICONS.chat},
+      { title: '기업 관리', path: PATH_DASHBOARD.admin.shop, icon: ICONS.banking},
     ],
   },
 ];
