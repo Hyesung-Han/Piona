@@ -65,7 +65,6 @@ export default function AccountGeneral({shop}) {
       } else {
         fd.append('file', image_url);
       }
-      console.log(shop_lng);
       fd.append('shopInfoReq.address', address);
       fd.append('shopInfoReq.description', description);
       fd.append('shopInfoReq.detail_address', detail_address);
@@ -99,13 +98,10 @@ export default function AccountGeneral({shop}) {
         Authorization: user.access_token
       }});
       const {data} = response;
-      console.log(data);
-      console.log("result",data.result);
       if(data.result === 'success') {
         const {x, y} = data.data;
         setShopLng(x);
         setShopLat(y);
-        console.log("쳌,,",x);
       }
     } catch(e) {
       console.error('error', e);
@@ -161,7 +157,7 @@ export default function AccountGeneral({shop}) {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
+          <Card sx={{ py: 8, px: 3, textAlign: 'center' }}>
             <RHFUploadAvatar
               name="image_url"
               accept="image/*"
@@ -171,7 +167,7 @@ export default function AccountGeneral({shop}) {
                 <Typography
                   variant="caption"
                   sx={{
-                    mt: 2,
+                    mt: 3,
                     mx: 'auto',
                     display: 'block',
                     textAlign: 'center',
