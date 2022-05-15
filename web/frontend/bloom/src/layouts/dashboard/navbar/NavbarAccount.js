@@ -36,12 +36,12 @@ export default function NavbarAccount({ isCollapse }) {
     <Link underline="none" color="inherit" component={RouterLink} to={PATH_DASHBOARD.user.account}>
       <RootStyle
         sx={{
+          backgroundColor:'#FEF2F4',
           ...(isCollapse && {
             bgcolor: 'transparent',
           }),
         }}
       >
-        <MyAvatar />
 
         <Box
           sx={{
@@ -57,10 +57,10 @@ export default function NavbarAccount({ isCollapse }) {
           }}
         >
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            {user?.name}
           </Typography>
           <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
-            {user?.role}
+            {user?.shop_number}
           </Typography>
         </Box>
       </RootStyle>

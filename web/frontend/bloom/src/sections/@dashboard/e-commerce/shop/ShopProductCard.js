@@ -22,14 +22,14 @@ ShopProductCard.propTypes = {
 export default function ShopProductCard({ product }) {
   const { item_id, shop_number, name, price, total_quantity, description, image_url } = product;
 
-  const linkTo = PATH_DASHBOARD.eCommerce.view(paramCase(name));
+  const linkTo = PATH_DASHBOARD.items.view(paramCase(name));
 
   useEffect(() => {
     console.log(item_id);
   }, []);
 
   return (
-    <Link to={`/dashboard/e-commerce/product/${item_id}`} color="inherit" component={RouterLink}>
+    <Link to={`/dashboard/items/product/${item_id}`} color="inherit" component={RouterLink}>
       <Card>
         <CardActionArea>
           <Box sx={{ position: 'relative' }}>
