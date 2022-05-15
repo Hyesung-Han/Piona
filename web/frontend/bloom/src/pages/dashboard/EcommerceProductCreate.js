@@ -82,8 +82,6 @@ export default function EcommerceProductCreate() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  const { product, error, checkout } = useSelector((state) => state.product);
-
   const defaultValues = {
       name: '',
       price: '' ,
@@ -140,7 +138,7 @@ const onSubmit = async (itemInfo) => {
   } catch (e) {
     console.error(e);
   }
-  navigate(PATH_DASHBOARD.eCommerce.shop);
+  navigate(PATH_DASHBOARD.items.list);
 };
 
 const handleDrop = useCallback(
@@ -167,7 +165,7 @@ const spanStyle = {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-    <Page title="Ecommerce: Item Details">
+    <Page title="ITEMS: Item Details">
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
@@ -175,12 +173,11 @@ const spanStyle = {
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root,
+              name: 'Items',
+              href: PATH_DASHBOARD.items.root,
             },
             {
-              name: 'item',
-              href: PATH_DASHBOARD.eCommerce.shop,
+              name: 'create',
             },
           ]}
         />

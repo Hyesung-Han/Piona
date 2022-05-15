@@ -31,9 +31,8 @@ export default function LoginForm() {
   });
 
   const defaultValues = {
-    user_id: 'jj',
-    password: 'jj',
-    remember: true,
+    user_id: '',
+    password: '',
   };
 
   const methods = useForm({
@@ -57,6 +56,8 @@ export default function LoginForm() {
       reset();
       if (isMountedRef.current) {
         setError('afterSubmit', { ...error, message: error.data });
+      } else {
+        setError('afterSubmit', { ...error, message: '로그인에 실패하였습니다' });
       }
     }
   };
@@ -84,8 +85,7 @@ export default function LoginForm() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <RHFCheckbox name="remember" label="Remember me" />
+      <Stack direction="column" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.register}>
         Don’t have an account?
         </Link>

@@ -155,7 +155,7 @@ const onSubmit = async (itemInfo) => {
   } catch (e) {
     console.error(e);
   }
-  navigate(PATH_DASHBOARD.eCommerce.shop);
+  navigate(PATH_DASHBOARD.items.list);
 };
 
 const handleDrop = useCallback(
@@ -203,16 +203,16 @@ const handleDrop = useCallback(
         }
         Swal.fire({
           icon: 'success',
-          title: '글이 삭제되었습니다',
+          title: '아이템이 삭제되었습니다',
         });
-        navigate(PATH_DASHBOARD.eCommerce.shop);
+        navigate(PATH_DASHBOARD.items.list);
     });
   };
 
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-    <Page title="Ecommerce: Item Details">
+    <Page title="ITEMS: Item Details">
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
@@ -220,12 +220,11 @@ const handleDrop = useCallback(
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root,
+              name: 'Items',
+              href: PATH_DASHBOARD.items.root,
             },
             {
-              name: 'Item/Update',
-              href: PATH_DASHBOARD.eCommerce.shop,
+              name: 'update',
             },
             // { name: sentenceCase(name) },
           ]}
