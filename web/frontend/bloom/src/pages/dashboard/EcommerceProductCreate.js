@@ -189,9 +189,10 @@ const spanStyle = {
           <>
             <Grid container spacing={2}>
               <Grid item xs={5.5}>
-                <Typography color={"gray"}>상품 이미지를 등록해주세요.</Typography>
+                <Typography color={"gray"} fontSize="12px" textAlign={'center'}>상품 이미지를 등록해주세요.</Typography>
                 <RHFUploadAvatar
-                  sx={{mt:2}}
+                sx={{width: 400, height:400, borderRadius: '10%', mt:2}}
+                  // sx={{mt:2}}
                   name="image_url"
                   accept="image/*"
                   maxSize={3145728}

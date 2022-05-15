@@ -29,7 +29,7 @@ export default function ShopProductCard({ product }) {
   }, []);
 
   return (
-    <Link to={`/dashboard/items/product/${item_id}`} color="inherit" component={RouterLink}>
+    <Link to={`/items/product/${item_id}`} color="inherit" component={RouterLink}>
       <Card>
         <CardActionArea>
           <Box sx={{ position: 'relative' }}>

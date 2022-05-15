@@ -10,6 +10,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { ViewInArRounded } from '@mui/icons-material';
 // import Link from 'src/theme/overrides/Link';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
@@ -153,18 +154,105 @@ export default function EcommerceProductDetails() {
         {itemDetail && (
           <>
             <Grid container spacing={2}>
-              <Grid item xs={5.5}>
-                <Image alt={itemDetail.image_url} src={itemDetail.image_url}/>
+              <Grid item xs={5.5} sx={{ml:5}}>
+                <Image alt={itemDetail.image_url} src={itemDetail.image_url} sx={{width: 450, height:450, borderRadius: '10%'}}/>
               </Grid> 
-              <Grid item xs={0.5}/>
               <Grid item xs={6}>
-                <Grid container sx={{mt:5}}>
+                <Grid container>
                   <Grid item xs={12} key={itemDetail.name} >
                     <Box >
+                      <Grid item xs={12} sx={{mb:2, flexDirection: 'row', mt:1}}>
+                        <TextField xs={3} style ={{width: '20%'}}
+                          sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& > fieldset": {
+                                  border: "none"
+                                }
+                              },
+                            }}
+                          label="가격 (원) &nbsp; : "
+                          disabled
+                          font-color='black'/>
+                            <TextField
+                              // id="outlined-name"
+                              // size='small'
+                              required={false}
+                              label=""
+                              // onChange={OnChangeHandler("price")}
+                              value={itemDetail.price}
+                              sx={{
+                                "& .MuiOutlinedInput-root": {
+                                  "& > fieldset": {
+                                    border: "none"
+                                  }
+                                },
+                              }}
+                              style ={{width: '20%'}}
+                            />
+                          
+                        </Grid>  
+                        <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
+                        <TextField xs={3} style ={{width: '20%'}}
+                          sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& > fieldset": {
+                                  border: "none"
+                                }
+                              },
+                            }}
+                          label="수량 (개) &nbsp; : "
+                          disabled
+                          font-color='black'/>
+                            <TextField
+                              // id="outlined-name"
+                              // size='small'
+                              required={false}
+                              value={itemDetail.total_quantity}
+                              // onChange={OnChangeHandler("total_quantity")}
+                              // name="total_quantity"
+                              label=""
+                              style ={{width: '20%'}}
+                              sx={{
+                                "& .MuiOutlinedInput-root": {
+                                  "& > fieldset": {
+                                    border: "none"
+                                  }
+                                },
+                              }}
+                              />
+                        </Grid>  
+                        <Grid item xs={12} sx={{mb:2}}>
+                        <TextField xs={3} style ={{width: '40%'}}
+                          sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& > fieldset": {
+                                  border: "none"
+                                }
+                              },
+                            }}
+                          label="상품 설명"
+                          // disabled
+                          font-color='black'/>
+                          <TextField 
+                            // name="description"
+                            label=""
+                            // id="outlined-multiline-static"
+                            required={false}
+                            multiline
+                            rows={6}
+                            // onChange={OnChangeHandler("description")}
+                            value={itemDetail.description}
+                            style ={{width: '80%'}}
+                            
+                          />
+                        </Grid>
+
+
+
                       {/* <Typography variant="subtitle1" gutterBottom>
                         {itemDetail.name}
                       </Typography> */}
-                      <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
+                      {/* <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
                         <div>가격 : &nbsp;{itemDetail.price} 원</div>
                       </Grid>  
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
@@ -174,13 +262,7 @@ export default function EcommerceProductDetails() {
                         <Typography>
                           {itemDetail.description}
                         </Typography>
-                        
-                      {/* <TextField
-                        helperText=" "
-                        id="demo-helper-text-aligned-no-helper"
-                        label={itemDetail.price} 
-                      />원 */}
-                      </Grid>
+                      </Grid> */}
                       {/* <Typography sx={{ color: 'text.secondary' }}>가격 : {itemDetail.price}원</Typography> */}
                       {/* <Typography sx={{ color: 'text.secondary' }}>남은 수량 : {itemDetail.total_quantity}개</Typography> */}
                       {/* <Typography sx={{ color: 'text.secondary' }}>{itemDetail.description}</Typography> */}
@@ -207,10 +289,12 @@ export default function EcommerceProductDetails() {
                   // hash: "#the-hash",
                 }}
               state = {{ data: itemDetail }}
+              style = {{ textDecoration: 'none'}}              
               >
-                <Button sx={{mr:3}}
+                <Button sx={{mr:10}}
                 variant="contained"
-                startIcon={<Iconify icon="eva:minus-fill" />}>
+                startIcon={<Iconify icon="eva:minus-fill" />}
+                >
                   상품 수정 및 삭제
                 </Button>
               </RouterLink>

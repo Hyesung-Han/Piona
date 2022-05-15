@@ -229,7 +229,7 @@ const handleDrop = useCallback(
             // { name: sentenceCase(name) },
           ]}
         />
-          <Typography fontSize={30} textAlign={"center"}  marginBottom={10}>{itemDetail.name}</Typography>
+          <Typography fontSize={30} textAlign={"center"}  marginBottom={10}>{data.name}</Typography>
 
         <CartWidget />
 
@@ -238,6 +238,7 @@ const handleDrop = useCallback(
             <Grid container spacing={2}>
               <Grid item xs={5.5}>
                 <RHFUploadAvatar
+                sx={{width:410, height: 410}}
                   name="image_url"
                   accept="image/*"
                   maxSize={3145728}
@@ -266,40 +267,75 @@ const handleDrop = useCallback(
                     <Box >
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
                         <Grid>
+                        <TextField xs={3} style ={{width: '20%'}}
+                          sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& > fieldset": {
+                                  border: "none"
+                                }
+                              },
+                            }}
+                          label="가격 (원) : "
+                          // disabled
+                          font-color='black'/>
                           <RHFTextField
                             // id="outlined-name"
                             // size='small'
                             // required="true"
                             name="price"
-                            label="가격"
+                            label=""
                             // onChange={OnChangeHandler("price")}
                             // defaultValue={itemDetail.price}
-                            // style ={{width: '20%'}}
+                            style ={{width: '20%'}}
+                            sx={{textAlign:'center'}}
                           />
                         </Grid>
                       </Grid>  
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
+                      <TextField xs={3} style ={{width: '20%'}}
+                          sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& > fieldset": {
+                                  border: "none"
+                                }
+                              },
+                            }}
+                          label="수량 (개)  : "
+                          // disabled
+                          font-color='black'/>
                           <RHFTextField
                             // id="outlined-name"
                             // size='small'
                             // defaultValue={itemDetail.total_quantity}
                             // onChange={OnChangeHandler("total_quantity")}
                             name="total_quantity"
-                            label="수량"
+                            label=""
                             style ={{width: '20%'}}
+                            // sx={{textAlign:'center'}}
                             />
                       </Grid>  
                       <Grid item xs={12} sx={{mb:2}}>
+                      <TextField xs={3} style ={{width: '40%'}}
+                          sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& > fieldset": {
+                                  border: "none"
+                                }
+                              },
+                            }}
+                          label="상품 설명"
+                          // disabled
+                          font-color='black'/>
                         <RHFTextField 
                           name="description"
-                          label="상세정보"
+                          label=""
                           // id="outlined-multiline-static"
                           // required="true"
                           multiline
                           rows={6}
                           // onChange={OnChangeHandler("description")}
                           // defaultValue={itemDetail.description}
-                          style ={{width: '100%'}}
+                          style ={{width: '80%'}}
                         />
                       </Grid>
                     </Box>
@@ -312,9 +348,9 @@ const handleDrop = useCallback(
 
               <Button
                 variant="contained"
-                startIcon={<Iconify icon="eva:minus-fill" />}
+                // startIcon={<Iconify icon="eva:minus-fill" />}
                 onClick={onClickItemDeleteHandler}
-                >
+                sx={{mr:10, ml:3}}>
                 상품 삭제
               </Button>
             </Grid>
