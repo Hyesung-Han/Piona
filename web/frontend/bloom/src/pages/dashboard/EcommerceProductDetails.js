@@ -129,19 +129,19 @@ export default function EcommerceProductDetails() {
   };
 
   return (
-    <Page title="Ecommerce: Item Details">
+    <Page title="ITEMS: Item Details">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Item Details"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root,
+              name: 'Items',
+              href: PATH_DASHBOARD.items.root,
             },
             {
-              name: 'Item',
-              href: PATH_DASHBOARD.eCommerce.shop,
+              name: 'detail',
+              href: PATH_DASHBOARD.items.list,
             },
             // { name: sentenceCase(name) },
           ]}
@@ -202,7 +202,7 @@ export default function EcommerceProductDetails() {
                 {/* </Grid> */}
               <Grid textAlign={"center"}>
               <RouterLink  to={{
-                  pathname: PATH_DASHBOARD.eCommerce.update(item_id),
+                  pathname: PATH_DASHBOARD.items.update(item_id),
                   // search: "?item_id=item_id",
                   // hash: "#the-hash",
                 }}
@@ -220,7 +220,7 @@ export default function EcommerceProductDetails() {
                 variant="contained"
                 startIcon={<Iconify icon="eva:minus-fill" />}
                 component={RouterLink}
-                to={PATH_DASHBOARD.eCommerce.update(item_id)}
+                to={PATH_DASHBOARD.items.update(item_id)}
                 state={{ data: itemDetail }}
                 >
                 상품 수정 및 삭제
