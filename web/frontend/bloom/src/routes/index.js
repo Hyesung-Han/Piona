@@ -57,7 +57,7 @@ export default function Router() {
 
     // Dashboard Routes
     {
-      path: 'dashboard',
+      path: '/',
       element: (
         <AuthGuard>
           <DashboardLayout />
@@ -66,11 +66,6 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'app', element: <GeneralApp /> },
-        { path: 'ecommerce', element: <GeneralEcommerce /> },
-        { path: 'analytics', element: <GeneralAnalytics /> },
-        { path: 'banking', element: <GeneralBanking /> },
-        { path: 'booking', element: <GeneralBooking /> },
-
         {
           path: 'items',
           children: [
@@ -97,9 +92,9 @@ export default function Router() {
           ],
         },
         {
-          path: 'invoice',
+          path: 'reservation',
           children: [
-            { element: <Navigate to="/dashboard/invoice/list" replace />, index: true },
+            { element: <Navigate to="/dashboard/reservation/list" replace />, index: true },
             { path: 'list', element: <InvoiceList /> },
           ],
         },
@@ -174,16 +169,16 @@ export default function Router() {
         { path: '*', element: <Navigate to="/404" replace /> },
       ],
     },
-    {
-      path: '/',
-      element: <MainLayout />,
-      children: [
-        { element: <HomePage />, index: true },
-        { path: 'about-us', element: <About /> },
-        { path: 'contact-us', element: <Contact /> },
-        { path: 'faqs', element: <Faqs /> },
-      ],
-    },
+    // {
+    //   path: '/',
+    //   element: <MainLayout />,
+    //   children: [
+    //     { element: <HomePage />, index: true },
+    //     { path: 'about-us', element: <About /> },
+    //     { path: 'contact-us', element: <Contact /> },
+    //     { path: 'faqs', element: <Faqs /> },
+    //   ],
+    // },
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
