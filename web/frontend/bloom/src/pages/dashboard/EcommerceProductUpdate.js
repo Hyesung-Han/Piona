@@ -85,16 +85,11 @@ export default function EcommerceProductUpdate() {
   const { name } = useParams();
   const item_id = name;
   const { product, error, checkout } = useSelector((state) => state.product);
-console.log("여기다",item_id)
 const [itemDetail, setItemDetail] = useState([]);
 
 
 const location = useLocation();
   const data = location.state.data; // location으로 데이터에 접근해서 받아온다!
-  console.log(data)
-  
-
-
   
   const defaultValues = {
     item_id: data?.item_id || '',
@@ -125,14 +120,10 @@ const location = useLocation();
   
 const onSubmit = async (itemInfo) => {
   const { description, image_url, item_id, name, price, total_quantity } = itemInfo;
-  console.log("imageURL", image_url);
-  console.log("CURRENTimageURL", currentImageUrl);
   const fd = new FormData();
   if(typeof image_url === 'string' || image_url === '') {
-    console.log("난 바보야")
     // fd.append('file', null);
   } else {
-    console.log("파일있")
     fd.append('file', image_url);
   }
   fd.append('itemInfoReq.description', description);
@@ -151,7 +142,6 @@ const onSubmit = async (itemInfo) => {
         Authorization: parseUser.access_token
     }});
     const { data } = response;
-    console.log("data", data);
   } catch (e) {
     console.error(e);
   }
@@ -188,7 +178,6 @@ const handleDrop = useCallback(
         if (result.value) {
             const user = localStorage.getItem('user');
             const parseUser = JSON.parse(user);
-            console.log("itemid", item_id);
             axios.delete(`/api/item?item_id=${item_id}`, {
                 headers : {
                 Authorization: parseUser.access_token
@@ -212,32 +201,31 @@ const handleDrop = useCallback(
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-    <Page title="ITEMS: Item Details">
+    <Page title="ITEMS: Item Update">
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Item Details"
+          heading="Item Update"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'Items',
-              href: PATH_DASHBOARD.items.root,
+              href: PATH_DASHBOARD.items.list,
             },
             {
               name: 'update',
             },
-            // { name: sentenceCase(name) },
           ]}
         />
-          <Typography fontSize={30} textAlign={"center"}  marginBottom={10}>{itemDetail.name}</Typography>
+          <Typography fontSize={30} textAlign={"center"}  marginBottom={10}>{data.name}</Typography>
 
-        <CartWidget />
 
         {itemDetail && (
           <>
             <Grid container spacing={2}>
               <Grid item xs={5.5}>
                 <RHFUploadAvatar
+                sx={{width:410, height: 410}}
                   name="image_url"
                   accept="image/*"
                   maxSize={3145728}
@@ -266,40 +254,58 @@ const handleDrop = useCallback(
                     <Box >
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
                         <Grid>
+                        <TextField xs={3} style ={{width: '20%'}}
+                          sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& > fieldset": {
+                                  border: "none"
+                                }
+                              },
+                            }}
+                          label="가격 (원) : "
+                          font-color='black'/>
                           <RHFTextField
-                            // id="outlined-name"
-                            // size='small'
-                            // required="true"
                             name="price"
-                            label="가격"
-                            // onChange={OnChangeHandler("price")}
-                            // defaultValue={itemDetail.price}
-                            // style ={{width: '20%'}}
+                            label=""
+                            style ={{width: '20%'}}
+                            sx={{textAlign:'center'}}
                           />
                         </Grid>
                       </Grid>  
                       <Grid item xs={12} sx={{mb:2, flexDirection: 'row'}}>
+                      <TextField xs={3} style ={{width: '20%'}}
+                          sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& > fieldset": {
+                                  border: "none"
+                                }
+                              },
+                            }}
+                          label="수량 (개)  : "
+                          font-color='black'/>
                           <RHFTextField
-                            // id="outlined-name"
-                            // size='small'
-                            // defaultValue={itemDetail.total_quantity}
-                            // onChange={OnChangeHandler("total_quantity")}
                             name="total_quantity"
-                            label="수량"
+                            label=""
                             style ={{width: '20%'}}
                             />
                       </Grid>  
                       <Grid item xs={12} sx={{mb:2}}>
+                      <TextField xs={3} style ={{width: '40%'}}
+                          sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& > fieldset": {
+                                  border: "none"
+                                }
+                              },
+                            }}
+                          label="상품 설명"
+                          font-color='black'/>
                         <RHFTextField 
                           name="description"
-                          label="상세정보"
-                          // id="outlined-multiline-static"
-                          // required="true"
+                          label=""
                           multiline
                           rows={6}
-                          // onChange={OnChangeHandler("description")}
-                          // defaultValue={itemDetail.description}
-                          style ={{width: '100%'}}
+                          style ={{width: '80%'}}
                         />
                       </Grid>
                     </Box>
@@ -312,9 +318,8 @@ const handleDrop = useCallback(
 
               <Button
                 variant="contained"
-                startIcon={<Iconify icon="eva:minus-fill" />}
                 onClick={onClickItemDeleteHandler}
-                >
+                sx={{mr:10, ml:3}}>
                 상품 삭제
               </Button>
             </Grid>
@@ -322,10 +327,7 @@ const handleDrop = useCallback(
             </Grid>
           </>
         )}
-
         {/* {!itemDetail && <SkeletonProduct />} */}
-
-        {/* {error && <Typography variant="h6">404 Product not found</Typography>} */}
       </Container>
     </Page>
     </FormProvider>

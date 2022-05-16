@@ -31,8 +31,8 @@ export default function LoginForm() {
   });
 
   const defaultValues = {
-    user_id: '',
-    password: '',
+    user_id: 'sumin00',
+    password: 'admin123$',
   };
 
   const methods = useForm({

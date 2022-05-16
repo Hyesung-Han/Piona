@@ -43,11 +43,13 @@ export default function RegisterForm() {
   const [shopNumberErrMsg, setShopNumberErrMsg] = useState('');
 
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string().required('이름을 입력해주세요'),
-    id: Yup.string().required('ID를 입력해주세요'),
-    password: Yup.string().required('비밀번호를 입력해 주세요'),
-    passwordCheck: Yup.string().oneOf([Yup.ref("password"), null], '비밀번호가 일치하지 않습니다').required('비밀번호를 입력해 주세요'),
+    name: Yup.string().required('이름을 입력해주세요').min(2, '2자 이상 입력해 주세요'),
+    id: Yup.string().required('ID를 입력해주세요').min(4, '4자 이상 입력해 주세요').matches(/^[a-z]+[a-z0-9]/, '영문이나 영문과 숫자 혼합만 입력이 가능합니다'),
+    password: Yup.string().required('비밀번호를 입력해 주세요').min(8, '8자 이상 입력해 주세요').matches(/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])/, '영문+숫자+특수문자를 혼합해 주세요'),
+    passwordCheck: Yup.string().oneOf([Yup.ref("password"), null], '비밀번호가 일치하지 않습니다').required('비밀번호 확인을 위해 한 번 더 입력해 주세요'),
   });
+
+  const numberPattern = /^[0-9]+$/;
 
   const defaultValues = {
     name: '',
@@ -102,7 +104,7 @@ export default function RegisterForm() {
   }
 
   const onClickPhoneCheck = () => {
-    if(phone !== '' && phone.length > 9) {
+    if(phone !== '' && phone.length > 9 && numberPattern.test(phone)) {
       checkPhone();
     } else {
       setPhoneErr(true);
@@ -154,7 +156,7 @@ export default function RegisterForm() {
   }
 
   const onClickShopNumberCheck = () => {
-    if(shopNumber !== '' && shopNumber.length === 10) {
+    if(shopNumber !== '' && shopNumber.length === 10 && numberPattern.test(shopNumber)) {
       const b_no = [shopNumber];
       checkShopNumber(b_no);
     } else {
@@ -229,7 +231,7 @@ export default function RegisterForm() {
           <TextField 
             fullWidth
             name="phone" 
-            label="휴대폰 인증" 
+            label="휴대폰번호(숫자만 입력)" 
             onChange={onChangeHandler('phone')}
             error={phoneErr}
             helperText={phoneErrMsg}
@@ -245,7 +247,7 @@ export default function RegisterForm() {
           <TextField
             fullWidth
             name="shopNumber" 
-            label="사업자번호" 
+            label="사업자번호(숫자만 입력)" 
             onChange={onChangeHandler('shopNumber')} 
             disabled={shopNumberCheck}
             error={shopNumberErr}
