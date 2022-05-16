@@ -31,7 +31,7 @@ const ShopHomePage = ({navigation, route}) => {
     latitude: 0.0,
     longitude: 0.0,
   });
-  const getShopDetailInfo = async () => {
+  const getShopDetailInfo = useCallback(async () => {
     try {
       const res = await shopDetailAPI.getShopDetail(shopNumber, token);
       setData(res.data);
@@ -48,7 +48,7 @@ const ShopHomePage = ({navigation, route}) => {
     } catch (error) {
       console.log('위시리스트 검색', error);
     }
-  };
+  }, [shopNumber, token]);
 
   const startScore = () => {
     const result = [];
@@ -69,7 +69,7 @@ const ShopHomePage = ({navigation, route}) => {
   useFocusEffect(
     useCallback(() => {
       getShopDetailInfo();
-    }, []),
+    }, [getShopDetailInfo]),
   );
 
   return (
@@ -80,14 +80,13 @@ const ShopHomePage = ({navigation, route}) => {
             source={{uri: `${data.image_url}`}}
             style={{
               resizeMode: 'contain',
-              width: '90%',
+              width: '100%',
               height: '100%',
-              borderRadius: 10,
             }}
           />
         </View>
         <View style={styles.nameBox}>
-          <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+          <Text style={{color: 'black', fontSize: 23, fontWeight: 'bold'}}>
             {data.name}
           </Text>
           <View style={styles.reviewBox}>
@@ -120,7 +119,15 @@ const ShopHomePage = ({navigation, route}) => {
                 backgroundColor="transparent"
                 size={20}
               />
-              <Text style={{color: 'black', fontSize: 13, marginLeft: 10}}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 13,
+                  marginLeft: 10,
+                  width: '90%',
+                }}
+                numberOfLines={2}
+                ellipsizeMode="tail">
                 {data.address}
               </Text>
             </View>
@@ -167,16 +174,17 @@ const styles = StyleSheet.create({
   },
   imgBox: {
     width: '100%',
-    height: 180,
+    height: 250,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
   },
   nameBox: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 15,
   },
   infoBox: {
     width: '90%',

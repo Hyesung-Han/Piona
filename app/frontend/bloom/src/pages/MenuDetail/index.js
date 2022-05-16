@@ -121,7 +121,7 @@ const MenuDetailPage = ({navigation, route}) => {
           style={{
             width: '100%',
             height: '100%',
-            borderRadius: 15,
+            borderRadius: 5,
             resizeMode: 'cover',
           }}
         />
@@ -205,28 +205,29 @@ const styles = StyleSheet.create({
   },
   imgBox: {
     flex: 0.8,
-    width: '70%',
+    width: '80%',
     marginTop: '10%',
     elevation: 3,
-    borderRadius: 15,
+    borderRadius: 5,
   },
   menuInfo: {
     flex: 0.5,
     marginTop: '5%',
     flexDirection: 'column',
     justifyContent: 'space-around',
+    width: '80%',
   },
   menuQuantity: {
     flex: 0.2,
     flexDirection: 'row',
     marginTop: 20,
     alignItems: 'center',
-    justifyContent: 'space-around',
-    width: '100%',
+    justifyContent: 'space-between',
+    width: '80%',
   },
   menuAddBtn: {
     flex: 0.4,
-    width: '75%',
+    width: '80%',
     marginTop: '5%',
   },
   quantityBox: {

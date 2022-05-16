@@ -88,8 +88,8 @@ const ShopCard = ({item, heartStatus, navigation}) => {
               style={{
                 resizeMode: 'cover',
                 width: '100%',
-                height: 130,
-                borderRadius: 10,
+                height: 180,
+                borderRadius: 5,
               }}
             />
             <View style={styles.iconBox}>
@@ -129,8 +129,13 @@ const ShopCard = ({item, heartStatus, navigation}) => {
                   <View style={styles.starIcons}>{startScore()}</View>
                 </View>
               </View>
-              <View>
-                <Text style={styles.itemAddress}>{item.address}</Text>
+              <View style={{width: '85%'}}>
+                <Text
+                  style={styles.itemAddress}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
+                  {item.address}
+                </Text>
               </View>
             </View>
             <View style={styles.seeMore}>
@@ -149,6 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomColor: 'black',
     marginBottom: 0.5,
+    paddingVertical: 5,
   },
   seperateContainer: {
     flexDirection: 'column',
@@ -181,6 +187,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     fontSize: 13,
     color: 'gray',
+    // overflow: 'hidden',
   },
   cardBottom: {
     flexDirection: 'row',

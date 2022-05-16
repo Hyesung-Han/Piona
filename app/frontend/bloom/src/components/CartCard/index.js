@@ -156,13 +156,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 25,
+    marginRight: 20,
   },
   informationBox: {
     width: '45%',
   },
   checkBox: {
     justifyContent: 'center',
+    marginLeft: 10,
   },
 });
 

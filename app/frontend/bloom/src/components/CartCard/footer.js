@@ -107,7 +107,7 @@ const CartFooter = ({navigation}, props) => {
         <View style={styles.buyBtn}>
           <View
             style={{
-              margin: 20,
+              margin: 30,
               alignItems: 'center',
               width: '100%',
             }}>
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginRight: 15,
+    marginRight: 5,
     marginTop: 5,
   },
 });
