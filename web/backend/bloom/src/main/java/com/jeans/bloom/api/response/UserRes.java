@@ -28,14 +28,26 @@ public class UserRes {
     UserCode user_code;
 
     public static UserRes of(User user){
-        return UserRes.builder()
-                .user_id(user.getUserId())
-                .shop_number(user.getShop().getShopNumber())
-                .name(user.getName())
-                .phone(user.getPhone())
-                .access_token(user.getAccessToken())
-                .refresh_token(user.getRefreshToken())
-                .user_code(user.getUserCode())
-                .build();
+        if(user.getUserCode() == UserCode.A){
+            return UserRes.builder()
+                    .user_id(user.getUserId())
+                    .shop_number(null)
+                    .name(user.getName())
+                    .phone(user.getPhone())
+                    .access_token(user.getAccessToken())
+                    .refresh_token(user.getRefreshToken())
+                    .user_code(user.getUserCode())
+                    .build();
+        }else{
+            return UserRes.builder()
+                    .user_id(user.getUserId())
+                    .shop_number(user.getShop().getShopNumber())
+                    .name(user.getName())
+                    .phone(user.getPhone())
+                    .access_token(user.getAccessToken())
+                    .refresh_token(user.getRefreshToken())
+                    .user_code(user.getUserCode())
+                    .build();
+        }
     }
 }
