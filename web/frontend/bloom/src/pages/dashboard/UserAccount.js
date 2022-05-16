@@ -47,11 +47,10 @@ export default function UserAccount() {
     <Page title="User: Account Settings">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Account"
+          heading="정보 수정"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
-            { name: 'Account Settings' },
+            { name: '홈', href: PATH_DASHBOARD.root },
+            { name: '내 정보 수정' },
           ]}
         />
 
