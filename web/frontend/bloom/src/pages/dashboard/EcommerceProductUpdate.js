@@ -205,15 +205,15 @@ const handleDrop = useCallback(
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Item Update"
+          heading="상품 수정"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: '홈', href: PATH_DASHBOARD.root },
             {
-              name: 'Items',
+              name: '상품 목록',
               href: PATH_DASHBOARD.items.list,
             },
             {
-              name: 'update',
+              name: '수정 및 삭제',
             },
           ]}
         />

@@ -77,13 +77,13 @@ export default function EcommerceShop() {
     <Page title="ITEMS: Shop">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Item"
+          heading="상품 목록"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: '홈', href: PATH_DASHBOARD.root },
             {
-              name: 'Items',
+              name: '상품 목록',
             },
-            { name: 'list' },
+            
           ]}
           action={
             <Button

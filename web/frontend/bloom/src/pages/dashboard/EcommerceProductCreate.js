@@ -139,19 +139,15 @@ const handleDrop = useCallback(
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Create Item"
+          heading="상품 등록"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: '홈', href: PATH_DASHBOARD.root },
             {
-              name: 'Items',
-              href: PATH_DASHBOARD.items.list,
-            },
-            {
-              name: 'create',
+              name: '상품 등록',
             },
           ]}
         />
-          <Typography fontSize={30} textAlign={"center"} variant="h3" marginBottom={10} gutterBottom>상품 등록</Typography>
+          <Typography fontSize={30} textAlign={"center"} variant="h3" marginBottom={10} gutterBottom/>
 
         { (
           <>

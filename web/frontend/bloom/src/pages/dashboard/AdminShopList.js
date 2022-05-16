@@ -123,9 +123,9 @@ export default function AdminShopList() {
         <HeaderBreadcrumbs
           heading="기업 회원 관리"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
-            { name: 'List' },
+            { name: '홈', href: PATH_DASHBOARD.root },
+            { name: '기업 회원 목록' },
+            
           ]}
         />
 

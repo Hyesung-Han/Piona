@@ -183,11 +183,10 @@ export default function InvoiceList() {
     <Page title="Invoice: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="예약 현황"
+          heading="예약 관리"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Reservation', href: PATH_DASHBOARD.reservation.root },
-            { name: 'list' },
+            { name: '홈', href: PATH_DASHBOARD.root },
+            { name: '예약 현황'},
           ]}
         />
 
