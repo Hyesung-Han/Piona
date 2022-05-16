@@ -331,6 +331,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F8F8',
+    alignItems: 'center',
   },
   searchBtn: {
     position: 'absolute',
@@ -361,8 +362,7 @@ const styles = StyleSheet.create({
   },
   relocation: {
     position: 'absolute',
-    top: 10,
-    left: 110,
+    top: 15,
     backgroundColor: '#F15C74',
     width: '40%',
     alignItems: 'center',
