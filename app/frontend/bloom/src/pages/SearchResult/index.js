@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15,
     bottom: 10,
-    width: '11%',
+    width: '10%',
     height: '10%',
   },
   Nocontainer: {
