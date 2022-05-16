@@ -342,13 +342,13 @@ const styles = StyleSheet.create({
   searchBtn2: {
     position: 'absolute',
     right: 15,
-    top: -50,
+    top: -20,
     width: '11%',
     height: '20%',
   },
   shopCard: {
     position: 'absolute',
-    bottom: 0,
+    bottom: -30,
     width: '100%',
     height: '100%',
   },
