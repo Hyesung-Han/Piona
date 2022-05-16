@@ -27,7 +27,7 @@ const PicnicingPage = ({navigation}) => {
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
 
-  const getMyReservation = async () => {
+  const getMyReservation = useCallback(async () => {
     try {
       const response = await getMyReservationList(user_id, token);
       const res = response.data;
@@ -45,12 +45,12 @@ const PicnicingPage = ({navigation}) => {
       console.log(user_id);
       console.log('예약현황 조회 실패', error);
     }
-  };
+  }, [token, user_id]);
 
   useFocusEffect(
     useCallback(() => {
       getMyReservation();
-    }, []),
+    }, [getMyReservation]),
   );
 
   const renderItem = ({item}) => {
