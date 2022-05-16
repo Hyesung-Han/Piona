@@ -7,7 +7,7 @@ import { HEADER } from '../../../config';
 // components
 import { NavSectionHorizontal } from '../../../components/nav-section';
 //
-import navConfig from './NavConfig';
+import {shopNavConfig, adminNavConfig} from './NavConfig';
 
 // ----------------------------------------------------------------------
 
@@ -30,8 +30,9 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
 function NavbarHorizontal() {
   return (
     <RootStyle>
-      <Container maxWidth={false}>
-        <NavSectionHorizontal navConfig={navConfig} />
+      <Container maxWidth={false}>;
+        {JSON.parse(localStorage.getItem('user')).user_code === 'A' ? <NavSectionHorizontal navConfig={adminNavConfig} />:<NavSectionHorizontal navConfig={shopNavConfig} />}
+        {/* <NavSectionHorizontal navConfig={navConfig} /> */}
       </Container>
     </RootStyle>
   );

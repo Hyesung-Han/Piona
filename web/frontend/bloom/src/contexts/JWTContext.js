@@ -114,6 +114,7 @@ function AuthProvider({ children }) {
         nickname: response.data.data.nickname,
         phone: response.data.data.phone,
         access_token: response.data.data.access_token,
+        user_code: response.data.data.user_code
       };
 
       const accessToken = user.access_token;
