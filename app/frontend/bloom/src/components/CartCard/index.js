@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useState, useSelector} from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch} from 'react-redux';
@@ -41,6 +41,7 @@ const CartCardList = props => {
           image_url: '',
           reservation_date: '',
           shop_name: '',
+          total_price: -(quantity * price),
         }),
       );
       dispatch(cartSlice.actions.deleteSelectCart(cart_id));
@@ -58,6 +59,7 @@ const CartCardList = props => {
           image_url: image_url,
           reservation_date: reservation_date,
           shop_name: shop_name,
+          total_price: quantity * price,
         }),
       );
       dispatch(cartSlice.actions.selectCart(cart_id));

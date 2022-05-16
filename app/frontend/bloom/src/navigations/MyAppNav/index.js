@@ -267,6 +267,11 @@ const MyApp = () => {
           component={PaymentTest}
           options={{title: '결제 정보 입력'}}
         />
+        <Stack.Screen
+          name="Picnic"
+          component={PicnicNav}
+          options={{title: '피크닉'}}
+        />
       </Stack.Navigator>
     );
   }
