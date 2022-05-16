@@ -40,11 +40,15 @@ const CartFooter = ({navigation}, props) => {
 
   const deleteCart = useCallback(async () => {
     try {
-      const response = await cartAPI.deleteCart(cart_id, user_accessToken);
+      const response = await cartAPI.deleteCart(
+        select_cart_list,
+        user_accessToken,
+      );
       console.log(response.data);
       if (response.data.result === 'success') {
         Alert.alert('알림', '삭제되었습니다!');
-        dispatch(cartSlice.actions.deleteCart(cart_id));
+        dispatch(cartSlice.actions.deleteCart(select_cart_list));
+        dispatch(cartSlice.actions.initCart([]));
         dispatch(
           cartSlice.actions.setCart({
             id: '',
@@ -57,8 +61,8 @@ const CartFooter = ({navigation}, props) => {
       Alert.alert('알림', '삭제할 아이템을 선택해주세요!');
       console.log(error);
     }
-  }, [cart_id, user_accessToken, dispatch]);
-  
+  }, [select_cart_list, user_accessToken, dispatch]);
+
   console.log('tempArray : ' + itemName);
 
   //let tempArray = [];
@@ -95,7 +99,7 @@ const CartFooter = ({navigation}, props) => {
       dispatch(cartSlice.actions.addReservationList(temp));
       onPress();
     }
-  }, [cart_list, select_cart_list,]);
+  }, [cart_list, select_cart_list, dispatch]);
 
   const payment = useCallback(async () => {
     try {
@@ -118,13 +122,13 @@ const CartFooter = ({navigation}, props) => {
         APIList.push(data);
       }
       //총 가격 구하기
-    //   let tempPrice = 0;
-    //   for (let i = 0; i < tempArray.length; i++) {
-    //     let eachPrice = tempArray[i].price * tempArray[i].quantity;
-    //     tempPrice = tempPrice + eachPrice;
-    //   }
+      //   let tempPrice = 0;
+      //   for (let i = 0; i < tempArray.length; i++) {
+      //     let eachPrice = tempArray[i].price * tempArray[i].quantity;
+      //     tempPrice = tempPrice + eachPrice;
+      //   }
       //console.log(tempPrice);
-    //   setTotalPrice(tempPrice);
+      //   setTotalPrice(tempPrice);
       await register();
     } catch (error) {
       Alert.alert('알림', '위');
@@ -219,7 +223,7 @@ const CartFooter = ({navigation}, props) => {
       ios_close_button: true,
     };
 
-    if (bootpay != null && bootpay.current != null){
+    if (bootpay != null && bootpay.current != null) {
       bootpay.current.request(payload, items, user, extra);
     }
   };
