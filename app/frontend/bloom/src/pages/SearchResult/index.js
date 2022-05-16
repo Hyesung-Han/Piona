@@ -7,6 +7,7 @@ import {
   TextInput,
   FlatList,
   KeyboardAvoidingView,
+  Text,
 } from 'react-native';
 import ShopCard from '../../components/ShopCard';
 import {searchAPI} from '../../utils/Axios';
@@ -61,6 +62,10 @@ const SearchResultPage = ({navigation, route}) => {
       setInputText('#감성');
     } else if (word === 'kw_various') {
       setInputText('#다양한구성');
+    } else if (word === 'kw_kind') {
+      setInputText('#친절한');
+    } else if (word === 'kw_adorable') {
+      setInputText('#아기자기');
     } else {
       setInputText(word);
     }
@@ -80,7 +85,7 @@ const SearchResultPage = ({navigation, route}) => {
     }, [getShop, setText]),
   );
 
-  return (
+  return search_list.length >= 1 ? (
     <KeyboardAvoidingView behavior="height" style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.searchBox}>
@@ -142,6 +147,37 @@ const SearchResultPage = ({navigation, route}) => {
         </View>
       </View>
     </KeyboardAvoidingView>
+  ) : (
+    <View style={styles.Nocontainer}>
+      <View style={styles.searchBox}>
+        <View style={styles.inputBox}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="검색어를 입력하세요."
+            value={inputText}
+            onChangeText={setInputText}></TextInput>
+          <View style={styles.iconBox}>
+            <Icon.Button
+              onPress={() =>
+                navigation.navigate('Search', {
+                  type: 'location',
+                  word: `${inputText}`,
+                  user_id: user_id,
+                  user_lat: 0,
+                  user_lng: 0,
+                })
+              }
+              name="search-outline"
+              color="black"
+              backgroundColor="transparent"
+            />
+          </View>
+        </View>
+      </View>
+      <View style={{flex: 3, justifyContent: 'flex-start'}}>
+        <Text> 일치하는 검색결과가 없습니다.</Text>
+      </View>
+    </View>
   );
 };
 
@@ -192,6 +228,12 @@ const styles = StyleSheet.create({
     bottom: 10,
     width: '11%',
     height: '10%',
+  },
+  Nocontainer: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
