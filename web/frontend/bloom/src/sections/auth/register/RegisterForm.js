@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
+// Axios
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -84,7 +85,13 @@ export default function RegisterForm() {
 
     try {
       const result = await register(data.name, data.id, data.password, phone, shopNumber);
-      if(result === 'success') navigate(PATH_AUTH.login);
+      if(result === 'success') {
+        Swal.fire({
+          icon: 'success',
+          title: '회원가입이 완료 되었습니다.',
+        });
+        navigate(PATH_AUTH.login);
+      }
     } catch (error) {
       console.error(error);
       reset();
@@ -168,21 +175,39 @@ export default function RegisterForm() {
   const checkShopNumber = async (b_no) => {
     const apiKey = process.env.REACT_APP_PUBLIC_DATA_API_KEY;
     try {
-      const response = await Axios.post(`https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${apiKey}`, {
-        b_no,
-      });
-      const {data, status_code} = response.data;
-      if(status_code === "OK") {
-        const {b_stt, tax_type} = data[0];
-        if(b_stt === '01' || b_stt === '계속사업자') {
-          setShopNumberErr(false);
-          setShopNumberErrMsg('');
-          setShopNumberCheck(true);
-        } else {
-          setShopNumberErr(true);
-          setShopNumberErrMsg(tax_type);
+      Axios.get(`${HOST_API}/api/user/shopcheck?shopNumber=${b_no}`,{})
+      .then( async (result) => {
+        console.log(result);
+        if(result.data.result === 'success'){
+          if(result.data.data === true){
+            const response = await Axios.post(`https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${apiKey}`, {
+              b_no,
+            });
+            const {data, status_code} = response.data;
+            if(status_code === "OK") {
+              const {b_stt, tax_type} = data[0];
+              if(b_stt === '01' || b_stt === '계속사업자') {
+                setShopNumberErr(false);
+                setShopNumberErrMsg('');
+                setShopNumberCheck(true);
+      
+                Swal.fire({
+                  icon: 'success',
+                  title: '인증되었습니다.',
+                });
+              } else {
+                setShopNumberErr(true);
+                setShopNumberErrMsg(tax_type);
+              }
+            }
+          }else{
+            setShopNumberErr(true);
+            setShopNumberErrMsg('이미 등록된 사업자입니다.');
+          }
         }
-      }
+      }).catch(e =>{
+        console.error('error', e);
+      })
     } catch (e) {
       console.error('error', e);
     }
