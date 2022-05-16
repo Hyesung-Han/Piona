@@ -1,12 +1,14 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {View, Dimensions, Alert, Text, FlatList} from 'react-native';
+import {View, StyleSheet, Alert, Text, FlatList} from 'react-native';
 import PicnicCard from '../../components/PicnicCard';
 import {getMyReservationList} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import picnicSlice from '../../redux/slices/picnic';
 
 /**
- * LHJ | 2022.05.11
+ * LHJ,CSW | 2022.05.16
  * @name PicnicingPage
  * @api getMyReservationList
  * @des
@@ -19,15 +21,14 @@ import {useSelector} from 'react-redux';
  */
 
 const PicnicingPage = ({navigation}) => {
-  const [data, setData] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   //받아오고 그냥 바로 쓰면 됨
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
+  const picnicing_list = useSelector(state => state.picnic.picnicing_list);
 
-  const getMyReservation = async () => {
+  const getMyReservation = useCallback(async () => {
     try {
       const response = await getMyReservationList(user_id, token);
       const res = response.data;
@@ -39,30 +40,31 @@ const PicnicingPage = ({navigation}) => {
         ...addSecondFilteredByStatus,
         ...addThirdFilteredByStatus,
       ];
-      setData(newArr);
-      console.log(response.data);
+      if (response.result === 'success') {
+        dispatch(picnicSlice.actions.setPicnicingList(newArr));
+      }
     } catch (error) {
       console.log(user_id);
       console.log('예약현황 조회 실패', error);
     }
-  };
+  }, [user_id, token, dispatch]);
 
   useFocusEffect(
     useCallback(() => {
       getMyReservation();
-    }, []),
+    }, [getMyReservation]),
   );
 
   const renderItem = ({item}) => {
     return <PicnicCard item={item} />;
   };
 
-  return (
+  return picnicing_list.length >= 1 ? (
     <View style={{backgroundColor: '#F8F8F8', flex: 1}}>
       <View style={{backgroundColor: '#CBCBCB'}}>
         <FlatList
           //리스트의 소스를 담는 속성
-          data={data}
+          data={picnicing_list}
           //data={DATA}
           //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
@@ -71,6 +73,19 @@ const PicnicingPage = ({navigation}) => {
         />
       </View>
     </View>
+  ) : (
+    <View style={styles.Nocontainer}>
+      <Text> 진행중인 예약이 없습니다.</Text>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  Nocontainer: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 export default PicnicingPage;
