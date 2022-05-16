@@ -68,10 +68,10 @@ public class CartController {
      * @api {delete} /cart
      * @des cart id를 받아 장바구니에서 삭제해주는 메소드
      */
-    @DeleteMapping("/{cart_id}")
+    @DeleteMapping()
     @ApiOperation(value = "장바구니 아이템 삭제", notes = "cart id를 입력받아 장바구니에서 삭제한다")
     public ResponseEntity<BaseResponseBody> deleteCartItem(
-            @PathVariable @ApiParam(value="카트id", required = true) int cart_id) {
+            @RequestBody @ApiParam(value="카트id", required = true) List<Integer> cart_id) {
         try{
             cartService.deleteCartItem(cart_id);
             return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));

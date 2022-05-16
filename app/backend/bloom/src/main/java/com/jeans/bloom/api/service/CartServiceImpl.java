@@ -63,7 +63,9 @@ public class CartServiceImpl implements CartService{
      * @des cart id를 받아 장바구니에서 삭제해주는 메소드
      */
     @Override
-    public void deleteCartItem(int cartId) throws Exception {
-        cartRepository.deleteById(cartId);
+    public void deleteCartItem(List<Integer> cartId) throws Exception {
+        for(int id : cartId){
+            cartRepository.deleteById(id);
+        }
     }
 }
