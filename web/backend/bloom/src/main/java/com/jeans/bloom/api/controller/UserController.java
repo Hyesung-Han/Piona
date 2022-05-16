@@ -114,6 +114,28 @@ public class UserController {
     }
 
     /**
+     * OYT | 2022.05.16
+     * @name shopcheck
+     * @api {get} /user/shopcheck?shopNumber=shop_number
+     * @des 사업자 번호를 입력 받아 중복 체크
+     */
+    @GetMapping("/shopcheck")
+    @ApiOperation(value = "사업자번호 중복검사", notes = "사업자번호 중복검사")
+    public ResponseEntity<BaseResponseBody> shopcheck(
+            @RequestParam @ApiParam(value="사업자번호", required = true) String shopNumber) {
+
+        try{
+            Shop shopInfoGetRes = userService.findShopByShopNumber(shopNumber);
+            if(shopInfoGetRes == null)
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success", true));
+
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", false));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+
+    /**
      * OYT | 2022.05.04
      * @name findShopByShopNumber
      * @api {get} /user?shop_number=shop_number
