@@ -20,7 +20,7 @@ const ShopReviewPage = ({navigation}) => {
   const shopName = useSelector(state => state.shop.name);
   const token = useSelector(state => state.user.accessToken);
 
-  const getReviewList = async () => {
+  const getReviewList = useCallback(async () => {
     try {
       const res = await shopDetailAPI.getReviewList(shopNumber, token);
       setData(res.data);
@@ -28,12 +28,12 @@ const ShopReviewPage = ({navigation}) => {
     } catch (error) {
       console.log('위시리스트 검색', error);
     }
-  };
+  }, [shopNumber, token]);
 
   useFocusEffect(
     useCallback(() => {
       getReviewList();
-    }, []),
+    }, [getReviewList]),
   );
 
   const renderItem = ({item}) => {

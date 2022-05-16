@@ -20,7 +20,7 @@ const ShopMenuPage = ({navigation}) => {
   const shopName = useSelector(state => state.shop.name);
   const token = useSelector(state => state.user.accessToken);
 
-  const getShopItemList = async () => {
+  const getShopItemList = useCallback(async () => {
     try {
       const res = await shopDetailAPI.getShopItemList(shopNumber, token);
       setData(res.data);
@@ -28,12 +28,12 @@ const ShopMenuPage = ({navigation}) => {
     } catch (error) {
       console.log('위시리스트 검색', error);
     }
-  };
+  }, [shopNumber, token]);
 
   useFocusEffect(
     useCallback(() => {
       getShopItemList();
-    }, []),
+    }, [getShopItemList]),
   );
 
   const renderItem = ({item}) => {
