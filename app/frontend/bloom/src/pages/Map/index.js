@@ -337,14 +337,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15,
     bottom: 10,
-    width: '11%',
+    width: '10%',
     height: '10%',
   },
   searchBtn2: {
     position: 'absolute',
     right: 15,
     top: -20,
-    width: '11%',
+    width: '10%',
     height: '20%',
   },
   shopCard: {
