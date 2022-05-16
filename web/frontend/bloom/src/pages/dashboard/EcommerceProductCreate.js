@@ -18,7 +18,6 @@ import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../components/ho
 import { fData } from '../../utils/formatNumber';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
-import { getProduct, addCart, onGotoStep } from '../../redux/slices/product';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks

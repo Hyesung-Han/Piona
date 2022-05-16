@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import { Button, Container, Typography, Stack } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
-// import { getProducts, filterProducts } from '../../redux/slices/product';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -23,7 +22,6 @@ import Iconify from '../../components/Iconify';
 // sections
 import {
   ShopTagFiltered,
-  ShopProductSort,
   ShopProductList,
   ShopFilterSidebar,
   ShopProductSearch,
