@@ -64,6 +64,9 @@ const cartSlice = createSlice({
     setItemName(state, action) {
       state.item_name = action.payload.item_name;
     },
+    initCart(state, action) {
+      state.select_cart_list = action.payload;
+    },
   },
   extraReducers: builder => {},
 });

@@ -213,11 +213,15 @@ export const cartAPI = {
       });
   },
 
-  deleteCart: async (cartId, accessToken) => {
+  deleteCart: async (cart_list, accessToken) => {
     return await request
-      .delete(`/cart/${cartId}`, {
+      .delete(`/cart`, {
         headers: {
           Authorization: accessToken,
+          'Content-Type': `application/json`,
+        },
+        data: {
+          cart_list,
         },
       })
       .then(response => {
