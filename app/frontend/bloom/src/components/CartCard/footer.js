@@ -160,7 +160,7 @@ const CartFooter = ({navigation}, props) => {
     const payload = {
       pg: 'kakao', //['kcp', 'danal', 'inicis', 'nicepay', 'lgup', 'toss', 'payapp', 'easypay', 'jtnet', 'tpay', 'mobilians', 'payletter', 'onestore', 'welcome'] 중 택 1
       // name: tempArray[0].item_name + '외 ' + tempArray.length - 1 + '건', //결제창에 보여질 상품명
-      name: item_name,
+      name: item_name + '외 ' + reservationDetailList.length - 1 + '건',
       order_id: '1234_1234', //개발사에 관리하는 주문번호
       method: 'easy',
       price: totalPrice, //결제금액
