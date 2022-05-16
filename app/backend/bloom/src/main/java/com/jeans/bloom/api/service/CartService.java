@@ -1,5 +1,6 @@
 package com.jeans.bloom.api.service;
 
+import com.jeans.bloom.api.request.CartListReq;
 import com.jeans.bloom.api.request.CartReq;
 import com.jeans.bloom.api.response.CartRes;
 
@@ -11,5 +12,5 @@ public interface CartService {
 
     String addCartItem(CartReq cart) throws Exception;
 
-    void deleteCartItem(List<Integer> cartId) throws Exception;
+    void deleteCartItem(CartListReq cartId) throws Exception;
 }

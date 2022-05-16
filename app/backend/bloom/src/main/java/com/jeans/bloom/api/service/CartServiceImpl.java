@@ -1,5 +1,6 @@
 package com.jeans.bloom.api.service;
 
+import com.jeans.bloom.api.request.CartListReq;
 import com.jeans.bloom.api.request.CartReq;
 import com.jeans.bloom.api.response.CartRes;
 import com.jeans.bloom.db.entity.Cart;
@@ -63,8 +64,8 @@ public class CartServiceImpl implements CartService{
      * @des cart id를 받아 장바구니에서 삭제해주는 메소드
      */
     @Override
-    public void deleteCartItem(List<Integer> cartId) throws Exception {
-        for(int id : cartId){
+    public void deleteCartItem(CartListReq cartId) throws Exception {
+        for(int id : cartId.getCart_list()){
             cartRepository.deleteById(id);
         }
     }
