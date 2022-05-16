@@ -25,42 +25,23 @@ export default function ShopProductCard({ product }) {
   const linkTo = PATH_DASHBOARD.items.view(paramCase(name));
 
   useEffect(() => {
-    console.log(item_id);
   }, []);
 
   return (
-    <Link to={`/dashboard/items/product/${item_id}`} color="inherit" component={RouterLink}>
+    <Link to={`/items/product/${item_id}`} color="inherit" component={RouterLink}>
       <Card>
         <CardActionArea>
           <Box sx={{ position: 'relative' }}>
-            {/* {status && (
-              <Label
-                variant="filled"
-                color={(status === 'sale' && 'error') || 'info'}
-                sx={{
-                  top: 16,
-                  right: 16,
-                  zIndex: 9,
-                  position: 'absolute',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {status}
-              </Label>
-            )} */}
-
             <Image alt={name} src={image_url} ratio="1/1" />
           </Box>
-
           <Stack spacing={2} sx={{ p: 3 }}>
               <Typography variant="subtitle1" noWrap>
                 {name}
               </Typography>
-
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Stack direction="row" sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }} >
                 <Typography variant="subtitle1">{price}원</Typography>
-                <Typography variant="subtitle2" color="rgba(132, 132, 132, 1)" ml={11}>수량 : {total_quantity}개</Typography>
+                <Typography variant="subtitle2" color="rgba(132, 132, 132, 1)" ml={5}>수량 : {total_quantity}개</Typography>
               </Stack>
             </Stack>
           </Stack>
