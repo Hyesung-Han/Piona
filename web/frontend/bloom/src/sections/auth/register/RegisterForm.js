@@ -31,6 +31,7 @@ export default function RegisterForm() {
   const navigate = useNavigate();
 
   const [id, setId] = useState('');
+  const [idCheck, setIdCheck] = useState(false);
   const [idErr, setIdErr] = useState(false);
   const [idErrMsg, setIdErrMsg] = useState('');
 
@@ -55,7 +56,7 @@ export default function RegisterForm() {
   });
 
   const numberPattern = /^[0-9]+$/;
-  const stringPattern = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])/;
+  const stringPattern = /^[a-z]+[a-z0-9]+$/;
 
   const defaultValues = {
     name: '',
@@ -77,7 +78,12 @@ export default function RegisterForm() {
   } = methods;
 
   const onSubmit = async (data) => {
-    userIdCheck();
+
+    if(!idCheck) {
+      setIdErr(true);
+      setIdErrMsg('올바른 휴대폰 번호를 입력해 주세요');
+      return;
+    }
 
     if(!phoneCheck) {
       setPhoneErr(true);
@@ -116,34 +122,44 @@ export default function RegisterForm() {
       setShopNumber(e.target.value);
     }
     if(name === 'id') {
-      setId(e.target.value);
+      // setId();
+      userIdCheck(e.target.value);
     }
   }
 
-  const userIdCheck = () => {
-    if(id === ''){
+  const userIdCheck = (user_id) => {
+    if(user_id === ''){
       setIdErr(true);
-      setPhoneErrMsg('ID를 입력해주세요');
-    }else if(id.length < 4){
+      setIdErrMsg('ID를 입력해주세요');
+      return;
+    }
+    if(user_id.length < 4){
       setIdErr(true);
       setIdErrMsg('4자 이상 입력해 주세요');
-    }else if(stringPattern.test(id)){
-      setIdErrMsg('영문이나 영문과 숫자 혼합만 입력이 가능합니다');
-    }else{
-      Axios.get(`${HOST_API}/api/user/idcheck?userId=${id}`)
-      .then(response => {
-        const {result, data} = response.data;
-        if(result === 'success' && data === true) {
-          setIdErr(false);
-          setIdErrMsg('');
-        }else {
-          setIdErr(true);
-          setIdErrMsg('중복된 ID입니다.');
-        }
-      }).catch(e => {
-        console.error('error', e);
-      })
+      return;
     }
+    if(!stringPattern.test(user_id)){
+      setIdErr(true);
+      setIdErrMsg('영문이나 영문과 숫자 혼합만 입력이 가능합니다');
+      return;
+    }
+    
+    Axios.get(`${HOST_API}/api/user/idcheck?userId=${user_id}`)
+    .then(response => {
+      const {result, data} = response.data;
+      if(result === 'success' && data === true) {
+        setIdErr(false);
+        setIdErrMsg('');
+        setId(user_id);
+        setIdCheck(true);
+      }else {
+        setIdErr(true);
+        setIdErrMsg('중복된 ID입니다.');
+      }
+    }).catch(e => {
+      console.error('error', e);
+    })
+    
   }
 
 
