@@ -143,10 +143,6 @@ const handleDrop = useCallback(
           links={[
             { name: '홈', href: PATH_DASHBOARD.root },
             {
-              name: '상품 목록',
-              href: PATH_DASHBOARD.items.list,
-            },
-            {
               name: '상품 등록',
             },
           ]}

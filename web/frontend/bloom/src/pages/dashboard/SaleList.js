@@ -136,8 +136,10 @@ export default function SaleList() {
     <Page title="Review: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="매출 정산"
-          links={[{}
+          heading="정산 관리"
+          links={[
+            { name: '홈', href: PATH_DASHBOARD.root },
+            { name: '매출 정산' },
           ]}
         />
 
