@@ -1,5 +1,6 @@
 package com.jeans.bloom.api.controller;
 
+import com.jeans.bloom.api.request.CartListReq;
 import com.jeans.bloom.api.request.CartReq;
 import com.jeans.bloom.api.response.CartRes;
 import com.jeans.bloom.api.service.CartService;
@@ -71,9 +72,9 @@ public class CartController {
     @DeleteMapping()
     @ApiOperation(value = "장바구니 아이템 삭제", notes = "cart id를 입력받아 장바구니에서 삭제한다")
     public ResponseEntity<BaseResponseBody> deleteCartItem(
-            @RequestBody @ApiParam(value="카트id", required = true) List<Integer> cart_id) {
+            @RequestBody @ApiParam(value="카트id", required = true) CartListReq cart_list) {
         try{
-            cartService.deleteCartItem(cart_id);
+            cartService.deleteCartItem(cart_list);
             return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
         } catch (Exception e) {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
