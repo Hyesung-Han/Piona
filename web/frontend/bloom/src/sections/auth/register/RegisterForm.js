@@ -30,6 +30,10 @@ export default function RegisterForm() {
 
   const navigate = useNavigate();
 
+  const [id, setId] = useState('');
+  const [idErr, setIdErr] = useState(false);
+  const [idErrMsg, setIdErrMsg] = useState('');
+
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState(false);
 
@@ -45,16 +49,17 @@ export default function RegisterForm() {
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string().required('이름을 입력해주세요').min(2, '2자 이상 입력해 주세요'),
-    id: Yup.string().required('ID를 입력해주세요').min(4, '4자 이상 입력해 주세요').matches(/^[a-z]+[a-z0-9]/, '영문이나 영문과 숫자 혼합만 입력이 가능합니다'),
+    // id: Yup.string().required('ID를 입력해주세요').min(4, '4자 이상 입력해 주세요').matches(/^[a-z]+[a-z0-9]/, '영문이나 영문과 숫자 혼합만 입력이 가능합니다'),
     password: Yup.string().required('비밀번호를 입력해 주세요').min(8, '8자 이상 입력해 주세요').matches(/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])/, '영문+숫자+특수문자를 혼합해 주세요'),
     passwordCheck: Yup.string().oneOf([Yup.ref("password"), null], '비밀번호가 일치하지 않습니다').required('비밀번호 확인을 위해 한 번 더 입력해 주세요'),
   });
 
   const numberPattern = /^[0-9]+$/;
+  const stringPattern = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])/;
 
   const defaultValues = {
     name: '',
-    id: '',
+    // id: '',
     password: '',
     passwordCheck: '',
   };
@@ -72,6 +77,8 @@ export default function RegisterForm() {
   } = methods;
 
   const onSubmit = async (data) => {
+    userIdCheck();
+
     if(!phoneCheck) {
       setPhoneErr(true);
       setPhoneErrMsg('올바른 휴대폰 번호를 입력해 주세요');
@@ -84,7 +91,7 @@ export default function RegisterForm() {
     }
 
     try {
-      const result = await register(data.name, data.id, data.password, phone, shopNumber);
+      const result = await register(data.name, id, data.password, phone, shopNumber);
       if(result === 'success') {
         Swal.fire({
           icon: 'success',
@@ -108,7 +115,38 @@ export default function RegisterForm() {
     if(name === 'shopNumber') {
       setShopNumber(e.target.value);
     }
+    if(name === 'id') {
+      setId(e.target.value);
+    }
   }
+
+  const userIdCheck = () => {
+    if(id === ''){
+      setIdErr(true);
+      setPhoneErrMsg('ID를 입력해주세요');
+    }else if(id.length < 4){
+      setIdErr(true);
+      setIdErrMsg('4자 이상 입력해 주세요');
+    }else if(stringPattern.test(id)){
+      setIdErrMsg('영문이나 영문과 숫자 혼합만 입력이 가능합니다');
+    }else{
+      Axios.get(`${HOST_API}/api/user/idcheck?userId=${id}`)
+      .then(response => {
+        const {result, data} = response.data;
+        if(result === 'success' && data === true) {
+          setIdErr(false);
+          setIdErrMsg('');
+        }else {
+          setIdErr(true);
+          setIdErrMsg('중복된 ID입니다.');
+        }
+      }).catch(e => {
+        console.error('error', e);
+      })
+    }
+  }
+
+
 
   const onClickPhoneCheck = () => {
     if(phone !== '' && phone.length > 9 && numberPattern.test(phone)) {
@@ -220,7 +258,11 @@ export default function RegisterForm() {
 
         <RHFTextField name="name" label="성명"/>
 
-        <RHFTextField name="id" label="ID"/>
+        <TextField 
+          name="id" label="ID"             
+          onChange={onChangeHandler('id')}
+          error={idErr}
+          helperText={idErrMsg}/>
 
         <RHFTextField
           name="password"
