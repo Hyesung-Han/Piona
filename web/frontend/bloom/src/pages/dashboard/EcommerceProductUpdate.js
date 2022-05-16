@@ -184,17 +184,20 @@ const handleDrop = useCallback(
                 }
             })
             .then(result => {
-            console.log(result);
+              Swal.fire({
+                icon: 'success',
+                title: '아이템이 삭제되었습니다',
+              });
+              navigate(PATH_DASHBOARD.items.list);
             })
             .catch(e => {
-            console.log('Item delete error', e);
+              Swal.fire({
+                icon: 'error',
+                title: '아이템이 삭제에 실패했습니다.',
+              });
+            // console.log('Item delete error', e);
             });
         }
-        Swal.fire({
-          icon: 'success',
-          title: '아이템이 삭제되었습니다',
-        });
-        navigate(PATH_DASHBOARD.items.list);
     });
   };
 
