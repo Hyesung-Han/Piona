@@ -1,13 +1,22 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {View, Dimensions, Alert, Text, FlatList} from 'react-native';
+import {
+  View,
+  Dimensions,
+  Alert,
+  Text,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
 import DoneCard from '../../components/DoneCard';
 import RegisterReview from '../RegisterReview';
 import {getMyReservationList} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import picnicSlice from '../../redux/slices/picnic';
 
 /**
- * LHJ | 2022.05.11
+ * LHJ,CSW | 2022.05.16
  * @name PicnicedPage
  * @api getMyReservationList
  * @des
@@ -21,44 +30,45 @@ import {useSelector} from 'react-redux';
  */
 
 const PicnicedPage = ({navigation}) => {
-  const [data, setData] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
   //받아오고 그냥 바로 쓰면 됨
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
+  const picniced_list = useSelector(state => state.picnic.picniced_list);
 
   //picnicing에서 사용했던 api를 그대로 사용하여 프론트단에서 필터링 하여 나타냄
-  const getMyReservation = async () => {
+  const getMyReservation = useCallback(async () => {
     try {
       const response = await getMyReservationList(user_id, token);
       const res = response.data;
       const firstFilteredByStatus = res.filter(item => item.status === 'D');
       const secondFilteredByStatus = res.filter(item => item.status === 'C');
       const newArr = [...firstFilteredByStatus, ...secondFilteredByStatus];
-      setData(newArr);
-      console.log(newArr);
+      if (response.result === 'success') {
+        dispatch(picnicSlice.actions.setPicnicedList(newArr));
+      }
     } catch (error) {
       console.log('완료된 예약현황 조회 실패', error);
     }
-  };
+  }, [user_id, token, dispatch]);
 
   useFocusEffect(
     useCallback(() => {
       getMyReservation();
-    }, []),
+    }, [getMyReservation]),
   );
 
   const renderItem = ({item}) => {
     return <DoneCard item={item} navigation={navigation} />;
   };
 
-  return (
+  return picniced_list.length >= 1 ? (
     <View style={{backgroundColor: '#F8F8F8', flex: 1}}>
       <View>
         <FlatList
           //리스트의 소스를 담는 속성
-          data={data}
+          data={picniced_list}
           //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
           //item의 고유의 키를 부여하는 속성
@@ -66,6 +76,19 @@ const PicnicedPage = ({navigation}) => {
         />
       </View>
     </View>
+  ) : (
+    <View style={styles.Nocontainer}>
+      <Text> 완료된 예약이 없습니다.</Text>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  Nocontainer: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 export default PicnicedPage;
