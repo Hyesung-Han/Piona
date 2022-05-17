@@ -80,4 +80,23 @@ public class CartController {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
         }
     }
+
+
+    /**
+     * OYT | 2022.05.17
+     * @name deleteCart
+     * @api {delete} /cart/{userId}
+     * @des user id를 받아 장바구니에서 한번에 삭제해주는 메소드
+     */
+    @DeleteMapping("/{user_id}")
+    @ApiOperation(value = "카트 삭제", notes = "유저 아이디를 받아 카트에서 삭제한다")
+    public ResponseEntity<BaseResponseBody> deleteCart(
+            @PathVariable @ApiParam(value="유저 아이디", required = true) String user_id) {
+        try{
+            cartService.deleteCart(user_id);
+            return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
+        }
+    }
 }

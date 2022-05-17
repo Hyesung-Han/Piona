@@ -30,11 +30,11 @@ public interface UserRepository extends JpaRepository<User, String> {
             "SELECT " +
                     " r.user_id " +
                     " FROM reservation_t as r " +
-                    " WHERE r.reservation_id = " +
+                    " WHERE (r.status = \"U\" or r.status = \"R\") and r.reservation_id = " +
                     " any (SELECT rd.reservation_id " +
-                        " FROM reservation_detail_t as rd " +
-                        " WHERE DATE_FORMAT(rd.reservation_date, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') "+
-                        " GROUP BY rd.reservation_id)"
+                    " FROM reservation_detail_t as rd " +
+                    " WHERE DATE_FORMAT(rd.reservation_date, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') "+
+                    " GROUP BY rd.reservation_id)"
             , nativeQuery = true
     )
     List<String> getUserToken() throws Exception;
