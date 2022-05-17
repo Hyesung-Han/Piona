@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
 // @mui
-import { alpha, styled } from '@mui/material/styles';
 import { Box, Grid, Container, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 
@@ -21,10 +20,12 @@ import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
+import useAuth from '../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
 export default function EcommerceProductCreate() {
+  const { user } = useAuth();
   const { themeStretch } = useSettings();
   const navigate = useNavigate();
   
@@ -62,17 +63,15 @@ const onSubmit = async (itemInfo) => {
   } else {
     fd.append('file', image_url);
   }
-  const user = localStorage.getItem('user');
-  const parseUser = JSON.parse(user);
   fd.append('totalQuantity', total_quantity);
   fd.append('price', price);
   fd.append('name', name);
   fd.append('description', description);
-  fd.append('shopNumber', parseUser.shop_number);
+  fd.append('shopNumber', user.shop_number);
 
   try {
     const response = await axios.post(`/api/item`, fd, { headers: {
-      Authorization: parseUser.access_token
+      Authorization: user.access_token
     }});
     const { data } = response;
   } catch (e) {

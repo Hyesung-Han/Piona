@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import Swal from 'sweetalert2';
 import {
@@ -31,6 +30,8 @@ import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableNoData, TableEmptyRows, TableHeadCustom } from '../../components/table';
+
+import useAuth from '../../hooks/useAuth';
 // sections
 import { ReviewTableRow } from '../../sections/@dashboard/review/list';
 import ReviewCompose from '../../sections/@dashboard/review/details/ReviewCompose';
@@ -48,6 +49,7 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function ReviewList() {
+  const { user } = useAuth();
 
   const { themeStretch } = useSettings();
 
@@ -86,15 +88,12 @@ export default function ReviewList() {
 
   const handleIsBanRow = async (id) => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
         const response = await axios.patch(`/api/review/${id}`, {}, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         })
-        console.log(response);
         alert("리뷰를 신고했습니다.", "success")
         await getReviewList();
       }
@@ -110,12 +109,10 @@ export default function ReviewList() {
 
   const getReviewDetail = async (id) => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
         const response = await axios.get(`/api/review/${id}`, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         })
         console.log(response.data);
@@ -136,13 +133,10 @@ export default function ReviewList() {
     
   const getReviewList = async () => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
-        console.log(parseUser);
-        const response = await axios.get(`/api/review?shop_number=${parseUser.shop_number}`, {
+        const response = await axios.get(`/api/review?shop_number=${user.shop_number}`, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         });
         if(response.data.result === 'success'){

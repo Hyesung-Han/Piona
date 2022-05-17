@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import Swal from 'sweetalert2';
 import {
@@ -18,6 +17,7 @@ import {
 } from '@mui/material';
 // utils
 import axios from '../../utils/axios';
+import useAuth from '../../hooks/useAuth';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -49,6 +49,7 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function ReviewList() {
+  const { user } = useAuth();
 
   const { themeStretch } = useSettings();
 
@@ -87,12 +88,10 @@ export default function ReviewList() {
 
   const handleCancelBan = async (review_id) => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
         const response = await axios.patch(`/api/admin/${review_id}`, {}, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         })
         alert("해당 리뷰의 신고를 취소했습니다", "success")
@@ -110,12 +109,10 @@ export default function ReviewList() {
 
   const getReviewDetail = async (id) => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
         const response = await axios.get(`/api/review/${id}`, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         })
         if(response.data.result === "success"){
@@ -135,12 +132,10 @@ export default function ReviewList() {
 
   const handleDeleteReview = async (review_id) => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
         const response = await axios.patch(`/api/admin/${review_id}`, {}, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         })
         alert("신고된 리뷰를 삭제하였습니다", "success")
@@ -153,12 +148,10 @@ export default function ReviewList() {
     
   const getReviewList = async () => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null) {
-        const parseUser = JSON.parse(user);
         const response = await axios.get(`/api/admin/review`, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         });
         if(response.data.result === 'success'){

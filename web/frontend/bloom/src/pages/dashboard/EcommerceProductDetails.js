@@ -17,10 +17,12 @@ import Iconify from '../../components/Iconify';
 import { SkeletonProduct } from '../../components/skeleton';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Image from '../../components/Image';
+import useAuth from '../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
 export default function EcommerceProductDetails() {
+  const { user } = useAuth();
   const { themeStretch } = useSettings();
   const { name } = useParams();
   const item_id = name;
@@ -34,15 +36,11 @@ export default function EcommerceProductDetails() {
 
   const getItemDetail = async () => {
     try {
-      // 3. 로컬스토리지에서 user정보를 가져옴
-      const user = localStorage.getItem('user');
       if(user != null ) {
-        // 4. object인가 string인가를 JSON 형태로 사용하기 위해 파싱해줌(그래야 .access_token 이런식으로 사용 가능)
-        const parseUser = JSON.parse(user);
         // 5. api 호출!! 헤더에 access_token을 넣음
         const response = await axios.get(`/api/item/${item_id}`, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         });
         const data = response.data.data;
