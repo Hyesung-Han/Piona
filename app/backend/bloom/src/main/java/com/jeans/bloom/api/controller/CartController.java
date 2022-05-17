@@ -56,8 +56,8 @@ public class CartController {
     public ResponseEntity<BaseResponseBody> addCartItem(
             @RequestBody @ApiParam(value="아이디", required = true) CartReq cartItem) {
         try{
-            String result = cartService.addCartItem(cartItem);
-            return ResponseEntity.status(200).body(BaseResponseBody.of( result));
+            BaseResponseBody result = cartService.addCartItem(cartItem);
+            return ResponseEntity.status(200).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
         }

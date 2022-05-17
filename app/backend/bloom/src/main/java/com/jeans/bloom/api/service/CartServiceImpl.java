@@ -3,11 +3,14 @@ package com.jeans.bloom.api.service;
 import com.jeans.bloom.api.request.CartListReq;
 import com.jeans.bloom.api.request.CartReq;
 import com.jeans.bloom.api.response.CartRes;
+import com.jeans.bloom.common.response.BaseResponseBody;
 import com.jeans.bloom.db.entity.Cart;
 import com.jeans.bloom.db.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,20 +43,35 @@ public class CartServiceImpl implements CartService{
      * @des 아이템 정보를 받아 장바구니(cart)에 아이템을 추가해주는 메소드
      */
     @Override
-    public String addCartItem(CartReq cartItem) throws Exception {
+    public BaseResponseBody addCartItem(CartReq cartItem) throws Exception {
         List<Cart> cartList = cartRepository.findCartsByUser_UserId(cartItem.getUserId()).orElse(null);
         if(cartList != null) {
             String shopNumber = cartItem.getShopNumber();
-            List<Cart> cartFilterList = cartList.stream().filter(cart->!(cart.getShop().getShopNumber().equals(shopNumber))).collect(Collectors.toList());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+             List<Cart> cartFilterList = cartList.stream().filter(cart -> !(cart.getShop().getShopNumber().equals(shopNumber))).collect(Collectors.toList());
+
             if(cartFilterList.size() > 0) {
-                return "fail";
-            } else {
+                return BaseResponseBody.of("fail", "shopNumber");
+            }
+            cartFilterList = cartList.stream().filter(cart-> !((cart.getReservationDate()).format(formatter)).equals(cartItem.getReservationDate().format(formatter))).collect(Collectors.toList());
+            if(cartFilterList.size() > 0){
+                return BaseResponseBody.of("fail", "date");
+            }else {
+                List<Cart> changeCart = cartList.stream().filter(cart -> cart.getItem().getItemId().equals(cartItem.getItemId())).collect(Collectors.toList());
+                if(changeCart.size() > 0){
+                    for (Cart cart: changeCart) {
+                        cart.setQuantity(cart.getQuantity() + cartItem.getQuantity());
+                        cartRepository.save(cart);
+                    }
+                    return BaseResponseBody.of("success");
+                }
                 cartRepository.save(cartItem.toCart());
-                return "success";
+                return BaseResponseBody.of("success");
             }
         } else {
             cartRepository.save(cartItem.toCart());
-            return "success";
+            return BaseResponseBody.of("success");
         }
     }
 
