@@ -7,6 +7,7 @@ import { Box, Stack, Drawer } from '@mui/material';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
+import useAuth from '../../../hooks/useAuth';
 // utils
 import cssStyles from '../../../utils/cssStyles';
 // config
@@ -40,6 +41,8 @@ NavbarVertical.propTypes = {
 };
 
 export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
+  const { user } = useAuth();
+
   const theme = useTheme();
 
   const { pathname } = useLocation();
@@ -83,7 +86,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
 
         <NavbarAccount isCollapse={isCollapse} />
       </Stack>
-      {JSON.parse(localStorage.getItem('user')).user_code === 'A' ? <NavSectionVertical navConfig={adminNavConfig} isCollapse={isCollapse} />:<NavSectionVertical navConfig={shopNavConfig}  isCollapse={isCollapse}/>}
+      {user.user_code === 'A' ? <NavSectionVertical navConfig={adminNavConfig} isCollapse={isCollapse} />:<NavSectionVertical navConfig={shopNavConfig}  isCollapse={isCollapse}/>}
 
       <Box sx={{ flexGrow: 1 }} />
 
