@@ -21,6 +21,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
  */
 
 const SignPage = props => {
+  // console warning box 무시
+  console.disableYellowBox = true;
+
   const [signinModal, setSigninModal] = useState(false);
   const [signupModal, setSignupModal] = useState(false);
   const [name, setName] = useState('');

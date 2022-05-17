@@ -21,6 +21,8 @@ import {useSelector} from 'react-redux';
  *  */
 
 const MainPage = ({navigation}) => {
+  // console warning box 무시
+  console.disableYellowBox = true;
   const [inputText, setInputText] = useState('');
   const user_nickname = useSelector(state => state.user.nickname);
   const user_id = useSelector(state => state.user.id);
