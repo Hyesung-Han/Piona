@@ -9,14 +9,15 @@ import {BootpayWebView} from 'react-native-bootpay';
 import {RegisterReservation} from '../../utils/Axios';
 
 /**
- * CSW, LDJ | 2022.05.16
+ * CSW, LDJ, LHJ | 2022.05.17
  * @name CartFooter
  * @api cartAPI/deleteCart
  * @des
  * Cart Page 하단 부분 [삭제, 금액, 구매]
  * Flatlist는 Scrollview에 들어갈 수 없어서 footer로 넣어줌
  * 장바구니에 담을 때, tempArray(예약 등록 api에서 reservationItem으로 활용)와 totalPrice를 전달
- * 05.13 기준 totalPrice는 하드코딩이 되어있다.
+ * 아이템 선택 후 구매하기 버튼을 누를 시 sameshop > onpress > payment
+ * 결제가 완료되면 피크닉 페이지로 화면이 이동한다.
  */
 
 const CartFooter = ({navigation}, props) => {
@@ -164,7 +165,7 @@ const CartFooter = ({navigation}, props) => {
     const payload = {
       pg: 'kakao', //['kcp', 'danal', 'inicis', 'nicepay', 'lgup', 'toss', 'payapp', 'easypay', 'jtnet', 'tpay', 'mobilians', 'payletter', 'onestore', 'welcome'] 중 택 1
       // name: tempArray[0].item_name + '외 ' + tempArray.length - 1 + '건', //결제창에 보여질 상품명
-      name: item_name + '외 ' + reservationDetailList.length - 1 + '건',
+      name: item_name + '외 ' + (reservationDetailList.length + 1) + '건',
       order_id: '1234_1234', //개발사에 관리하는 주문번호
       method: 'easy',
       price: totalPrice, //결제금액
@@ -173,14 +174,6 @@ const CartFooter = ({navigation}, props) => {
     //결제되는 상품정보들로 통계에 사용되며, price의 합은 결제금액과 동일해야함
     const items = [
       {
-        // item_name:
-        //   tempArray[0].item_name + '외' + (tempArray.length - 1) + '건', //통계에 반영될 상품명
-        // qty: 1, //수량
-        // unique: 'ITEM_CODE_KEYBOARD', //개발사에서 관리하는 상품고유번호
-        // price: totalPrice, //상품단가
-        // cat1: '패션', //카테고리 상 , 자유롭게 기술
-        // cat2: '여성상의', //카테고리 중, 자유롭게 기술
-        // cat3: '블라우스', //카테고리 하, 자유롭게 기술
         item_name: '키보드', //통계에 반영될 상품명
         qty: 1, //수량
         unique: 'ITEM_CODE_KEYBOARD', //개발사에서 관리하는 상품고유번호
@@ -257,8 +250,8 @@ const CartFooter = ({navigation}, props) => {
 
   const onClose = () => {
     console.log('closed');
-    navigation.replace('Picnic', {
-      test: 'test',
+    navigation.navigate('Picnic', {
+      status: 'sucess',
     });
   };
 
@@ -297,7 +290,7 @@ const CartFooter = ({navigation}, props) => {
               }}
               //onPress={() => navigation.push('PaymentTest')}
               onPress={() => {
-                // navigation.navigate('PaymentTest', {
+                // navigation.navigate('Picnic', {
                 //   test: 'test',
                 // });
                 sameShop();
