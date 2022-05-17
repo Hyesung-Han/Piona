@@ -47,7 +47,6 @@ const PicnicingPage = ({navigation}) => {
       console.log(user_id);
       console.log('예약현황 조회 실패', error);
     }
-
   }, [user_id, token, dispatch]);
 
   useFocusEffect(

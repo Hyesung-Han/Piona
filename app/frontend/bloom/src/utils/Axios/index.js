@@ -404,6 +404,22 @@ export const RegisterReservation = async (
     });
 };
 
+// CSW | 카트를 비워주기 위한 API
+export const EmptyCart = async (user_id, accessToken) => {
+  return await request
+    .delete(`/cart/${user_id}`, {
+      headers: {
+        Authorization: accessToken,
+      },
+    })
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
 // CSW | 위시리스트에 관한 API | [목록조회, 추가, 삭제]
 export const WishListAPI = {
   getWishList: async (user_id, accessToken) => {

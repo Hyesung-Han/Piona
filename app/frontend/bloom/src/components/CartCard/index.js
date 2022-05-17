@@ -79,7 +79,6 @@ const CartCardList = props => {
     shop_name,
   ]);
 
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
