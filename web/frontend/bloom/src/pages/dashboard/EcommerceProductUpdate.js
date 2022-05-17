@@ -3,7 +3,6 @@ import { useLocation, useParams, useNavigate} from 'react-router-dom';
 import { useState, useCallback } from 'react';
 
 // @mui
-import { alpha, styled } from '@mui/material/styles';
 import { Button, Box, Grid, Container, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 
@@ -13,8 +12,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../components/hook-form';
 import { fData } from '../../utils/formatNumber';
-// redux
-import { useDispatch, useSelector } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -278,7 +275,6 @@ const handleDrop = useCallback(
             </Grid>
           </>
         )}
-        {/* {!itemDetail && <SkeletonProduct />} */}
       </Container>
     </Page>
     </FormProvider>

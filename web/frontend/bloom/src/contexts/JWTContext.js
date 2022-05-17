@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer } from 'react';
+
+
 // utils
 import axios from '../utils/axios';
 import { isValidToken, setSession } from '../utils/jwt';
-
 // ----------------------------------------------------------------------
 
 const initialState = {
@@ -24,7 +25,7 @@ const handlers = {
   },
   LOGIN: (state, action) => {
     const { user } = action.payload;
-    
+
     return {
       ...state,
       isAuthenticated: true,
@@ -55,9 +56,11 @@ AuthProvider.propTypes = {
 };
 
 function AuthProvider({ children }) {
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
+    /*
     const initialize = async () => {
       try {
         const accessToken = localStorage.getItem('accessToken');
@@ -97,6 +100,15 @@ function AuthProvider({ children }) {
     };
 
     initialize();
+  */
+   
+    dispatch({
+      type: 'INITIALIZE',
+      payload: {
+        isAuthenticated: false,
+        user: null,
+      },
+    });
   }, []);
 
   const login = async (user_id, password) => {
@@ -120,6 +132,7 @@ function AuthProvider({ children }) {
       const accessToken = user.access_token;
       setSession(accessToken);
       localStorage.setItem("user", JSON.stringify(user));
+
       dispatch({
         type: 'LOGIN',
         payload: {
