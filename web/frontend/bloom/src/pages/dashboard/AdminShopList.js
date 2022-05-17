@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import {
   Box,
@@ -8,7 +7,6 @@ import {
   Card,
   Table,
   Switch,
-  Button,
   Divider,
   TableBody,
   Container,
@@ -24,7 +22,6 @@ import useSettings from '../../hooks/useSettings';
 import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
 // components
 import Page from '../../components/Page';
-import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
@@ -33,6 +30,7 @@ import { UserTableToolbar } from '../../sections/@dashboard/user/list';
 import AdminShopTableRow from '../../sections/@dashboard/user/list/ShopTableRow';
 // utils
 import axios from '../../utils/axios';
+import useAuth from '../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +48,8 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function AdminShopList() {
+  const { user } = useAuth();
+
   const {
     dense,
     page,
@@ -75,9 +75,6 @@ export default function AdminShopList() {
   const [filterName, setFilterName] = useState('');
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
-
-  const user = localStorage.getItem('user');
-  const parseUser = JSON.parse(user);
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
@@ -105,7 +102,7 @@ export default function AdminShopList() {
     try {
       const response = await axios.get(`/api/admin/userList?code=S`, {
         headers : {
-          Authorization: parseUser.access_token,
+          Authorization: user.access_token,
         }
       });
       const {data} = response;

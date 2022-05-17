@@ -4,6 +4,8 @@ import { styled } from '@mui/material/styles';
 import { Container, AppBar } from '@mui/material';
 // config
 import { HEADER } from '../../../config';
+// hooks
+import useAuth from '../../../hooks/useAuth';
 // components
 import { NavSectionHorizontal } from '../../../components/nav-section';
 //
@@ -28,10 +30,11 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 function NavbarHorizontal() {
+  const { user } = useAuth();
   return (
     <RootStyle>
       <Container maxWidth={false}>;
-        {JSON.parse(localStorage.getItem('user')).user_code === 'A' ? <NavSectionHorizontal navConfig={adminNavConfig} />:<NavSectionHorizontal navConfig={shopNavConfig} />}
+        {user.user_code === 'A' ? <NavSectionHorizontal navConfig={adminNavConfig} />:<NavSectionHorizontal navConfig={shopNavConfig} />}
         {/* <NavSectionHorizontal navConfig={navConfig} /> */}
       </Container>
     </RootStyle>

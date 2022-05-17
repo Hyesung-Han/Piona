@@ -10,7 +10,6 @@ import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
-import Iconify from '../../components/Iconify';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // sections
 import {

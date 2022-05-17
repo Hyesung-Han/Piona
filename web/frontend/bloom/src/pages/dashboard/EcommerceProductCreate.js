@@ -1,24 +1,16 @@
 import * as Yup from 'yup';
-import { sentenceCase } from 'change-case';
-import { useLocation, useParams, useNavigate, Link  as RouterLink} from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import { Button, Box, Tab, Card, Grid, Divider, Container, Typography } from '@mui/material';
+import { Box, Grid, Container, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 
-import { TabContext, TabList, TabPanel, LoadingButton } from '@mui/lab';
-import Swal from 'sweetalert2';
+import { LoadingButton } from '@mui/lab';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../components/hook-form';
 import { fData } from '../../utils/formatNumber';
-// redux
-import { useDispatch, useSelector } from '../../redux/store';
-import { getProduct, addCart, onGotoStep } from '../../redux/slices/product';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -27,41 +19,14 @@ import useSettings from '../../hooks/useSettings';
 import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
-import Iconify from '../../components/Iconify';
-import Markdown from '../../components/Markdown';
-import { SkeletonProduct } from '../../components/skeleton';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import Image from '../../components/Image';
-
-
-// sections
-import {
-  ProductDetailsSummary,
-  ProductDetailsReview,
-  ProductDetailsCarousel,
-} from '../../sections/@dashboard/e-commerce/product-details';
-import CartWidget from '../../sections/@dashboard/e-commerce/CartWidget';
-
-// ----------------------------------------------------------------------
-
-const IconWrapperStyle = styled('div')(({ theme }) => ({
-  margin: 'auto',
-  display: 'flex',
-  borderRadius: '50%',
-  alignItems: 'center',
-  width: theme.spacing(8),
-  justifyContent: 'center',
-  height: theme.spacing(8),
-  marginBottom: theme.spacing(3),
-  color: theme.palette.primary.main,
-  backgroundColor: `${alpha(theme.palette.primary.main, 0.08)}`,
-}));
+import useAuth from '../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
 export default function EcommerceProductCreate() {
+  const { user } = useAuth();
   const { themeStretch } = useSettings();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   
   const defaultValues = {
@@ -98,17 +63,15 @@ const onSubmit = async (itemInfo) => {
   } else {
     fd.append('file', image_url);
   }
-  const user = localStorage.getItem('user');
-  const parseUser = JSON.parse(user);
   fd.append('totalQuantity', total_quantity);
   fd.append('price', price);
   fd.append('name', name);
   fd.append('description', description);
-  fd.append('shopNumber', parseUser.shop_number);
+  fd.append('shopNumber', user.shop_number);
 
   try {
     const response = await axios.post(`/api/item`, fd, { headers: {
-      Authorization: parseUser.access_token
+      Authorization: user.access_token
     }});
     const { data } = response;
   } catch (e) {
@@ -259,7 +222,6 @@ const handleDrop = useCallback(
             </Grid>
           </>
         )}
-        {/* {!itemDetail && <SkeletonProduct />} */}
       </Container>
     </Page>
     </FormProvider>

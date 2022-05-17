@@ -1,14 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
-// import orderBy from 'lodash/orderBy';
-// form
-import { useForm } from 'react-hook-form';
 // @mui
-import { Button, Container, Typography, Stack } from '@mui/material';
-// redux
-import { useDispatch, useSelector } from '../../redux/store';
-// import { getProducts, filterProducts } from '../../redux/slices/product';
+import { Button, Container } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -18,26 +12,19 @@ import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { FormProvider } from '../../components/hook-form';
 import Iconify from '../../components/Iconify';
+import useAuth from '../../hooks/useAuth';
 // sections
 import {
-  ShopTagFiltered,
-  ShopProductSort,
   ShopProductList,
-  ShopFilterSidebar,
-  ShopProductSearch,
 } from '../../sections/@dashboard/e-commerce/shop';
-import CartWidget from '../../sections/@dashboard/e-commerce/CartWidget';
 
 // ----------------------------------------------------------------------
 
 export default function EcommerceShop() {
+  const { user } = useAuth();
+  
   const { themeStretch } = useSettings();
-
-  const dispatch = useDispatch();
-
-  const [openFilter, setOpenFilter] = useState(false);
   
   // 1. itemList를 state로 사용하기 위해 선언
   const [itemList, setItemList] = useState([]);
@@ -53,15 +40,11 @@ export default function EcommerceShop() {
 
   const getItemList = async () => {
     try {
-      // 3. 로컬스토리지에서 user정보를 가져옴
-      const user = localStorage.getItem('user');
       if(user != null ) {
-        // 4. object인가 string인가를 JSON 형태로 사용하기 위해 파싱해줌(그래야 .access_token 이런식으로 사용 가능)
-        const parseUser = JSON.parse(user);
         // 5. api 호출!! 헤더에 access_token을 넣음
-        const response = await axios.get(`/api/item?shop_number=${parseUser.shop_number}`, {
+        const response = await axios.get(`/api/item?shop_number=${user.shop_number}`, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         });
         const {data} = response.data;
