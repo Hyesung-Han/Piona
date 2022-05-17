@@ -2,12 +2,9 @@ import { useParams, Link as RouterLink} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 // @mui
-import { alpha, styled } from '@mui/material/styles';
 import { Button, Box, Grid, Container, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 
-// redux
-import { useDispatch, useSelector } from '../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks

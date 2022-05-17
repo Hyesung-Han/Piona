@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
-// import orderBy from 'lodash/orderBy';
-// form
-import { useForm } from 'react-hook-form';
 // @mui
-import { Button, Container, Typography, Stack } from '@mui/material';
-// redux
-import { useDispatch, useSelector } from '../../redux/store';
+import { Button, Container } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -17,25 +12,16 @@ import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { FormProvider } from '../../components/hook-form';
 import Iconify from '../../components/Iconify';
 // sections
 import {
-  ShopTagFiltered,
   ShopProductList,
-  ShopFilterSidebar,
-  ShopProductSearch,
 } from '../../sections/@dashboard/e-commerce/shop';
-import CartWidget from '../../sections/@dashboard/e-commerce/CartWidget';
 
 // ----------------------------------------------------------------------
 
 export default function EcommerceShop() {
   const { themeStretch } = useSettings();
-
-  const dispatch = useDispatch();
-
-  const [openFilter, setOpenFilter] = useState(false);
   
   // 1. itemList를 state로 사용하기 위해 선언
   const [itemList, setItemList] = useState([]);
