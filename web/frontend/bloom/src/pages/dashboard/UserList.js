@@ -33,6 +33,7 @@ import { UserTableToolbar, UserTableRow } from '../../sections/@dashboard/user/l
 // utils
 import axios from '../../utils/axios';
 
+import useAuth from '../../hooks/useAuth';
 // ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = ['all', 'active', 'banned'];
@@ -67,6 +68,8 @@ export default function UserList() {
     onChangeRowsPerPage,
   } = useTable();
 
+  const { user } = useAuth();
+
   const { themeStretch } = useSettings();
 
   const [tableData, setTableData] = useState([]);
@@ -74,9 +77,6 @@ export default function UserList() {
   const [filterName, setFilterName] = useState('');
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
-
-  const user = localStorage.getItem('user');
-  const parseUser = JSON.parse(user);
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
@@ -104,7 +104,7 @@ export default function UserList() {
     try {
       const response = await axios.get(`/api/admin/userList?code=M`, {
         headers : {
-          Authorization: parseUser.access_token,
+          Authorization: user.access_token,
         }
       });
       const {data} = response;

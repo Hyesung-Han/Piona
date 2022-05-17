@@ -11,6 +11,7 @@ import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
 // utils
 import axios from '../../../../utils/axios';
+import useAuth from '../../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -20,14 +21,13 @@ UserTableRow.propTypes = {
 };
 
 export default function UserTableRow({ row, selected, getUserList }) {
+  const { user } = useAuth();
+
   const theme = useTheme();
 
   const { user_id, nickname, phone, is_del, created_at } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
-
-  const user = localStorage.getItem('user');
-  const parseUser = JSON.parse(user);
 
   const handleOpenMenu = (event) => {
     setOpenMenuActions(event.currentTarget);
@@ -41,7 +41,7 @@ export default function UserTableRow({ row, selected, getUserList }) {
     try {
       const response = await axios.patch(`/api/admin?user_id=${row.user_id}&status_type=B`, {}, {
         headers : {
-          Authorization: parseUser.access_token,
+          Authorization: user.access_token,
         }
       });
       const {data} = response;

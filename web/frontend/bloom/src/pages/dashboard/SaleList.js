@@ -1,23 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import Swal from 'sweetalert2';
 import {
-  Box,
   Card,
-  Tab,
-  Tabs,
   Table,
   TableRow, 
   TableCell,
   Typography,
-  Switch,
   Divider,
   TableBody,
   Container,
   TableContainer,
-  TablePagination,
-  FormControlLabel,
 } from '@mui/material';
 // utils
 import axios from '../../utils/axios';
@@ -27,14 +20,14 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useTabs from '../../hooks/useTabs';
 import useSettings from '../../hooks/useSettings';
-import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
+import useTable, { emptyRows } from '../../hooks/useTable';
 
 // components
 import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableNoData, TableEmptyRows, TableHeadCustom } from '../../components/table';
+import useAuth from '../../hooks/useAuth';
 // sections
 import { SaleTableRow, SaleTableToolbar } from '../../sections/@dashboard/sale/list';
 
@@ -52,6 +45,7 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function SaleList() {
+  const { user } = useAuth();
 
   const { themeStretch } = useSettings();
 
@@ -85,11 +79,8 @@ export default function SaleList() {
     
   const getSaleList = async () => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
-        // console.log(parseUser);
-        let url = `/api/sale?shop_number=${parseUser.shop_number}`;
+        let url = `/api/sale?shop_number=${user.shop_number}`;
         if(filterStartDate != null) {
           url += `&start_date=${fcDate(filterStartDate)}`;
         }
@@ -99,7 +90,7 @@ export default function SaleList() {
 
         const response = await axios.get(url, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         });
         if(response.data.result === 'success'){
