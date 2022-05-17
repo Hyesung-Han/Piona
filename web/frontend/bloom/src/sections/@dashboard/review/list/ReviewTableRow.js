@@ -47,13 +47,10 @@ export default function ReviewTableRow({ row, selected, onCancelBan, onDeleteRev
     <TableRow 
       hover selected={selected}
     >
-    <TableCell align="left" >{shop_name}</TableCell>
-      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Stack>
+      <TableCell >
           <Typography variant="subtitle2" noWrap>
             {nickname}
           </Typography>
-        </Stack>
       </TableCell>
       <TableCell align="center" onClick={handleOpenCompose} >{content}</TableCell>
 
