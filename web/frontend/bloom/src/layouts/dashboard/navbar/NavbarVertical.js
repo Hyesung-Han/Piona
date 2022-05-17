@@ -16,7 +16,7 @@ import Logo from '../../../components/Logo';
 import Scrollbar from '../../../components/Scrollbar';
 import { NavSectionVertical } from '../../../components/nav-section';
 //
-import navConfig from './NavConfig';
+import {shopNavConfig, adminNavConfig} from './NavConfig';
 import NavbarDocs from './NavbarDocs';
 import NavbarAccount from './NavbarAccount';
 import CollapseButton from './CollapseButton';
@@ -83,12 +83,11 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
 
         <NavbarAccount isCollapse={isCollapse} />
       </Stack>
-
-      <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />
+      {JSON.parse(localStorage.getItem('user')).user_code === 'A' ? <NavSectionVertical navConfig={adminNavConfig} isCollapse={isCollapse} />:<NavSectionVertical navConfig={shopNavConfig}  isCollapse={isCollapse}/>}
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {!isCollapse && <NavbarDocs />}
+      {/* {!isCollapse && <NavbarDocs />} */}
     </Scrollbar>
   );
 

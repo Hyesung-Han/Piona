@@ -113,15 +113,15 @@ export default function EcommerceProductDetails() {
     <Page title="ITEMS: Item Details">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Item Details"
+          heading="상품 상세"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: '홈', href: PATH_DASHBOARD.root },
             {
-              name: 'Items',
+              name: '상품 목록',
               href: PATH_DASHBOARD.items.list,
             },
             {
-              name: 'detail',
+              name: '상품 상세',
               href: PATH_DASHBOARD.items.list,
             },
           ]}

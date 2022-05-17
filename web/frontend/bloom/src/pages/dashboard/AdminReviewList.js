@@ -198,11 +198,10 @@ export default function ReviewList() {
     <Page title="Review: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="리뷰 목록"
+          heading="리뷰 관리"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Reviews', href: PATH_DASHBOARD.review.root },
-            { name: 'List' },
+            { name: '홈', href: PATH_DASHBOARD.root },
+            { name: '리뷰 목록' },
           ]}
         />
         <Card>
