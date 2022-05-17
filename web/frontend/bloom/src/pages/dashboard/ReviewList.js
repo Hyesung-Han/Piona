@@ -38,7 +38,7 @@ import ReviewCompose from '../../sections/@dashboard/review/details/ReviewCompos
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: '이름', align: 'left' },
+  { id: 'nickName', label: '이름', align: 'center' },
   { id: 'price', label: '리뷰', align: 'center' },
   { id: 'sent', label: '답변 여부', align: 'center'},
   { id: 'status', label: '신고 상태', align: 'right' },
