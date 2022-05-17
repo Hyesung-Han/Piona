@@ -21,10 +21,12 @@ import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
+import useAuth from '../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
 export default function EcommerceProductUpdate() {
+  const { user } = useAuth();
   const { themeStretch } = useSettings();
   const navigate = useNavigate();
   
@@ -79,12 +81,8 @@ const onSubmit = async (itemInfo) => {
   fd.append('itemInfoReq.total_quantity', total_quantity);
   
   try {
-    const user = localStorage.getItem('user');
-    const parseUser = JSON.parse(user);
-
-
     const response = await axios.patch(`/api/item`, fd, { headers: {
-        Authorization: parseUser.access_token
+        Authorization: user.access_token
     }});
     const { data } = response;
   } catch (e) {
@@ -121,11 +119,9 @@ const handleDrop = useCallback(
       cancelButtonText: '취소',
     }).then(result => {
         if (result.value) {
-            const user = localStorage.getItem('user');
-            const parseUser = JSON.parse(user);
             axios.delete(`/api/item?item_id=${item_id}`, {
                 headers : {
-                Authorization: parseUser.access_token
+                Authorization: user.access_token
                 }
             })
             .then(result => {

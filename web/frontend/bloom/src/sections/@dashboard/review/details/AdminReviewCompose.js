@@ -2,17 +2,16 @@ import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import Swal from 'sweetalert2';
-import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Input, Portal, Button, Divider, Backdrop, IconButton, Typography, TextField } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Box, Portal, Divider, Backdrop, IconButton, Typography, TextField } from '@mui/material';
 import Image from '../../../../components/Image';
 // utils
 import axios from '../../../../utils/axios';
-import {RHFTextField, FormProvider } from '../../../../components/hook-form';
+import {FormProvider } from '../../../../components/hook-form';
+import useAuth from '../../../../hooks/useAuth';
 // components
 import Iconify from '../../../../components/Iconify';
 
@@ -39,11 +38,6 @@ const RootStyle = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-// const InputStyle = styled(Input)(({ theme }) => ({
-//   padding: theme.spacing(0.5, 3),
-//   borderBottom: `solid 1px ${theme.palette.divider}`,
-// }));
-
 // ----------------------------------------------------------------------
 
 ReviewCompose.propTypes = {
@@ -55,6 +49,7 @@ ReviewCompose.propTypes = {
 };
 
 export default function ReviewCompose({ row, image, isOpenCompose, onCloseCompose, onRedirect }) {
+  const { user } = useAuth();
 
   const { review_id, content, score, comment_review } = row;
   const reviewImg = image;
@@ -79,9 +74,7 @@ export default function ReviewCompose({ row, image, isOpenCompose, onCloseCompos
 
   const onSubmit = async (data) => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
         const response = await axios.post(`/api/review`, 
         {
           "content": data.review_comment,
@@ -89,7 +82,7 @@ export default function ReviewCompose({ row, image, isOpenCompose, onCloseCompos
         },
           {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         });
         if(response.data.result === 'success'){

@@ -131,7 +131,6 @@ function AuthProvider({ children }) {
 
       const accessToken = user.access_token;
       setSession(accessToken);
-      localStorage.setItem("user", JSON.stringify(user));
 
       dispatch({
         type: 'LOGIN',
@@ -158,7 +157,6 @@ function AuthProvider({ children }) {
 
   const logout = async () => {
     setSession(null);
-    localStorage.setItem("user", null);
     dispatch({ type: 'LOGOUT' });
   };
 

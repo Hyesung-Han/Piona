@@ -1,6 +1,4 @@
-import sumBy from 'lodash/sumBy';
 import { useState, useEffect } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -12,12 +10,9 @@ import {
   Table,
   Stack,
   Switch,
-  Button,
-  Tooltip,
   Divider,
   TableBody,
   Container,
-  IconButton,
   TableContainer,
   TablePagination,
   FormControlLabel,
@@ -25,6 +20,7 @@ import {
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 
+import useAuth from '../../hooks/useAuth';
 
 // hooks
 import useTabs from '../../hooks/useTabs';
@@ -36,10 +32,9 @@ import { fDate } from '../../utils/formatTime';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
-import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { TableNoData, TableEmptyRows, TableHeadCustom, TableSelectedActions } from '../../components/table';
+import { TableNoData, TableEmptyRows, TableHeadCustom } from '../../components/table';
 // sections
 import InvoiceAnalytic from '../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../sections/@dashboard/invoice/list';
@@ -61,11 +56,11 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function InvoiceList() {
+  const { user } = useAuth();
+
   const theme = useTheme();
 
   const { themeStretch } = useSettings();
-
-  const navigate = useNavigate();
 
   const {
     dense,
@@ -100,13 +95,10 @@ export default function InvoiceList() {
 
   const getReservationList = async () => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
-        console.log(parseUser);
-        const response = await axios.get(`/api/reservation?shop_number=${parseUser.shop_number}`, {
+        const response = await axios.get(`/api/reservation?shop_number=${user.shop_number}`, {
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         });
         if(response.data.result === 'success'){
@@ -140,15 +132,13 @@ export default function InvoiceList() {
 
   const handleChangeRow = async (id, orderStatus) => {
     try {
-      const user = localStorage.getItem('user');
       if(user != null){
-        const parseUser = JSON.parse(user);
         const response = await axios.patch(`/api/reservation`, {
             reservation_id: id,
             status: orderStatus,
         },{
           headers : {
-            Authorization: parseUser.access_token
+            Authorization: user.access_token
           }
         })
         console.log(response);
