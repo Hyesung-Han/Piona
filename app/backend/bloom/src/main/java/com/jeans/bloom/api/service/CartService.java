@@ -14,4 +14,6 @@ public interface CartService {
     BaseResponseBody addCartItem(CartReq cart) throws Exception;
 
     void deleteCartItem(CartListReq cartId) throws Exception;
+
+    void deleteCart(String user_id) throws Exception;
 }

@@ -21,4 +21,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
      * @des 회원 아이디를 입력받아 회원의 장바구니 리스트를 리턴해주는 메소드
      */
     Optional<List<Cart>> findCartsByUser_UserId(String userId) throws Exception;
+
+
+    List<Cart> findByUser_UserId(String user_id);
 }

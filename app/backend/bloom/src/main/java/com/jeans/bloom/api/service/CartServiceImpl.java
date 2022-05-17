@@ -9,6 +9,7 @@ import com.jeans.bloom.db.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -83,8 +84,20 @@ public class CartServiceImpl implements CartService{
      */
     @Override
     public void deleteCartItem(CartListReq cartId) throws Exception {
-        for(int id : cartId.getCart_list()){
-            cartRepository.deleteById(id);
-        }
+        for(int id : cartId.getCart_list()) cartRepository.deleteById(id);
+    }
+
+    /**
+     * OYT | 2022.05.17
+     * @name deleteCart
+     * @api {delete} /cart/{userId}
+     * @des user id를 받아 장바구니에서 한번에 삭제해주는 메소드
+     */
+    @Override
+    public void deleteCart(String user_id) throws Exception {
+
+        List<Cart> list = cartRepository.findByUser_UserId(user_id);
+        for(Cart cart : list) cartRepository.delete(cart);
+
     }
 }
