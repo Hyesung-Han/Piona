@@ -77,10 +77,12 @@ const CartFooter = ({navigation}, props) => {
       for (let i = 0; i < select_cart_list.length; i++) {
         for (let j = 0; j < cart_list.length; j++) {
           if (select_cart_list[i] === cart_list[j].cart_id) {
+            let tempShopNumber = cart_list[i].shop_number;
             let tempItemId = cart_list[i].item_id;
             let tempQuantity = cart_list[i].quantity;
             let tempReservationDate = cart_list[i].reservation_date;
             let data = {
+              shop_number: tempShopNumber,
               item_id: tempItemId,
               quantity: tempQuantity,
               reservation_date: tempReservationDate,
@@ -250,6 +252,7 @@ const CartFooter = ({navigation}, props) => {
 
   const onClose = () => {
     console.log('closed');
+    deleteCart();
     navigation.navigate('Picnic', {
       status: 'sucess',
     });
