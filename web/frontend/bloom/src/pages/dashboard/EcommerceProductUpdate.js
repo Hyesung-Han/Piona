@@ -184,17 +184,20 @@ const handleDrop = useCallback(
                 }
             })
             .then(result => {
-            console.log(result);
+              Swal.fire({
+                icon: 'success',
+                title: '아이템이 삭제되었습니다',
+              });
+              navigate(PATH_DASHBOARD.items.list);
             })
             .catch(e => {
-            console.log('Item delete error', e);
+              Swal.fire({
+                icon: 'error',
+                title: '아이템이 삭제에 실패했습니다.',
+              });
+            // console.log('Item delete error', e);
             });
         }
-        Swal.fire({
-          icon: 'success',
-          title: '아이템이 삭제되었습니다',
-        });
-        navigate(PATH_DASHBOARD.items.list);
     });
   };
 
@@ -205,15 +208,15 @@ const handleDrop = useCallback(
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Item Update"
+          heading="상품 수정"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: '홈', href: PATH_DASHBOARD.root },
             {
-              name: 'Items',
+              name: '상품 목록',
               href: PATH_DASHBOARD.items.list,
             },
             {
-              name: 'update',
+              name: '수정 및 삭제',
             },
           ]}
         />
