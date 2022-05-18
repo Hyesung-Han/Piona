@@ -6,8 +6,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Portal, Divider, Backdrop, IconButton, Typography, TextField } from '@mui/material';
+import { Box, Portal,  Divider, Backdrop, IconButton, Typography, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import Scrollbar from '../../../../components/Scrollbar';
 import Image from '../../../../components/Image';
 // utils
 import axios from '../../../../utils/axios';
@@ -193,6 +194,7 @@ export default function ReviewCompose({ row, image, isOpenCompose, onCloseCompos
       <Backdrop open sx={{ zIndex: 1998 }} />
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <RootStyle>
+      <Scrollbar>
         <Box
           sx={{
             pl: 3,
@@ -278,6 +280,7 @@ export default function ReviewCompose({ row, image, isOpenCompose, onCloseCompos
         </Box>
         </>
         }
+      </Scrollbar>
       </RootStyle>
       </FormProvider>
     </Portal>

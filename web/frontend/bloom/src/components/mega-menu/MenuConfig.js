@@ -1,5 +1,5 @@
 // _mock_
-import { _megaMenuProducts } from '../../_mock';
+// import { _megaMenuProducts } from '../../_mock';
 // components
 import Iconify from '../Iconify';
 
@@ -24,7 +24,7 @@ const menuConfig = [
     path: '#',
     icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,
     more: { title: 'More Categories', path: '#' },
-    products: _megaMenuProducts,
+    // products: _megaMenuProducts,
     tags: TAGS,
     children: [
       {
@@ -91,7 +91,7 @@ const menuConfig = [
     path: '#',
     icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,
     more: { title: 'More Categories', path: '#' },
-    products: _megaMenuProducts,
+    // products: _megaMenuProducts,
     tags: TAGS,
     children: [
       {

@@ -1,5 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
+
+import useAuth from '../hooks/useAuth';
 // layouts
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
@@ -8,10 +10,9 @@ import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
 // import RoleBasedGuard from '../guards/RoleBasedGuard';
 // config
-import { PATH_AFTER_LOGIN } from '../config';
+import { PATH_AFTER_LOGIN, PATH_AFTER_LOGIN_ADMIN } from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
-
 // ----------------------------------------------------------------------
 
 const Loadable = (Component) => (props) => {
@@ -26,6 +27,10 @@ const Loadable = (Component) => (props) => {
 };
 
 export default function Router() {
+
+  const { user } = useAuth();
+  const AFTER_LOGIN = (user != null && user.user_code === "A" ? PATH_AFTER_LOGIN_ADMIN : PATH_AFTER_LOGIN);
+
   return useRoutes([
     {
       path: 'auth',
@@ -60,8 +65,14 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-        { path: 'app', element: <GeneralApp /> },
+        { element: <Navigate to={AFTER_LOGIN} replace />, index: true },
+        {
+          path: 'reservation',
+          children: [
+            { element: <Navigate to="/dashboard/reservation/list" replace />, index: true },
+            { path: 'list', element: <InvoiceList /> },
+          ],
+        },
         {
           path: 'items',
           children: [
@@ -81,13 +92,7 @@ export default function Router() {
             { path: 'account', element: <UserAccount /> },
           ],
         },
-        {
-          path: 'reservation',
-          children: [
-            { element: <Navigate to="/dashboard/reservation/list" replace />, index: true },
-            { path: 'list', element: <InvoiceList /> },
-          ],
-        },
+
         {
           path: 'review',
           children: [
@@ -122,8 +127,6 @@ export default function Router() {
       children: [
         { path: 'coming-soon', element: <ComingSoon /> },
         { path: 'maintenance', element: <Maintenance /> },
-        { path: 'pricing', element: <Pricing /> },
-        { path: 'payment', element: <Payment /> },
         { path: '500', element: <Page500 /> },
         { path: '404', element: <Page404 /> },
         { path: '403', element: <Page403 /> },
@@ -139,7 +142,7 @@ const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 
 // GENERAL
-const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
+// const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
 
 // ECOMMERCE
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
@@ -166,8 +169,6 @@ const PermissionDenied = Loadable(lazy(() => import('../pages/dashboard/Permissi
 // MAIN
 const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
-const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
-const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const Page403 = Loadable(lazy(() => import('../pages/Page403')));
 const Page404 = Loadable(lazy(() => import('../pages/Page404')));
