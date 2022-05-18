@@ -41,8 +41,9 @@ public class SaleServiceImpl implements SaleService {
                 objects -> new SaleRes((String) objects[0],
                         (Integer) objects[1],
                         ((BigDecimal) objects[2]).intValue(),
-                        ((BigDecimal) objects[3]).intValue(),
-                        (String) objects[4])).collect(Collectors.toList());
+//                        ((BigDecimal) objects[4]).intValue(),
+                        ((Integer) objects[4]),
+                        (String) objects[5])).collect(Collectors.toList());
         return saleResList;
     }
 
