@@ -70,6 +70,35 @@ const CartFooter = ({navigation}, props) => {
     }
   }, [select_cart_list, user_accessToken, dispatch]);
 
+  const deleteCartAfterPay = useCallback(async () => {
+    try {
+      const response = await cartAPI.deleteCart(
+        select_cart_list,
+        user_accessToken,
+      );
+      console.log(response.data);
+      if (response.data.result === 'success') {
+        dispatch(cartSlice.actions.deleteCart(select_cart_list));
+        dispatch(
+          cartSlice.actions.initCart({
+            select_cart_list: [],
+            total_price: 0,
+          }),
+        );
+        dispatch(
+          cartSlice.actions.setCart({
+            id: '',
+            quantity: '',
+            price: '',
+            total_price: 0,
+          }),
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [select_cart_list, user_accessToken, dispatch]);
+
   console.log('tempArray : ' + itemName);
 
   //let tempArray = [];
@@ -274,7 +303,7 @@ const CartFooter = ({navigation}, props) => {
 
   const onClose = () => {
     console.log('closed');
-    deleteCart();
+    deleteCartAfterPay();
     navigation.navigate('Picnic', {
       status: 'sucess',
     });
