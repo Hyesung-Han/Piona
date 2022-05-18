@@ -267,6 +267,7 @@ const CartFooter = ({navigation}, props) => {
 
   const onClose = () => {
     console.log('closed');
+    deleteCart();
     navigation.navigate('Picnic', {
       status: 'sucess',
     });
