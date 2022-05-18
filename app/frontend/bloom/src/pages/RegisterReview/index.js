@@ -230,13 +230,16 @@ const RegisterReview = ({navigation, route}) => {
             color: 'black',
             fontWeight: 'bold',
             fontSize: 18,
-          }}>
+            width: 160,
+          }}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {route.params.shop_name}
         </Text>
         <Text
           style={{
             color: 'black',
-            fontSize: 18,
+            fontSize: 17,
           }}>
           의 서비스에 만족하셨나요?
         </Text>
