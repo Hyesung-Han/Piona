@@ -161,7 +161,11 @@ const CartFooter = ({navigation}, props) => {
         console.log('성공');
         dispatch(cartSlice.actions.deleteCart(select_cart_list));
         dispatch(
-          cartSlice.actions.initCart({select_cart_list: [], total_price: 0}),
+          cartSlice.actions.initCart({
+            select_cart_list: [],
+            total_price: 0,
+            reservation_list: [],
+          }),
         );
         dispatch(
           cartSlice.actions.setCart({

@@ -67,6 +67,7 @@ const cartSlice = createSlice({
     initCart(state, action) {
       state.select_cart_list = action.payload.select_cart_list;
       state.total_price = action.payload.total_price;
+      state.reservation_list = action.payload.reservation_list;
     },
   },
   extraReducers: builder => {},
