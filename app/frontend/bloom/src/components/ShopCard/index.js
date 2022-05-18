@@ -67,9 +67,10 @@ const ShopCard = ({item, heartStatus, navigation}) => {
       shopSlice.actions.setShop({
         number: shop_number,
         name: shop_name,
+        score: shop_score,
       }),
     );
-  }, [shop_number, shop_name, dispatch]);
+  }, [shop_number, shop_name, shop_score, dispatch]);
 
   return (
     <View style={styles.CardList}>
