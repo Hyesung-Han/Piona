@@ -59,7 +59,7 @@ const cartSlice = createSlice({
       state.select_cart_list = result;
     },
     addReservationList(state, action) {
-      state.reservation_list = action.payload;
+      state.reservation_list.push(action.payload);
     },
     setItemName(state, action) {
       state.item_name = action.payload.item_name;

@@ -104,38 +104,43 @@ const CartFooter = ({navigation}, props) => {
   //let tempArray = [];
   let temp = [];
   const sameShop = useCallback(async () => {
-    // let tempPrice = 0;
-    if (select_cart_list.length === 0) {
-      Alert.alert('알림', '상품을 선택해주세요');
-    } else {
-      //선택한 카트 정보를 tempArray에 담기
-      for (let i = 0; i < select_cart_list.length; i++) {
-        for (let j = 0; j < cart_list.length; j++) {
-          if (select_cart_list[i] === cart_list[j].cart_id) {
-            let tempShopNumber = cart_list[i].shop_number;
-            let tempItemId = cart_list[i].item_id;
-            let tempQuantity = cart_list[i].quantity;
-            let tempReservationDate = cart_list[i].reservation_date;
-            let data = {
-              shop_number: tempShopNumber,
-              item_id: tempItemId,
-              quantity: tempQuantity,
-              reservation_date: tempReservationDate,
-            };
-            temp.push(data);
-            //tempArray.push(cart_list[j]);
+    try {
+      
+      // let tempPrice = 0;
+      if (select_cart_list.length === 0) {
+        Alert.alert('알림', '상품을 선택해주세요');
+      } else {
+        //선택한 카트 정보를 tempArray에 담기
+        for (let i = 0; i < select_cart_list.length; i++) {
+          for (let j = 0; j < cart_list.length; j++) {
+            if (select_cart_list[i] === cart_list[j].cart_id) {
+              let tempShopNumber = cart_list[i].shop_number;
+              let tempItemId = cart_list[i].item_id;
+              let tempQuantity = cart_list[i].quantity;
+              let tempReservationDate = cart_list[i].reservation_date;
+              let data = {
+                shop_number: tempShopNumber,
+                item_id: tempItemId,
+                quantity: tempQuantity,
+                reservation_date: tempReservationDate,
+              };
+              dispatch(cartSlice.actions.addReservationList(data));
+              //temp.push(data);
+              //tempArray.push(cart_list[j]);
+            }
           }
         }
+        //setTempArray([temp]);
+        // navigation.navigate('PaymentTest', {
+        //   shop_number: tempArray[0].shop_number,
+        //   tempArray: tempArray,
+        //   totalPrice: totalPrice,
+        // });
+        //dispatch(cartSlice.actions.setItemName(temp));
+        onPress();
       }
-      //setTempArray([temp]);
-      // navigation.navigate('PaymentTest', {
-      //   shop_number: tempArray[0].shop_number,
-      //   tempArray: tempArray,
-      //   totalPrice: totalPrice,
-      // });
-      //dispatch(cartSlice.actions.setItemName(temp));
-      dispatch(cartSlice.actions.addReservationList(temp));
-      onPress();
+    } catch (error) {
+      console.log(error);
     }
   }, [cart_list, select_cart_list, dispatch, register]);
 
