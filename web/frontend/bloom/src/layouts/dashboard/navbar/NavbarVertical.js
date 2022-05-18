@@ -14,6 +14,7 @@ import cssStyles from '../../../utils/cssStyles';
 import { NAVBAR } from '../../../config';
 // components
 import Logo from '../../../components/Logo';
+import Image from '../../../components/Image';
 import Scrollbar from '../../../components/Scrollbar';
 import { NavSectionVertical } from '../../../components/nav-section';
 //
