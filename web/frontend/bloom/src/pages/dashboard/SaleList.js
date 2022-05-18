@@ -199,18 +199,18 @@ function applyGroupFilter(arr){
     if (index === 0) {
       nList.push({
         date: item.reservation_date,
-        price: (item.quantity * item.price),
+        price: item.price,
         data: [item],
       });
     } else {
       const oItem = arr[index - 1];
       if (item.reservation_date === oItem.reservation_date) {
         nList[_nkey].data.push(item);
-        nList[_nkey].price += (item.quantity * item.price);
+        nList[_nkey].price += item.price;
       } else {
           nList.push({
             date: item.reservation_date,
-            price: (item.quantity * item.price),
+            price: item.price,
             data: [item],
           });
           _nkey += 1;
