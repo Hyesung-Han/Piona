@@ -23,6 +23,7 @@ const initialState = {
   name: '',
   wish_list: '',
   search_list: '',
+  score: 0,
 };
 
 const shopSlice = createSlice({
@@ -32,6 +33,7 @@ const shopSlice = createSlice({
     setShop(state, action) {
       state.number = action.payload.number;
       state.name = action.payload.name;
+      state.score = action.payload.score;
     },
 
     addWishList(state, action) {

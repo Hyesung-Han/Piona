@@ -23,6 +23,7 @@ const ShopHomePage = ({navigation, route}) => {
   //그 뒤에 오는 shopNumber는 slice에 저장된 변경하고자 하는 변수
   const shopNumber = useSelector(state => state.shop.number);
   const shopName = useSelector(state => state.shop.name);
+  const shopScore = useSelector(state => state.shop.score);
   const token = useSelector(state => state.user.accessToken);
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
   const [center, setCenter] = useState({
@@ -31,6 +32,7 @@ const ShopHomePage = ({navigation, route}) => {
     latitude: 0.0,
     longitude: 0.0,
   });
+
   const getShopDetailInfo = useCallback(async () => {
     try {
       const res = await shopDetailAPI.getShopDetail(shopNumber, token);
@@ -92,7 +94,7 @@ const ShopHomePage = ({navigation, route}) => {
           <View style={styles.reviewBox}>
             <View style={styles.starIcons}>{startScore()}</View>
 
-            <Text style={{marginHorizontal: 5}}>{data.score}/5</Text>
+            <Text style={{marginHorizontal: 5}}>{shopScore}/5</Text>
             <Text style={{marginHorizontal: 5}}>
               방문자리뷰 {data.review_cnt}
             </Text>
