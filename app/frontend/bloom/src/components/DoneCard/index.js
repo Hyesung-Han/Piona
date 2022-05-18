@@ -1,16 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Button,
-  TouchableOpacity,
-  Modal,
-  navigation,
-  AppRegistry,
-} from 'react-native';
-import RegisterReview from '../../pages/RegisterReview';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import shopSlice from '../../redux/slices/shop';
 import {useDispatch} from 'react-redux';
@@ -27,10 +16,7 @@ import {useDispatch} from 'react-redux';
 
 const DoneCardList = ({item, navigation}) => {
   const dispatch = useDispatch();
-  const [registerReviewModal, setReviewModal] = useState(false);
-  const user_id = useSelector(state => state.id);
-  //const status = item.writeReview;
-  //console.log(item);
+
   const registerButton = () => {
     const result = [];
     if (item.writeReview === 'Y') {
@@ -50,7 +36,6 @@ const DoneCardList = ({item, navigation}) => {
           onPress={() =>
             navigation.navigate('RegisterReview', {
               reservationId: `${item.reservation_id}`,
-              //user_id: user_id,
               reservation_id: item.reservation_id,
               shop_name: item.shop_name,
             })
@@ -93,7 +78,12 @@ const DoneCardList = ({item, navigation}) => {
                   </View>
                 </View>
                 <View>
-                  <Text style={styles.itemDesc}>{item.description}</Text>
+                  <Text
+                    style={styles.itemDesc}
+                    numberOfLines={3}
+                    ellipsizeMode="tail">
+                    {item.detail[0].item_name} 외 {item.detail.length} 건
+                  </Text>
                 </View>
                 <View style={styles.buttonContainer}>{registerButton()}</View>
                 <View style={{width: '60%'}}></View>
