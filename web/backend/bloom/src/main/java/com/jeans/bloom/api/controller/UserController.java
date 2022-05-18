@@ -15,6 +15,7 @@ import com.jeans.bloom.db.entity.CertificationNum;
 import com.jeans.bloom.db.entity.Shop;
 import com.jeans.bloom.db.entity.User;
 import com.jeans.bloom.db.entity.type.StatusType;
+import com.jeans.bloom.db.entity.type.UserCode;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -81,7 +82,7 @@ public class UserController {
 
         try{
             User userLoginPostRes = userService.login(userLogin);
-            if(userLoginPostRes != null && userLoginPostRes.getShop() != null)
+            if(userLoginPostRes != null && userLoginPostRes.getUserCode() != UserCode.M)
                 return ResponseEntity.status(201).body(BaseResponseBody.of("success", UserRes.of(userLoginPostRes)));
 
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", "정보가 올바르지 않습니다."));
@@ -104,6 +105,28 @@ public class UserController {
         try{
             User userIdGetRes = userService.findUserByUserId(userId);
             if(userIdGetRes == null)
+                return ResponseEntity.status(200).body(BaseResponseBody.of("success", true));
+
+            return ResponseEntity.status(200).body(BaseResponseBody.of("success", false));
+        }catch (Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
+        }
+    }
+
+    /**
+     * OYT | 2022.05.16
+     * @name shopcheck
+     * @api {get} /user/shopcheck?shopNumber=shop_number
+     * @des 사업자 번호를 입력 받아 중복 체크
+     */
+    @GetMapping("/shopcheck")
+    @ApiOperation(value = "사업자번호 중복검사", notes = "사업자번호 중복검사")
+    public ResponseEntity<BaseResponseBody> shopcheck(
+            @RequestParam @ApiParam(value="사업자번호", required = true) String shopNumber) {
+
+        try{
+            Shop shopInfoGetRes = userService.findShopByShopNumber(shopNumber);
+            if(shopInfoGetRes == null)
                 return ResponseEntity.status(200).body(BaseResponseBody.of("success", true));
 
             return ResponseEntity.status(200).body(BaseResponseBody.of("success", false));
