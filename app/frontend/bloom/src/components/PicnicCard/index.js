@@ -116,7 +116,12 @@ const PicnicCardList = ({item}) => {
           />
           <View style={styles.rowSeperateContainer}>
             <View style={{width: '75%'}}>
-              <Text style={styles.carouselItemName}>{item.item_name}</Text>
+              <Text
+                style={styles.carouselItemName}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {item.item_name}
+              </Text>
             </View>
             <View style={{width: '25%'}}>
               <Text style={styles.carouselQuantity}> {item.quantity}개</Text>
