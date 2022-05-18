@@ -10,6 +10,7 @@ import {
   Alert,
   Modal,
   Pressable,
+  ScrollView,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {MenuDetailAPI} from '../../utils/Axios';
@@ -131,7 +132,10 @@ const MenuDetailPage = ({navigation, route}) => {
           {data.item_name}
         </Text>
         <Text style={{color: '#FF0000', fontSize: 15}}>{data.price} 원</Text>
+        <ScrollView>
+
         <Text style={{color: 'black', fontSize: 15}}>{data.description}</Text>
+        </ScrollView>
       </View>
       <View style={styles.menuQuantity}>
         <Text style={{fontSize: 14, fontWeight: 'bold', color: 'black'}}>
