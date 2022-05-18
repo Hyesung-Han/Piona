@@ -64,7 +64,7 @@ export default function InvoiceTableRow({ row, selected, onChangeRow }) {
       <TableCell align="center">{detail.length}</TableCell>
 
       <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
-        {total_price}
+        {total_price.toLocaleString()}
       </TableCell>
 
       <TableCell align="right">
@@ -151,9 +151,9 @@ export default function InvoiceTableRow({ row, selected, onChangeRow }) {
                       {row.name}
                     </TableCell>
                     <TableCell>{row.total_quantity}</TableCell>
-                    <TableCell align="right">{row.price}</TableCell>
+                    <TableCell align="right">{row.price.toLocaleString()}</TableCell>
                     <TableCell align="right">
-                      {row.total_quantity * row.price}
+                      {(row.total_quantity * row.price).toLocaleString()}
                     </TableCell>
                   </TableRow>
                 ))}
