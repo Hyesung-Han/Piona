@@ -27,8 +27,8 @@ const MapPage = ({navigation, route}) => {
   const [center, setCenter] = useState({
     zoom: 12,
     tilt: 1,
-    latitude: 0.0,
-    longitude: 0.0,
+    latitude: 37.4995,
+    longitude: 127.0459,
   });
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
   const [appear, setAppear] = useState(false);
