@@ -341,23 +341,19 @@ const styles = StyleSheet.create({
     height: '10%',
   },
   searchBtn2: {
-    position: 'absolute',
-    right: 15,
-    top: -20,
+    marginRight: 15,
     width: '10%',
     height: '20%',
   },
   shopCard: {
-    position: 'absolute',
-    bottom: -30,
     width: '100%',
-    height: '100%',
   },
   openshopCard: {
     flexDirection: 'column',
     position: 'absolute',
+    alignItems: 'flex-end',
     bottom: 0,
-    height: '40%',
+    height: '42%',
     width: '100%',
   },
   relocation: {
