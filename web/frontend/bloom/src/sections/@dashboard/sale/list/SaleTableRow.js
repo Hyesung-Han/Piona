@@ -34,13 +34,13 @@ export default function SaleTableRow({ row, selected}) {
         </Typography>
       </TableCell> : ""}
       <TableCell align="center">{rows.item_name}</TableCell>
-      <TableCell align="center">{rows.price}</TableCell>
+      <TableCell align="center">{(rows.price/rows.quantity).toLocaleString()}</TableCell>
 
       <TableCell align="center">{rows.quantity}</TableCell>
-      <TableCell align="center">{rows.quantity * rows.price}</TableCell>
+      <TableCell align="center">{rows.price.toLocaleString()}</TableCell>
       
       { index === 0 ? 
-      <TableCell rowSpan={data.length} align="center" sx={{borderLeft: '1px solid #C4CDD5'}}>{price}</TableCell>:""}
+      <TableCell rowSpan={data.length} align="center" sx={{borderLeft: '1px solid #C4CDD5'}}>{price.toLocaleString()}</TableCell>:""}
     </TableRow>
     ))}
     </>

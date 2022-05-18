@@ -32,7 +32,8 @@ export const AUTH0_API = {
 export const MAPBOX_API = process.env.REACT_APP_MAPBOX_API;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
-export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.app; // as '/dashboard/app'
+export const PATH_AFTER_LOGIN = PATH_DASHBOARD.reservation.list; // as '/dashboard/app'
+export const PATH_AFTER_LOGIN_ADMIN = PATH_DASHBOARD.admin.user; // as '/dashboard/app'
 
 // LAYOUT
 // ----------------------------------------------------------------------
