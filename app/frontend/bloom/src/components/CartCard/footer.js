@@ -49,12 +49,15 @@ const CartFooter = ({navigation}, props) => {
       if (response.data.result === 'success') {
         Alert.alert('알림', '삭제되었습니다!');
         dispatch(cartSlice.actions.deleteCart(select_cart_list));
-        dispatch(cartSlice.actions.initCart([]));
+        dispatch(
+          cartSlice.actions.initCart({select_cart_list: [], total_price: 0}),
+        );
         dispatch(
           cartSlice.actions.setCart({
             id: '',
             quantity: '',
             price: '',
+            total_price: 0,
           }),
         );
       }
@@ -77,10 +80,12 @@ const CartFooter = ({navigation}, props) => {
       for (let i = 0; i < select_cart_list.length; i++) {
         for (let j = 0; j < cart_list.length; j++) {
           if (select_cart_list[i] === cart_list[j].cart_id) {
+            let tempShopNumber = cart_list[i].shop_number;
             let tempItemId = cart_list[i].item_id;
             let tempQuantity = cart_list[i].quantity;
             let tempReservationDate = cart_list[i].reservation_date;
             let data = {
+              shop_number: tempShopNumber,
               item_id: tempItemId,
               quantity: tempQuantity,
               reservation_date: tempReservationDate,
@@ -100,7 +105,7 @@ const CartFooter = ({navigation}, props) => {
       dispatch(cartSlice.actions.addReservationList(temp));
       onPress();
     }
-  }, [cart_list, select_cart_list, dispatch]);
+  }, [cart_list, select_cart_list, dispatch, register]);
 
   const payment = useCallback(async () => {
     try {
@@ -154,6 +159,18 @@ const CartFooter = ({navigation}, props) => {
       );
       if (response.data.result === 'success') {
         console.log('성공');
+        dispatch(cartSlice.actions.deleteCart(select_cart_list));
+        dispatch(
+          cartSlice.actions.initCart({select_cart_list: [], total_price: 0}),
+        );
+        dispatch(
+          cartSlice.actions.setCart({
+            id: '',
+            quantity: '',
+            price: '',
+            total_price: 0,
+          }),
+        );
       }
     } catch (error) {
       Alert.alert('알림', '삭제할 아이템을 선택해주세요!');
