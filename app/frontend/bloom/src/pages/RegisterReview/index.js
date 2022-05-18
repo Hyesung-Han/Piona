@@ -225,24 +225,25 @@ const RegisterReview = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text
-          style={{
-            color: 'black',
-            fontWeight: 'bold',
-            fontSize: 18,
-            width: 160,
-          }}
-          numberOfLines={1}
-          ellipsizeMode="tail">
-          {route.params.shop_name}
-        </Text>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 17,
-          }}>
-          의 서비스에 만족하셨나요?
-        </Text>
+        <View>
+          <Text
+            style={{
+              color: 'black',
+              fontWeight: 'bold',
+              fontSize: 18,
+            }}>
+            {route.params.shop_name}
+          </Text>
+        </View>
+        <View>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 17,
+            }}>
+            서비스에 만족하셨나요?
+          </Text>
+        </View>
       </View>
       <View
         style={{
@@ -421,7 +422,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginVertical: 30,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
   },
   imageView: {
