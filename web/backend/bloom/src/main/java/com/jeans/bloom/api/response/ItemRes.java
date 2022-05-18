@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 /**
  * HHS | 2022.05.06
  * @name ItemRes
@@ -26,6 +28,7 @@ public class ItemRes {
     int total_quantity;
     String description;
     String image_url;
+    LocalDateTime reservation_date;
 
     public static ItemRes of(Item item){
         return ItemRes.builder()
@@ -50,6 +53,7 @@ public class ItemRes {
                 .name(reservationDetail.getItem().getName())
                 .total_quantity(reservationDetail.getQuantity())
                 .price(reservationDetail.getItem().getPrice())
+                .reservation_date(reservationDetail.getReservationDate())
                 .build();
     }
 }

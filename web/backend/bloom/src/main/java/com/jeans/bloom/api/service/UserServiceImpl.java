@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
             User user = this.findUserByUserId(userId);
 
             // 탈퇴한 회원 로그인 x
-            if(!user.getIsDel().equals(StatusType.N)){
+            if(user == null || !user.getIsDel().equals(StatusType.N)){
                 return null;
             }
 

@@ -2,6 +2,7 @@ package com.jeans.bloom.api.response;
 
 import com.jeans.bloom.db.entity.Item;
 import com.jeans.bloom.db.entity.Reservation;
+import com.jeans.bloom.db.entity.type.OrderStatus;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class ReservationRes {
     int total_price;
     LocalDateTime order_date;
     List<ItemRes> detail;
+    OrderStatus status;
 
     public static ReservationRes of(Reservation reservation){
         return ReservationRes.builder()
@@ -31,6 +33,7 @@ public class ReservationRes {
                 .phone(reservation.getUser().getPhone())
                 .total_price(reservation.getTotalPrice())
                 .order_date(reservation.getOrderDate())
+                .status(reservation.getStatus())
                 .detail(reservation.getReservationDetails().stream().map(detail -> ItemRes.of(detail)).collect(Collectors.toList()))
                 .build();
     }
