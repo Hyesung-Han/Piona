@@ -1,12 +1,10 @@
-import React, {useEffect, useFocusEffect, useCallback, useState} from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import {
   View,
   StyleSheet,
   Text,
   Image,
-  Button,
   TouchableOpacity,
-  navigation,
   Alert,
 } from 'react-native';
 import {useSelector} from 'react-redux';
@@ -14,18 +12,13 @@ import Carousel from 'react-native-snap-carousel';
 import {cancelReservation} from '../../utils/Axios';
 
 /**
- * LHJ,CSW | 2022.05.13
+ * LHJ, CSW | 2022.05.19
  * @name PicnicCard
  * @api cancelReservation
  * @des
- * 페이지 기능 :
- * Picnic Page의 진행중인 예약 FlatList에 보여줄 item 컴포넌트이다.
- * 상태가 준비 중일때 예약 취소가 가능함 > cancelReservation을 통해서 상태 변경
  */
 
 const PicnicCardList = ({item}) => {
-  //carousel에서 사용하는 인덱스
-  const activeIndex = 0;
   const status = item.status;
   const reservation_id = item.reservation_id;
   const token = useSelector(state => state.user.accessToken);
@@ -35,18 +28,11 @@ const PicnicCardList = ({item}) => {
 
   useEffect(() => {
     setStatus();
-    console.log('컴포넌트가 화면에 나타남');
   }, []);
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     cancelReservationAPI();
-  //   }, [cancelReservationAPI]),
-  // );
 
   const setStatus = () => {
     if (status === 'R') {
-      setStatusText('예약 취소'); //준비 중일때 예약 취소가 가능하니까
+      setStatusText('예약 취소');
       setStatusColor('#DE3C4C');
     }
     if (status === 'U') {
@@ -70,10 +56,8 @@ const PicnicCardList = ({item}) => {
   const cancelReservationAPI = useCallback(async () => {
     try {
       const response = await cancelReservation(reservation_id, token);
-      //취소되었으니 텍스트랑 색상 바꿈
       setStatusText('취소됨');
       setStatusColor('#DE3C4C');
-      console.log(response);
     } catch (error) {
       console.log('예약 취소 실패', error);
     }
@@ -81,9 +65,6 @@ const PicnicCardList = ({item}) => {
 
   const buttonEvent = () => {
     if (status === 'R') {
-      //Alert.alert('예약취소를 진행합니다.');
-      //결제 취소 진행
-      //취소가 다 되면 cancelReservationAPI호출
       cancelReservationAPI();
     }
     if (status === 'U') {
@@ -107,7 +88,7 @@ const PicnicCardList = ({item}) => {
           <Image
             source={{uri: `${item.image_url}`}}
             style={{
-              resizeMode: 'cover', //contain:사진의 비율 유지, cover:사진을 영역에 맞춤
+              resizeMode: 'cover',
               borderRadius: 5,
               height: 130,
               padding: 10,
@@ -158,11 +139,7 @@ const PicnicCardList = ({item}) => {
                   backgroundColor: {statusColor},
                   fontWeight: 'bold',
                   fontSize: 11,
-                }}
-                //   onPress={() =>
-                //     navigation.navigate('Map', {navigation: `${navigation}`})
-                //   }
-              >
+                }}>
                 {statusText}
               </Text>
             </View>
@@ -171,16 +148,11 @@ const PicnicCardList = ({item}) => {
         <View
           style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
           <Carousel
-            layout={'default'} //'default'(일렬로 나열)), 'stack(모르겠다)' and 'tinder'(한장만 보이지만 동그랗게 전환)
+            layout={'default'}
             data={item.detail}
             sliderWidth={100}
             itemWidth={150}
             renderItem={renderItem}
-            //자동으로 왼쪽으로 가게
-            //autoplay={'true'}
-            //무한 루프
-            //loop={'true'}
-            //caoursel을 왼쪽으로 붙임
             activeSlideAlignment="start"
           />
         </View>

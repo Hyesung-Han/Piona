@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /**
- * LDJ, LHJ, CSW | 2022.05.12
+ * LDJ, LHJ, CSW | 2022.05.19
  * @name utils/Axios
  * @api 모든 API 만드는 곳
  * @des
@@ -233,12 +233,7 @@ export const cartAPI = {
   },
 };
 
-/**
- * LHJ | 2022.05.06
- * 나의 예약현황 보기
- * user_id와 accessToken을 필요로 한다.
- * response를 받고 result를 뺀 data부분만 return한다.
- */
+// LHJ | 예약(피크닉)에 관한 API | [나의 예약현황 조회]
 export const getMyReservationList = async (user_id, accessToken) => {
   return await request
     .get(`/picnic?userId=${user_id}`, {
@@ -246,22 +241,15 @@ export const getMyReservationList = async (user_id, accessToken) => {
         Authorization: accessToken,
       },
     })
-    //.get(`/picnic?userId=${user_id}`)
     .then(response => {
-      //response의 result는 제외한 data(배열)만을 반환
       return response.data;
     })
     .catch(error => {
-      //api 반환 실패시 상태 반환
       return error.response.status;
     });
 };
-/**
- * LHJ | 2022.05.06
- * 가게 상세 정보 조회
- * shop_number와 accessToken을 필요로 한다.
- * response를 받고 result를 뺀 data부분만 return한다.
- */
+
+// LHJ | 가게에 관한 API | [가게 상세정보 조회, 가게 상품 리스트 조회, 가게 리뷰 리스트 조회]
 export const shopDetailAPI = {
   getShopDetail: async (shop_number, accessToken) => {
     return await request
@@ -271,11 +259,9 @@ export const shopDetailAPI = {
         },
       })
       .then(response => {
-        //response의 result는 제외한 data(배열)만을 반환
         return response.data;
       })
       .catch(error => {
-        //api 반환 실패시 상태 반환
         return error.response.status;
       });
   },
@@ -288,17 +274,13 @@ export const shopDetailAPI = {
         },
       })
       .then(response => {
-        //response의 result는 제외한 data(배열)만을 반환
         return response.data;
       })
       .catch(error => {
-        //api 반환 실패시 상태 반환
         return error.response.status;
       });
   },
 
-  // LHJ | 2022.05.09
-  // shop_number에 해당하는 shop의 리뷰 리스트 가져오는 api
   getReviewList: async (shop_number, accessToken) => {
     return await request
       .get(`/review?shopNumber=${shop_number}`, {
@@ -307,18 +289,15 @@ export const shopDetailAPI = {
         },
       })
       .then(response => {
-        //response의 result는 제외한 data(배열)만을 반환
         return response.data;
       })
       .catch(error => {
-        //api 반환 실패시 상태 반환
         return error.response.status;
       });
   },
 };
 
-//LHJ | 2022.05.09
-// 리뷰 등록 api
+// LHJ | 리뷰 등록에 관한 API | [리뷰 등록]
 export const RegisterReviewApi = async (formData, accessToken) => {
   return await request
     .post('/review', formData, {
@@ -335,9 +314,7 @@ export const RegisterReviewApi = async (formData, accessToken) => {
     });
 };
 
-// LHJ | 2022.05.11
-// reservation_id를 넘겨 예약 상태를 C(취소)로 바꾼다
-// 현재 상태가 R인 상태에서만 이 API를 호출해야한다.
+// LHJ | 예약 취소에 관한 API | [예약 취소]
 export const cancelReservation = async (reservation_id, accessToken) => {
   return await request
     .patch(
@@ -357,9 +334,7 @@ export const cancelReservation = async (reservation_id, accessToken) => {
     });
 };
 
-// LHJ | 2022.05.11
-// item_id와 quantity를 통해서 현재 날짜 기준으로 2주까지 예약 불가능한 날짜 전달 받는 API
-// MenuDetail에서 달력을 표시할 때 사용
+// LHJ | 장바구니 담기에 관한 API | [예약 불가능 날짜 조회]
 export const getNotResList = async (item_id, quantity, accessToken) => {
   return await request
     .get(`/shop/reservation?item_id=${item_id}&quantity=${quantity}`, {
@@ -368,17 +343,14 @@ export const getNotResList = async (item_id, quantity, accessToken) => {
       },
     })
     .then(response => {
-      //response의 result는 제외한 data(배열)만을 반환
       return response;
     })
     .catch(error => {
-      //api 반환 실패시 상태 반환
       return error.response.status;
     });
 };
 
-//LHJ | 2022.05.13
-// 예약 등록 api
+// LHJ | 예약 등록에 관한 API | [예약 등록]
 export const RegisterReservation = async (
   reservationDetailList,
   shop_number,
@@ -404,7 +376,7 @@ export const RegisterReservation = async (
     });
 };
 
-// CSW | 카트를 비워주기 위한 API
+// CSW | 카트에 관한 API | [같은 날짜가 아닐 때 or 같은 가게가 아닐 때! -> 장바구니에 담으면 장바구니 비움]
 export const EmptyCart = async (user_id, accessToken) => {
   return await request
     .delete(`/cart/${user_id}`, {
@@ -472,7 +444,7 @@ export const WishListAPI = {
   },
 };
 
-// CSW | 알람에 관한 API | [목록조회, 읽음으로 갱신 ]
+// CSW | 알람에 관한 API | [목록조회, 읽음갱신]
 export const alarmAPI = {
   get: async (user_id, accessToken) => {
     return await request
@@ -509,7 +481,7 @@ export const alarmAPI = {
   },
 };
 
-//CSW, LDJ | SearchResult Page와 MapPage 위한 API
+//CSW, LDJ | 검색(Search)관련 API | [검색(검색/키워드), 지도 기반 검색]
 export const searchAPI = {
   get: async (type, user_id, user_lat, user_lng, word, accessToken) => {
     return await request
@@ -547,7 +519,7 @@ export const searchAPI = {
   },
 };
 
-// CSW | MenuDetail 페이지를 위한 API
+// CSW | MenuDetail API | [메뉴상세정보 조회]
 export const MenuDetailAPI = {
   get: async (itemId, accessToken) => {
     return await request

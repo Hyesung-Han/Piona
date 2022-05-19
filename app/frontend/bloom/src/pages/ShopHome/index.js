@@ -7,22 +7,17 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import NaverMapView, {Marker} from 'react-native-nmap';
 
 /**
- * LHJ, CSW | 2022.05.13
+ * LHJ, CSW | 2022.05.19
  * @name shopHome
  * @api shopDetailAPI/getShopDetail
  * @des
  * 1. 컴포넌트 설명:
  * 2. 해당 페이지 설명 : 리덕스에 저장된 shopNumber를 뽑아와서 api(shopDetailAPI/getShopDetail)를 호출한다.
- * 해당 페이지(shopHome)에서는 가게 상세 정보 api를 호출한다.
  */
 
-const ShopHomePage = ({navigation, route}) => {
+const ShopHomePage = () => {
   const [data, setData] = useState([]);
-  // const [modalVisible, setModalVisible] = useState(true);
-  //state 뒤에 오는 shop은 reducer에 설정된 이름
-  //그 뒤에 오는 shopNumber는 slice에 저장된 변경하고자 하는 변수
   const shopNumber = useSelector(state => state.shop.number);
-  const shopName = useSelector(state => state.shop.name);
   const shopScore = useSelector(state => state.shop.score);
   const token = useSelector(state => state.user.accessToken);
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
