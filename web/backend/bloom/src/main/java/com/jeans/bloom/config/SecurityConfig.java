@@ -65,8 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**",
                         "/configuration/security",
                         "/swagger-ui/**",
-                        "/webjars/**",
-                        "/**"); }
+                        "/webjars/**"); }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -77,13 +76,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests()
-                .antMatchers("/user/signin",
-                        "/user/signup",
+                .antMatchers("/user/signIn",
+                        "/user/signUp",
                         "/user/idcheck",
                         "/user/nickCheck",
                         "/user/phoneRequest",
-                        "/user/phoneCheck").permitAll()     //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                        "/user/phoneCheck",
+                        "/user/shopcheck").permitAll()     //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                 .anyRequest().authenticated()
+//                .anyRequest().permitAll()
                 .and().cors();
     }
 }
