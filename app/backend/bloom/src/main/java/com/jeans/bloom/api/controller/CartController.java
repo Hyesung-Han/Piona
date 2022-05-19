@@ -1,5 +1,6 @@
 package com.jeans.bloom.api.controller;
 
+import com.jeans.bloom.api.request.CartListReq;
 import com.jeans.bloom.api.request.CartReq;
 import com.jeans.bloom.api.response.CartRes;
 import com.jeans.bloom.api.service.CartService;
@@ -55,8 +56,8 @@ public class CartController {
     public ResponseEntity<BaseResponseBody> addCartItem(
             @RequestBody @ApiParam(value="아이디", required = true) CartReq cartItem) {
         try{
-            cartService.addCartItem(cartItem);
-            return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+            BaseResponseBody result = cartService.addCartItem(cartItem);
+            return ResponseEntity.status(200).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
         }
@@ -68,12 +69,31 @@ public class CartController {
      * @api {delete} /cart
      * @des cart id를 받아 장바구니에서 삭제해주는 메소드
      */
-    @DeleteMapping
+    @DeleteMapping()
     @ApiOperation(value = "장바구니 아이템 삭제", notes = "cart id를 입력받아 장바구니에서 삭제한다")
     public ResponseEntity<BaseResponseBody> deleteCartItem(
-            @RequestBody @ApiParam(value="카트id", required = true) int cartId) {
+            @RequestBody @ApiParam(value="카트id", required = true) CartListReq cart_list) {
         try{
-            cartService.deleteCartItem(cartId);
+            cartService.deleteCartItem(cart_list);
+            return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
+        }
+    }
+
+
+    /**
+     * OYT | 2022.05.17
+     * @name deleteCart
+     * @api {delete} /cart/{userId}
+     * @des user id를 받아 장바구니에서 한번에 삭제해주는 메소드
+     */
+    @DeleteMapping("/{user_id}")
+    @ApiOperation(value = "카트 삭제", notes = "유저 아이디를 받아 카트에서 삭제한다")
+    public ResponseEntity<BaseResponseBody> deleteCart(
+            @PathVariable @ApiParam(value="유저 아이디", required = true) String user_id) {
+        try{
+            cartService.deleteCart(user_id);
             return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
         } catch (Exception e) {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));

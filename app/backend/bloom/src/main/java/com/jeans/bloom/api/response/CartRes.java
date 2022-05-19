@@ -26,6 +26,7 @@ public class CartRes {
     int total_quantity;
     LocalDateTime reservation_date;
     String shop_name;
+    String shop_number;
 
     public static CartRes of(Cart cart) {
         return CartRes.builder()
@@ -38,6 +39,7 @@ public class CartRes {
                 .total_quantity(cart.getItem().getTotalQuantity())
                 .reservation_date(cart.getReservationDate())
                 .shop_name(cart.getItem().getShop().getName())
+                .shop_number(cart.getItem().getShop().getShopNumber())
                 .build();
     }
 }
