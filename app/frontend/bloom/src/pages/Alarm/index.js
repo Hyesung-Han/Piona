@@ -1,27 +1,20 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {
-  View,
-  StyleSheet,
-  Text,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, Text, FlatList} from 'react-native';
 import AlarmCard from '../../components/AlarmCard';
 import {alarmAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 
 /**
- * CSW | 2022.05.06
+ * CSW | 2022.05.19
  * @name AlarmPage
  * @des
+ * 사용 컴포넌트 : AlarmCard
  * 알람 보여주는 페이지입니다.
  * 사용자가 알람페이지에 들어오게 되면 알람 읽음으로 patch해줍니다.
  *  */
 
-const AlarmPage = ({navigation}) => {
+const AlarmPage = () => {
   const [data, setData] = useState([]);
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
@@ -57,16 +50,9 @@ const AlarmPage = ({navigation}) => {
   return data.length >= 1 ? (
     <View style={styles.container}>
       <FlatList
-        //리스트의 소스를 담는 속성
-        //data={data}
         data={data}
-        //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
         renderItem={renderItem}
-        //item의 고유의 키를 부여하는 속성
         keyExtractor={item => item.alarm_id}
-        //무한 스크롤때문에 넣은듯
-        // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
-        // onEndReachedThreshold={0.4}
       />
     </View>
   ) : (

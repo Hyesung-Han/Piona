@@ -7,7 +7,6 @@ import MainPage from '../../pages/Main';
 import AlarmPage from '../../pages/Alarm';
 import CartPage from '../../pages/Cart';
 import ChangeInfoPage from '../../pages/ChangeInfo';
-import SignPage from '../../pages/Sign';
 import MapPage from '../../pages/Map';
 import MenuDetailPage from '../../pages/MenuDetail';
 import MyInfoPage from '../../pages/MyInfo';
@@ -15,26 +14,19 @@ import PicnicingPage from '../../pages/Picnicing';
 import PicnicedPage from '../../pages/Picniced';
 import PwdCheckPage from '../../pages/PwdCheck';
 import SearchResultPage from '../../pages/SearchResult';
-import ShopPage from '../../pages/Shop';
 import ShopHomePage from '../../pages/ShopHome';
 import ShopMenuPage from '../../pages/ShopMenu';
 import ShopReviewPage from '../../pages/ShopReview';
 import WishListPage from '../../pages/WishList';
 import RegisterReview from '../../pages/RegisterReview';
-import Payment from '../../pages/Payment';
-import PaymentTest from '../../pages/PaymentTest';
 
 /**
- * CSW, LDJ | 2022.05.02
+ * CSW, LDJ | 2022.05.19
  * @name MyAppNav
  * @des
  * App 화면에 들어가는 Nav(BottomTap, TopTab, Icons) 모아놓은 페이지
  * 모든 페이지들과 아이콘이 포함되어있음
- * TODO
- * 1. 각자 페이지 완성하고 나면 각 페이지에서 props로 받아야하는 정보(가게이름, 상품이름 등등) 처리를 위해서 코드수정이 필요함
- * 2. 약간의 이름 수정(이 다음엔 이거 지워주세요~)
- * 3. ShopDetail > 라우터를 통해서 shop name을 받아와서 title에 저장
- *  */
+ **/
 
 const MyApp = () => {
   const Stack = createNativeStackNavigator();
@@ -171,7 +163,7 @@ const MyApp = () => {
         />
         <Stack.Screen
           name="Shops"
-          component={ShopPage}
+          component={TopTabStackShopScreen}
           options={{title: '가게'}}
         />
       </Stack.Navigator>
@@ -389,7 +381,6 @@ const MyApp = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      {/* <Stack.Screen name="SignScreen" component={SignPage} /> */}
       <Stack.Screen name="appScreen" component={MyAppNav} />
     </Stack.Navigator>
   );
