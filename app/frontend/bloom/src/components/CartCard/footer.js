@@ -105,7 +105,6 @@ const CartFooter = ({navigation}, props) => {
   let temp = [];
   const sameShop = useCallback(async () => {
     try {
-      
       // let tempPrice = 0;
       if (select_cart_list.length === 0) {
         Alert.alert('알림', '상품을 선택해주세요');
@@ -124,8 +123,8 @@ const CartFooter = ({navigation}, props) => {
                 quantity: tempQuantity,
                 reservation_date: tempReservationDate,
               };
-              dispatch(cartSlice.actions.addReservationList(data));
-              //temp.push(data);
+              //dispatch(cartSlice.actions.addReservationList(data));
+              temp.push(data);
               //tempArray.push(cart_list[j]);
             }
           }
@@ -136,7 +135,7 @@ const CartFooter = ({navigation}, props) => {
         //   tempArray: tempArray,
         //   totalPrice: totalPrice,
         // });
-        //dispatch(cartSlice.actions.setItemName(temp));
+        dispatch(cartSlice.actions.addReservationList(temp));
         onPress();
       }
     } catch (error) {
@@ -144,40 +143,40 @@ const CartFooter = ({navigation}, props) => {
     }
   }, [cart_list, select_cart_list, dispatch, register]);
 
-  const payment = useCallback(async () => {
-    try {
-      //tempArray에서 필요한 정보만 뽑아서 reservationDetailList에 담기
-      for (let i = 0; i < reservationDetailList.length; i++) {
-        let tempItemId = reservationDetailList[i].item_id;
-        let tempQuantity = reservationDetailList[i].quantity;
-        let tempReservationDate = reservationDetailList[i].reservation_date;
-        let data = {
-          item_id: tempItemId,
-          quantity: tempQuantity,
-          reservation_date: tempReservationDate,
-        };
-        // setReservationDetailList({
-        //   ...reservationDetailList,
-        //   item_id: tempItemId,
-        //   quantity: tempQuantity,
-        //   reservation_date: tempReservationDate,
-        // });
-        APIList.push(data);
-      }
-      //총 가격 구하기
-      //   let tempPrice = 0;
-      //   for (let i = 0; i < tempArray.length; i++) {
-      //     let eachPrice = tempArray[i].price * tempArray[i].quantity;
-      //     tempPrice = tempPrice + eachPrice;
-      //   }
-      //console.log(tempPrice);
-      //   setTotalPrice(tempPrice);
-      await register();
-    } catch (error) {
-      Alert.alert('알림', '위');
-      console.log(error);
-    }
-  }, [register, reservationDetailList]);
+  // const payment = useCallback(async () => {
+  //   try {
+  //     //tempArray에서 필요한 정보만 뽑아서 reservationDetailList에 담기
+  //     // for (let i = 0; i < reservationDetailList.length; i++) {
+  //     //   let tempItemId = reservationDetailList[i].item_id;
+  //     //   let tempQuantity = reservationDetailList[i].quantity;
+  //     //   let tempReservationDate = reservationDetailList[i].reservation_date;
+  //     //   let data = {
+  //     //     item_id: tempItemId,
+  //     //     quantity: tempQuantity,
+  //     //     reservation_date: tempReservationDate,
+  //     //   };
+  //     //   // setReservationDetailList({
+  //     //   //   ...reservationDetailList,
+  //     //   //   item_id: tempItemId,
+  //     //   //   quantity: tempQuantity,
+  //     //   //   reservation_date: tempReservationDate,
+  //     //   // });
+  //     //   APIList.push(data);
+  //     // }
+  //     //총 가격 구하기
+  //     //   let tempPrice = 0;
+  //     //   for (let i = 0; i < tempArray.length; i++) {
+  //     //     let eachPrice = tempArray[i].price * tempArray[i].quantity;
+  //     //     tempPrice = tempPrice + eachPrice;
+  //     //   }
+  //     //console.log(tempPrice);
+  //     //   setTotalPrice(tempPrice);
+  //     await register();
+  //   } catch (error) {
+  //     Alert.alert('알림', '위');
+  //     console.log(error);
+  //   }
+  // }, [register, reservationDetailList]);
 
   const bootpay = React.forwardRef((props, ref) => {
     return useRef < BootpayWebView > null;
@@ -188,7 +187,7 @@ const CartFooter = ({navigation}, props) => {
   const register = useCallback(async () => {
     try {
       const response = await RegisterReservation(
-        APIList,
+        reservationDetailList,
         reservationDetailList[0].shop_number,
         totalPrice,
         user_id,
@@ -201,7 +200,7 @@ const CartFooter = ({navigation}, props) => {
           cartSlice.actions.initCart({
             select_cart_list: [],
             total_price: 0,
-            reservation_list: [],
+            reservation_list: '',
           }),
         );
         dispatch(
@@ -214,7 +213,7 @@ const CartFooter = ({navigation}, props) => {
         );
       }
     } catch (error) {
-      Alert.alert('알림', '삭제할 아이템을 선택해주세요!');
+      Alert.alert('알림', '예약 등록에 실패했습니다');
       console.log(error);
     }
   }, [reservationDetailList, token, totalPrice, user_id]);
@@ -302,7 +301,7 @@ const CartFooter = ({navigation}, props) => {
   };
 
   const onDone = data => {
-    payment();
+    register();
     console.log('done', data);
   };
 

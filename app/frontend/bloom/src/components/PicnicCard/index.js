@@ -107,7 +107,7 @@ const PicnicCardList = ({item}) => {
           <Image
             source={{uri: `${item.image_url}`}}
             style={{
-              resizeMode: 'contain', //contain:사진의 비율 유지, cover:사진을 영역에 맞춤
+              resizeMode: 'cover', //contain:사진의 비율 유지, cover:사진을 영역에 맞춤
               borderRadius: 5,
               height: 130,
               padding: 10,

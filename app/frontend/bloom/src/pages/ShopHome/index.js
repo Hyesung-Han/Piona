@@ -81,7 +81,7 @@ const ShopHomePage = ({navigation, route}) => {
           <Image
             source={{uri: `${data.image_url}`}}
             style={{
-              resizeMode: 'contain',
+              resizeMode: 'cover',
               width: '100%',
               height: '100%',
             }}
