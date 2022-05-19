@@ -8,4 +8,6 @@ public interface AlarmService {
 
     List<AlarmRes> findAlarmsByUser_UserId(String userId) throws Exception;
     void readAllAlarm(String userId) throws Exception;
+
+    void tokenUpdate(String user_id, String phone_token) throws Exception;
 }

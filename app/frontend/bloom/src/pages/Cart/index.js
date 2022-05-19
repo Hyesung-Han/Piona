@@ -1,74 +1,77 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, {useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, FlatList, Text} from 'react-native';
 import CartCardList from '../../components/CartCard';
 import CartFooter from '../../components/CartCard/footer';
 import {cartAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import cartSlice from '../../redux/slices/cart';
 
 /**
- * CSW | 2022.04.28
+ * CSW, LDJ, LHJ | 2022.05.19
  * @name CartPage
+ * @api cartAPI/getCartList
  * @des
- * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
- * TODO
- * 1. navition 카드별로 적용
+ * 장바구니에 담은 item 목록 조회
+ * # 사용 컴포넌트 : CartCard(index.js / footer.js)
  *  */
 
 const CartPage = ({navigation}) => {
-  const [inputText, setInputText] = useState('');
-  const [data, setData] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [heartStatus, setHeartStaus] = useState(false);
+  // console warning box 무시
+  console.disableYellowBox = true;
 
+  const dispatch = useDispatch();
+  const cart_list = useSelector(state => state.cart.cart_list);
   const user_id = useSelector(state => state.user.id);
+  const token = useSelector(state => state.user.accessToken);
 
-  // 추후 piona자리에 user_id로 대체
-  const getCart = async () => {
+  const getCartlist = useCallback(async () => {
     try {
-      const res = await cartAPI.getCartList('piona');
-      setData(res.data);
+      const res = await cartAPI.getCartList(user_id, token);
+      const cart_data = res.data.data;
+      if (res.data.result === 'success') {
+        dispatch(cartSlice.actions.addCartList(cart_data));
+      }
     } catch (error) {
-      console.log('위시리스트 검색', error);
+      console.log('카트 목록조회 에러 :', error);
     }
-  };
+  }, [user_id, token, dispatch]);
 
-  const renderItem = ({item}) => {
-    return <CartCardList item={item} navigation={navigation} />;
-  };
+  const renderItem = useCallback(
+    ({item}) => {
+      return <CartCardList item={item} navigation={navigation} />;
+    },
+    [navigation],
+  );
+
+  const cartFooter = useCallback(
+    ({item}) => {
+      return <CartFooter item={item} navigation={navigation} />;
+    },
+    [navigation],
+  );
 
   useFocusEffect(
     useCallback(() => {
-      getCart();
-    }, []),
+      getCartlist();
+    }, [getCartlist]),
   );
 
-  return (
+  return cart_list.length >= 1 ? (
     <View style={styles.container}>
       <View style={styles.list}>
         <FlatList
-          //리스트의 소스를 담는 속성
-          //data={data}
-          data={data}
-          //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
+          data={cart_list}
           renderItem={renderItem}
-          //item의 고유의 키를 부여하는 속성
           keyExtractor={item => item.cart_id}
-          //무한 스크롤때문에 넣은듯
-          // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
-          // onEndReachedThreshold={0.4}
-          ListFooterComponent={CartFooter}
+          ListFooterComponent={cartFooter}
         />
       </View>
+    </View>
+  ) : (
+    <View style={styles.Nocontainer}>
+      <Text>장바구니 내역이 없습니다.</Text>
     </View>
   );
 };
@@ -86,7 +89,13 @@ const styles = StyleSheet.create({
     right: 0,
   },
   list: {
-    flex: 3,
+    backgroundColor: '#CBCBCB',
+  },
+  Nocontainer: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

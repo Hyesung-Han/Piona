@@ -1,5 +1,9 @@
 package com.bloom;
 
+// Splash를 새로 생성하면 하단의 (220425) 3부분이 중복되서 생기므로 다 지워주면 됨
+// import 부분은 그대로 똑같이 생성되니까 지워주면 되고
+// MainActivity 안에는 약간 다른데 필요없으니까 지워주면됨! (다르다고 당황 X)
+
 import android.os.Bundle;                       // Splash Page 구현(220425)
 import org.devio.rn.splashscreen.SplashScreen;  // Splash Page 구현(220425)
 

@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useSelector} from 'react-redux';
 import MyApp from './src/navigations/MyAppNav';
 import MyApp_Sign from './src/navigations/MyAppNav_Sign/indes';
 
 /**
- * LDJ | 2022.05.06
+ * LDJ, CSW | 2022.05.19
  * @name AppInner.js
  * @api -
  * @des
@@ -15,7 +15,6 @@ import MyApp_Sign from './src/navigations/MyAppNav_Sign/indes';
 const AppInner = () => {
   // Provider 밖에서는 사용 불가
   const isLoggedIn = useSelector(state => !!state.user.id);
-  console.log('isLoggedIn', isLoggedIn);
 
   return isLoggedIn ? <MyApp /> : <MyApp_Sign />;
 };
