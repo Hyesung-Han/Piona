@@ -7,14 +7,13 @@ import shopSlice from '../../redux/slices/shop';
 import {useDispatch} from 'react-redux';
 
 /**
- * CSW, LHJ, LDJ | 2022.05.13
+ * CSW, LHJ, LDJ | 2022.05.19
  * @name ShopCard
  * @api WishListAPI/addWishList, WishListAPI/deleteWishList
  * @des
-
  */
 
-const ShopCard = ({item, heartStatus, navigation}) => {
+const ShopCard = ({item, navigation}) => {
   const dispatch = useDispatch();
   const shop_number = item.shop_number;
   const shop_name = item.name;
@@ -188,7 +187,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     fontSize: 13,
     color: 'gray',
-    // overflow: 'hidden',
   },
   cardBottom: {
     flexDirection: 'row',

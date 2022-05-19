@@ -15,7 +15,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {userAPI} from '../../utils/Axios';
 
 /**
- * LDJ | 2022.05.11
+ * LDJ | 2022.05.19
  * @name ChangeInfo
  * @api 1. userAPI/editUser
  *      2. userAPI/deleteUser
@@ -30,14 +30,13 @@ import {userAPI} from '../../utils/Axios';
  * 5. 유효성 검사 추가 [조건들 통과 못할 시 수정버튼 클릭 안됨(핸드폰은 기존꺼 유지되도 되야하므로)]
  */
 
-const ChangeInfoPage = ({navigation, props}) => {
-  // const user_name = useSelector(state => state.user.name);
+const ChangeInfoPage = () => {
   const user_id = useSelector(state => state.user.id);
-  // const user_nickname = useSelector(state => state.user.nickname);
   const user_phoneNumber = useSelector(state => state.user.phoneNumber);
   const user_accessToken = useSelector(state => state.user.accessToken);
   const dispatch = useDispatch();
 
+  // #A6DB9E : 녹색 / #FFABAB : 분홍색 / #C0C0C0 : 회색
   const [nameColor, setNameColor] = useState('#C0C0C0');
   const [passwordColor, setPasswordColor] = useState('#C0C0C0');
   const [passwordCheckColor, setPasswordCheckColor] = useState('#C0C0C0');
@@ -53,10 +52,6 @@ const ChangeInfoPage = ({navigation, props}) => {
   const [phoneNumber, setPhoneNumber] = useState(user_phoneNumber);
   const [certifiedNumber, setCertifiedNumber] = useState('');
   const [certification, setCertification] = useState('인증 요청');
-
-  // #A6DB9E : 녹색
-  // #FFABAB : 분홍색
-  // #C0C0C0 : 회색
 
   const regNm = /^[가-힣]{2,}$/;
   const regPwd = /^[a-z0-9#?!@$ %^&*-]{7,14}$/;
@@ -603,8 +598,6 @@ const ChangeInfoPage = ({navigation, props}) => {
               style={{alignItems: 'center', flexDirection: 'row', margin: 1}}>
               <TextInput
                 onChangeText={onChangePhoneNumber}
-                // placeholder="숫자만, 11자 [미입력/인증 허용]"
-                // placeholderTextColor="#C0C0C0"
                 value={phoneNumber}
                 style={{
                   width: '85%',

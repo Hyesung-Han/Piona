@@ -1,17 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
 import shopSlice from '../../redux/slices/shop';
 import {useDispatch} from 'react-redux';
 /**
- * LHJ | 2022.05.11
+ * LHJ | 2022.05.19
  * @name DoneCard
- * @api x
+ * @api
  * @des
- * 1. 컴포넌트 목록 : RegisterReviewModal
- * 2. 페이지 기능 :
- * FlatList에 보여줄 item 컴포넌트이다.
- * Figma에 정의된 데로 왼쪽에 가게 이름, 예약 날짜, 물품, 리뷰등록 버튼이 있고, 오른쪽에 사진이 들어간다.
  */
 
 const DoneCardList = ({item, navigation}) => {
@@ -148,8 +143,6 @@ const styles = StyleSheet.create({
   },
   itemDesc: {
     marginVertical: 5,
-    //marginLeft: 10,
-    //marginTop: 10,
     fontSize: 11,
     color: 'gray',
   },

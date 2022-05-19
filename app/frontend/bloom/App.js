@@ -10,7 +10,7 @@ import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
 
 /**
- * LDJ, CSW | 2022.05.12
+ * LDJ, CSW | 2022.05.19
  * @name App.js
  * @api -
  * @des
@@ -61,13 +61,6 @@ PushNotification.configure({
   onRegistrationError: function (err) {
     console.error(err.message, err);
   },
-
-  // IOS ONLY (optional): default: all - Permissions to register.
-  // permissions: {
-  //   alert: true,
-  //   badge: true,
-  //   sound: true,
-  // },
 
   // Should the initial notification be popped automatically
   // default: true

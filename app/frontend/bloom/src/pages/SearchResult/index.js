@@ -16,11 +16,10 @@ import {useDispatch} from 'react-redux';
 import shopSlice from '../../redux/slices/shop';
 
 /**
- * CSW, LDJ | 2022.05.13
+ * CSW, LDJ | 2022.05.19
  * @name SearchResultPage
  * @des
  * # 사용 컴포넌트 : ShopCard
- * # 무한 루프 에러 해결?! [리덕스로~]
  *  */
 
 const SearchResultPage = ({navigation, route}) => {
@@ -115,11 +114,8 @@ const SearchResultPage = ({navigation, route}) => {
         </View>
         <View style={styles.list}>
           <FlatList
-            //리스트의 소스를 담는 속성
             data={search_list}
-            //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
             renderItem={renderItem}
-            //item의 고유의 키를 부여하는 속성
             keyExtractor={item => item.shop_number}
           />
         </View>
