@@ -39,7 +39,7 @@ const RegisterReview = ({navigation, route}) => {
   const token = useSelector(state => state.user.accessToken);
   const user_id = useSelector(state => state.user.id);
   const [comment, onChangeText] = React.useState(null);
-  const [starCount, setState] = useState(1);
+  const [starCount, setState] = useState(5);
 
   const [kwClean, setKwClean] = useState('N');
   const [kwReasonable, setKwReasonable] = useState('N');
