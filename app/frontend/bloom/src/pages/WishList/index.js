@@ -42,10 +42,20 @@ const WishListPage = ({navigation}) => {
     [navigation],
   );
 
+  const initShop = useCallback(() => {
+    dispatch(
+      shopSlice.actions.setShop({
+        number: '',
+        name: '',
+      }),
+    );
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
+      initShop();
       getWishlist();
-    }, [getWishlist]),
+    }, [initShop, getWishlist]),
   );
 
   return wish_list.length >= 1 ? (

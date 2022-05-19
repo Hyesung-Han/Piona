@@ -4,7 +4,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   StyleSheet,
-  TextInput,
+  Text,
   ScrollView,
   FlatList,
   TouchableOpacity,
@@ -26,22 +26,22 @@ const AlarmPage = ({navigation}) => {
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
 
-  const getAlarm = async () => {
+  const getAlarm = useCallback(async () => {
     try {
       const res = await alarmAPI.get(user_id, token);
       setData(res.data);
     } catch (error) {
       console.log('Alarm 검색', error);
     }
-  };
+  }, [user_id, token]);
 
-  const patchAlarm = async () => {
+  const patchAlarm = useCallback(async () => {
     try {
       const response = await alarmAPI.patch(user_id, token);
     } catch (error) {
       console.log('Alarm 검색', error);
     }
-  };
+  }, [user_id, token]);
 
   const renderItem = ({item}) => {
     return <AlarmCard item={item} />;
@@ -51,10 +51,10 @@ const AlarmPage = ({navigation}) => {
     useCallback(() => {
       getAlarm();
       patchAlarm();
-    }, []),
+    }, [getAlarm, patchAlarm]),
   );
 
-  return (
+  return data.length >= 1 ? (
     <View style={styles.container}>
       <FlatList
         //리스트의 소스를 담는 속성
@@ -68,6 +68,10 @@ const AlarmPage = ({navigation}) => {
         // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
         // onEndReachedThreshold={0.4}
       />
+    </View>
+  ) : (
+    <View style={styles.Nocontainer}>
+      <Text> 알람이 없습니다.</Text>
     </View>
   );
 };
@@ -108,6 +112,12 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 3,
+  },
+  Nocontainer: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

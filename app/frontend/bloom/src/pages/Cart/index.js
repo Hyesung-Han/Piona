@@ -25,6 +25,8 @@ const CartPage = ({navigation}) => {
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
 
+  // console warning box 무시
+  console.disableYellowBox = true;
   const getCartlist = useCallback(async () => {
     try {
       const res = await cartAPI.getCartList(user_id, token);

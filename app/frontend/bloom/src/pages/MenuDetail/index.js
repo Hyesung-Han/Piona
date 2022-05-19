@@ -10,6 +10,7 @@ import {
   Alert,
   Modal,
   Pressable,
+  ScrollView,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {MenuDetailAPI} from '../../utils/Axios';
@@ -121,7 +122,7 @@ const MenuDetailPage = ({navigation, route}) => {
           style={{
             width: '100%',
             height: '100%',
-            borderRadius: 15,
+            borderRadius: 5,
             resizeMode: 'cover',
           }}
         />
@@ -131,7 +132,10 @@ const MenuDetailPage = ({navigation, route}) => {
           {data.item_name}
         </Text>
         <Text style={{color: '#FF0000', fontSize: 15}}>{data.price} 원</Text>
+        <ScrollView>
+
         <Text style={{color: 'black', fontSize: 15}}>{data.description}</Text>
+        </ScrollView>
       </View>
       <View style={styles.menuQuantity}>
         <Text style={{fontSize: 14, fontWeight: 'bold', color: 'black'}}>
@@ -205,28 +209,29 @@ const styles = StyleSheet.create({
   },
   imgBox: {
     flex: 0.8,
-    width: '70%',
+    width: '80%',
     marginTop: '10%',
     elevation: 3,
-    borderRadius: 15,
+    borderRadius: 5,
   },
   menuInfo: {
     flex: 0.5,
     marginTop: '5%',
     flexDirection: 'column',
     justifyContent: 'space-around',
+    width: '80%',
   },
   menuQuantity: {
     flex: 0.2,
     flexDirection: 'row',
     marginTop: 20,
     alignItems: 'center',
-    justifyContent: 'space-around',
-    width: '100%',
+    justifyContent: 'space-between',
+    width: '80%',
   },
   menuAddBtn: {
     flex: 0.4,
-    width: '75%',
+    width: '80%',
     marginTop: '5%',
   },
   quantityBox: {

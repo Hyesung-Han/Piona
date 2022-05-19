@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import shopcomment from '../../assets/shop.png';
 
 /**
  * LHJ,CSW | 2022.05.13
@@ -192,7 +193,7 @@ const MenuCardList = ({item, navigation}) => {
               <Image
                 source={{uri: `${item.image_url}`}}
                 style={{
-                  resizeMode: 'contain',
+                  resizeMode: 'cover',
                   width: '100%',
                   height: '100%',
                 }}
@@ -212,11 +213,9 @@ const MenuCardList = ({item, navigation}) => {
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-            <View style={{marginRight: 10}}>
+            <View style={{marginHorizontal: 15, width: '10%'}}>
               <Image
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcbqsmXsyp035Mxiq-KXC1kELso0A1bixXMA&usqp=CAU',
-                }}
+                source={shopcomment}
                 style={{
                   width: 50,
                   height: 50,
@@ -224,8 +223,10 @@ const MenuCardList = ({item, navigation}) => {
                 }}
               />
             </View>
-            <View>
-              <Text numberOfLines={5}>{item.comment}</Text>
+            <View style={{width: '75%'}}>
+              <Text numberOfLines={5} multiline={true}>
+                {item.comment}
+              </Text>
             </View>
           </View>
         </View>
@@ -275,13 +276,12 @@ const styles = StyleSheet.create({
     marginVertical: 3,
   },
   imgBox: {
-    borderWidth: 1,
     width: 130,
     height: 130,
     marginVertical: 5,
   },
   recommentBox: {
-    width: '90%',
+    width: '100%',
     paddingVertical: 10,
     backgroundColor: '#F9F0F0',
   },
