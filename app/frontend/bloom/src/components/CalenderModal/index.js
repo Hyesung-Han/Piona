@@ -13,8 +13,11 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {userAPI} from '../../utils/Axios';
 import {cartAPI} from '../../utils/Axios';
 import {getNotResList} from '../../utils/Axios';
+import {useDispatch, useSelector} from 'react-redux';
+import cartSlice from '../../redux/slices/cart';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import moment from 'moment';
+import {EmptyCart} from '../../utils/Axios';
 
 /**
  * lHJ | 2022.05.12
@@ -27,6 +30,8 @@ import moment from 'moment';
  */
 
 const CalenderModal = props => {
+  const dispatch = useDispatch();
+  const cart_list = useSelector(state => state.cart.cart_list);
   const item_id = props.item_id;
   const quantityStatus = props.quantityStatus;
   const shop_number = props.shop_number;
@@ -44,7 +49,6 @@ const CalenderModal = props => {
   };
 
   const render = () => {
-    let twoWeek = [];
     //const today = moment().format().split('T')[0];
     if (selectDate === null) {
       //받아온 예약 불가 날짜 표시해주기
@@ -106,20 +110,81 @@ const CalenderModal = props => {
         token,
       );
       console.log(response.data.data);
-      Alert.alert('알림', '장바구니에 담겼습니다!', [
-        {
-          text: '확인',
-          onPress: () => {
-            props.exit(false);
+      if (response.data.result === 'success') {
+        Alert.alert('알림', '장바구니에 담겼습니다!', [
+          {
+            text: '확인',
+            onPress: () => {
+              props.exit(false);
+            },
           },
-        },
-      ]);
+        ]);
+      } else if (
+        response.data.result === 'fail' &&
+        response.data.data === 'shopNumber'
+      ) {
+        Alert.alert(
+          '알림',
+          '다른 가게 상품이 담겨있습니다. 장바구니를 비우시겠습니까?',
+          [
+            {
+              text: '확인',
+              onPress: async () => {
+                dispatch(cartSlice.actions.addCartList([]));
+                const response = await EmptyCart(user_id, token);
+                console.log(response.data.result);
+                props.exit(false);
+              },
+            },
+            {
+              text: '취소',
+              onPress: () => {
+                props.exit(false);
+              },
+            },
+          ],
+        );
+      } else if (
+        response.data.result === 'fail' &&
+        response.data.data === 'date'
+      ) {
+        Alert.alert(
+          '알림',
+          '다른 날짜 예약이 담겨있습니다. 장바구니를 비우시겠습니까?',
+          [
+            {
+              text: '확인',
+              onPress: async () => {
+                const response = await EmptyCart(user_id, token);
+                dispatch(cartSlice.actions.addCartList([]));
+                console.log(response.data.result);
+                props.exit(false);
+              },
+            },
+            {
+              text: '취소',
+              onPress: () => {
+                props.exit(false);
+              },
+            },
+          ],
+        );
+      }
     } catch (error) {
       if (error.response) {
         Alert.alert('알림', error.response.data.message);
       }
     }
-  }, [item_id, pickedDate, props, quantityStatus, shop_number, token, user_id]);
+  }, [
+    dispatch,
+    item_id,
+    pickedDate,
+    props,
+    quantityStatus,
+    shop_number,
+    token,
+    user_id,
+  ]);
 
   return (
     <View
@@ -193,7 +258,7 @@ const CalenderModal = props => {
             />
           </View>
           <Text style={{alignSelf: 'flex-end'}}>
-            {/* 선택한 날짜: {pickedDateFilter} */} 
+            {/* 선택한 날짜: {pickedDateFilter} */}
           </Text>
           <TouchableOpacity
             style={{

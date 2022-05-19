@@ -73,12 +73,14 @@ const MenuCardList = ({item, navigation}) => {
                 {item.item_name}
               </Text>
             </View>
-            <View style={{marginVertical: 2}}>
+            <View style={{marginVertical: 2, width: '80%'}}>
               <Text
                 style={{
                   fontSize: 11,
                   flexWrap: 'wrap',
-                }}>
+                }}
+                numberOfLines={2}
+                ellipsizeMode="tail">
                 {item.description}
               </Text>
             </View>

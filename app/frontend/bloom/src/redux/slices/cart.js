@@ -18,8 +18,10 @@ const initialState = {
   image_url: '',
   reservation_date: '',
   shop_name: '',
+  total_price: 0,
   cart_list: '',
   select_cart_list: [],
+  reservation_list: '',
 };
 
 const cartSlice = createSlice({
@@ -36,6 +38,7 @@ const cartSlice = createSlice({
       state.image_url = action.payload.image_url;
       state.reservation_date = action.payload.reservation_date;
       state.shop_name = action.payload.shop_name;
+      state.total_price += action.payload.total_price;
     },
     addCartList(state, action) {
       state.cart_list = action.payload;
@@ -54,6 +57,17 @@ const cartSlice = createSlice({
         return data !== action.payload;
       });
       state.select_cart_list = result;
+    },
+    addReservationList(state, action) {
+      state.reservation_list = action.payload;
+    },
+    setItemName(state, action) {
+      state.item_name = action.payload.item_name;
+    },
+    initCart(state, action) {
+      state.select_cart_list = action.payload.select_cart_list;
+      state.total_price = action.payload.total_price;
+      state.reservation_list = action.payload.reservation_list;
     },
   },
   extraReducers: builder => {},

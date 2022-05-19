@@ -257,16 +257,6 @@ const MyApp = () => {
           component={MenuDetailPage}
           options={{title: '상품상세페이지'}}
         />
-        <Stack.Screen
-          name="Payment"
-          component={Payment}
-          options={{title: '결제페이지'}}
-        />
-        <Stack.Screen
-          name="PaymentTest"
-          component={PaymentTest}
-          options={{title: '결제 정보 입력'}}
-        />
       </Stack.Navigator>
     );
   }

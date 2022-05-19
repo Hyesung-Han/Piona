@@ -27,8 +27,8 @@ const MapPage = ({navigation, route}) => {
   const [center, setCenter] = useState({
     zoom: 12,
     tilt: 1,
-    latitude: 0.0,
-    longitude: 0.0,
+    latitude: 37.4995,
+    longitude: 127.0459,
   });
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
   const [appear, setAppear] = useState(false);
@@ -331,38 +331,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F8F8',
+    alignItems: 'center',
   },
   searchBtn: {
     position: 'absolute',
     right: 15,
     bottom: 10,
-    width: '11%',
+    width: '10%',
     height: '10%',
   },
   searchBtn2: {
-    position: 'absolute',
-    right: 15,
-    top: -50,
-    width: '11%',
+    marginRight: 15,
+    width: '10%',
     height: '20%',
   },
   shopCard: {
-    position: 'absolute',
-    bottom: 0,
     width: '100%',
-    height: '100%',
   },
   openshopCard: {
     flexDirection: 'column',
     position: 'absolute',
+    alignItems: 'flex-end',
     bottom: 0,
-    height: '40%',
+    height: '42%',
     width: '100%',
   },
   relocation: {
     position: 'absolute',
-    top: 10,
-    left: 110,
+    top: 15,
     backgroundColor: '#F15C74',
     width: '40%',
     alignItems: 'center',

@@ -38,6 +38,12 @@ const PicnicCardList = ({item}) => {
     console.log('컴포넌트가 화면에 나타남');
   }, []);
 
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     cancelReservationAPI();
+  //   }, [cancelReservationAPI]),
+  // );
+
   const setStatus = () => {
     if (status === 'R') {
       setStatusText('예약 취소'); //준비 중일때 예약 취소가 가능하니까
@@ -61,7 +67,7 @@ const PicnicCardList = ({item}) => {
     }
   };
 
-  const cancelReservationAPI = async () => {
+  const cancelReservationAPI = useCallback(async () => {
     try {
       const response = await cancelReservation(reservation_id, token);
       //취소되었으니 텍스트랑 색상 바꿈
@@ -71,7 +77,7 @@ const PicnicCardList = ({item}) => {
     } catch (error) {
       console.log('예약 취소 실패', error);
     }
-  };
+  }, [reservation_id, token]);
 
   const buttonEvent = () => {
     if (status === 'R') {
@@ -101,7 +107,7 @@ const PicnicCardList = ({item}) => {
           <Image
             source={{uri: `${item.image_url}`}}
             style={{
-              resizeMode: 'contain', //contain:사진의 비율 유지, cover:사진을 영역에 맞춤
+              resizeMode: 'cover', //contain:사진의 비율 유지, cover:사진을 영역에 맞춤
               borderRadius: 5,
               height: 130,
               padding: 10,
@@ -110,7 +116,12 @@ const PicnicCardList = ({item}) => {
           />
           <View style={styles.rowSeperateContainer}>
             <View style={{width: '75%'}}>
-              <Text style={styles.carouselItemName}>{item.item_name}</Text>
+              <Text
+                style={styles.carouselItemName}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {item.item_name}
+              </Text>
             </View>
             <View style={{width: '25%'}}>
               <Text style={styles.carouselQuantity}> {item.quantity}개</Text>
