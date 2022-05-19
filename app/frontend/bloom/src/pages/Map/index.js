@@ -11,7 +11,7 @@ import {Platform, PermissionsAndroid} from 'react-native';
 import {useDispatch} from 'react-redux';
 import shopSlice from '../../redux/slices/shop';
 /**
- * LHJ, CSW | 2022.05.13
+ * LHJ, CSW | 2022.05.19
  * @name MapPage
  * @des
  * 메인페이지에서 지도에서 찾기 버튼을 누르면 이동하는 페이지
@@ -93,7 +93,6 @@ const MapPage = ({navigation, route}) => {
     }
   }, [user_id, coordinate, token, dispatch]);
 
-  // 현재 화면에서 재검색하기 위한 중간 좌표 필요
   const relocation = useCallback(async () => {
     var re_lat = 0;
     var re_lng = 0;
@@ -175,7 +174,6 @@ const MapPage = ({navigation, route}) => {
     dispatch,
   ]);
 
-  // 받아온 상점들 마커로 뿌려주기
   const Markers = () => {
     return shop_list.map(row => (
       <Marker
@@ -207,38 +205,51 @@ const MapPage = ({navigation, route}) => {
     }, []),
   );
 
-  return (
-    <>
-      {shop_list ? (
-        <View style={styles.container}>
-          {route.params.page === 'main' ? (
-            <NaverMapView
-              style={{width: '100%', height: '100%'}}
-              zoomControl={false}
-              center={center}
-              onCameraChange={e => setMove(e.coveringRegion)}>
-              <Marker
-                coordinate={{
-                  latitude: coordinate.latitude,
-                  longitude: coordinate.longitude,
-                }}
-                type="t"
-                size="small"
-                color="green"
-              />
-              <Markers />
-            </NaverMapView>
-          ) : (
-            <NaverMapView
-              style={{width: '100%', height: '100%'}}
-              zoomControl={false}
-              center={center}
-              onCameraChange={e => setMove(e.coveringRegion)}>
-              <Markers />
-            </NaverMapView>
-          )}
+  return shop_list ? (
+    <View style={styles.container}>
+      {route.params.page === 'main' ? (
+        <NaverMapView
+          style={{width: '100%', height: '100%'}}
+          zoomControl={false}
+          center={center}
+          onCameraChange={e => setMove(e.coveringRegion)}>
+          <Marker
+            coordinate={{
+              latitude: coordinate.latitude,
+              longitude: coordinate.longitude,
+            }}
+            type="t"
+            size="small"
+            color="green"
+          />
+          <Markers />
+        </NaverMapView>
+      ) : (
+        <NaverMapView
+          style={{width: '100%', height: '100%'}}
+          zoomControl={false}
+          center={center}
+          onCameraChange={e => setMove(e.coveringRegion)}>
+          <Markers />
+        </NaverMapView>
+      )}
 
-          <View style={styles.searchBtn}>
+      <View style={styles.searchBtn}>
+        <Icon.Button
+          name="menu-sharp"
+          color="white"
+          backgroundColor="#F2A7B3"
+          size={20}
+          borderRadius={30}
+          width={50}
+          alignItems="center"
+          justifyContent="center"
+          onPress={() => navigation.goBack()}
+        />
+      </View>
+      {appear ? (
+        <View style={styles.openshopCard}>
+          <View style={styles.searchBtn2}>
             <Icon.Button
               name="menu-sharp"
               color="white"
@@ -251,79 +262,58 @@ const MapPage = ({navigation, route}) => {
               onPress={() => navigation.goBack()}
             />
           </View>
-          {appear ? (
-            <View style={styles.openshopCard}>
-              <View style={styles.searchBtn2}>
-                <Icon.Button
-                  name="menu-sharp"
-                  color="white"
-                  backgroundColor="#F2A7B3"
-                  size={20}
-                  borderRadius={30}
-                  width={50}
-                  alignItems="center"
-                  justifyContent="center"
-                  onPress={() => navigation.goBack()}
-                />
-              </View>
-              <View style={styles.shopCard}>
-                <ShopCard item={shopInfo} navigation={navigation} />
-              </View>
-            </View>
-          ) : (
-            <View style={styles.searchBtn}>
-              <Icon.Button
-                name="menu-sharp"
-                color="white"
-                backgroundColor="#F2A7B3"
-                size={20}
-                borderRadius={30}
-                width={50}
-                alignItems="center"
-                justifyContent="center"
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          )}
-          <TouchableOpacity
-            style={styles.relocation}
-            onPress={() => relocation()}>
-            <Text style={{color: 'white', fontWeight: 'bold'}}>
-              현위치에서 검색
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.shopCard}>
+            <ShopCard item={shopInfo} navigation={navigation} />
+          </View>
         </View>
       ) : (
-        <View style={styles.container}>
-          <NaverMapView
-            style={{width: '100%', height: '100%'}}
-            zoomControl={false}
-            center={center}
-            onCameraChange={e => setMove(e.coveringRegion)}></NaverMapView>
-
-          <View style={styles.searchBtn}>
-            <Icon.Button
-              name="menu-sharp"
-              color="white"
-              backgroundColor="#F2A7B3"
-              size={20}
-              borderRadius={30}
-              width={50}
-              alignItems="center"
-              justifyContent="center"
-              onPress={() => navigation.goBack()}
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.relocation}
-            onPress={() => relocation()}>
-            <Text style={{color: 'white', fontWeight: 'bold'}}>
-              현위치에서 검색
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.searchBtn}>
+          <Icon.Button
+            name="menu-sharp"
+            color="white"
+            backgroundColor="#F2A7B3"
+            size={20}
+            borderRadius={30}
+            width={50}
+            alignItems="center"
+            justifyContent="center"
+            onPress={() => navigation.goBack()}
+          />
         </View>
       )}
-    </>
+      <TouchableOpacity style={styles.relocation} onPress={() => relocation()}>
+        <Text style={{color: 'white', fontWeight: 'bold'}}>
+          현위치에서 검색
+        </Text>
+      </TouchableOpacity>
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <NaverMapView
+        style={{width: '100%', height: '100%'}}
+        zoomControl={false}
+        center={center}
+        onCameraChange={e => setMove(e.coveringRegion)}></NaverMapView>
+
+      <View style={styles.searchBtn}>
+        <Icon.Button
+          name="menu-sharp"
+          color="white"
+          backgroundColor="#F2A7B3"
+          size={20}
+          borderRadius={30}
+          width={50}
+          alignItems="center"
+          justifyContent="center"
+          onPress={() => navigation.goBack()}
+        />
+      </View>
+      <TouchableOpacity style={styles.relocation} onPress={() => relocation()}>
+        <Text style={{color: 'white', fontWeight: 'bold'}}>
+          현위치에서 검색
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 

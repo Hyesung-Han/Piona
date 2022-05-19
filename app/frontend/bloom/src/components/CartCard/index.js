@@ -1,11 +1,11 @@
-import React, {useCallback, useState, useSelector} from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch} from 'react-redux';
 import cartSlice from '../../redux/slices/cart';
 
 /**
- * CSW, LDJ | 2022.05.13
+ * CSW, LDJ | 2022.05.19
  * @name CartCard
  * @api -
  * @des
@@ -21,7 +21,6 @@ const CartCardList = props => {
   const price = props.item.price;
   const image_url = props.item.image_url;
   const quantity = props.item.quantity;
-  const total_quantity = props.item.total_quantity;
   const reservation_date = props.item.reservation_date + '.960Z';
   const res_date = props.item.reservation_date.split('T')[0];
   const shop_name = props.item.shop_name;
@@ -29,7 +28,6 @@ const CartCardList = props => {
 
   const selectCartItem = useCallback(() => {
     if (checkStatus) {
-      // 빼고, 회색으로
       dispatch(
         cartSlice.actions.setCart({
           id: '',
@@ -47,7 +45,6 @@ const CartCardList = props => {
       dispatch(cartSlice.actions.deleteSelectCart(cart_id));
       setcheckStaus(false);
     } else {
-      // 담고, 분홍색으로
       dispatch(
         cartSlice.actions.setCart({
           id: cart_id,
@@ -92,7 +89,6 @@ const CartCardList = props => {
           <View style={styles.checkBox}>
             <View style={styles.iconBox}>
               {checkStatus === false ? (
-                // 클릭하면 클릭(담김)
                 <Icon.Button
                   onPress={() => {
                     selectCartItem();
@@ -103,7 +99,6 @@ const CartCardList = props => {
                   size={25}
                 />
               ) : (
-                // 클릭하면 해제(뺌)
                 <Icon.Button
                   onPress={() => {
                     selectCartItem();

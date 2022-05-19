@@ -13,7 +13,7 @@ import {
 import MainBackground from '../../assets/Mainbackground.jpg';
 import {useSelector} from 'react-redux';
 /**
- * CSW | 2022.05.13
+ * CSW | 2022.05.19
  * @name MainPage
  * @des
  * 로그인 된 상태에서 앱을 열면 보이는 메인페이지
@@ -23,6 +23,7 @@ import {useSelector} from 'react-redux';
 const MainPage = ({navigation}) => {
   // console warning box 무시
   console.disableYellowBox = true;
+
   const [inputText, setInputText] = useState('');
   const user_nickname = useSelector(state => state.user.nickname);
   const user_id = useSelector(state => state.user.id);

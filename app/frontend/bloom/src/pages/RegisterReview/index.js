@@ -1,20 +1,14 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Dimensions,
   Alert,
   Text,
-  Modal,
   StyleSheet,
   Pressable,
   TextInput,
   TouchableOpacity,
   Image,
-  Button,
-  FlatList,
-  SafeAreaView,
-  ScrollView,
 } from 'react-native';
 import Stars from 'react-native-stars';
 import {useSelector} from 'react-redux';
@@ -23,16 +17,11 @@ import ImagePicker from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer';
 import Icon from 'react-native-vector-icons/Ionicons';
 /**
- * LHJ, CSW | 2022.05.10
+ * LHJ, CSW | 2022.05.19
  * @name RegisterReview
  * @api RegisterReviewApi
  * @des
- * 1. 컴포넌트 목록 :
- * 2. 페이지 기능 :
- * 리뷰 등록 페이지이다.
- * 별점, 내용, 사진등을 바탕으로 api를 통해서 리뷰를 등록한다
- * 현재(05.10기준)는 사진이 한장만 등록된다.
- * 3. api : RegisterReviewApi (리뷰 등록 api)
+ * 별점, 내용, 사진등을 바탕으로 api를 통해서 리뷰를 등록
  */
 
 const RegisterReview = ({navigation, route}) => {
@@ -123,9 +112,6 @@ const RegisterReview = ({navigation, route}) => {
       includeExif: true,
       includeBase64: true,
       mediaType: 'photo',
-      //multiple: true,
-      // maxFiles: 5,
-      // compressImageQuality: 0.8,
     })
       .then(onResponse)
       .catch(console.log);
@@ -134,10 +120,7 @@ const RegisterReview = ({navigation, route}) => {
   const onResponse = useCallback(async response => {
     console.log(response.width, response.height, response.exif);
     setPreview({uri: `data:${response.mime};base64,${response.data}`});
-    //response.map((item, index) => {
-    //   setPreview({uri: `data:${item.mime};base64,${item.data}`});
-    // });
-    // console.log(preview);
+
     return ImageResizer.createResizedImage(
       response.path,
       600,
@@ -195,32 +178,6 @@ const RegisterReview = ({navigation, route}) => {
     token,
     user_id,
   ]);
-
-  // const renderItem = ({item, index}) => {
-  //   return (
-  //     <View>
-  //       <Image
-  //         width={IMAGE_WIDTH}
-  //         source={{
-  //           uri:
-  //             // item?.type === 'video'
-  //             //   ? item?.thumbnail ?? ''
-  //             //   : 'file://' + (item?.crop?.cropPath ?? item.path),
-  //             item.uri,
-  //         }}
-  //         style={styles.media}
-  //       />
-  //       {/* <TouchableOpacity
-  //         onPress={() => onDelete(item)}
-  //         activeOpacity={0.9}
-  //         style={styles.buttonDelete}>
-  //         <Text style={styles.titleDelete}>삭제</Text>
-  //       </TouchableOpacity> */}
-  //     </View>
-  //   );
-  // };
-
-  console.log(preview);
 
   return (
     <View style={styles.container}>
