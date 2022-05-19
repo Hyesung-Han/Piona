@@ -94,10 +94,8 @@ export default function SaleList() {
           }
         });
         if(response.data.result === 'success'){
-          console.log(response.data);
           const data = applyGroupFilter(response.data.data);
           data.sort((a, b) => { if (a.date < b.date) return -1; if (a.date > b.date) return 1; return 0; });
-          console.log(data);
           let price = 0;
           for (let index = 0; index < data.length; index+=1) {
             price += data[index].price;
@@ -138,8 +136,8 @@ export default function SaleList() {
           <Divider />
 
           <SaleTableToolbar
-            filterStartDate={filterStartDate}
-            filterEndDate={filterEndDate}
+            filterStartDate={new Date(filterStartDate)}
+            filterEndDate={new Date(filterEndDate)}
             onFilterStartDate={(newValue) => {
               setFilterStartDate(newValue);
             }}
@@ -161,13 +159,14 @@ export default function SaleList() {
 
                 <TableBody>
 
-                  {tableData.map((row) => (
+                  {tableData.map((row, index) => (
                       <SaleTableRow
-                        key={row.date}
+                        key={index}
                         row={row}
                       />
                   ))}
                       <TableRow 
+                        key="asdf"
                         >
                         <TableCell colSpan={6} align="right">
                           <Typography variant="subtitle2" noWrap>

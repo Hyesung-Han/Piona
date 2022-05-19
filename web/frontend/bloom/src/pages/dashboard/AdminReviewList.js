@@ -32,7 +32,7 @@ import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableNoData, TableEmptyRows, TableHeadCustom } from '../../components/table';
 // sections
-import { ReviewTableRow } from '../../sections/@dashboard/review/list';
+import { ReviewTableRowAdmin } from '../../sections/@dashboard/review/list';
 import AdminReviewCompose from '../../sections/@dashboard/review/details/AdminReviewCompose';
 
 // ----------------------------------------------------------------------
@@ -233,10 +233,9 @@ export default function ReviewList() {
                 />
 
                 <TableBody>
-                  {/* {console.log(dataFiltered)} */}
                   <>
                   {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                      <ReviewTableRow
+                      <ReviewTableRowAdmin
                         key={row.review_id}
                         row={row}
                         selected={selected.includes(row.review_id)}

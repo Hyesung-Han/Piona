@@ -231,7 +231,6 @@ export default function RegisterForm() {
     try {
       Axios.get(`${HOST_API}/api/user/shopcheck?shopNumber=${b_no}`,{})
       .then( async (result) => {
-        console.log(result);
         if(result.data.result === 'success'){
           if(result.data.data === true){
             const response = await Axios.post(`https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${apiKey}`, {
