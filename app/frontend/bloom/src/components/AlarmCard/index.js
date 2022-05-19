@@ -13,12 +13,14 @@ import {WithLocalSvg} from 'react-native-svg';
  */
 
 const AlarmCard = ({item}) => {
+  const date = item.created_at.split('T')[0];
+
   return (
     <View style={styles.container}>
       <View style={styles.CardList}>
         <View style={styles.AlarmContent}>
           <Text style={styles.content}> {item.content} </Text>
-          <Text style={styles.createdAt}> {item.content} </Text>
+          <Text style={styles.createdAt}> {date} </Text>
         </View>
         <View style={styles.iconBox}>
           <WithLocalSvg

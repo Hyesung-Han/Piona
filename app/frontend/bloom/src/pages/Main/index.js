@@ -21,6 +21,8 @@ import {useSelector} from 'react-redux';
  *  */
 
 const MainPage = ({navigation}) => {
+  // console warning box 무시
+  console.disableYellowBox = true;
   const [inputText, setInputText] = useState('');
   const user_nickname = useSelector(state => state.user.nickname);
   const user_id = useSelector(state => state.user.id);
@@ -76,7 +78,7 @@ const MainPage = ({navigation}) => {
               backgroundColor="white"
               size={20}
             />
-            <Text style={{color: 'white', fontWeight: 'bold'}}>
+            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 16}}>
               지도에서 찾기
             </Text>
           </TouchableOpacity>
@@ -88,7 +90,8 @@ const MainPage = ({navigation}) => {
             color: 'black',
             marginTop: '5%',
             marginBottom: '5%',
-            marginLeft: '5%',
+            marginLeft: '15%',
+            fontWeight: 'bold',
           }}
           onPress={() =>
             navigation.navigate('Map', {navigation: `${navigation}`})
@@ -107,7 +110,7 @@ const MainPage = ({navigation}) => {
                 user_lng: 0,
               })
             }>
-            <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
               #가성비
             </Text>
           </TouchableOpacity>
@@ -122,7 +125,7 @@ const MainPage = ({navigation}) => {
                 user_lng: 0,
               })
             }>
-            <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
               #깔끔
             </Text>
           </TouchableOpacity>
@@ -139,7 +142,7 @@ const MainPage = ({navigation}) => {
                 user_lng: 0,
               })
             }>
-            <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
               #감성
             </Text>
           </TouchableOpacity>
@@ -154,8 +157,40 @@ const MainPage = ({navigation}) => {
                 user_lng: 0,
               })
             }>
-            <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
               #다양한구성
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.columnBox}>
+          <TouchableOpacity
+            style={styles.Btn}
+            onPress={() =>
+              navigation.navigate('Search', {
+                type: 'keyword',
+                word: `kw_adorable`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
+            }>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
+              #아기자기
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.Btn}
+            onPress={() =>
+              navigation.navigate('Search', {
+                type: 'keyword',
+                word: `kw_kind`,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
+            }>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
+              #친절한
             </Text>
           </TouchableOpacity>
         </View>
@@ -203,11 +238,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderStyle: 'solid',
     backgroundColor: '#F2A7B3',
-    width: '35%',
+    width: '40%',
     borderRadius: 40,
     marginTop: '20%',
     marginBottom: '30%',
-    height: 40,
+    height: 45,
   },
   rowBox: {
     flex: 1,
@@ -221,18 +256,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   Btn: {
-    backgroundColor: '#F15C74',
+    backgroundColor: '#F9F0F0',
     color: 'black',
     width: '30%',
     alignItems: 'center',
     borderRadius: 12,
-    height: 80,
+    height: 100,
     justifyContent: 'center',
-    marginRight: '3%',
-    marginBottom: '3%',
-    marginLeft: '3%',
+    marginRight: '5%',
+    marginBottom: '5%',
+    marginLeft: '5%',
     shadowColor: '#000',
-    elevation: 5,
+    elevation: 2,
   },
 });
 

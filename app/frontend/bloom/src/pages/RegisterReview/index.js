@@ -39,7 +39,7 @@ const RegisterReview = ({navigation, route}) => {
   const token = useSelector(state => state.user.accessToken);
   const user_id = useSelector(state => state.user.id);
   const [comment, onChangeText] = React.useState(null);
-  const [starCount, setState] = useState(1);
+  const [starCount, setState] = useState(5);
 
   const [kwClean, setKwClean] = useState('N');
   const [kwReasonable, setKwReasonable] = useState('N');
@@ -58,7 +58,7 @@ const RegisterReview = ({navigation, route}) => {
   const setResonble = () => {
     if (kwReasonable === 'N') {
       setKwReasonable('Y');
-      setKwReasonableColor('#c98b8b');
+      setKwReasonableColor('#F2A7B3');
     } else {
       setKwReasonable('N');
       setKwReasonableColor('#C0C0C0');
@@ -68,7 +68,7 @@ const RegisterReview = ({navigation, route}) => {
   const setKind = () => {
     if (kwKind === 'N') {
       setKwKind('Y');
-      setKwKindColor('#c98b8b');
+      setKwKindColor('#F2A7B3');
     } else {
       setKwKind('N');
       setKwKindColor('#C0C0C0');
@@ -76,9 +76,9 @@ const RegisterReview = ({navigation, route}) => {
   };
 
   const setAdorable = () => {
-    if (kwKind === 'N') {
+    if (kwAdorable === 'N') {
       setKwAdorable('Y');
-      setKwAdorableColor('#c98b8b');
+      setKwAdorableColor('#F2A7B3');
     } else {
       setKwAdorable('N');
       setKwAdorableColor('#C0C0C0');
@@ -86,9 +86,9 @@ const RegisterReview = ({navigation, route}) => {
   };
 
   const setVarious = () => {
-    if (kwKind === 'N') {
+    if (kwVarious === 'N') {
       setKwVarious('Y');
-      setKwVariousColor('#c98b8b');
+      setKwVariousColor('#F2A7B3');
     } else {
       setKwVarious('N');
       setKwVariousColor('#C0C0C0');
@@ -96,9 +96,9 @@ const RegisterReview = ({navigation, route}) => {
   };
 
   const setMood = () => {
-    if (kwKind === 'N') {
+    if (kwMood === 'N') {
       setKwMood('Y');
-      setKwMoodColor('#c98b8b');
+      setKwMoodColor('#F2A7B3');
     } else {
       setKwMood('N');
       setKwMoodColor('#C0C0C0');
@@ -106,9 +106,9 @@ const RegisterReview = ({navigation, route}) => {
   };
 
   const setClean = () => {
-    if (kwKind === 'N') {
+    if (kwClean === 'N') {
       setKwClean('Y');
-      setKwCleanColor('#c98b8b');
+      setKwCleanColor('#F2A7B3');
     } else {
       setKwClean('N');
       setKwCleanColor('#C0C0C0');
@@ -223,229 +223,207 @@ const RegisterReview = ({navigation, route}) => {
   console.log(preview);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          width: '100%',
-          marginVertical: 10,
-          marginHorizontal: '8%',
-        }}>
-        {/* <FlatList
-        style={[
-          styles.container,
-          {
-            paddingTop: 6,
-          },
-        ]}
-        data={preview}
-        keyExtractor={(item, index) => item.uri + index}
-        renderItem={renderItem}
-        numColumns={3}
-      /> */}
-        {/* 기존의 플랫리스트 부분은 이미지 슬라이더 적용해서 구현하면 될 듯하다 */}
+    <View style={styles.container}>
+      <View style={styles.title}>
         <View>
           <Text
             style={{
               color: 'black',
               fontWeight: 'bold',
               fontSize: 18,
-              marginBottom: 30,
-              marginTop: 30,
             }}>
-            {route.params.shop_name} 의 서비스에 만족하셨나요?
+            {route.params.shop_name}
           </Text>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 10,
-          }}>
-          <View style={{}}>
-            <Text style={{fontSize: 15, color: 'black', marginRight: 15}}>
-              별점
-            </Text>
-          </View>
-          <View style={{alignItems: 'center'}}>
-            <Stars
-              half={false}
-              default={5}
-              update={setState}
-              spacing={4}
-              starSize={30}
-              count={5}
-              fullStar={require('../../assets/select_star.png')}
-              emptyStar={require('../../assets/unselect_star.png')}
-            />
-          </View>
+        <View>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 17,
+            }}>
+            서비스에 만족하셨나요?
+          </Text>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '80%',
-          }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: kwReasonableColor,
-              borderRadius: 15,
-              padding: 4,
-              paddingHorizontal: 8,
-              marginVertical: 8,
-              marginHorizontal: 8,
-            }}
-            onPress={() => {
-              setResonble();
-            }}>
-            <View>
-              <Text style={{fontSize: 12, color: 'black'}}>
-                가성비가 좋아요
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: kwMoodColor,
-              borderRadius: 15,
-              padding: 4,
-              paddingHorizontal: 8,
-              marginVertical: 8,
-              marginHorizontal: 8,
-            }}
-            onPress={() => {
-              setMood();
-            }}>
-            <Text style={{fontSize: 12, color: 'black'}}>감성 넘쳐요</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: kwCleanColor,
-              borderRadius: 15,
-              padding: 4,
-              paddingHorizontal: 8,
-              marginVertical: 8,
-              marginHorizontal: 8,
-            }}
-            onPress={() => {
-              setClean();
-            }}>
-            <Text style={{fontSize: 12, color: 'black'}}>깔끔해요</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: kwAdorableColor,
-              borderRadius: 15,
-              padding: 4,
-              paddingHorizontal: 8,
-              marginVertical: 8,
-              marginHorizontal: 8,
-            }}
-            onPress={() => {
-              setAdorable();
-            }}>
-            <Text style={{fontSize: 12, color: 'black'}}>아기자기해요</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: kwVariousColor,
-              borderRadius: 15,
-              padding: 4,
-              paddingHorizontal: 8,
-              marginVertical: 8,
-              marginHorizontal: 8,
-            }}
-            onPress={() => {
-              setVarious();
-            }}>
-            <Text style={{fontSize: 12, color: 'black'}}>구성이 다양해요</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: kwKindColor,
-              borderRadius: 15,
-              padding: 4,
-              paddingHorizontal: 8,
-              marginVertical: 8,
-              marginHorizontal: 8,
-            }}
-            onPress={() => {
-              setKind();
-            }}>
-            <Text style={{fontSize: 12, color: 'black'}}>친절해요</Text>
-          </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 20,
+        }}>
+        <Text style={{fontSize: 15, color: 'black', marginRight: 15}}>
+          별점
+        </Text>
+        <View style={{alignItems: 'center'}}>
+          <Stars
+            half={false}
+            default={5}
+            update={setState}
+            spacing={4}
+            starSize={30}
+            count={5}
+            fullStar={require('../../assets/select_star.png')}
+            emptyStar={require('../../assets/unselect_star.png')}
+          />
         </View>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '80%',
+        }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: kwReasonableColor,
+            borderRadius: 15,
+            padding: 4,
+            paddingHorizontal: 8,
+            marginVertical: 8,
+            marginHorizontal: 8,
+          }}
+          onPress={() => {
+            setResonble();
+          }}>
+          <View>
+            <Text style={{fontSize: 12, color: 'black'}}>가성비가 좋아요</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: kwMoodColor,
+            borderRadius: 15,
+            padding: 4,
+            paddingHorizontal: 8,
+            marginVertical: 8,
+            marginHorizontal: 8,
+          }}
+          onPress={() => {
+            setMood();
+          }}>
+          <Text style={{fontSize: 12, color: 'black'}}>감성 넘쳐요</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: kwCleanColor,
+            borderRadius: 15,
+            padding: 4,
+            paddingHorizontal: 8,
+            marginVertical: 8,
+            marginHorizontal: 8,
+          }}
+          onPress={() => {
+            setClean();
+          }}>
+          <Text style={{fontSize: 12, color: 'black'}}>깔끔해요</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: kwAdorableColor,
+            borderRadius: 15,
+            padding: 4,
+            paddingHorizontal: 8,
+            marginVertical: 8,
+            marginHorizontal: 8,
+          }}
+          onPress={() => {
+            setAdorable();
+          }}>
+          <Text style={{fontSize: 12, color: 'black'}}>아기자기해요</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: kwVariousColor,
+            borderRadius: 15,
+            padding: 4,
+            paddingHorizontal: 8,
+            marginVertical: 8,
+            marginHorizontal: 8,
+          }}
+          onPress={() => {
+            setVarious();
+          }}>
+          <Text style={{fontSize: 12, color: 'black'}}>구성이 다양해요</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: kwKindColor,
+            borderRadius: 15,
+            padding: 4,
+            paddingHorizontal: 8,
+            marginVertical: 8,
+            marginHorizontal: 8,
+          }}
+          onPress={() => {
+            setKind();
+          }}>
+          <Text style={{fontSize: 12, color: 'black'}}>친절해요</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.input}>
         <TextInput
-          style={styles.input}
+          style={{flexShrink: 1}}
           onChangeText={onChangeText}
           value={comment}
           placeholder="서비스에 대한 솔직한 리뷰를 남겨주세요!"
+          multiline={true}
         />
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View style={styles.preview}>
-            {preview.uri && (
-              <Image style={styles.previewImage} source={preview} />
-            )}
-            {/* <Image style={styles.previewImage} source={preview} /> */}
-          </View>
-          <Pressable style={styles.button} onPress={onChangeFile}>
-            <View style={styles.iconBox}>
-              <Icon
-                name="camera-outline"
-                color="black"
-                backgroundColor="transparent"
-                size={28}
-              />
-              <Text>사진</Text>
-            </View>
-          </Pressable>
-        </View>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#F15C74',
-            color: 'black',
-            width: '85%',
-            alignItems: 'center',
-            borderRadius: 5,
-            height: 40,
-            justifyContent: 'center',
-          }}
-          onPress={() => {
-            onComplete();
-          }}>
-          <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
-            완료
-          </Text>
-        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+      <View style={styles.pics}>
+        {preview.uri && (
+          <View style={styles.preview}>
+            <Image style={styles.previewImage} source={preview} />
+          </View>
+        )}
+        <Pressable style={styles.button} onPress={onChangeFile}>
+          <View style={styles.iconBox}>
+            <Icon
+              name="camera-outline"
+              color="black"
+              backgroundColor="transparent"
+              size={28}
+            />
+            <Text>사진</Text>
+          </View>
+        </Pressable>
+      </View>
+      <TouchableOpacity
+        style={{
+          backgroundColor: '#F15C74',
+          color: 'black',
+          alignItems: 'center',
+          borderRadius: 5,
+          height: 40,
+          justifyContent: 'center',
+          width: '80%',
+        }}
+        onPress={() => {
+          onComplete();
+        }}>
+        <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+          완료
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 const {width} = Dimensions.get('window');
 const IMAGE_WIDTH = (width - 24) / 3;
 const styles = StyleSheet.create({
-  input: {
-    height: 80,
-    margin: 12,
-    borderWidth: 0.8,
-    padding: 10,
-    flexWrap: 'wrap',
-    width: '82%',
-    flexDirection: 'column',
-  },
   container: {
     flex: 1,
+    backgroundColor: '#F8F8F8',
+    alignItems: 'center',
+  },
+  title: {
+    width: '100%',
+    alignItems: 'center',
+    marginVertical: 30,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   imageView: {
     flex: 1,
@@ -459,6 +437,13 @@ const styles = StyleSheet.create({
     height: IMAGE_WIDTH,
     marginBottom: 6,
     backgroundColor: 'rgba(0,0,0,0.2)',
+  },
+  input: {
+    width: '80%',
+    backgroundColor: '#F1F1F1',
+    height: 100,
+    alignItems: 'center',
+    marginVertical: 15,
   },
   bottom: {
     padding: 24,
@@ -489,7 +474,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   preview: {
-    marginHorizontal: 10,
+    marginRight: 10,
     marginBottom: 10,
     width: 60,
     height: 60,
@@ -498,6 +483,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     width: '100%',
     height: '100%',
+    borderRadius: 5,
   },
   button: {
     width: 60,
@@ -513,6 +499,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     textAlign: 'center',
+  },
+  pics: {
+    width: '80%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginVertical: 10,
   },
 });
 

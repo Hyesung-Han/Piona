@@ -213,11 +213,15 @@ export const cartAPI = {
       });
   },
 
-  deleteCart: async (cartId, accessToken) => {
+  deleteCart: async (cart_list, accessToken) => {
     return await request
-      .delete(`/cart/${cartId}`, {
+      .delete(`/cart`, {
         headers: {
           Authorization: accessToken,
+          'Content-Type': `application/json`,
+        },
+        data: {
+          cart_list,
         },
       })
       .then(response => {
@@ -392,6 +396,22 @@ export const RegisterReservation = async (
         },
       },
     )
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+// CSW | 카트를 비워주기 위한 API
+export const EmptyCart = async (user_id, accessToken) => {
+  return await request
+    .delete(`/cart/${user_id}`, {
+      headers: {
+        Authorization: accessToken,
+      },
+    })
     .then(response => {
       return response;
     })

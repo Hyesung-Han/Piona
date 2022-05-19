@@ -1,18 +1,8 @@
 import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Button,
-  TouchableOpacity,
-  Modal,
-  navigation,
-  AppRegistry,
-} from 'react-native';
-import RegisterReview from '../../pages/RegisterReview';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-
+import shopSlice from '../../redux/slices/shop';
+import {useDispatch} from 'react-redux';
 /**
  * LHJ | 2022.05.11
  * @name DoneCard
@@ -25,10 +15,8 @@ import {useSelector} from 'react-redux';
  */
 
 const DoneCardList = ({item, navigation}) => {
-  const [registerReviewModal, setReviewModal] = useState(false);
-  const user_id = useSelector(state => state.id);
-  //const status = item.writeReview;
-  //console.log(item);
+  const dispatch = useDispatch();
+
   const registerButton = () => {
     const result = [];
     if (item.writeReview === 'Y') {
@@ -48,7 +36,6 @@ const DoneCardList = ({item, navigation}) => {
           onPress={() =>
             navigation.navigate('RegisterReview', {
               reservationId: `${item.reservation_id}`,
-              //user_id: user_id,
               reservation_id: item.reservation_id,
               shop_name: item.shop_name,
             })
@@ -64,37 +51,56 @@ const DoneCardList = ({item, navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.doneCardList}>
-        <View style={styles.seperateContainer}>
-          <View style={{width: '75%'}}>
-            <View style={styles.itemInfoContainer}>
-              <View style={styles.itemTitleAndDate}>
-                <View>
-                  <Text style={styles.itemTitle}>{item.shop_name}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ShopDetail', {
+              shopNumber: item.shop_number,
+              shopName: item.shop_name,
+            });
+            dispatch(
+              shopSlice.actions.setShop({
+                number: item.shop_number,
+                name: item.shop_name,
+              }),
+            );
+          }}>
+          <View style={styles.seperateContainer}>
+            <View style={{width: '75%'}}>
+              <View style={styles.itemInfoContainer}>
+                <View style={styles.itemTitleAndDate}>
+                  <View>
+                    <Text style={styles.itemTitle}>{item.shop_name}</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.itemDate}>
+                      {item.reservation_date.split('T')[0]}
+                    </Text>
+                  </View>
                 </View>
                 <View>
-                  <Text style={styles.itemDate}>
-                    {item.reservation_date.split('T')[0]}
+                  <Text
+                    style={styles.itemDesc}
+                    numberOfLines={3}
+                    ellipsizeMode="tail">
+                    {item.detail[0].item_name} 외 {item.detail.length} 건
                   </Text>
                 </View>
+                <View style={styles.buttonContainer}>{registerButton()}</View>
+                <View style={{width: '60%'}}></View>
               </View>
-              <View>
-                <Text style={styles.itemDesc}>{item.description}</Text>
-              </View>
-              <View style={styles.buttonContainer}>{registerButton()}</View>
-              <View style={{width: '60%'}}></View>
+            </View>
+            <View style={{width: '35%', elevation: 5}}>
+              <Image
+                source={{uri: `${item.image_url}`}}
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 15,
+                }}
+              />
             </View>
           </View>
-          <View style={{width: '35%', elevation: 5}}>
-            <Image
-              source={{uri: `${item.image_url}`}}
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 15,
-              }}
-            />
-          </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

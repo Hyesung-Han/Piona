@@ -23,6 +23,7 @@ const ShopHomePage = ({navigation, route}) => {
   //그 뒤에 오는 shopNumber는 slice에 저장된 변경하고자 하는 변수
   const shopNumber = useSelector(state => state.shop.number);
   const shopName = useSelector(state => state.shop.name);
+  const shopScore = useSelector(state => state.shop.score);
   const token = useSelector(state => state.user.accessToken);
   const [coordinate, setCoordinate] = useState({latitude: 0.0, longitude: 0.0});
   const [center, setCenter] = useState({
@@ -31,7 +32,8 @@ const ShopHomePage = ({navigation, route}) => {
     latitude: 0.0,
     longitude: 0.0,
   });
-  const getShopDetailInfo = async () => {
+
+  const getShopDetailInfo = useCallback(async () => {
     try {
       const res = await shopDetailAPI.getShopDetail(shopNumber, token);
       setData(res.data);
@@ -48,7 +50,7 @@ const ShopHomePage = ({navigation, route}) => {
     } catch (error) {
       console.log('위시리스트 검색', error);
     }
-  };
+  }, [shopNumber, token]);
 
   const startScore = () => {
     const result = [];
@@ -69,7 +71,7 @@ const ShopHomePage = ({navigation, route}) => {
   useFocusEffect(
     useCallback(() => {
       getShopDetailInfo();
-    }, []),
+    }, [getShopDetailInfo]),
   );
 
   return (
@@ -79,21 +81,20 @@ const ShopHomePage = ({navigation, route}) => {
           <Image
             source={{uri: `${data.image_url}`}}
             style={{
-              resizeMode: 'contain',
-              width: '90%',
+              resizeMode: 'cover',
+              width: '100%',
               height: '100%',
-              borderRadius: 10,
             }}
           />
         </View>
         <View style={styles.nameBox}>
-          <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+          <Text style={{color: 'black', fontSize: 23, fontWeight: 'bold'}}>
             {data.name}
           </Text>
           <View style={styles.reviewBox}>
             <View style={styles.starIcons}>{startScore()}</View>
 
-            <Text style={{marginHorizontal: 5}}>{data.score}/5</Text>
+            <Text style={{marginHorizontal: 5}}>{shopScore}/5</Text>
             <Text style={{marginHorizontal: 5}}>
               방문자리뷰 {data.review_cnt}
             </Text>
@@ -120,7 +121,15 @@ const ShopHomePage = ({navigation, route}) => {
                 backgroundColor="transparent"
                 size={20}
               />
-              <Text style={{color: 'black', fontSize: 13, marginLeft: 10}}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 13,
+                  marginLeft: 10,
+                  width: '90%',
+                }}
+                numberOfLines={2}
+                ellipsizeMode="tail">
                 {data.address}
               </Text>
             </View>
@@ -167,16 +176,17 @@ const styles = StyleSheet.create({
   },
   imgBox: {
     width: '100%',
-    height: 180,
+    height: 250,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
   },
   nameBox: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 15,
   },
   infoBox: {
     width: '90%',
