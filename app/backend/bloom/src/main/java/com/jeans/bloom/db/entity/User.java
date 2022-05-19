@@ -53,6 +53,9 @@ public class User {
     @Column(name = "refresh_token", length = 255)
     private String refreshToken;
 
+    @Column(name = "phone_token", length = 255)
+    private String phoneToken;
+
     @JsonIgnore
 //    @JsonManagedReference
     @OneToMany(mappedBy = "user" , orphanRemoval = true)
