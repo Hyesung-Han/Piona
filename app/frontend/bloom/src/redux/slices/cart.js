@@ -21,7 +21,7 @@ const initialState = {
   total_price: 0,
   cart_list: '',
   select_cart_list: [],
-  reservation_list: [],
+  reservation_list: '',
 };
 
 const cartSlice = createSlice({
@@ -59,7 +59,7 @@ const cartSlice = createSlice({
       state.select_cart_list = result;
     },
     addReservationList(state, action) {
-      state.reservation_list.push(action.payload);
+      state.reservation_list = action.payload;
     },
     setItemName(state, action) {
       state.item_name = action.payload.item_name;

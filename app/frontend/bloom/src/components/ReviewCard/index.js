@@ -193,7 +193,7 @@ const MenuCardList = ({item, navigation}) => {
               <Image
                 source={{uri: `${item.image_url}`}}
                 style={{
-                  resizeMode: 'contain',
+                  resizeMode: 'cover',
                   width: '100%',
                   height: '100%',
                 }}
