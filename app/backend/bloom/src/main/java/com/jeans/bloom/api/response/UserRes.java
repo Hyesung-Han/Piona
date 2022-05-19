@@ -1,6 +1,7 @@
 package com.jeans.bloom.api.response;
 
 import com.jeans.bloom.db.entity.User;
+import com.jeans.bloom.db.entity.type.UserCode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class UserRes {
     String phone;
     String access_token;
     String refresh_token;
+    UserCode user_code;
 
     public static UserRes of(User user){
         return UserRes.builder()
@@ -30,6 +32,7 @@ public class UserRes {
                 .phone(user.getPhone())
                 .access_token(user.getAccessToken())
                 .refresh_token(user.getRefreshToken())
+                .user_code(user.getUserCode())
                 .build();
     }
 }

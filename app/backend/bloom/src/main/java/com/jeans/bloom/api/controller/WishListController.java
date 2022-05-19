@@ -37,8 +37,11 @@ public class WishListController {
     public ResponseEntity<BaseResponseBody> insertWishList(
             @RequestBody @ApiParam(value="아이디", required = true) WishListReq wishList) {
         try{
+            if(wishListService.findWishListByUser_UserIdAndShop_ShopNumber(wishList.getUser_id(), wishList.getShop_number()) !=null){
+                return ResponseEntity.status(201).body(BaseResponseBody.of( "fail", "중복된 값"));
+            }
             wishListService.insertWishList(wishList);
-            return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+            return ResponseEntity.status(201).body(BaseResponseBody.of( "success"));
         } catch (Exception e) {
             return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", e));
         }

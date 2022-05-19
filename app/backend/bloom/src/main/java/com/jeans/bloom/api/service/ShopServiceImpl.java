@@ -154,7 +154,7 @@ public class ShopServiceImpl implements ShopService{
      */
     @Override
     public List<Date> getUnableDate(int itemId, int quantity) throws Exception {
-        return reservationDetailRepository.getUnableDate(itemId, LocalDate.of(2022,4,28), quantity);
+        return reservationDetailRepository.getUnableDate(itemId, LocalDate.now(), quantity);
     }
 
 }

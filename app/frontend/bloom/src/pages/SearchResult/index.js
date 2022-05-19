@@ -1,77 +1,150 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   StyleSheet,
   TextInput,
-  ScrollView,
   FlatList,
-  TouchableOpacity,
-  KeyboardAvoidingViewBase,
+  KeyboardAvoidingView,
+  Text,
 } from 'react-native';
 import ShopCard from '../../components/ShopCard';
 import {searchAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import shopSlice from '../../redux/slices/shop';
+
 /**
- * CSW | 2022.05.06
+ * CSW, LDJ | 2022.05.19
  * @name SearchResultPage
  * @des
- * 검색인풋박스와 shop컴포넌트를 보여주는 검색결과페이지입니다.
+ * # 사용 컴포넌트 : ShopCard
  *  */
 
 const SearchResultPage = ({navigation, route}) => {
-  const [inputText, setInputText] = useState('');
-  const [data, setData] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
+  const search_list = useSelector(state => state.shop.search_list);
   const user_id = useSelector(state => state.user.id);
   const token = useSelector(state => state.user.accessToken);
+  const type = route.params.type;
+  const user_lat = route.params.user_lat;
+  const user_lng = route.params.user_lng;
+  const word = route.params.word;
+  const [inputText, setInputText] = useState('');
 
-  const getShop = async () => {
+  const getShop = useCallback(async () => {
     try {
       const res = await searchAPI.get(
-        route.params.type,
+        type,
         user_id,
-        route.params.user_lat,
-        route.params.user_lng,
-        route.params.word,
+        user_lat,
+        user_lng,
+        word,
         token,
       );
-      setData(res.data);
+      const search_data = res.data.data;
+      if (res.data.result === 'success') {
+        dispatch(shopSlice.actions.setSearchList(search_data));
+      }
     } catch (error) {
-      console.log('검색결과', error);
+      console.log('검색어 결과 에러 : ', error);
     }
-  };
+  }, [type, user_id, user_lat, user_lng, word, token, dispatch]);
 
-  const setText = () => {
-    if (route.params.word === 'kw_reasonable') {
+  const setText = useCallback(() => {
+    if (word === 'kw_reasonable') {
       setInputText('#가성비');
-    } else if (route.params.word === 'kw_clean') {
+    } else if (word === 'kw_clean') {
       setInputText('#깔끔');
-    } else if (route.params.word === 'kw_mood') {
+    } else if (word === 'kw_mood') {
       setInputText('#감성');
-    } else if (route.params.word === 'kw_various') {
+    } else if (word === 'kw_various') {
       setInputText('#다양한구성');
+    } else if (word === 'kw_kind') {
+      setInputText('#친절한');
+    } else if (word === 'kw_adorable') {
+      setInputText('#아기자기');
     } else {
-      setInputText(route.params.word);
+      setInputText(word);
     }
-  };
-  const renderItem = ({item}) => {
-    return <ShopCard item={item} navigation={navigation} />;
-  };
+  }, [word]);
+
+  const renderItem = useCallback(
+    ({item}) => {
+      return <ShopCard item={item} navigation={navigation} />;
+    },
+    [navigation],
+  );
 
   useFocusEffect(
     useCallback(() => {
       setText();
       getShop();
-    }, []),
+    }, [getShop, setText]),
   );
 
-  console.log(data);
-  return (
-    <View style={styles.container}>
+  return search_list.length >= 1 ? (
+    <KeyboardAvoidingView behavior="height" style={{flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.searchBox}>
+          <View style={styles.inputBox}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="검색어를 입력하세요."
+              value={inputText}
+              onChangeText={setInputText}></TextInput>
+            <View style={styles.iconBox}>
+              <Icon.Button
+                onPress={() =>
+                  navigation.navigate('Search', {
+                    type: 'location',
+                    word: `${inputText}`,
+                    user_id: user_id,
+                    user_lat: 0,
+                    user_lng: 0,
+                  })
+                }
+                name="search-outline"
+                color="black"
+                backgroundColor="transparent"
+              />
+            </View>
+          </View>
+        </View>
+        <View style={styles.list}>
+          <FlatList
+            data={search_list}
+            renderItem={renderItem}
+            keyExtractor={item => item.shop_number}
+          />
+        </View>
+        <View style={styles.mapBtn}>
+          <Icon.Button
+            name="map-outline"
+            color="white"
+            backgroundColor="#F2A7B3"
+            size={20}
+            borderRadius={30}
+            width={50}
+            alignItems="center"
+            justifyContent="center"
+            onPress={() =>
+              navigation.navigate('Map', {
+                page: 'search',
+                type: route.params.type,
+                word: route.params.word,
+                user_id: user_id,
+                user_lat: 0,
+                user_lng: 0,
+              })
+            }
+          />
+        </View>
+      </View>
+    </KeyboardAvoidingView>
+  ) : (
+    <View style={styles.Nocontainer}>
       <View style={styles.searchBox}>
         <View style={styles.inputBox}>
           <TextInput
@@ -97,19 +170,8 @@ const SearchResultPage = ({navigation, route}) => {
           </View>
         </View>
       </View>
-      <View style={styles.list}>
-        <FlatList
-          //리스트의 소스를 담는 속성
-          //data={data}
-          data={data}
-          //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
-          renderItem={renderItem}
-          //item의 고유의 키를 부여하는 속성
-          keyExtractor={item => item.shop_number}
-          //무한 스크롤때문에 넣은듯
-          // onEndReached={() => {if(loading===false && pageNum<=totalPageCnt) getMyPillHistoryList()}}
-          // onEndReachedThreshold={0.4}
-        />
+      <View style={{flex: 3, justifyContent: 'flex-start'}}>
+        <Text> 일치하는 검색결과가 없습니다.</Text>
       </View>
     </View>
   );
@@ -119,6 +181,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F8F8',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     fontSize: 14,
@@ -129,13 +193,10 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     backgroundColor: 'white',
     justifyContent: 'center',
-    width: '70%',
-    height: '11%',
+    width: '100%',
     borderRadius: 10,
     borderColor: '#F2A7B3',
     borderWidth: 1.5,
-    marginTop: '9%',
-    marginBottom: '9%',
   },
   iconBox: {
     flex: 1,
@@ -145,12 +206,30 @@ const styles = StyleSheet.create({
     right: 0,
   },
   searchBox: {
-    flex: 1,
+    flex: 0.6,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    width: 250,
+    height: 100,
+    marginVertical: 15,
   },
   list: {
     flex: 3,
+    backgroundColor: '#F8F8F8',
+  },
+  mapBtn: {
+    position: 'absolute',
+    right: 15,
+    bottom: 10,
+    width: '10%',
+    height: '10%',
+  },
+  Nocontainer: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
