@@ -1,6 +1,5 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useCallback} from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
@@ -8,7 +7,7 @@ import userSlice from '../../redux/slices/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 /**
- * LDJ | 2022.05.06
+ * LDJ | 2022.05.19
  * @name MyInfo
  * @api -
  * @des
@@ -31,6 +30,9 @@ const MyInfoPage = ({navigation}) => {
         phoneNumber: '',
         accessToken: '',
         refreshToken: '',
+      }),
+      userSlice.actions.setPhoneToken({
+        phoneToken: '',
       }),
     );
     await EncryptedStorage.removeItem('refreshToken');
@@ -106,7 +108,7 @@ const MyInfoPage = ({navigation}) => {
             color: 'grey',
             marginRight: 16,
           }}>
-          포인트어쩔껴~ P
+          10000 P
         </Text>
       </TouchableOpacity>
       <TouchableOpacity

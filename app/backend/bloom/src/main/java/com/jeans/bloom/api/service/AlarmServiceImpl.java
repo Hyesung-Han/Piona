@@ -2,8 +2,10 @@ package com.jeans.bloom.api.service;
 
 import com.jeans.bloom.api.response.AlarmRes;
 import com.jeans.bloom.db.entity.Alarm;
+import com.jeans.bloom.db.entity.User;
 import com.jeans.bloom.db.entity.type.StatusType;
 import com.jeans.bloom.db.repository.AlarmRepository;
+import com.jeans.bloom.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ import java.util.stream.Collectors;
 public class AlarmServiceImpl implements AlarmService{
     @Autowired
     private AlarmRepository alarmRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * LJA | 2022.05.04
@@ -46,4 +51,22 @@ public class AlarmServiceImpl implements AlarmService{
             alarmRepository.saveAll(alarms);
         }
     }
+
+
+    /**
+     * HHS | 2022.05.13
+     * @name tokenUpdate
+     * @des 회원 아이디와 폰 토큰 값을 받아 해당 유저의 폰 토큰값을 갱신해주는 메소드
+     */
+    @Override
+    public void tokenUpdate(String user_id, String phone_token) throws Exception {
+        User user = userRepository.findUserByUserId(user_id);
+        //회원이 맞으면 변경
+        if(user!=null){
+            user.setPhoneToken(phone_token);
+            userRepository.save(user);
+        }
+    }
+
+
 }

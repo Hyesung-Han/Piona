@@ -1,29 +1,85 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import {
   View,
   StyleSheet,
   Text,
   Image,
-  Button,
   TouchableOpacity,
-  navigation,
+  Alert,
 } from 'react-native';
+import {useSelector} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
-import HorizonLine from '../HorizonLine';
+import {cancelReservation} from '../../utils/Axios';
 
 /**
- * LHJ | 2022.05.04
+ * LHJ, CSW | 2022.05.19
  * @name PicnicCard
- * @api x
+ * @api cancelReservation
  * @des
- * 1. 컴포넌트 목록 :
- * 2. 페이지 기능 :
- * Picnic Page의 진행중인 예약 FlatList에 보여줄 item 컴포넌트이다.
  */
 
 const PicnicCardList = ({item}) => {
-  //carousel에서 사용하는 인덱스
-  const activeIndex = 0;
+  const status = item.status;
+  const reservation_id = item.reservation_id;
+  const token = useSelector(state => state.user.accessToken);
+
+  const [statusText, setStatusText] = useState('');
+  const [statusColor, setStatusColor] = useState('#C0C0C0');
+
+  useEffect(() => {
+    setStatus();
+  }, []);
+
+  const setStatus = () => {
+    if (status === 'R') {
+      setStatusText('예약 취소');
+      setStatusColor('#DE3C4C');
+    }
+    if (status === 'U') {
+      setStatusText('대여중');
+      setStatusColor('#7AC28A');
+    }
+    if (status === 'C') {
+      setStatusText('취소됨');
+      setStatusColor('#DE3C4C');
+    }
+    if (status === 'D') {
+      setStatusText('반납완료');
+      setStatusColor('#E6B8DF');
+    }
+    if (status === 'F') {
+      setStatusText('미반납');
+      setStatusColor('#E6FF59');
+    }
+  };
+
+  const cancelReservationAPI = useCallback(async () => {
+    try {
+      const response = await cancelReservation(reservation_id, token);
+      setStatusText('취소됨');
+      setStatusColor('#DE3C4C');
+    } catch (error) {
+      console.log('예약 취소 실패', error);
+    }
+  }, [reservation_id, token]);
+
+  const buttonEvent = () => {
+    if (status === 'R') {
+      cancelReservationAPI();
+    }
+    if (status === 'U') {
+      Alert.alert('쓰레기와 함께 반납해주세요');
+    }
+    if (status === 'C') {
+      Alert.alert('다음엔 꼭 빌려주세요');
+    }
+    if (status === 'D') {
+      Alert.alert('이용해주셔서 감사합니다.');
+    }
+    if (status === 'F') {
+      Alert.alert('반납해주세요');
+    }
+  };
 
   const renderItem = ({item}) => {
     return (
@@ -32,7 +88,7 @@ const PicnicCardList = ({item}) => {
           <Image
             source={{uri: `${item.image_url}`}}
             style={{
-              resizeMode: 'contain', //contain:사진의 비율 유지, cover:사진을 영역에 맞춤
+              resizeMode: 'cover',
               borderRadius: 5,
               height: 130,
               padding: 10,
@@ -41,7 +97,12 @@ const PicnicCardList = ({item}) => {
           />
           <View style={styles.rowSeperateContainer}>
             <View style={{width: '75%'}}>
-              <Text style={styles.carouselItemName}>{item.item_name}</Text>
+              <Text
+                style={styles.carouselItemName}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {item.item_name}
+              </Text>
             </View>
             <View style={{width: '25%'}}>
               <Text style={styles.carouselQuantity}> {item.quantity}개</Text>
@@ -56,42 +117,42 @@ const PicnicCardList = ({item}) => {
     <View style={styles.doneCardList}>
       <View style={styles.columnSeperateContainer}>
         <View style={styles.rowSeperateContainer}>
-          <View style={{width: '35%'}}>
+          <View style={{width: '30%'}}>
             <Text numberOfLines={1} style={styles.shopName}>
               {item.shop_name}
             </Text>
           </View>
-          <View style={{width: '30%'}}>
+          <View style={{width: '35%'}}>
             <Text style={styles.resDate}>
               {item.reservation_date.split('T')[0]}
             </Text>
           </View>
-          <View style={{width: '20%', height: 25}}>
+          <TouchableOpacity
+            style={{width: '20%', height: 25}}
+            onPress={() => {
+              buttonEvent();
+            }}>
             <View style={styles.status}>
               <Text
-                style={{color: 'white', fontWeight: 'bold', fontSize: 11}}
-                //   onPress={() =>
-                //     navigation.navigate('Map', {navigation: `${navigation}`})
-                //   }
-              >
-                예약 취소
+                style={{
+                  color: 'white',
+                  backgroundColor: {statusColor},
+                  fontWeight: 'bold',
+                  fontSize: 11,
+                }}>
+                {statusText}
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <View
           style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
           <Carousel
-            layout={'default'} //'default'(일렬로 나열)), 'stack(모르겠다)' and 'tinder'(한장만 보이지만 동그랗게 전환)
+            layout={'default'}
             data={item.detail}
             sliderWidth={100}
             itemWidth={150}
             renderItem={renderItem}
-            //자동으로 왼쪽으로 가게
-            //autoplay={'true'}
-            //무한 루프
-            //loop={'true'}
-            //caoursel을 왼쪽으로 붙임
             activeSlideAlignment="start"
           />
         </View>
@@ -101,7 +162,6 @@ const PicnicCardList = ({item}) => {
             <Text style={styles.quantity}>총 {item.total_price}원</Text>
           </View>
         </View>
-        <HorizonLine />
       </View>
     </View>
   );

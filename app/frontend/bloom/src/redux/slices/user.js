@@ -15,6 +15,7 @@ const initialState = {
   phoneNumber: '',
   accessToken: '',
   refreshToken: '',
+  phoneToken: '',
 };
 
 const userSlice = createSlice({
@@ -28,6 +29,9 @@ const userSlice = createSlice({
       state.phoneNumber = action.payload.phoneNumber;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
+    },
+    setPhoneToken(state, action) {
+      state.phoneToken = action.payload;
     },
   },
   extraReducers: builder => {},
