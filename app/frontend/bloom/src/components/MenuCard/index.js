@@ -1,42 +1,16 @@
-import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Button,
-  TouchableOpacity,
-  Modal,
-  navigation,
-  AppRegistry,
-} from 'react-native';
-import RegisterReview from '../../pages/RegisterReview';
+import React from 'react';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 
 /**
- * LHJ | 2022.05.13
+ * LHJ | 2022.05.19
  * @name MenuCard
- * @api x
+ * @api
  * @des
- * 1. 컴포넌트 목록 : .
- * 2. 페이지 기능 :
- * FlatList에 보여줄 item 컴포넌트이다.
+
  */
 
 const MenuCardList = ({item, navigation}) => {
-  //item{
-  //   "item_id": 2,
-  //   "item_name": "피크닉매트 중형",
-  //   "price": 7000,
-  //   "description": "asdasd",
-  //   "image_url": "https://hanamon.kr/wp-content/uploads/2022/025%A1%E1%86%AF.jpeg",
-  //}
-  const user_id = useSelector(state => state.id);
-  const token = useSelector(state => state.user.accessToken);
-  //shopNumber는 현재 있는 가게이므로 리덕스에 있는 shopNumber사용 or 이전 화면(shopMenu에서 전달받기)
-  const shopNumber = useSelector(state => state.shop.number);
-  //const shopName = useSelector(state => state.shop.name);
-
   return (
     <View style={styles.container}>
       <TouchableOpacity

@@ -1,37 +1,31 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   ScrollView,
   Alert,
-  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {userAPI} from '../../utils/Axios';
 import {cartAPI} from '../../utils/Axios';
-import {getNotResList} from '../../utils/Axios';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import cartSlice from '../../redux/slices/cart';
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
 import {EmptyCart} from '../../utils/Axios';
 
 /**
- * lHJ | 2022.05.12
+ * LHJ | 2022.05.19
  * @name CalenderModal
  * @api cartAPI
  * @des
  * 1. 장바구니에 넣기 위한 달력 모달이다
  * 2. 모달이 달리는 페이지(MenuDetail 페이지)에서 api를 위한 모든 정보를 건내받은 후 날짜를 선택함
- * 3. cartAPI를 통해서 post API 호출
  */
 
 const CalenderModal = props => {
   const dispatch = useDispatch();
-  const cart_list = useSelector(state => state.cart.cart_list);
   const item_id = props.item_id;
   const quantityStatus = props.quantityStatus;
   const shop_number = props.shop_number;
@@ -41,19 +35,11 @@ const CalenderModal = props => {
   const [pickedDate, setPickedDate] = useState();
   const [pickedDateFilter, setPickedDateFilter] = useState();
   const [selectDate, setSelectDate] = useState('');
-  const [pickedDateColor, setPickedDateColor] = useState('#B2B2B2');
   let markedDates = [];
 
-  const touch = () => {
-    Alert.alert('알림', '선택한 날짜는 ' + pickedDate + '입니다');
-  };
-
   const render = () => {
-    //const today = moment().format().split('T')[0];
     if (selectDate === null) {
-      //받아온 예약 불가 날짜 표시해주기
       for (let i = 0; i < notRedData.length; i++) {
-        //markedDates[notRedData[i]] = {selected: true, disableTouchEvent: true};
         markedDates[notRedData[i]] = {
           customStyles: {
             container: {
@@ -61,7 +47,6 @@ const CalenderModal = props => {
             },
             text: {
               color: '#DADADA',
-              //fontWeight: 'bold',
             },
           },
           disableTouchEvent: true,
@@ -69,7 +54,6 @@ const CalenderModal = props => {
       }
     } else {
       for (let i = 0; i < notRedData.length; i++) {
-        //markedDates[notRedData[i]] = {selected: true, disableTouchEvent: true};
         markedDates[notRedData[i]] = {
           customStyles: {
             container: {
@@ -77,7 +61,6 @@ const CalenderModal = props => {
             },
             text: {
               color: '#DADADA',
-              //fontWeight: 'bold',
             },
           },
           disableTouchEvent: true,
@@ -90,7 +73,6 @@ const CalenderModal = props => {
           },
           text: {
             color: 'white',
-            //fontWeight: 'bold',
           },
         },
       };
@@ -100,7 +82,6 @@ const CalenderModal = props => {
 
   const addCart = useCallback(async () => {
     try {
-      //이걸 모달로 넘겨주고 모달에서 한번에 처리하자!
       const response = await cartAPI.addCart(
         item_id,
         quantityStatus,
@@ -253,13 +234,10 @@ const CalenderModal = props => {
                 setPickedDate(date);
                 setPickedDateFilter(day.dateString);
                 setSelectDate(day.dateString);
-                //renderMark();
               }}
             />
           </View>
-          <Text style={{alignSelf: 'flex-end'}}>
-            {/* 선택한 날짜: {pickedDateFilter} */}
-          </Text>
+          <Text style={{alignSelf: 'flex-end'}}></Text>
           <TouchableOpacity
             style={{
               backgroundColor: '#F15C74',
@@ -270,10 +248,8 @@ const CalenderModal = props => {
               height: 40,
               justifyContent: 'center',
             }}
-            //onPress={addCart}
             onPress={() => {
               addCart();
-              //props.exit(false);
             }}>
             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
               완료

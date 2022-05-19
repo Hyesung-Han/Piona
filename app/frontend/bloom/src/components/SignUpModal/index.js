@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {userAPI} from '../../utils/Axios';
 
 /**
- * LDJ | 2022.05.11
+ * LDJ | 2022.05.19
  * @name SignUpModal
  * @api 1. userAPI/signup
  *      2. userAPI/idCheck

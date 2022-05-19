@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {View, StyleSheet, FlatList, Text} from 'react-native';
 import ShopCard from '../../components/ShopCard';
@@ -8,13 +8,12 @@ import {useDispatch} from 'react-redux';
 import shopSlice from '../../redux/slices/shop';
 
 /**
- * CSW, LDJ | 2022.05.13
+ * CSW, LDJ | 2022.05.19
  * @name WishListPage
  * @api WishListAPI/getWishList
  * @des
  * 좋아요 누른 가게 목록 조회 (위시리스트 조회)
  * # 사용 컴포넌트 : ShopCard
- * # 무한 루프 에러 해결?! [리덕스로~]
  *  */
 
 const WishListPage = ({navigation}) => {
@@ -62,11 +61,8 @@ const WishListPage = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.list}>
         <FlatList
-          //리스트의 소스를 담는 속성
           data={wish_list}
-          //data로 받은 소스의 아이템들을 render 시켜주는 콜백함수
           renderItem={renderItem}
-          //item의 고유의 키를 부여하는 속성 [가게 번호 고유한데 왜 않데?]
           keyExtractor={item => item.shop_number}
         />
       </View>

@@ -1,18 +1,10 @@
 import React, {useState, useCallback} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
-import {
-  View,
-  Dimensions,
-  Alert,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Alert, Text, TextInput, TouchableOpacity} from 'react-native';
 import {userAPI} from '../../utils/Axios';
 import {useSelector} from 'react-redux';
 
 /**
- * LDJ | 2022.05.08
+ * LDJ | 2022.05.19
  * @name PwdCheck
  * @api userAPI/pwdCheck
  * @des
