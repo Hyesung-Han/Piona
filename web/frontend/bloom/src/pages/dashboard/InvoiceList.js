@@ -141,7 +141,6 @@ export default function InvoiceList() {
             Authorization: user.access_token
           }
         })
-        console.log(response);
         alert("예약상태를 변경했습니다.", "success")
         await getReservationList();
       }
@@ -282,7 +281,7 @@ export default function InvoiceList() {
                 />
 
                 <TableBody>
-                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).reverse().map((row) => (
                     <InvoiceTableRow
                       key={row.reservation_id}
                       row={row}
@@ -340,14 +339,6 @@ function applySortFilter({
   });
 
   tableData = stabilizedThis.map((el) => el[0]);
-
-  // if (filterName) {
-  //   tableData = tableData.filter(
-  //     (item) =>
-  //       item.invoiceNumber.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-  //       item.invoiceTo.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-  //   );
-  // }
 
   if (filterStatus !== 'all') {
     tableData = tableData.filter((item) => item.status === filterStatus);
