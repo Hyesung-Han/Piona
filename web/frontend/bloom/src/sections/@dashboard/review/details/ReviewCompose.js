@@ -40,11 +40,6 @@ const RootStyle = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-// const InputStyle = styled(Input)(({ theme }) => ({
-//   padding: theme.spacing(0.5, 3),
-//   borderBottom: `solid 1px ${theme.palette.divider}`,
-// }));
-
 // ----------------------------------------------------------------------
 
 ReviewCompose.propTypes = {
@@ -58,22 +53,9 @@ ReviewCompose.propTypes = {
 export default function ReviewCompose({ row, image, isOpenCompose, onCloseCompose, onRedirect }) {
   const { user } = useAuth();
 
-  // useEffect(() => {
-
-  //   if(row.comment_review !== null) setReviewDetail(row.comment_review);
-  //   else setReviewDetail('');
-  //   // getReviewDetail();
-  //   console.log("rd", row);
-  //   console.log("dv",reviewDetail);
-
-  // }, [row]);
-
 
   const { review_id, content, score, comment, comment_review } = row;
   const reviewImg = image;
-
-  // const [reviewDetail, setReviewDetail] = useState('');
-  // const [reviewImg, setReviewImg] = useState([]);
 
   const defaultValues = {
     review_comment: '',
@@ -93,33 +75,6 @@ export default function ReviewCompose({ row, image, isOpenCompose, onCloseCompos
     formState: { isSubmitting },
   } = methods;
 
-
-
-  // const getReviewDetail = async () => {
-  //   try {
-  //     const user = localStorage.getItem('user');
-  //     if(user != null){
-  //       const parseUser = JSON.parse(user);
-  //       const response = await axios.get(`/api/review/${review_id}`, {
-  //         headers : {
-  //           Authorization: parseUser.access_token
-  //         }
-  //       })
-  //       console.log(response.data);
-  //       if(response.data.result === "success"){
-  //         setReviewDetail(response.data.data);
-  //         if(response.data.data.image_url !== null){
-  //           setReviewImg(response.data.data.image_url.split(','));
-  //         }else{
-  //           setReviewImg([]);
-  //         }
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   const onSubmit = async (data) => {
     try {
       if(user != null){
@@ -138,7 +93,6 @@ export default function ReviewCompose({ row, image, isOpenCompose, onCloseCompos
           // setReviewDetail([]);
           alert("답글 등록이 완료되었습니다.", "success");
         }
-        console.log(response.data);
       }
     } catch (error) {
       console.error(error);
@@ -219,7 +173,6 @@ export default function ReviewCompose({ row, image, isOpenCompose, onCloseCompos
         </Box>
         <Box sx={{ py: 2, px: 3, alignItems: 'center' }} >
           <Typography variant="subtitle2" noWrap mb={1}>리뷰</Typography>
-          {console.log(reviewImg.length)}
           {reviewImg.length !== 0 ? 
           <Slider {...settings2} >
           {reviewImg.map((img, index) => (

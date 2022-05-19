@@ -115,7 +115,6 @@ export default function ReviewList() {
             Authorization: user.access_token
           }
         })
-        console.log(response.data);
         if(response.data.result === "success"){
           setReviewDetail(response.data.data);
           if(response.data.data.image_url !== null){
@@ -219,7 +218,6 @@ export default function ReviewList() {
                 />
 
                 <TableBody>
-                  {/* {console.log(dataFiltered)} */}
                   <>
                   {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                       <ReviewTableRow
