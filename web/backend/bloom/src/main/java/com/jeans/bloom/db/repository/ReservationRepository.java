@@ -42,4 +42,24 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     )
     List<Object[]> getTotalSale(String shopNumber, LocalDate startDate, LocalDate EndDate);
 
+
+    /**
+     * HHS | 2022.05.23
+     * @name getReservationId
+     * @des 현재 날짜와 예약날짜가 같으며, 예약 상태가 사용중 혹은 사용전인 경우의 예약 번호 반환
+     */
+    @Query(value =
+            "SELECT " +
+                    " r.reservation_id " +
+                    " FROM reservation_t as r " +
+                    " WHERE (r.status = \"U\" or r.status = \"R\") and r.reservation_id = " +
+                    " any (SELECT rd.reservation_id " +
+                    " FROM reservation_detail_t as rd " +
+                    " WHERE DATE_FORMAT(rd.reservation_date, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') "+
+                    " GROUP BY rd.reservation_id)"
+            , nativeQuery = true
+    )
+    List<Integer> getReservationId() throws Exception;
+
+
 }

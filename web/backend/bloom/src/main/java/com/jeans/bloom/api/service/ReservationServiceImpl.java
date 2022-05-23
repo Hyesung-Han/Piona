@@ -45,4 +45,18 @@ public class ReservationServiceImpl implements ReservationService {
             reservationRepository.save(reservation);
         }
     }
+
+    /**
+     * HHS | 2022.05.23
+     * @name changeAllOrderStatusToDone
+     * @des status를 입력받아 해당 예약번호들의 상태를 변경하는 메서드
+     */
+    @Override
+    public void changeAllOrderStatusToDone() throws Exception{
+        List<Integer> reservationIds = reservationRepository.getReservationId();
+        for (int i = 0; i < reservationIds.size(); i++) {
+            changeOrderStatus(reservationIds.get(i), OrderStatus.valueOf("D"));
+        }
+    }
+
 }
