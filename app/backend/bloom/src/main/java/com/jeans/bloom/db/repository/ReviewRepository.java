@@ -19,4 +19,5 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
     List<Review> findReviewByReservation_Shop_ShopNumber(String shopNumber);
 
+    Review findReviewByReservation_reservationId(int reservationId) throws Exception;
 }
