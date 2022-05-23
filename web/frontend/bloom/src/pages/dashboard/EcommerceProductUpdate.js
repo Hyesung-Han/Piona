@@ -185,8 +185,8 @@ const handleDrop = useCallback(
                         color: 'text.secondary',
                       }}
                     >
-                  Allowed *.jpeg, *.jpg, *.png, *.gif
-                  <br /> max size of {fData(3145728)}
+                  파일 형식 *.jpeg, *.jpg, *.png, *.gif
+                  <br /> 최대 크기 {fData(3145728)}
                 </Typography>
               }
             />

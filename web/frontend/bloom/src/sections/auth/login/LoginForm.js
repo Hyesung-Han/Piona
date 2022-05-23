@@ -67,11 +67,11 @@ export default function LoginForm() {
       <Stack spacing={3}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="user_id" label="id" />
+        <RHFTextField name="user_id" label="아이디" />
 
         <RHFTextField
           name="password"
-          label="Password"
+          label="비밀번호"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -87,12 +87,12 @@ export default function LoginForm() {
 
       <Stack direction="column" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.register}>
-        Don’t have an account?
+        회원이 아니신가요?
         </Link>
       </Stack>
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-        Login
+        로그인
       </LoadingButton>
     </FormProvider>
   );
