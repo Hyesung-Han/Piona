@@ -153,7 +153,7 @@ export default function InvoiceList() {
   const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
 
   const TABS = [
-    { value: 'all', label: 'All', color: 'info', count: tableData.length },
+    { value: 'all', label: '전체', color: 'info', count: tableData.length },
     { value: 'U', label: '대여중', color: 'success', count: getLengthByStatus('U') },
     { value: 'D', label: '반납완료', color: 'warning', count: getLengthByStatus('D') },
     { value: 'R', label: '준비중', color: 'error', count: getLengthByStatus('R') },
@@ -187,7 +187,7 @@ export default function InvoiceList() {
               sx={{ py: 2 }}
             >
               <InvoiceAnalytic
-                title="Total"
+                title="전체"
                 total={tableData.length}
                 percent={100}
                 icon="ic:round-receipt"
@@ -300,6 +300,7 @@ export default function InvoiceList() {
           <Box sx={{ position: 'relative' }}>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
+              labelRowsPerPage={"페이지 당 개수"}
               component="div"
               count={dataFiltered.length}
               rowsPerPage={rowsPerPage}
@@ -308,11 +309,11 @@ export default function InvoiceList() {
               onRowsPerPageChange={onChangeRowsPerPage}
             />
 
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Switch checked={dense} onChange={onChangeDense} />}
               label="Dense"
               sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
-            />
+            /> */}
           </Box>
         </Card>
       </Container>
@@ -329,6 +330,8 @@ function applySortFilter({
   filterStartDate,
   filterEndDate,
 }) {
+
+  tableData = tableData.sort((a, b) => new Date(a.detail[0].reservation_date) - new Date(b.detail[0].reservation_date));
 
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
