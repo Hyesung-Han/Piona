@@ -9,4 +9,6 @@ public interface ReservationService {
     List<ReservationRes> findReservationsByShop_ShopNumber(String shopNumber) throws Exception;
 
     void changeOrderStatus(int reservationId, OrderStatus status) throws Exception;
+
+    void changeAllOrderStatusToDone() throws Exception;
 }
