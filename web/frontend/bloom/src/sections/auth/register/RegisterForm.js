@@ -274,14 +274,14 @@ export default function RegisterForm() {
         <RHFTextField name="name" label="성명"/>
 
         <TextField 
-          name="id" label="ID"             
+          name="id" label="아이디"             
           onChange={onChangeHandler('id')}
           error={idErr}
           helperText={idErrMsg}/>
 
         <RHFTextField
           name="password"
-          label="Password"
+          label="비밀번호"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -296,7 +296,7 @@ export default function RegisterForm() {
 
         <RHFTextField
           name="passwordCheck"
-          label="PasswordCheck"
+          label="비밀번호 확인"
           type={showPasswordCheck ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -344,7 +344,7 @@ export default function RegisterForm() {
 
 
         <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-          Register
+          회원 가입
         </LoadingButton>
       </Stack>
     </FormProvider>

@@ -18,11 +18,11 @@ import { IconButtonAnimate } from '../../../components/animate';
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
+    label: '홈',
     linkTo: '/',
   },
   {
-    label: 'Profile',
+    label: '내 정보',
     linkTo: PATH_DASHBOARD.user.account,
   },
 ];
@@ -120,7 +120,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Logout
+          로그아웃
         </MenuItem>
       </MenuPopover>
     </>

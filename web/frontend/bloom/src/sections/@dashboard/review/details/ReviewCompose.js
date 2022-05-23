@@ -18,7 +18,7 @@ import useAuth from '../../../../hooks/useAuth';
 import Iconify from '../../../../components/Iconify';
 
 // ----------------------------------------------------------------------
-const THUMB_SIZE = 84;
+const THUMB_SIZE = 204;
 const RootStyle = styled('div')(({ theme }) => ({
   right: 0,
   bottom: 0,
