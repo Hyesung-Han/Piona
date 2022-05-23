@@ -80,7 +80,7 @@ export default function Login() {
                 <Typography variant="h4" gutterBottom>
                   피어나 ADMIN
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>사장님들을 위한 공간입니다.</Typography>
               </Box>
 
               <Tooltip title={capitalCase(method)} placement="right">

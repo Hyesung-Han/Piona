@@ -6,7 +6,7 @@ import { Box, Table, TableCell, Collapse, TableHead, TableBody, TableRow,IconBut
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 // utils
-import { fDate } from '../../../../utils/formatTime';
+import { fcDate } from '../../../../utils/formatTime';
 // components
 import Label from '../../../../components/Label';
 import { TableMoreMenu } from '../../../../components/table';
@@ -51,7 +51,7 @@ export default function InvoiceTableRow({ row, selected, onChangeRow }) {
 
       <TableCell align="center">
           <Typography variant="subtitle2" noWrap>
-            {fDate(detail[0].reservation_date)}
+            {fcDate(detail[0].reservation_date)}
           </Typography>
       </TableCell>
 
