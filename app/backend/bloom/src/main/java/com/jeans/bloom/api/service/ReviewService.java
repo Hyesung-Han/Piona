@@ -11,4 +11,6 @@ public interface ReviewService {
     List<ReviewDetailRes> findReviewsByReservation_Shop_ShopNumberAndIsBan(String shopNumber, StatusType isBan) throws Exception;
 
     void writeReview(ReviewWriteReq reviewWriteReq) throws Exception;
+
+    boolean findOneReview(int reservationId) throws Exception;
 }
