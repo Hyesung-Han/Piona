@@ -42,4 +42,16 @@ public class ReviewServiceImpl implements ReviewService{
     public void writeReview(ReviewWriteReq reviewWriteReq) throws Exception {
         reviewRepository.save(reviewWriteReq.toReview());
     }
+
+    @Override
+    public boolean findOneReview(int reservationId) throws Exception {
+        Review review = reviewRepository.findReviewByReservation_reservationId(reservationId);
+        if(review != null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
 }

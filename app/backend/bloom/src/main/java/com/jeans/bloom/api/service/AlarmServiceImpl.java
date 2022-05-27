@@ -32,7 +32,7 @@ public class AlarmServiceImpl implements AlarmService{
      */
     @Override
     public List<AlarmRes> findAlarmsByUser_UserId(String userId) throws Exception {
-        List<Alarm> alarms = alarmRepository.findAlarmsByUser_UserId(userId).orElse(null);
+        List<Alarm> alarms = alarmRepository.findAlarmsByUser_UserIdOrderByCreatedAtDesc(userId).orElse(null);
         return alarms.stream().map(alarm->AlarmRes.of(alarm)).collect(Collectors.toList());
     }
 

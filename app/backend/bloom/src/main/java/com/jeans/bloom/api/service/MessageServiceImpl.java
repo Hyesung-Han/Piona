@@ -44,7 +44,7 @@ public class MessageServiceImpl implements MessageService {
         params.put("to", toNumber);
         params.put("from", fromNumber);
         params.put("type", "SMS");
-        params.put("text", "[Bloom] 인증번호 "+randomNumber+" 를 입력하세요.");
+        params.put("text", "[Piona] 인증번호 "+randomNumber+" 를 입력하세요.");
         params.put("app_version", "Bloom app 1.0"); // application name and version
 
         JSONObject obj = (JSONObject) coolsms.send(params);
