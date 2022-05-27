@@ -62,6 +62,10 @@ public class ReviewController {
     public ResponseEntity<BaseResponseBody> writeReview(
             @ModelAttribute ReviewWriteReq reviewWriteReq,  @RequestPart(value="file", required = false)List<MultipartFile> multipartFiles) {
         try{
+            if(reviewService.findOneReview(reviewWriteReq.getReservationId())){
+                return ResponseEntity.status(403).body(BaseResponseBody.of( "fail", "이미 작성된 리뷰입니다."));
+            }
+
             if(multipartFiles != null) {
                 List<String> fileUrls = awsS3Service.uploadImage(multipartFiles);
                 StringBuilder sb = new StringBuilder();
