@@ -155,7 +155,7 @@ export default function ReviewList() {
   });
   const getLengthByStatus = (status) => tableData.filter((item) => item.comment === status).length;
   const STATUS_OPTIONS = [
-    { value: 'all', label: 'All', color: 'info', count: tableData.length },
+    { value: 'all', label: '전체', color: 'info', count: tableData.length },
     { value: true, label: '답변완료', color: 'success', count: getLengthByStatus(true) },
     { value: false, label: '미답변', color: 'warning', count: getLengthByStatus(false) },
   ];
@@ -251,6 +251,7 @@ export default function ReviewList() {
           <Box sx={{ position: 'relative' }}>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
+              labelRowsPerPage={"페이지 당 개수"}
               component="div"
               count={dataFiltered.length}
               rowsPerPage={rowsPerPage}
@@ -259,11 +260,11 @@ export default function ReviewList() {
               onRowsPerPageChange={onChangeRowsPerPage}
             />
 
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Switch checked={dense} onChange={onChangeDense} />}
               label="Dense"
               sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
-            />
+            /> */}
           </Box>
         </Card>
       </Container>
