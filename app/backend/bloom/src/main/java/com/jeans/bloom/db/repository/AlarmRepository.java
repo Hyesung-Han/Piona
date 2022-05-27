@@ -21,7 +21,7 @@ public interface AlarmRepository extends JpaRepository<Alarm, Integer> {
      * @name findAlarmsByUser_UserId
      * @des 회원 아이디를 입력받아 회원의 알람 리스트를 리턴해주는 메소드
      */
-    Optional<List<Alarm>> findAlarmsByUser_UserId(String userId) throws Exception;
+    Optional<List<Alarm>> findAlarmsByUser_UserIdOrderByCreatedAtDesc(String userId) throws Exception;
 
     /**
      * LJA | 2022.05.04
