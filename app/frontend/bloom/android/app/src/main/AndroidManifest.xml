@@ -57,7 +57,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <!-- 네이버MAP 개발자 CLIENT ID -->
       <meta-data android:name="com.naver.maps.map.CLIENT_ID"
-        android:value="gff19c9457" />
+        android:value="" />
     </application>
 </manifest>

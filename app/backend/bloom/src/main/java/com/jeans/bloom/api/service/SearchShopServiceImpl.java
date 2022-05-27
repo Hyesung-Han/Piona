@@ -53,8 +53,9 @@ public class SearchShopServiceImpl implements SearchShopService {
             String apiURL = "https://openapi.naver.com/v1/search/local?query=" + text + "&display=1"; // json 결과
 
             Map<String, String> requestHeaders = new HashMap<>();
-            requestHeaders.put("X-Naver-Client-Id", "jc2OcvvYJ7a3__Mt7845");
-            requestHeaders.put("X-Naver-Client-Secret", "rVCza6mVSn");
+            // Naver Client ID
+            requestHeaders.put("X-Naver-Client-Id", "");
+            requestHeaders.put("X-Naver-Client-Secret", "");
 
             String responseBody = get(apiURL, requestHeaders);
 //            System.out.println(responseBody.toString());
@@ -145,8 +146,8 @@ public class SearchShopServiceImpl implements SearchShopService {
                 URL url = new URL(api);
                 HttpsURLConnection http = (HttpsURLConnection) url.openConnection();
                 http.setRequestProperty("Content-Type", "application/json");
-                http.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "osk4djr2wf");
-                http.setRequestProperty("X-NCP-APIGW-API-KEY", "0DIe4BituLYIEU2TCr8KmArHN3DbUMNKmJ3t6T5m");
+                http.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "");
+                http.setRequestProperty("X-NCP-APIGW-API-KEY", "");
                 http.setRequestMethod("GET");
                 http.connect();
 
@@ -208,8 +209,8 @@ public class SearchShopServiceImpl implements SearchShopService {
                 URL url = new URL(api);
                 HttpsURLConnection http = (HttpsURLConnection) url.openConnection();
                 http.setRequestProperty("Content-Type", "application/json");
-                http.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "osk4djr2wf");
-                http.setRequestProperty("X-NCP-APIGW-API-KEY", "0DIe4BituLYIEU2TCr8KmArHN3DbUMNKmJ3t6T5m");
+                http.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "");
+                http.setRequestProperty("X-NCP-APIGW-API-KEY", "");
                 http.setRequestMethod("GET");
                 http.connect();
 
