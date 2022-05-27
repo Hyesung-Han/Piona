@@ -89,7 +89,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Override
     public List<ReviewRes> findReviewsByReservation_Shop_ShopNumber(String shopNumber) throws Exception{
-        List<Review> reviews = reviewRepository.findReviewsByReservation_Shop_ShopNumber(shopNumber).orElse(null);
+        List<Review> reviews = reviewRepository.findReviewsByReservation_Shop_ShopNumberOrderByReviewIdDesc(shopNumber).orElse(null);
         return reviews.stream().map(review -> ReviewRes.of(review)).collect(Collectors.toList());
     }
 

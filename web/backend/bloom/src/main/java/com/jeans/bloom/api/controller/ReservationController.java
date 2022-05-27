@@ -65,4 +65,26 @@ public class ReservationController {
             return ResponseEntity.status(403).body(BaseResponseBody.of("fail", e));
         }
     }
+    /**
+     * HHS | 2022.05.23
+     * @name changeAllOderStatusToDone
+     * @api {patch} /reservation/change?status=status
+     * @des status을 입력받아 현재 날짜와 예약날짜를 비교하여 해당하는 유저의 예약 상태를 변경한다.
+     */
+    @PatchMapping("/change")
+    @ApiOperation(value = "", notes = "타입을 입력받아 예약 당일인 해당 유저에게 알림을 보낸다")
+    public ResponseEntity<BaseResponseBody> changeAllOderStatusToDone(
+            @RequestParam @ApiParam(value = "status" , required = true) String status) {
+        try {
+            if(status.equals("done")){
+                reservationService.changeAllOrderStatusToDone();
+                return ResponseEntity.status(200).body(BaseResponseBody.of( "success"));
+            }else{
+                return ResponseEntity.status(400).body(BaseResponseBody.of( "fail", "status를 제대로 입력하세요"));
+            }
+        } catch(Exception e) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of( "fail"));
+        }
+    }
+
 }

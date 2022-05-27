@@ -28,7 +28,7 @@ export default function InvoiceTableToolbar({
     <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 3 }}>
 
       <DatePicker
-        label="Start date"
+        label="시작 일자"
         value={filterStartDate}
         onChange={onFilterStartDate}
         renderInput={(params) => (
@@ -43,7 +43,7 @@ export default function InvoiceTableToolbar({
       />
 
       <DatePicker
-        label="End date"
+        label="종료 일자"
         value={filterEndDate}
         onChange={onFilterEndDate}
         renderInput={(params) => (
